@@ -1,5 +1,7 @@
 *.swp
 
+.scannerwork/
+
 #PyCharm config
 .idea/
 
