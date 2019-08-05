@@ -9,7 +9,14 @@ Rodar os testes mantendo o banco de testes:
 python manage.py test --keepdb core/
 ```
 
-### Configurações
+Devemos acrescentar nas classes de testes:
+
+```
+import django
+django.setup()
+```
+
+Configurações para os testes:
 
 ```
 pip install nose
@@ -17,21 +24,14 @@ pip install coverage
 export DJANGO_SETTINGS_MODULE=mysite.settings
 ```
 
-Devemos acrescentar nas classes de testes: 
+### Executar os Testes de Unidade e Cobertura
 
 ```
-import django
-django.setup()
-```
-
-### Testes de Unidade e Cobertura
-
-```
-nosetests --with-xunit 
+nosetests --with-xunit
 nosetests --with-coverage --cover-package=core --cover-branches --cover-xml
 ```
 
-### Sonar
+## Executar o Sonar
 
 ```
 sonar-scanner \
@@ -42,7 +42,11 @@ sonar-scanner \
   -Dsonar.login=02254c57898053f6e25acfb70756ef6f840d4d35
 ```
 
-### Links
+# Outras Configurações
+
+* Arquivo _.editorconfig_ de estilo de codificação adicionado
+
+# Links
 
 * http://craigthomas.ca/blog/2014/06/02/python-code-inspection-with-sonarqube/
 * https://docs.sonarqube.org/display/PLUG/Python+Unit+Tests+Execution+Reports+Import
