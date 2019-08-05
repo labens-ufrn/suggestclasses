@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu Principal</title>
+</head>
+<h1>Menu</h1>
+
+<ul>
+  <li><a href="/core/list/">Horários</a></li>
+</ul>
+
+<body>
+{% if horario_list %}
+    <ul>
+    {% for horario in horario_list %}
+        <li><a href="/core/{{ horario.id }}/">{{ horario }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No horario are available.</p>
+{% endif %}
+</body>
+</html>
