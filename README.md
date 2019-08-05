@@ -44,7 +44,7 @@ sonar-scanner \
 
 # Outras Configurações
 
-* Arquivo _.editorconfig_ de estilo de codificação adicionado
+* Arquivo _.editorconfig_ de estilo de codificação adicionado.
 
 # Links
 
