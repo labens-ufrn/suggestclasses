@@ -4,24 +4,10 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.TextField(max_length=500, blank=True)
-    location = models.CharField(max_length=30, blank=True)
-    birth_date = models.DateField(null=True, blank=True)
-
-
-@receiver(post_save, sender=User)
-def update_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-    instance.profile.save()
-
-
 class ComponenteCurricular(models.Model):
-    '''
+    """
         Um componente curricular tem código, nome, ementa, departamento, carga horária, equivalências, requisitos, data de criação.
-    '''
+    """
     codigo = models.IntegerField()
     nome = models.CharField(max_length=200)
     ementa = models.CharField(max_length=200)
@@ -40,3 +26,28 @@ class OrganizacaoCurricular(models.Model):
     componente = models.ForeignKey(ComponenteCurricular, on_delete=models.PROTECT)
     periodo = models.IntegerField()
     obrigatoria = models.BooleanField()
+
+class Horario(models.Model):
+    ORDENS = (
+        ('1', 'Primeiro Horário'),
+        ('2', 'Segundo Horário'),
+        ('3', 'Terceiro Horário'),
+        ('4', 'Quarto Horário'),
+        ('5', 'Quinto Horário'),
+        ('6', 'Sexto Horário'),
+    )
+    TURNOS = (
+        ('M', 'Manhã'),
+        ('T', 'Tarde'),
+        ('N', 'Noite'),
+    )
+    ordem = models.CharField(max_length=1, choices= ORDENS)
+    turno = models.CharField(max_length=10, choices= TURNOS)
+    hora_inicio = models.TimeField()
+    hora_fim = models.TimeField()
+
+    class Meta:
+        unique_together = ("ordem", "turno")
+
+    def __str__(self):
+        return self.ordem + self.turno
