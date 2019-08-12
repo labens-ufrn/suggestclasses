@@ -3,26 +3,9 @@ Sistema de Sugestão de Horários para o BSI/UFRN.
 
 ## Lista de Requisitos Funcionais
 
-* Cadastro de Componentes Curriculares;
-* Um componente curricular é de um tipo de componente;
-* Um componente curricular tem:
-  * código, nome, ementa, departamento, carga horária e modalidade;
-  * equivalências e requisitos com outros componentes; 
-  * data de criação.
-* Cadastro de Estruturas Curriculares;
-* Uma estrutura curricular tem:
-  * codigo, sigla, nome e ano_periodo;
-  * uma estrutura curricular tem uma carga horária;
-  * a carga horária é dividida entre horas obrigatórias, opcionais, eletivas e de atividades;
-  * uma estrutura curricular é organizada em períodos;
-  * cada período contém um conjunto de componentes curriculares;
-  * componentes curriculares podem ser obrigatórios, opcionais ou eletivos;
-* Cadastro de Turmas;
-  * detalhar ...;
-* Cadastro de Salas;
-  * detalhar ...;
-* Cadastro de Horários;
-  * detalhar ...;
+O sistema SuggestClasses terá o cadastro de sugestões de horários para turmas de componentes curriculares de um curso em um certo período. Também manterá o horário aprovado das turmas e exibirá relatórios de horários para professores, alunos, por sala e por período.
+
+Os requisitos funcionais detalhados estã na página wiki [Requisitos Funcionais](https://github.com/labens-ufrn/suggestclasses/wiki).
 
 ## Migrations
 
