@@ -1,19 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Listas</title>
-</head>
-<body>
-<h1>Horários</h1>
-{% if horario_list %}
-    <ul>
-    {% for horario in horario_list %}
-        <li><a href="/core/{{ horario.id }}/">{{ horario }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No horario are available.</p>
-{% endif %}
-</body>
-</html>
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+  <section class="page-section" id="horarios">
+    <div class="container">
+
+      <h2 class="page-section-heading text-center text-secondary mb-0">Horários</h2>
+      <br />
+      <table class="table">
+        <tr align="center">
+          <th></th>
+          <th>Segunda</th>
+          <th>Terça</th>
+          <th>Quarta</th>
+          <th>Quinta</th>
+          <th>Sexta</th>
+        </tr>
+          {% for semana in horarios %}
+            <tr>
+              <td align="center" width="20%">{{ semana.0.get_ordem_display }} <br>
+                  {{ semana.0.hora_inicio }} - {{ semana.0.hora_final }}
+              </td>
+              {% for horario in semana %}
+                <td align="center" width="16%">
+                  {% if horario.dia %}
+                    <p><a href="/core/{{ horario.id }}/">{{ horario }}</a></p>
+                  {% else %}
+                    <p>Sem Horário!</p>
+                  {% endif %}
+                </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+      </table>
+    </div>
+  </section>
+{% endblock %}
+

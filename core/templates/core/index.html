@@ -1,24 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Menu Principal</title>
-</head>
-<h1>Menu</h1>
+{% extends 'core/base.html' %}
 
-<ul>
-  <li><a href="/core/list/">Horários</a></li>
-</ul>
+{% block content %}
 
-<body>
-{% if horario_list %}
-    <ul>
-    {% for horario in horario_list %}
-        <li><a href="/core/{{ horario.id }}/">{{ horario }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No horario are available.</p>
-{% endif %}
-</body>
-</html>
+  <!-- Dashboard Section -->
+  <section class="page-section" id="dashboard">
+      <div class="container">
+
+        <!-- Portfolio Section Heading -->
+        <h2 class="page-section-heading text-center text-secondary mb-0">Dashboard</h2>
+        <br />
+        <!-- Icon Divider -->
+        <div class="divider-custom">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon">
+            <i class="fas fa-star"></i>
+          </div>
+          <div class="divider-custom-line"></div>
+        </div>
+
+        <!-- Portfolio Grid Items -->
+        <div class="row">
+
+          <div class="col-lg-4 col-md-3 mb-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h4 class="card-title">
+                  <a href="#">Departamentos</a>
+                </h4>
+                <p class="card-text">
+                  {% for departamento in departamentos %}
+                    <p><a href="/core/departamento/{{ departamento.id }}/">{{ departamento }}</a></p>
+                  {% endfor %}
+                </p>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-3 mb-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h4 class="card-title">
+                  <a href="#">Cursos</a>
+                </h4>
+                <p class="card-text">
+                  {% for curso in cursos %}
+                    <p><a href="/core/curso/{{ curso.id }}/">{{ curso }}</a></p>
+                  {% endfor %}
+                </p>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+              </div>
+            </div>
+          </div>
+
+         <div class="col-lg-4 col-md-3 mb-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h4 class="card-title">
+                  <a href="#">Cursos</a>
+                </h4>
+                <p class="card-text">
+                  {% for curso in cursos %}
+                    <p><a href="/core/curso/{{ curso.id }}/">{{ curso }}</a></p>
+                  {% endfor %}
+                </p>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.row -->
+
+      </div>
+    </section>
+
+{% endblock %}
