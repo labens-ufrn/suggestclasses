@@ -1,49 +1,51 @@
 from django.db import models
-from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class Centro(models.Model):
     """
-        Um centro tem código, nome, sigla, endereço e site.
+        Um centro tem identificador, código, nome, sigla, endereço e site.
     """
+    id_unidade = models.IntegerField(unique=True)
+    codigo = models.IntegerField(unique=True)
     nome = models.CharField(max_length=200, unique=True)
-    sigla = models.CharField(max_length=10, unique=True)
+    sigla = models.CharField(max_length=15, unique=True)
     endereco = models.CharField(max_length=250, blank=True, null=True)
     site = models.CharField(max_length=250)
 
     def __str__(self):
-        return  self.sigla
+        return self.nome + ' - ' + self.sigla
 
 
 class Departamento(models.Model):
     """
-        Um departamento tem código, nome, sigla, endereço e site.
+        Um departamento tem identificador, código, nome, sigla, endereço e site.
     """
+    id_unidade = models.IntegerField(unique=True)
+    codigo = models.IntegerField(unique=True)
     nome = models.CharField(max_length=200, unique=True)
-    sigla = models.CharField(max_length=10, unique=True)
+    sigla = models.CharField(max_length=15, unique=True)
     endereco = models.CharField(max_length=250, blank=True, null=True)
     site = models.CharField(max_length=250)
     centro = models.ForeignKey(Centro, on_delete=models.PROTECT)
 
     def __str__(self):
-        return  self.sigla
+        return self.nome + ' - ' + self.sigla
 
 
 class Curso(models.Model):
-        """
-            Um curso tem: código, nome, habilitação, turnos, modalidade.
-        """
-        codigo = models.IntegerField(unique=True)
-        nome = models.CharField(max_length=200)
-        turno = models.CharField(max_length=3)
-        habilitacao = models.CharField(max_length=250)
-        modalidade = models.CharField(max_length=250)
-        centro = models.ForeignKey(Centro, on_delete=models.PROTECT)
+    """
+        Um curso tem: código, nome, nível de ensino, grau acadêmico, modalidade, turno e centro.
+    """
+    codigo = models.IntegerField(unique=True)
+    nome = models.CharField(max_length=200)
+    nivel = models.CharField(max_length=250)
+    grau = models.CharField(max_length=250)
+    modalidade = models.CharField(max_length=250)
+    turno = models.CharField(max_length=50)
+    centro = models.ForeignKey(Centro, on_delete=models.PROTECT)
 
-        def __str__(self):
-            return self.nome + ' - ' + self.centro.sigla
+    def __str__(self):
+        return self.nome + ' - ' + self.grau + ' - ' + self.centro.sigla
 
 
 class Sala(models.Model):
