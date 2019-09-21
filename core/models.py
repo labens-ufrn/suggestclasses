@@ -64,15 +64,23 @@ class ComponenteCurricular(models.Model):
     """
         Um componente curricular tem código, nome, ementa, departamento, carga horária, equivalências, requisitos, data de criação.
     """
+    id_componente = models.IntegerField(unique=True)
+    tipo = models.CharField(max_length=50)
     codigo = models.CharField(max_length=10)
+    nivel = models.CharField(max_length=50)
     nome = models.CharField(max_length=200)
     ementa = models.TextField(max_length=500)
-    ch_total = models.IntegerField()
     ch_teorica = models.IntegerField()
     ch_pratica = models.IntegerField()
-    requisito = models.ForeignKey('self', on_delete=models.PROTECT, blank=True, null=True, related_name='pre_requisitos')
-    corequisito = models.ForeignKey('self', on_delete=models.PROTECT, blank=True, null=True, related_name='co_requisitos')
-    equivalencia = models.ForeignKey('self', on_delete=models.PROTECT, blank=True, null=True, related_name='equivalencias')
+    ch_estagio = models.IntegerField()
+    ch_total = models.IntegerField()
+    ch_docente = models.IntegerField()
+    ch_ead = models.IntegerField()
+    cr_max_ead = models.IntegerField()
+    equivalencia = models.TextField(max_length=500)
+    requisito = models.TextField(max_length=500)
+    corequisito = models.TextField(max_length=500)
+    modalidade = models.CharField(max_length=200)
     departamento = models.ForeignKey(Departamento, on_delete=models.PROTECT)
 
     def __str__(self):

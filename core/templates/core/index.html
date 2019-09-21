@@ -61,11 +61,11 @@
             <div class="card h-100">
               <div class="card-body">
                 <h4 class="card-title">
-                  <a href="#">Cursos</a>
+                  <a href="#">Componentes</a>
                 </h4>
                 <p class="card-text">
-                  {% for curso in cursos %}
-                    <p><a href="/core/curso/{{ curso.id }}/">{{ curso }}</a></p>
+                  {% for cc in componentes %}
+                    <p><a href="/core/componente/{{ cc.id }}/">{{ cc }}</a></p>
                   {% endfor %}
                 </p>
               </div>

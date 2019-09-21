@@ -3,22 +3,29 @@ from django.template import loader
 from django.shortcuts import render
 import json, requests
 
-from core.models import Curso, Departamento
+from core.models import Curso, Departamento, ComponenteCurricular, Centro
 from .models import Horario
 
 
 def index(request):
-    cursos = Curso.objects.all()
+    ceres = Centro.objects.get(id_unidade=1482)
     departamentos = Departamento.objects.all()
+    dct = Departamento.objects.get(id_unidade=9726)
+    print(dct)
+    cursos = Curso.objects.all()
+    componentes = ComponenteCurricular.objects.filter(departamento=dct)
+    print(componentes)
 
     template = loader.get_template('core/index.html')
 
-    #response = requests.get("https://servicos.jfrn.jus.br/cartaapi/servicos")
-    #comments = json.loads(response.content)
+    # response = requests.get("https://servicos.jfrn.jus.br/cartaapi/servicos")
+    # comments = json.loads(response.content)
 
     context = {
+        'ceres': ceres,
         'departamentos': departamentos,
-        'cursos': cursos
+        'cursos': cursos,
+        'componentes': componentes
     }
     return HttpResponse(template.render(context, request))
 
