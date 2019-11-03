@@ -3,7 +3,7 @@ import os
 import django
 
 django.setup()
-from core.models import Curso, Centro, Departamento, ComponenteCurricular
+from core.models import Curso, Centro, Departamento, ComponenteCurricular, EstruturaCurricular, OrganizacaoCurricular
 
 DADOS_PATH = '/home/taciano/dev/workspace/suggestclasses/dados'
 
@@ -16,7 +16,9 @@ def main():
     # centros() # Não foi criado, adicionamos apenas o CERES.
     # departamentos()
     # cursos()
-    componentes()
+    # componentes()
+    # estruturas()
+    organizacao()
 
 
 def departamentos():
@@ -145,13 +147,13 @@ def componentes():
                     print(pre_requisito)
                     print(co_requisito)
                     print(ementa)
-                    #print(bibliografia)
-                    #print(objetivos)
-                    #print(conteudo)
-                    #print(competencias_habilidades)
-                    #print(referencias)
-                    #print(ano_programa)
-                    #print(periodo_programa)
+                    # print(bibliografia)
+                    # print(objetivos)
+                    # print(conteudo)
+                    # print(competencias_habilidades)
+                    # print(referencias)
+                    # print(ano_programa)
+                    # print(periodo_programa)
                     print(modalidade)
                     print(curso_componente)
 
@@ -163,6 +165,103 @@ def componentes():
                                               requisito=pre_requisito, corequisito=co_requisito, ementa=ementa,
                                               modalidade=modalidade, departamento=depto)
                     cc.save()
+
+
+def estruturas():
+    print("Criando Estruturas Curriculares para os Cursos do CERES ...!")
+
+    with open('estruturas-curriculares.csv') as csvfile:
+        estruturas_ceres = csv.reader(csvfile, delimiter=';')
+        next(estruturas_ceres)  # skip header
+
+        for row in estruturas_ceres:
+
+            curso_ufrn = row[3]
+
+            if Curso.objects.filter(codigo=curso_ufrn).exists():
+                curso_ceres = Curso.objects.get(codigo=curso_ufrn)
+                print(curso_ceres)
+
+                id_curriculo = row[0]
+                codigo = row[1]
+                nome_matriz = row[2]
+                id_curso = row[3]
+                nome_curso = row[4]
+                semestre_conclusao_minimo = row[5] if row[5] != '' else None
+                semestre_conclusao_ideal = row[6] if row[6] != '' else None
+                semestre_conclusao_maximo = row[7] if row[7] != '' else None
+                meses_conclusao_minimo = row[8] if row[8] != '' else None
+                meses_conclusao_ideal = row[9] if row[9] != '' else None
+                meses_conclusao_maximo = row[10] if row[10] != '' else None
+                cr_total_minimo = row[11] if row[11] != '' else None
+                ch_total_minima = row[12] if row[12] != '' else None
+                ch_optativas_minima = row[13] if row[13] != '' else None
+                ch_complementar_minima = row[14] if row[14] != '' else None
+                max_eletivos = row[15] if row[15] != '' else None
+                ch_nao_atividade_obrigatoria = row[16] if row[16] != '' else None
+                cr_nao_atividade_obrigatorio = row[17] if row[17] != '' else None
+                ch_atividade_obrigatoria = row[18] if row[18] != '' else None
+                cr_minimo_semestre = row[19] if row[19] != '' else None
+                cr_ideal_semestre = row[20] if row[20] != '' else None
+                cr_maximo_semestre = row[21] if row[21] != '' else None
+                ch_minima_semestre = row[22] if row[22] != '' else None
+                ch_ideal_semestre = row[23] if row[23] != '' else None
+                ch_maxima_semestre = row[24] if row[24] != '' else None
+                periodo_entrada_vigor = row[25] if row[25] != '' else None
+                ano_entrada_vigor = row[26] if row[26] != '' else None
+                observacao = row[27]
+
+                ec = EstruturaCurricular(id_curriculo=id_curriculo, codigo=codigo, nome=nome_matriz,
+                                         semestre_conclusao_minimo=semestre_conclusao_minimo,
+                                         semestre_conclusao_ideal=semestre_conclusao_ideal,
+                                         semestre_conclusao_maximo=semestre_conclusao_maximo,
+                                         meses_conclusao_minimo=meses_conclusao_minimo,
+                                         meses_conclusao_ideal=meses_conclusao_ideal,
+                                         meses_conclusao_maximo=meses_conclusao_maximo,
+                                         cr_total_minimo=cr_total_minimo, ch_total_minima=ch_total_minima,
+                                         ch_optativas_minima=ch_optativas_minima,
+                                         ch_complementar_minima=ch_complementar_minima, max_eletivos=max_eletivos,
+                                         ch_nao_atividade_obrigatoria=ch_nao_atividade_obrigatoria,
+                                         cr_nao_atividade_obrigatorio=cr_nao_atividade_obrigatorio,
+                                         ch_atividade_obrigatoria=ch_atividade_obrigatoria,
+                                         cr_minimo_semestre=cr_minimo_semestre,
+                                         cr_ideal_semestre=cr_ideal_semestre, cr_maximo_semestre=cr_maximo_semestre,
+                                         ch_minima_semestre=ch_minima_semestre, ch_ideal_semestre=ch_ideal_semestre,
+                                         ch_maxima_semestre=ch_maxima_semestre,
+                                         periodo_entrada_vigor=periodo_entrada_vigor,
+                                         ano_entrada_vigor=ano_entrada_vigor, observacao=observacao, curso=curso_ceres)
+                ec.save()
+
+
+def organizacao():
+    print("Criando Estruturas Curriculares para os Cursos do CERES ...!")
+
+    with open('curriculo-componente-graduacao.csv') as csvfile:
+        ccg = csv.reader(csvfile, delimiter=';')
+        next(ccg)  # skip header
+
+        for row in ccg:
+
+            id_estrutura = row[1]
+            id_componente_curricular = row[2]
+
+            if EstruturaCurricular.objects.filter(id_curriculo=id_estrutura).exists():
+                ec = EstruturaCurricular.objects.get(id_curriculo=id_estrutura)
+
+                if ComponenteCurricular.objects.filter(id_componente=id_componente_curricular).exists():
+                    cc = ComponenteCurricular.objects.get(id_componente=id_componente_curricular)
+
+                    id_curriculo_componente = row[0]
+                    id_curriculo = row[1]
+                    id_componente_curricular = row[2]
+                    semestre_oferta = row[3]
+                    tipo_vinculo_componente = row[4]
+                    nivel_ensino = row[5]
+
+                    oc = OrganizacaoCurricular(id_curriculo_componente=id_curriculo_componente, estrutura=ec,
+                                           componente=cc, semestre=semestre_oferta,
+                                           tipo_vinculo=tipo_vinculo_componente, nivel=nivel_ensino)
+                    oc.save()
 
 
 if __name__ == "__main__":
