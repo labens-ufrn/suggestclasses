@@ -8,6 +8,7 @@
 
         <!-- Portfolio Section Heading -->
         <h2 class="page-section-heading text-center text-secondary mb-0">Dashboard</h2>
+        <h3 class="age-section-heading text-center text-secondary"><p>{{ ceres }}</p></h3>
         <br />
         <!-- Icon Divider -->
         <div class="divider-custom">
@@ -28,13 +29,11 @@
                   <a href="#">Departamentos</a>
                 </h4>
                 <p class="card-text">
-                  {% for departamento in departamentos %}
-                    <p><a href="/core/departamento/{{ departamento.id }}/">{{ departamento }}</a></p>
-                  {% endfor %}
+                  <p>Total: {{ departamentos.count }}</p>
                 </p>
               </div>
               <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                <small class="text-muted"><a href="/core/departamento/list/">Listar Todas</a></small>
               </div>
             </div>
           </div>
@@ -46,13 +45,11 @@
                   <a href="#">Cursos</a>
                 </h4>
                 <p class="card-text">
-                  {% for curso in cursos %}
-                    <p><a href="/core/curso/{{ curso.id }}/">{{ curso }}</a></p>
-                  {% endfor %}
+                  <p>Total: {{ cursos.count }}</a></p>
                 </p>
               </div>
               <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                <small class="text-muted"><a href="/core/curso/list/">Listar Todas</a></small>
               </div>
             </div>
           </div>
@@ -64,13 +61,27 @@
                   <a href="#">Componentes</a>
                 </h4>
                 <p class="card-text">
-                  {% for cc in componentes %}
-                    <p><a href="/core/componente/{{ cc.id }}/">{{ cc }}</a></p>
-                  {% endfor %}
+                  <p>Total: {{ componentes.count }}</a></p>
                 </p>
               </div>
               <div class="card-footer">
-                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                <small class="text-muted"><a href="/core/componente/list/">Listar Todas</a></small>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-3 mb-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h4 class="card-title">
+                  <a href="#">Estruturas Curriculares</a>
+                </h4>
+                <p class="card-text">
+                  <p>Total: {{ estruturas.count }}</a></p>
+                </p>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted"><a href="/core/curriculo/list/">Listar Todas</a></small>
               </div>
             </div>
           </div>

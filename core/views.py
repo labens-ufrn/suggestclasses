@@ -3,13 +3,14 @@ from django.template import loader
 from django.shortcuts import render
 import json, requests
 
-from core.models import Curso, Departamento, ComponenteCurricular, Centro
+from core.models import Curso, Departamento, ComponenteCurricular, Centro, EstruturaCurricular, OrganizacaoCurricular
 from .models import Horario
 
 
 def index(request):
     ceres = Centro.objects.get(id_unidade=1482)
     departamentos = Departamento.objects.all()
+    estruturas = EstruturaCurricular.objects.all()
     dct = Departamento.objects.get(id_unidade=9726)
     print(dct)
     cursos = Curso.objects.all()
@@ -25,7 +26,8 @@ def index(request):
         'ceres': ceres,
         'departamentos': departamentos,
         'cursos': cursos,
-        'componentes': componentes
+        'componentes': componentes,
+        'estruturas': estruturas
     }
     return HttpResponse(template.render(context, request))
 
@@ -58,3 +60,41 @@ def list(request):
     }
 
     return render(request, 'core/list.html', context)
+
+
+def curriculo_list(request):
+    estruturas = EstruturaCurricular.objects.all()
+
+    context = {
+        'estruturas': estruturas
+    }
+
+    return render(request, 'core/curriculo/list.html', context)
+
+
+def flow_list(request):
+    return render(request, 'core/flow/list.html')
+
+
+def flow_bsi(request):
+    id_ec = 510230607
+    bsi_ec = EstruturaCurricular.objects.get(id_curriculo=id_ec)
+    print(bsi_ec)
+    bsi_oc_1p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=1)
+    bsi_oc_2p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=2)
+    bsi_oc_3p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=3)
+    bsi_oc_4p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=4)
+    bsi_oc_5p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=5)
+    bsi_oc_6p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=6)
+    bsi_oc_7p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=7)
+    bsi_oc_8p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=8)
+    bsi_oc_op = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=0)
+
+    context = {
+        'bsi_ec': bsi_ec,
+        'bsi_oc_1p': bsi_oc_1p, 'bsi_oc_2p': bsi_oc_2p, 'bsi_oc_3p': bsi_oc_3p, 'bsi_oc_4p': bsi_oc_4p,
+        'bsi_oc_5p': bsi_oc_5p, 'bsi_oc_6p': bsi_oc_6p, 'bsi_oc_7p': bsi_oc_7p, 'bsi_oc_8p': bsi_oc_8p,
+        'bsi_oc_op': bsi_oc_op,
+    }
+
+    return render(request, 'core/flow/bsi.html', context)

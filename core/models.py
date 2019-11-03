@@ -88,17 +88,48 @@ class ComponenteCurricular(models.Model):
 
 
 class EstruturaCurricular(models.Model):
-    codigo = models.IntegerField(unique=True)
-    sigla = models.CharField(max_length=10, unique=True)
+    id_curriculo = models.IntegerField(unique=True)
+    codigo = models.CharField(max_length=10)
     nome = models.CharField(max_length=200)
-    ano_periodo = models.CharField(max_length=10)
+    semestre_conclusao_minimo = models.IntegerField(null=True)
+    semestre_conclusao_ideal = models.IntegerField(null=True)
+    semestre_conclusao_maximo = models.IntegerField(null=True)
+    meses_conclusao_minimo = models.IntegerField(null=True)
+    meses_conclusao_ideal = models.IntegerField(null=True)
+    meses_conclusao_maximo = models.IntegerField(null=True)
+    cr_total_minimo = models.IntegerField(null=True)
+    ch_total_minima = models.IntegerField(null=True)
+    ch_optativas_minima = models.IntegerField(null=True)
+    ch_complementar_minima = models.IntegerField(null=True)
+    max_eletivos = models.IntegerField(null=True)
+    ch_nao_atividade_obrigatoria = models.IntegerField(null=True)
+    cr_nao_atividade_obrigatorio = models.IntegerField(null=True)
+    ch_atividade_obrigatoria = models.IntegerField(null=True)
+    cr_minimo_semestre = models.IntegerField(null=True)
+    cr_ideal_semestre = models.IntegerField(null=True)
+    cr_maximo_semestre = models.IntegerField(null=True)
+    ch_minima_semestre = models.IntegerField(null=True)
+    ch_ideal_semestre = models.IntegerField(null=True)
+    ch_maxima_semestre = models.IntegerField(null=True)
+    periodo_entrada_vigor = models.IntegerField(null=True)
+    ano_entrada_vigor = models.IntegerField(null=True)
+    observacao = models.TextField(max_length=500, null=True)
+    curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.codigo + ' - ' + self.nome
 
 
 class OrganizacaoCurricular(models.Model):
+    id_curriculo_componente = models.IntegerField(unique=True)
     estrutura = models.ForeignKey(EstruturaCurricular, on_delete=models.PROTECT)
     componente = models.ForeignKey(ComponenteCurricular, on_delete=models.PROTECT)
-    periodo = models.IntegerField()
-    obrigatoria = models.BooleanField()
+    semestre = models.IntegerField()
+    tipo_vinculo = models.CharField(max_length=50)
+    nivel = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.componente.nome + ' - ' + self.estrutura.nome
 
 
 class Horario(models.Model):
@@ -137,4 +168,4 @@ class Horario(models.Model):
         unique_together = ("dia", "turno", "ordem")
 
     def __str__(self):
-        return  self.dia + self.turno + self.ordem
+        return self.dia + self.turno + self.ordem
