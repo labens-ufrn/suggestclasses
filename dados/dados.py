@@ -16,7 +16,7 @@ def main():
     # centros() # Não foi criado, adicionamos apenas o CERES.
     # departamentos()
     # cursos()
-    # componentes()
+    componentes()
     # estruturas()
     organizacao()
 
@@ -100,7 +100,7 @@ def componentes():
 
             if Departamento.objects.filter(nome=unidade_responsavel).exists():
                 depto = Departamento.objects.get(nome=unidade_responsavel)
-                print(depto)
+                print("Departamento " + depto.sigla)
 
                 id_componente = row[0]
                 tipo_componente = row[1]
@@ -129,42 +129,17 @@ def componentes():
                 modalidade = row[27]
                 curso_componente = row[28]
 
-                if depto.id_unidade == 9726 or depto.id_unidade == 235:
-                    print(id_componente)
-                    print(tipo_componente)
-                    print(codigo_componente)
-                    print(nivel_componente)
-                    print(nome_componente)
-                    print(unidade_responsavel)
-                    print(ch_teorico)
-                    print(ch_pratico)
-                    print(ch_estagio)
-                    print(ch_total)
-                    print(ch_dedicada_docente)
-                    print(ch_ead)
-                    print(cr_max_ead)
-                    print(equivalencia)
-                    print(pre_requisito)
-                    print(co_requisito)
-                    print(ementa)
-                    # print(bibliografia)
-                    # print(objetivos)
-                    # print(conteudo)
-                    # print(competencias_habilidades)
-                    # print(referencias)
-                    # print(ano_programa)
-                    # print(periodo_programa)
-                    print(modalidade)
-                    print(curso_componente)
+                # if depto.id_unidade == 9726 or depto.id_unidade == 235:
+                print(id_componente)
 
-                    cc = ComponenteCurricular(id_componente=id_componente, tipo=tipo_componente,
-                                              codigo=codigo_componente, nivel=nivel_componente, nome=nome_componente,
-                                              ch_teorica=ch_teorico, ch_pratica=ch_pratico, ch_estagio=ch_estagio,
-                                              ch_total=ch_total, ch_docente=ch_dedicada_docente, ch_ead=ch_ead,
-                                              cr_max_ead=cr_max_ead, equivalencia=equivalencia,
-                                              requisito=pre_requisito, corequisito=co_requisito, ementa=ementa,
-                                              modalidade=modalidade, departamento=depto)
-                    cc.save()
+                cc = ComponenteCurricular(id_componente=id_componente, tipo=tipo_componente,
+                                          codigo=codigo_componente, nivel=nivel_componente, nome=nome_componente,
+                                          ch_teorica=ch_teorico, ch_pratica=ch_pratico, ch_estagio=ch_estagio,
+                                          ch_total=ch_total, ch_docente=ch_dedicada_docente, ch_ead=ch_ead,
+                                          cr_max_ead=cr_max_ead, equivalencia=equivalencia,
+                                          requisito=pre_requisito, corequisito=co_requisito, ementa=ementa,
+                                          modalidade=modalidade, departamento=depto)
+                cc.save()
 
 
 def estruturas():
