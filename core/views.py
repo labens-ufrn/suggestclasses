@@ -79,22 +79,23 @@ def flow_list(request):
 def flow_bsi(request):
     id_ec = 510230607
     bsi_ec = EstruturaCurricular.objects.get(id_curriculo=id_ec)
-    print(bsi_ec)
-    bsi_oc_1p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=1)
-    bsi_oc_2p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=2)
-    bsi_oc_3p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=3)
-    bsi_oc_4p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=4)
-    bsi_oc_5p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=5)
-    bsi_oc_6p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=6)
-    bsi_oc_7p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=7)
-    bsi_oc_8p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=8)
-    bsi_oc_op = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=0)
+
+    get_oc_by_semestre = lambda s: OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=s)
+
+    bsi_ocs_semestre = []
+    oc_bsi = get_oc_by_semestre(0)
+
+    headers: List[str] = []
+
+    for i in range(1, 9):
+        headers.append(f"{i}º Semestre")
+        bsi_ocs_semestre.append(get_oc_by_semestre(i))
 
     context = {
         'bsi_ec': bsi_ec,
-        'bsi_oc_1p': bsi_oc_1p, 'bsi_oc_2p': bsi_oc_2p, 'bsi_oc_3p': bsi_oc_3p, 'bsi_oc_4p': bsi_oc_4p,
-        'bsi_oc_5p': bsi_oc_5p, 'bsi_oc_6p': bsi_oc_6p, 'bsi_oc_7p': bsi_oc_7p, 'bsi_oc_8p': bsi_oc_8p,
-        'bsi_oc_op': bsi_oc_op,
+        'headers': headers,
+        'bsi_ocs_semestre': bsi_ocs_semestre,
+        'oc_bsi': oc_bsi,
     }
 
     return render(request, 'core/flow/bsi.html', context)
