@@ -17,7 +17,7 @@
         {% endfor %}
       </tr>
       <tr>
-        {% for semestre in bsi_ocs_semestre %}
+        {% for semestre in bsi_oc_semestres %}
         <td align="center" width="12.5%" style="padding: 0;">
           <table>
             {% for oc in semestre %}
@@ -34,27 +34,6 @@
       </tr>
     </table>
 
-    <br />
-    <table class="table">
-      <tr align="center">
-        <th>ID</th>
-        <th>Estrutura</th>
-        <th>Componente</th>
-        <th>Semestre</th>
-        <th>Tipo</th>
-        <th>Nível</th>
-      </tr>
-      {% for oc in oc_bsi %}
-      <tr>
-        <td align="center">{{ oc.id_curriculo_componente }}</td>
-        <td align="center">{{ oc.estrutura.codigo }}</td>
-        <td align="center">{{ oc.componente.nome }}</td>
-        <td align="center">{{ oc.semestre }}</td>
-        <td align="center">{{ oc.tipo }}</td>
-        <td align="center">{{ oc.nivel }}</td>
-      </tr>
-      {% endfor %}
-    </table>
   </div>
 </section>
 {% endblock %}

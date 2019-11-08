@@ -82,20 +82,20 @@ def flow_bsi(request):
 
     get_oc_by_semestre = lambda s: OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=s)
 
-    bsi_ocs_semestre = []
-    oc_bsi = get_oc_by_semestre(0)
+    bsi_oc_semestres = []
+    bsi_oc_op = get_oc_by_semestre(0)
 
     headers: List[str] = []
 
-    for i in range(1, 9):
-        headers.append(f"{i}º Semestre")
-        bsi_ocs_semestre.append(get_oc_by_semestre(i))
+    for s in range(1, 9):
+        headers.append(f"{s}º Semestre")
+        bsi_oc_semestres.append(get_oc_by_semestre(s))
 
     context = {
         'bsi_ec': bsi_ec,
         'headers': headers,
-        'bsi_ocs_semestre': bsi_ocs_semestre,
-        'oc_bsi': oc_bsi,
+        'bsi_oc_semestres': bsi_oc_semestres,
+        'bsi_oc_op': bsi_oc_op,
     }
 
     return render(request, 'core/flow/bsi.html', context)
