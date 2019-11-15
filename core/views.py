@@ -1,7 +1,8 @@
+from typing import List
+
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render
-import json, requests
 
 from core.models import Curso, Departamento, ComponenteCurricular, Centro, EstruturaCurricular, OrganizacaoCurricular
 from .models import Horario
@@ -80,41 +81,28 @@ def flow_list(request):
 def flow_bsi(request):
     id_ec = 510230607
     bsi_ec = EstruturaCurricular.objects.get(id_curriculo=id_ec)
-    print(bsi_ec)
-    bsi_oc_1p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=1)
-    bsi_oc_1p_sum = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=1).aggregate(Sum(
+
+    get_oc_by_semestre = lambda s: OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=s)
+    get_ch_by_semestre = lambda ch: OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=s).aggregate(Sum(
         "componente__ch_total"))
-    bsi_oc_2p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=2)
-    bsi_oc_2p_sum = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=2).aggregate(Sum(
-        "componente__ch_total"))
-    bsi_oc_3p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=3)
-    bsi_oc_3p_sum = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=3).aggregate(Sum(
-        "componente__ch_total"))
-    bsi_oc_4p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=4)
-    bsi_oc_4p_sum = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=4).aggregate(Sum(
-        "componente__ch_total"))
-    bsi_oc_5p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=5)
-    bsi_oc_5p_sum = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=5).aggregate(Sum(
-        "componente__ch_total"))
-    bsi_oc_6p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=6)
-    bsi_oc_6p_sum = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=6).aggregate(Sum(
-        "componente__ch_total"))
-    bsi_oc_7p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=7)
-    bsi_oc_7p_sum = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=7).aggregate(Sum(
-        "componente__ch_total"))
-    bsi_oc_8p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=8)
-    bsi_oc_8p_sum = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=8).aggregate(Sum(
-        "componente__ch_total"))
-    bsi_oc_op = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=0)
+
+    bsi_oc_semestres = []
+    bsi_ch_semestres = []
+    bsi_oc_op = get_oc_by_semestre(0)
+
+    headers: List[str] = []
+
+    for s in range(1, 9):
+        headers.append(f"{s}º Semestre")
+        bsi_oc_semestres.append(get_oc_by_semestre(s))
+        bsi_ch_semestres.append(get_ch_by_semestre(s))
 
     context = {
         'bsi_ec': bsi_ec,
-        'bsi_oc_1p': bsi_oc_1p, 'bsi_oc_2p': bsi_oc_2p, 'bsi_oc_3p': bsi_oc_3p, 'bsi_oc_4p': bsi_oc_4p,
-        'bsi_oc_5p': bsi_oc_5p, 'bsi_oc_6p': bsi_oc_6p, 'bsi_oc_7p': bsi_oc_7p, 'bsi_oc_8p': bsi_oc_8p,
+        'headers': headers,
+        'bsi_oc_semestres': bsi_oc_semestres,
         'bsi_oc_op': bsi_oc_op,
-        'bsi_oc_1p_sum': bsi_oc_1p_sum, 'bsi_oc_2p_sum': bsi_oc_2p_sum, 'bsi_oc_3p_sum': bsi_oc_3p_sum,
-        'bsi_oc_4p_sum': bsi_oc_4p_sum, 'bsi_oc_5p_sum': bsi_oc_5p_sum, 'bsi_oc_6p_sum': bsi_oc_6p_sum,
-        'bsi_oc_7p_sum': bsi_oc_1p_sum, 'bsi_oc_8p_sum': bsi_oc_1p_sum,
+        'bsi_ch_semestres': bsi_ch_semestres,
     }
 
     return render(request, 'core/flow/bsi.html', context)

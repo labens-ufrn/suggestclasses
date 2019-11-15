@@ -2,137 +2,41 @@
 
 {% block content %}
 
-  <section class="page-section" id="bsi">
-    <div class="container" style="overflow: auto">
+<section class="page-section" id="bsi">
+  <div class="container" style="overflow: auto">
 
-      <h2 class="page-section-heading text-center text-secondary mb-0">Fluxograma BSI</h2>
-      <br />
-      <p>
-        Estrutura: {{ bsi_ec }} <br />
-        Carga Horária Mínima: {{ bsi_ec.ch_total_minima }}
-      </p>
+    <h2 class="page-section-heading text-center text-secondary mb-0">Fluxograma BSI</h2>
+    <br />
+    <p>{{ bsi_ec }}</p>
+    <br />
 
-      <br />
-
-      <table class="table" border="1" padding="0" cellspacing="0px" cellpadding="0" style="font-size:70%">
-        <tr align="center">
-          <th>1º Período</th>
-          <th>2º Período</th>
-          <th>3º Período</th>
-          <th>4º Período</th>
-          <th>5º Período</th>
-          <th>6º Período</th>
-          <th>7º Período</th>
-          <th>8º Período</th>
-        </tr>
-          <tr>
-            <td align="center" width="12.5%">
-              <table style='font-size:80%;width:100%' >
-                {% for oc in bsi_oc_1p %}
-                  <tr align="center">
-                    <td height="100px">
-                      <b>{{ oc.componente.codigo }}</b><br />
-                      {{ oc.componente.nome }}
-                    </td>
-                  </tr>
-                {% endfor %}
-              </table>
-            </td>
-            <td align="center" width="12.5%">
-              <table style='font-size:80%;width:100%'>
-                {% for oc in bsi_oc_2p %}
-                  <tr align="center">
-                    <td height="100px">
-                      <b>{{ oc.componente.codigo }}</b><br />
-                      {{ oc.componente.nome }}
-                    </td>
-                  </tr>
-                {% endfor %}
-              </table>
-            </td>
-            <td align="center" width="12.5%">
-              <table style='font-size:80%;width:100%'>
-                {% for oc in bsi_oc_3p %}
-                  <tr align="center">
-                    <td height="100px">
-                      <b>{{ oc.componente.codigo }}</b><br />
-                      {{ oc.componente.nome }}
-                    </td>
-                  </tr>
-                {% endfor %}
-              </table>
-            </td>
-            <td align="center" width="12.5%">
-              <table style='font-size:80%;width:100%'>
-                {% for oc in bsi_oc_4p %}
-                  <tr align="center">
-                    <td height="100px">
-                      <b>{{ oc.componente.codigo }}</b><br />
-                      {{ oc.componente.nome }}
-                    </td>
-                  </tr>
-                {% endfor %}
-              </table>
-            </td>
-            <td align="center" width="12.5%">
-              <table style='font-size:80%;width:100%'>
-                {% for oc in bsi_oc_5p %}
-                  <tr align="center">
-                    <td height="100px">
-                      <b>{{ oc.componente.codigo }}</b><br />
-                      {{ oc.componente.nome }}
-                    </td>
-                  </tr>
-                {% endfor %}
-              </table>
-            </td>
-            <td align="center" width="12.5%">
-              <table style='font-size:80%;width:100%'>
-                {% for oc in bsi_oc_6p %}
-                  <tr align="center">
-                    <td height="100px">
-                      <b>{{ oc.componente.codigo }}</b><br />
-                      {{ oc.componente.nome }}
-                    </td>
-                  </tr>
-                {% endfor %}
-              </table>
-            </td>
-            <td align="center" width="12.5%">
-              <table style='font-size:80%;width:100%'>
-                {% for oc in bsi_oc_7p %}
-                  <tr align="center">
-                    <td height="100px">
-                      <b>{{ oc.componente.codigo }}</b><br />
-                      {{ oc.componente.nome }}
-                    </td>
-                  </tr>
-                {% endfor %}
-              </table>
-            </td>
-            <td align="center" width="12.5%">
-              <table style='font-size:80%;width:100%'>
-                {% for oc in bsi_oc_8p %}
-                  <tr align="center">
-                    <td height="100px">
-                      <b>{{ oc.componente.codigo }}</b><br />
-                      {{ oc.componente.nome }}
-                    </td>
-                  </tr>
-                {% endfor %}
-              </table>
-            </td>
-          </tr>
-          <tfoot>
+    <table class="table" border="1" padding="0" cellspacing="20px" cellpadding="0" style="font-size:70%">
+      <tr align="center">
+        {% for header in headers %}
+        <th>{{ header }}</th>
+        {% endfor %}
+      </tr>
+      <tr>
+        {% for semestre in bsi_oc_semestres %}
+        <td align="center" width="12.5%" style="padding: 0;">
+          <table>
+            {% for oc in semestre %}
             <tr align="center">
-              <td>CH Total: {{ bsi_oc_1p_sum.componente__ch_total__sum }}</td>
-              <td>CH Total: {{ bsi_oc_2p_sum.componente__ch_total__sum }}</td>
-              <td>CH Total: {{ bsi_oc_3p_sum.componente__ch_total__sum }}</td>
-              <td>CH Total: {{ bsi_oc_4p_sum.componente__ch_total__sum }}</td>
-              <td>CH Total: {{ bsi_oc_5p_sum.componente__ch_total__sum }}</td>
-              <td>CH Total: {{ bsi_oc_6p_sum.componente__ch_total__sum }}</td>
-              <td>CH Total: {{ bsi_oc_7p_sum.componente__ch_total__sum }}</td>
-              <td>CH Total: {{ bsi_oc_8p_sum.componente__ch_total__sum }}</td>
+              <td height="100px">
+                <b>{{ oc.componente.codigo }}</b><br />
+                {{ oc.componente.nome }}
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+        </td>
+        {% endfor %}
+      </tr>
+      <tfoot>
+            <tr align="center">
+              {% for semestre in bsi_ch_semestres %}
+                <td>CH Total: {{ semestre.componente__ch_total__sum }}</td>
+              {% endfor %}
             </tr>
             <tr>
               <td colspan="8" align="center">
@@ -140,8 +44,8 @@
               </td>
             </tr>
           </tfoot>
-      </table>
-    </div>
-  </section>
-{% endblock %}
+    </table>
 
+  </div>
+</section>
+{% endblock %}
