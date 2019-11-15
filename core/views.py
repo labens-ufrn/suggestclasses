@@ -5,6 +5,7 @@ import json, requests
 
 from core.models import Curso, Departamento, ComponenteCurricular, Centro, EstruturaCurricular, OrganizacaoCurricular
 from .models import Horario
+from django.db.models import Sum
 
 
 def index(request):
@@ -81,13 +82,29 @@ def flow_bsi(request):
     bsi_ec = EstruturaCurricular.objects.get(id_curriculo=id_ec)
     print(bsi_ec)
     bsi_oc_1p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=1)
+    bsi_oc_1p_sum = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=1).aggregate(Sum(
+        "componente__ch_total"))
     bsi_oc_2p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=2)
+    bsi_oc_2p_sum = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=2).aggregate(Sum(
+        "componente__ch_total"))
     bsi_oc_3p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=3)
+    bsi_oc_3p_sum = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=3).aggregate(Sum(
+        "componente__ch_total"))
     bsi_oc_4p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=4)
+    bsi_oc_4p_sum = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=4).aggregate(Sum(
+        "componente__ch_total"))
     bsi_oc_5p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=5)
+    bsi_oc_5p_sum = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=5).aggregate(Sum(
+        "componente__ch_total"))
     bsi_oc_6p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=6)
+    bsi_oc_6p_sum = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=6).aggregate(Sum(
+        "componente__ch_total"))
     bsi_oc_7p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=7)
+    bsi_oc_7p_sum = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=7).aggregate(Sum(
+        "componente__ch_total"))
     bsi_oc_8p = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=8)
+    bsi_oc_8p_sum = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=8).aggregate(Sum(
+        "componente__ch_total"))
     bsi_oc_op = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=0)
 
     context = {
@@ -95,6 +112,22 @@ def flow_bsi(request):
         'bsi_oc_1p': bsi_oc_1p, 'bsi_oc_2p': bsi_oc_2p, 'bsi_oc_3p': bsi_oc_3p, 'bsi_oc_4p': bsi_oc_4p,
         'bsi_oc_5p': bsi_oc_5p, 'bsi_oc_6p': bsi_oc_6p, 'bsi_oc_7p': bsi_oc_7p, 'bsi_oc_8p': bsi_oc_8p,
         'bsi_oc_op': bsi_oc_op,
+        'bsi_oc_1p_sum': bsi_oc_1p_sum, 'bsi_oc_2p_sum': bsi_oc_2p_sum, 'bsi_oc_3p_sum': bsi_oc_3p_sum,
+        'bsi_oc_4p_sum': bsi_oc_4p_sum, 'bsi_oc_5p_sum': bsi_oc_5p_sum, 'bsi_oc_6p_sum': bsi_oc_6p_sum,
+        'bsi_oc_7p_sum': bsi_oc_1p_sum, 'bsi_oc_8p_sum': bsi_oc_1p_sum,
     }
 
     return render(request, 'core/flow/bsi.html', context)
+
+
+def flow_bsi_op(request):
+    id_ec = 510230607
+    bsi_ec = EstruturaCurricular.objects.get(id_curriculo=id_ec)
+    print(bsi_ec)
+    bsi_oc_op = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=0)
+
+    context = {
+        'bsi_oc_op': bsi_oc_op,
+    }
+
+    return render(request, 'core/flow/bsi-op.html', context)

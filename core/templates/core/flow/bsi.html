@@ -7,10 +7,14 @@
 
       <h2 class="page-section-heading text-center text-secondary mb-0">Fluxograma BSI</h2>
       <br />
-      <p>{{ bsi_ec }}</p>
+      <p>
+        Estrutura: {{ bsi_ec }} <br />
+        Carga Horária Mínima: {{ bsi_ec.ch_total_minima }}
+      </p>
+
       <br />
 
-      <table class="table" border="1" padding="0" cellspacing="20px" cellpadding="0" style="font-size:70%">
+      <table class="table" border="1" padding="0" cellspacing="0px" cellpadding="0" style="font-size:70%">
         <tr align="center">
           <th>1º Período</th>
           <th>2º Período</th>
@@ -23,7 +27,7 @@
         </tr>
           <tr>
             <td align="center" width="12.5%">
-              <table style='font-size:80%;border: 1px solid;width:100%' >
+              <table style='font-size:80%;width:100%' >
                 {% for oc in bsi_oc_1p %}
                   <tr align="center">
                     <td height="100px">
@@ -35,7 +39,7 @@
               </table>
             </td>
             <td align="center" width="12.5%">
-              <table style='font-size:80%;border: 1px solid'>
+              <table style='font-size:80%;width:100%'>
                 {% for oc in bsi_oc_2p %}
                   <tr align="center">
                     <td height="100px">
@@ -47,7 +51,7 @@
               </table>
             </td>
             <td align="center" width="12.5%">
-              <table style='font-size:80%;border: 1px solid'>
+              <table style='font-size:80%;width:100%'>
                 {% for oc in bsi_oc_3p %}
                   <tr align="center">
                     <td height="100px">
@@ -59,7 +63,7 @@
               </table>
             </td>
             <td align="center" width="12.5%">
-              <table style='font-size:80%;border: 1px solid'>
+              <table style='font-size:80%;width:100%'>
                 {% for oc in bsi_oc_4p %}
                   <tr align="center">
                     <td height="100px">
@@ -71,7 +75,7 @@
               </table>
             </td>
             <td align="center" width="12.5%">
-              <table style='font-size:80%;border: 1px solid'>
+              <table style='font-size:80%;width:100%'>
                 {% for oc in bsi_oc_5p %}
                   <tr align="center">
                     <td height="100px">
@@ -83,7 +87,7 @@
               </table>
             </td>
             <td align="center" width="12.5%">
-              <table style='font-size:80%;border: 1px solid'>
+              <table style='font-size:80%;width:100%'>
                 {% for oc in bsi_oc_6p %}
                   <tr align="center">
                     <td height="100px">
@@ -95,7 +99,7 @@
               </table>
             </td>
             <td align="center" width="12.5%">
-              <table style='font-size:80%;border: 1px solid'>
+              <table style='font-size:80%;width:100%'>
                 {% for oc in bsi_oc_7p %}
                   <tr align="center">
                     <td height="100px">
@@ -107,7 +111,7 @@
               </table>
             </td>
             <td align="center" width="12.5%">
-              <table style='font-size:80%;border: 1px solid'>
+              <table style='font-size:80%;width:100%'>
                 {% for oc in bsi_oc_8p %}
                   <tr align="center">
                     <td height="100px">
@@ -119,28 +123,23 @@
               </table>
             </td>
           </tr>
-      </table>
-
-      <br />
-      <table class="table">
-        <tr align="center">
-          <th>ID</th>
-          <th>Estrutura</th>
-          <th>Componente</th>
-          <th>Semestre</th>
-          <th>Tipo</th>
-          <th>Nível</th>
-        </tr>
-          {% for oc in bsi_oc_op %}
-            <tr>
-              <td align="center">{{ oc.id_curriculo_componente }}</td>
-              <td align="center">{{ oc.estrutura.codigo }}</td>
-              <td align="center">{{ oc.componente.nome }}</td>
-              <td align="center">{{ oc.semestre }}</td>
-              <td align="center">{{ oc.tipo }}</td>
-              <td align="center">{{ oc.nivel }}</td>
+          <tfoot>
+            <tr align="center">
+              <td>CH Total: {{ bsi_oc_1p_sum.componente__ch_total__sum }}</td>
+              <td>CH Total: {{ bsi_oc_2p_sum.componente__ch_total__sum }}</td>
+              <td>CH Total: {{ bsi_oc_3p_sum.componente__ch_total__sum }}</td>
+              <td>CH Total: {{ bsi_oc_4p_sum.componente__ch_total__sum }}</td>
+              <td>CH Total: {{ bsi_oc_5p_sum.componente__ch_total__sum }}</td>
+              <td>CH Total: {{ bsi_oc_6p_sum.componente__ch_total__sum }}</td>
+              <td>CH Total: {{ bsi_oc_7p_sum.componente__ch_total__sum }}</td>
+              <td>CH Total: {{ bsi_oc_8p_sum.componente__ch_total__sum }}</td>
             </tr>
-          {% endfor %}
+            <tr>
+              <td colspan="8" align="center">
+                <a href="/core/flow/bsi/opcionais">Listar Componentes Curriculares Opcionais</a>
+              </td>
+            </tr>
+          </tfoot>
       </table>
     </div>
   </section>

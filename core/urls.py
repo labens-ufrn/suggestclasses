@@ -10,4 +10,5 @@ urlpatterns = [
     path('curriculo/list/', views.curriculo_list, name='Lista de Estruturas Curriculares'),
     path('flow/', views.flow_list, name='Lista de Fluxogramas'),
     path('flow/bsi/', views.flow_bsi, name='Fluxograma BSI'),
+    path('flow/bsi/opcionais', views.flow_bsi_op, name='Fluxograma BSI - Opcionais'),
 ]
