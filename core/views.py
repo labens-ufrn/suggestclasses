@@ -82,7 +82,8 @@ def flow_bsi(request):
     id_ec = 510230607
     bsi_ec = EstruturaCurricular.objects.get(id_curriculo=id_ec)
 
-    get_oc_by_semestre = lambda s: OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=s)
+    def get_oc_by_semestre(semestre): return OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=semestre)
+
     get_ch_by_semestre = lambda ch: OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=s).aggregate(Sum(
         "componente__ch_total"))
 
