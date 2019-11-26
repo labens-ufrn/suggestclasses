@@ -169,3 +169,53 @@ class Horario(models.Model):
 
     def __str__(self):
         return self.dia + self.turno + self.ordem
+
+
+class Docente(models.Model):
+    siape = models.IntegerField(unique=True)
+    nome = models.CharField(max_length=200)
+    sexo = models.CharField(max_length=10)
+    formacao = models.CharField(max_length=50)
+    tipo_jornada_trabalho = models.CharField(max_length=50)
+    vinculo = models.CharField(max_length=50)
+    categoria = models.CharField(max_length=50)
+    classe_funcional = models.CharField(max_length=50)
+    id_unidade_lotacao = models.IntegerField()
+    lotacao = models.CharField(max_length=150)
+    admissao = models.DateField()
+
+    def __str__(self):
+        return self.siape.__str__() + ' - ' + self.nome + ' - ' + self.lotacao
+
+
+class Turma(models.Model):
+    id_turma = models.IntegerField()
+    codigo_turma = models.CharField(max_length=50)
+    siape = models.IntegerField(null=True)
+    matricula_docente_externo = models.IntegerField(null=True)
+    observacao = models.CharField(max_length=250)
+    componente = models.ForeignKey(ComponenteCurricular, on_delete=models.PROTECT)
+    ch_dedicada_periodo = models.IntegerField()
+    nivel_ensino = models.CharField(max_length=50)
+    campus_turma = models.CharField(max_length=50)
+    local = models.CharField(max_length=50)
+    ano = models.IntegerField()
+    periodo = models.IntegerField()
+    data_inicio = models.DateField()
+    data_fim = models.DateField()
+    descricao_horario = models.CharField(max_length=150)
+    total_solicitacoes = models.IntegerField(null=True)
+    capacidade_aluno = models.IntegerField()
+    tipo = models.CharField(max_length=50)
+    distancia = models.BooleanField()
+    data_consolidacao = models.DateField(null=True)
+    agrupadora = models.BooleanField()
+    id_turma_agrupadora = models.IntegerField(null=True)
+    qtd_aulas_lancadas = models.IntegerField(null=True)
+    situacao_turma = models.CharField(max_length=50)
+    convenio = models.CharField(max_length=50)
+    modalidade_participantes = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.id_turma.__str__() + ' - ' + self.codigo_turma + ' - ' + self.componente.__str__() + ' - ' \
+               + self.siape.__str__()
