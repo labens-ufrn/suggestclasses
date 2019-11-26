@@ -1,10 +1,12 @@
 import csv
-import os
 import urllib.request
+from dateutil.parser import parse
+import os
 import django
 
 django.setup()
-from core.models import Curso, Centro, Departamento, ComponenteCurricular, EstruturaCurricular, OrganizacaoCurricular
+from core.models import Curso, Centro, Departamento, ComponenteCurricular, EstruturaCurricular, OrganizacaoCurricular, \
+    Docente, Turma
 
 DADOS_PATH = '/home/taciano/dev/workspace/suggestclasses/dados'
 
@@ -14,45 +16,15 @@ def main():
     os.chdir(DADOS_PATH)
     print(os.getcwd())
 
-    downloads_csv()
-    centros()  # Adicionamos apenas o CERES.
-    departamentos()
-    cursos()
-    componentes()
-    estruturas()
-    organizacao()
-
-
-def downloads_csv():
-    print("Download do CSV dos Departamentos do CERES/UFRN ...!")
-    url = 'http://dados.ufrn.br/dataset/da6451a5-1a59-4630-bdc2-97f6be4a59c2/resource/3f2e4e32-ef1a-4396-8037' \
-          '-cbc22a89d97f/download/unidades.csv'
-    file_name = 'unidades.csv'
-    urllib.request.urlretrieve(url, file_name)
-
-    print("Download do CSV dos Cursos do CERES/UFRN ...!")
-    url = 'http://dados.ufrn.br/dataset/08b0dc59-faa9-4281-bd1e-2a39f532489e/resource/949be3d1-e85b-4d0f-9f60' \
-          '-1d9a7484bb06/download/cursos-ufrn.csv'
-    file_name = 'cursos-ufrn.csv'
-    urllib.request.urlretrieve(url, file_name)
-
-    print("Download do CSV dos Componentes do CERES/UFRN ...!")
-    url = 'http://dados.ufrn.br/dataset/3fea67e8-6916-4ed0-aaa6-9a8ca06a9bdc/resource/9a3521d2-4bc5-4fda-93f0' \
-          '-f701c8a20727/download/componentes-curriculares-presenciais.csv'
-    file_name = 'componentes-curriculares-presenciais.csv'
-    urllib.request.urlretrieve(url, file_name)
-
-    print("Download do CSV das Estruturas Curriculares do CERES/UFRN ...!")
-    url = 'http://dados.ufrn.br/dataset/e7c24910-75c1-451b-9097-e4352488dd69/resource/94cc35b0-6560-44f3-8c67' \
-          '-98cff965f23c/download/estruturas-curriculares.csv'
-    file_name = 'estruturas-curriculares.csv'
-    urllib.request.urlretrieve(url, file_name)
-
-    print("Download do CSV dos Organização Curricular do CERES/UFRN ...!")
-    url = 'http://dados.ufrn.br/dataset/82aca3f1-f7ee-425e-bf1e-b6a1d6811bf4/resource/3f25d054-c5d2-4bf2-8cd4' \
-          '-8e0a2e4f63ce/download/curriculo-componente-graduacao.csv '
-    file_name = 'curriculo-componente-graduacao.csv'
-    urllib.request.urlretrieve(url, file_name)
+    # downloads_dados()
+    # centros()  # Adicionamos apenas o CERES.
+    # departamentos()
+    # cursos()
+    # componentes()
+    # estruturas()
+    # organizacao()
+    # criar_docentes()
+    criar_turmas()
 
 
 def centros():
@@ -279,6 +251,182 @@ def organizacao():
                                                componente=cc, semestre=semestre_oferta,
                                                tipo_vinculo=tipo_vinculo_componente, nivel=nivel_ensino)
                     oc.save()
+
+
+def criar_docentes():
+    print("Criando Docentes do CERES ...!")
+
+    with open('docentes.csv') as csvfile:
+        docentes = csv.reader(csvfile, delimiter=';')
+        next(docentes)  # skip header
+
+        for row in docentes:
+            siape = row[0]
+            nome = row[1]
+            sexo = row[2]
+            formacao = row[3]
+            tipo_jornada_trabalho = row[4]
+            vinculo = row[5]
+            categoria = row[6]
+            classe_funcional = row[7]
+            id_unidade_lotacao = row[8]
+            lotacao = row[9]
+            admissao_str = row[10]
+            # https://stackabuse.com/converting-strings-to-datetime-in-python/
+            admissao = parse(admissao_str)
+
+            if id_unidade_lotacao == '1482' or Departamento.objects.filter(id_unidade=id_unidade_lotacao).exists():
+                print(nome)
+                print(lotacao)
+
+                professor = Docente(siape=siape, nome=nome, sexo=sexo, formacao=formacao,
+                                    tipo_jornada_trabalho=tipo_jornada_trabalho,
+                                    vinculo=vinculo, categoria=categoria, classe_funcional=classe_funcional,
+                                    id_unidade_lotacao=id_unidade_lotacao, lotacao=lotacao, admissao=admissao)
+                professor.save()
+
+
+def criar_turmas():
+    print("Criando Turmas 2019.1 e 2019.2 para os Cursos do CERES ...!")
+
+    with open('turmas-2019.2.csv') as csvfile:
+        turmas = csv.reader(csvfile, delimiter=';')
+        next(turmas)  # skip header
+
+        for row in turmas:
+
+            siape = row[2] if row[2] != '' else None
+            id_componente_curricular = row[5]
+
+            if ComponenteCurricular.objects.filter(id_componente=id_componente_curricular).exists():
+                cc = ComponenteCurricular.objects.get(id_componente=id_componente_curricular)
+                print(cc)
+
+                docente = None
+                if siape != '' and Docente.objects.filter(siape=siape).exists():
+                    # Professores Substitutos e Temporários não estão na lista
+                    docente = Docente.objects.get(siape=siape)
+                    print(docente)
+
+                id_turma = row[0]
+                codigo_turma = row[1]
+                matricula_docente_externo = row[3] if row[3] != '' else None
+
+                if row[3] != '' and row[3] is not None:
+                    print(matricula_docente_externo)
+
+                observacao = row[4].strip()
+                ch_dedicada_periodo = row[6] if row[6] != '' else None
+                nivel_ensino = row[7]
+                campus_turma = row[8]
+                local = row[9]
+                ano = row[10] if row[10] != '' else None
+                periodo = row[11] if row[11] != '' else None
+                data_inicio_str = row[12]
+                data_inicio = parse(data_inicio_str)
+                data_fim_str = row[13]
+                data_fim = parse(data_fim_str)
+                descricao_horario = row[14]
+                total_solicitacoes = row[15] if row[15] != '' else None
+                capacidade_aluno = row[16]
+                tipo = row[17] if row[17] != '' else None
+                distancia = row[18] if row[18] == 'true' else False
+                data_consolidacao_str = row[19] if row[19] != '' else None
+                data_consolidacao = data_consolidacao_str if data_consolidacao_str is None \
+                    else parse(data_consolidacao_str)
+                agrupadora = row[20] if row[20] == 'true' else False
+                id_turma_agrupadora = row[21] if row[21] != '' else None
+                qtd_aulas_lancadas = row[22] if row[22] != '' else None
+                situacao_turma = row[23]
+                convenio = row[24]
+                modalidade_participantes = row[25]
+
+                turma = Turma(id_turma=id_turma, codigo_turma=codigo_turma, siape=siape,
+                              matricula_docente_externo=matricula_docente_externo, observacao=observacao,
+                              componente=cc, ch_dedicada_periodo=ch_dedicada_periodo,
+                              nivel_ensino=nivel_ensino, campus_turma=campus_turma, local=local, ano=ano,
+                              periodo=periodo, data_inicio=data_inicio, data_fim=data_fim,
+                              descricao_horario=descricao_horario, total_solicitacoes=total_solicitacoes,
+                              capacidade_aluno=capacidade_aluno, tipo=tipo, distancia=distancia,
+                              data_consolidacao=data_consolidacao, agrupadora=agrupadora,
+                              id_turma_agrupadora=id_turma_agrupadora, qtd_aulas_lancadas=qtd_aulas_lancadas,
+                              situacao_turma=situacao_turma, convenio=convenio,
+                              modalidade_participantes=modalidade_participantes)
+                turma.save()
+
+
+def downloads_dados():
+    """Download de arquivos CSV de http://dados.ufrn.br"""
+
+    download_departamentos()
+    download_cursos()
+    download_componentes()
+    download_estruturas()
+    download_curriculos()
+    download_docentes()
+    download_turmas()
+
+
+def download_departamentos():
+    print("Download do CSV dos Departamentos do CERES/UFRN ...!")
+    url = 'http://dados.ufrn.br/dataset/da6451a5-1a59-4630-bdc2-97f6be4a59c2/resource/3f2e4e32-ef1a-4396-8037' \
+          '-cbc22a89d97f/download/unidades.csv'
+    file_name = 'unidades.csv'
+    urllib.request.urlretrieve(url, file_name)
+
+
+def download_cursos():
+    print("Download do CSV dos Cursos do CERES/UFRN ...!")
+    url = 'http://dados.ufrn.br/dataset/08b0dc59-faa9-4281-bd1e-2a39f532489e/resource/949be3d1-e85b-4d0f-9f60' \
+          '-1d9a7484bb06/download/cursos-ufrn.csv'
+    file_name = 'cursos-ufrn.csv'
+    urllib.request.urlretrieve(url, file_name)
+
+
+def download_componentes():
+    print("Download do CSV dos Componentes do CERES/UFRN ...!")
+    url = 'http://dados.ufrn.br/dataset/3fea67e8-6916-4ed0-aaa6-9a8ca06a9bdc/resource/9a3521d2-4bc5-4fda-93f0' \
+          '-f701c8a20727/download/componentes-curriculares-presenciais.csv'
+    file_name = 'componentes-curriculares-presenciais.csv'
+    urllib.request.urlretrieve(url, file_name)
+
+
+def download_estruturas():
+    print("Download do CSV das Estruturas Curriculares do CERES/UFRN ...!")
+    url = 'http://dados.ufrn.br/dataset/e7c24910-75c1-451b-9097-e4352488dd69/resource/94cc35b0-6560-44f3-8c67' \
+          '-98cff965f23c/download/estruturas-curriculares.csv'
+    file_name = 'estruturas-curriculares.csv'
+    urllib.request.urlretrieve(url, file_name)
+
+
+def download_curriculos():
+    print("Download do CSV dos Organização Curricular do CERES/UFRN ...!")
+    url = 'http://dados.ufrn.br/dataset/82aca3f1-f7ee-425e-bf1e-b6a1d6811bf4/resource/3f25d054-c5d2-4bf2-8cd4' \
+          '-8e0a2e4f63ce/download/curriculo-componente-graduacao.csv '
+    file_name = 'curriculo-componente-graduacao.csv'
+    urllib.request.urlretrieve(url, file_name)
+
+
+def download_turmas():
+    print("Download do CSV das Turmas 2019.1 do CERES/UFRN ...!")
+    url = 'http://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/1e42cd66-69d6-48d5-a346' \
+          '-d46766fd2c9c/download/turmas-2019.1.csv'
+    file_name = "turmas-2019.1.csv"
+    urllib.request.urlretrieve(url, file_name)
+
+    print("Download do CSV das Turmas 2019.2 do CERES/UFRN ...!")
+    url = 'http://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/d9c2863e-d1b2-4afd-b7dd' \
+          '-09517d5ed17d/download/turmas-2019.2.csv'
+    file_name = "turmas-2019.2.csv"
+    urllib.request.urlretrieve(url, file_name)
+
+
+def download_docentes():
+    print("Download do CSV dos Docentes do CERES/UFRN ...!")
+    url = 'http://dados.ufrn.br/dataset/8bf1a468-48ff-4f4d-95ee-b17b7a3a5592/resource/ff0a457e-76fa-4aca-ad99' \
+          '-48aebd7db070/download/docentes.csv'
+    file_name = "docentes.csv"
+    urllib.request.urlretrieve(url, file_name)
 
 
 if __name__ == "__main__":
