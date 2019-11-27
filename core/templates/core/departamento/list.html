@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+  <section class="page-section" id="estuturas">
+    <div class="container">
+
+      <h2 class="page-section-heading text-center text-secondary mb-0">Departamentos</h2>
+      <br />
+      <table class="table">
+        <tr align="center">
+          <th>ID</th>
+          <th>Código</th>
+          <th>Nome</th>
+          <th>ID Curso</th>
+          <th>Curso</th>
+        </tr>
+          {% for ec in estruturas %}
+            <tr>
+              <td align="center">{{ ec.id_curriculo }}</td>
+              <td align="center">{{ ec.codigo }}</td>
+              <td align="center">{{ ec.nome }}</td>
+              <td align="center">{{ ec.curso.codigo }}</td>
+              <td align="center">{{ ec.curso.nome }}</td>
+            </tr>
+          {% endfor %}
+      </table>
+    </div>
+  </section>
+{% endblock %}
+
