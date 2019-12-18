@@ -151,13 +151,13 @@ def logar_usuario(request):
     return render(request, 'core/usuario/login.html', {'form_login': form_login})
 
 
-@login_required(login_url='/logar_usuario')
+@login_required(login_url='/core/usuario/logar')
 def deslogar_usuario(request):
     logout(request)
     return redirect('index')
 
 
-@login_required(login_url='/logar_usuario')
+@login_required(login_url='/core/usuario/logar')
 def alterar_senha(request):
     if request.method == "POST":
         form_senha = PasswordChangeForm(request.user, request.POST)
