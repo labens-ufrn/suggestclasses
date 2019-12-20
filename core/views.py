@@ -3,11 +3,13 @@ from typing import List
 from django.contrib.auth import authenticate, logout, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.models import Group
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, redirect
 
 from core.models import Curso, Departamento, ComponenteCurricular, Centro, EstruturaCurricular, OrganizacaoCurricular
+from .forms import CadastroAlunoForm
 from .models import Horario
 from django.db.models import Sum
 
@@ -127,12 +129,18 @@ def flow_bsi_op(request):
 
 def cadastrar_usuario(request):
     if request.method == "POST":
-        form_usuario = UserCreationForm(request.POST)
+        form_usuario = CadastroAlunoForm(request.POST)
         if form_usuario.is_valid():
-            form_usuario.save()
+            usuario = form_usuario.save()
+            grupo = Group.objects.get(name='Alunos')
+            usuario.groups.add(grupo)
+            username = form_usuario.cleaned_data.get('username')
+            raw_password = form_usuario.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
             return redirect('index')
     else:
-        form_usuario = UserCreationForm()
+        form_usuario = CadastroAlunoForm()
     return render(request, 'core/usuario/cadastro.html', {'form_usuario': form_usuario})
 
 
