@@ -69,7 +69,7 @@ M1 – 07h00 às 07h50 | T1 – 13h00 às 13h50 | N1 – 18h45 às 19h35
 M2 – 07h50 às 08h40 | T2 – 13h50 às 14h40 | N2 – 19h35 às 20h25
 M3 – 08h55 às 09h45 | T3 – 14h55 às 15h45 | N3 – 20h35 às 21h25
 M4 – 09h45 às 10h35 | T4 – 15h45 às 16h35 | N4 – 21h25 às 22h15
-M5 – 10h50 às 11h40 | T5 – 16h50 às 17h40 | 
+M5 – 10h50 às 11h40 | T5 – 16h50 às 17h40 |
 M6 – 11h40 às 12h30 | T6 – 17h40 às 18h30 |
 
 # Links
@@ -78,3 +78,4 @@ M6 – 11h40 às 12h30 | T6 – 17h40 às 18h30 |
 * http://craigthomas.ca/blog/2014/06/02/python-code-inspection-with-sonarqube/
 * https://docs.sonarqube.org/display/PLUG/Python+Unit+Tests+Execution+Reports+Import
 * https://stackoverflow.com/questions/34114427/django-upgrading-to-1-9-error-appregistrynotready-apps-arent-loaded-yet
+* https://simpleisbetterthancomplex.com/tutorial/2017/02/18/how-to-create-user-sign-up-view.html

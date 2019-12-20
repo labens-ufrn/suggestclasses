@@ -6,24 +6,38 @@
 
     <h2 class="page-section-heading text-center text-secondary mb-0">Login de Usuário</h2>
       <br />
+      {% if form_login.errors %}
+        <p style="color: red">Your username and password didn't match. Please try again.</p>
+      {% endif %}
       <form method="post">
         {% csrf_token %}
 
         <div class="form-group">
-          {{form_login.username.errors}}
-          <label>Username: </label>
-          {{form_login.username}}
+          {% for error in form_login.username.errors %}
+            <p style="color: red">{{ error }}</p>
+          {% endfor %}
+          <label>{{ form_login.username.label_tag }}</label>
+          {{ form_login.username }}
+          {% if form_login.username.help_text %}
+            <p><small style="color: grey">{{ form_login.username.help_text }}</small></p>
+          {% endif %}
         </div>
 
         <div class="form-group">
-          {{form_login.password.errors}}
-          <label>Senha: </label>
-          {{form_login.password}}
+          {% for error in form_login.password.errors %}
+            <p style="color: red">{{ error }}</p>
+          {% endfor %}
+          <label>{{ form_login.password.label_tag }}</label>
+          {{ form_login.password }}
+          {% if form_login.password.help_text %}
+            <p><small style="color: grey">{{ form_login.password.help_text }}</small></p>
+          {% endif %}
         </div>
 
         <div class="form-group">
           <input type="submit" value="Enviar" class="btn btn-primary">
-          </div>
+        </div>
+        <a href="{% url 'Cadastro de Usuário' %}">Novo no Site? Cadastre-se aqui!</a>
       </form>
   </div>
 {% endblock %}
