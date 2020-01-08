@@ -20,7 +20,7 @@ jobs:
         with:
           mysql database: scdb_dev
           mysql user: sc_user
-          mysql password: sc_user
+          mysql password: ${{ secrets.DatabasePassword }}
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
