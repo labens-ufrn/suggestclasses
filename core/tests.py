@@ -15,7 +15,7 @@ class EstruturaCurricularTests(TestCase):
         """
                 Teste de Unidade em Python.
         """
-        bsi = EstruturaCurricular(sigla='01A', ano_periodo='2011.1', nome='SISTEMAS DE INFORMAÇÃO - Presencial - MT')
+        bsi = EstruturaCurricular(codigo='01A', ano_periodo='2011.1', nome='SISTEMAS DE INFORMAÇÃO - Presencial - MT')
 
         self.assertEqual('01A', bsi.sigla, 'Testando sigla')
 

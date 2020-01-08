@@ -11,4 +11,8 @@ urlpatterns = [
     path('flow/', views.flow_list, name='Lista de Fluxogramas'),
     path('flow/bsi/', views.flow_bsi, name='Fluxograma BSI'),
     path('flow/bsi/opcionais', views.flow_bsi_op, name='Fluxograma BSI - Opcionais'),
+    path('usuario/cadastrar', views.cadastrar_usuario, name='Cadastro de Usuário'),
+    path('usuario/logar', views.logar_usuario, name='Login de Usuário'),
+    path('usuario/deslogar', views.deslogar_usuario, name='Logout de Usuário'),
+    path('usuario/alterar_senha', views.alterar_senha, name='Alterar Senha de Usuário'),
 ]
