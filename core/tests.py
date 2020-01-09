@@ -1,12 +1,12 @@
 import os
 import django
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
+
 from django.test import TestCase, Client
 from django.urls import reverse
 from .models import EstruturaCurricular
-
-
 
 
 class EstruturaCurricularTests(TestCase):
@@ -15,9 +15,9 @@ class EstruturaCurricularTests(TestCase):
         """
                 Teste de Unidade em Python.
         """
-        bsi = EstruturaCurricular(codigo='01A', ano_periodo='2011.1', nome='SISTEMAS DE INFORMAÇÃO - Presencial - MT')
+        bsi = EstruturaCurricular(codigo='01A', nome='SISTEMAS DE INFORMAÇÃO - Presencial - MT')
 
-        self.assertEqual('01A', bsi.sigla, 'Testando sigla')
+        self.assertEqual('01A', bsi.codigo, 'Testando sigla')
 
     def test_view(self):
         client = Client()
