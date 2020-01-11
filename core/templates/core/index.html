@@ -26,9 +26,14 @@
             <div class="card h-100">
               <div class="card-body">
                 <h4 class="card-title">
-                  <a href="#">Departamentos</a>
+                  <b>Departamentos</b>
                 </h4>
                 <p class="card-text">
+                  <p class="fonte_pequena">
+                    {% for depto in departamentos %}
+                      {{ depto.nome }} <br />
+                    {% endfor %}
+                  </p>
                   <p>Total: {{ departamentos.count }}</p>
                 </p>
               </div>
@@ -42,10 +47,15 @@
             <div class="card h-100">
               <div class="card-body">
                 <h4 class="card-title">
-                  <a href="#">Cursos</a>
+                  <b>Cursos</b>
                 </h4>
                 <p class="card-text">
-                  <p>Total: {{ cursos.count }}</a></p>
+                  <p class="fonte_pequena">
+                  {% for curso in cursos %}
+                    {{ curso.nome }} - {{ curso.grau }} <br />
+                  {% endfor %}
+                  </p>
+                  <p>Total: {{ cursos.count }}</p>
                 </p>
               </div>
               <div class="card-footer">
@@ -58,10 +68,20 @@
             <div class="card h-100">
               <div class="card-body">
                 <h4 class="card-title">
-                  <a href="#">Componentes</a>
+                  <b href="#">Componentes</b>
                 </h4>
                 <p class="card-text">
-                  <p>Total: {{ componentes.count }}</a></p>
+                  <p class="fonte_pequena">
+                  {% for d in componentes_by_depto %}
+                    {% for c in d %}
+                      {% if forloop.first %}
+                        {{ c.departamento.sigla }}:
+                      {% endif %}
+                    {% endfor %}
+                    {{ d.count }} <br />
+                  {% endfor %}
+                  </p>
+                  <p>Total: {{ componentes.count }}</p>
                 </p>
               </div>
               <div class="card-footer">

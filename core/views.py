@@ -21,8 +21,17 @@ def index(request):
     dct = Departamento.objects.get(id_unidade=9726)
     print(dct)
     cursos = Curso.objects.all()
-    componentes = ComponenteCurricular.objects.filter(departamento=dct)
-    print(componentes)
+    componentes = ComponenteCurricular.objects.all()
+    componentes_dct = ComponenteCurricular.objects.filter(departamento=dct)
+
+    def get_componentes_by_depto(depto): return ComponenteCurricular.objects.filter(departamento=depto)
+
+    componentes_by_depto = []
+    headers: List[str] = []
+
+    for d in departamentos:
+        headers.append(d.sigla)
+        componentes_by_depto.append(get_componentes_by_depto(d))
 
     template = loader.get_template('core/index.html')
 
@@ -34,7 +43,9 @@ def index(request):
         'departamentos': departamentos,
         'cursos': cursos,
         'componentes': componentes,
-        'estruturas': estruturas
+        'estruturas': estruturas,
+        'headers': headers,
+        'componentes_by_depto': componentes_by_depto,
     }
     return HttpResponse(template.render(context, request))
 
@@ -67,6 +78,36 @@ def list(request):
     }
 
     return render(request, 'core/list.html', context)
+
+
+def departamento_list(request):
+    departamentos = Departamento.objects.all()
+
+    context = {
+        'departamentos': departamentos
+    }
+
+    return render(request, 'core/departamento/list.html', context)
+
+
+def curso_list(request):
+    cursos = Curso.objects.all()
+
+    context = {
+        'cursos': cursos
+    }
+
+    return render(request, 'core/curso/list.html', context)
+
+
+def componente_list(request):
+    componentes = ComponenteCurricular.objects.all()
+
+    context = {
+        'componentes': componentes
+    }
+
+    return render(request, 'core/componente/list.html', context)
 
 
 def curriculo_list(request):

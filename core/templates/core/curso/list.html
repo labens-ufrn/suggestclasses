@@ -2,26 +2,30 @@
 
 {% block content %}
 
-  <section class="page-section" id="estuturas">
+  <section class="page-section" id="cursos">
     <div class="container">
 
-      <h2 class="page-section-heading text-center text-secondary mb-0">Departamentos</h2>
+      <h2 class="page-section-heading text-center text-secondary mb-0">Cursos</h2>
       <br />
       <table class="table">
         <tr align="center">
-          <th>ID</th>
           <th>Código</th>
           <th>Nome</th>
-          <th>ID Curso</th>
-          <th>Curso</th>
+          <th>Nível</th>
+          <th>Grau</th>
+          <th>Modalidade</th>
+          <th>Turno</th>
+          <th>Centro</th>
         </tr>
-          {% for ec in estruturas %}
+          {% for curso in cursos %}
             <tr>
-              <td align="center">{{ ec.id_curriculo }}</td>
-              <td align="center">{{ ec.codigo }}</td>
-              <td align="center">{{ ec.nome }}</td>
-              <td align="center">{{ ec.curso.codigo }}</td>
-              <td align="center">{{ ec.curso.nome }}</td>
+              <td align="center">{{ curso.codigo }}</td>
+              <td align="center">{{ curso.nome }}</td>
+              <td align="center">{{ curso.nivel }}</td>
+              <td align="center">{{ curso.grau }}</td>
+              <td align="center">{{ curso.modalidade }}</td>
+              <td align="center">{{ curso.turno }}</td>
+              <td align="center">{{ curso.centro.nome }}</td>
             </tr>
           {% endfor %}
       </table>
