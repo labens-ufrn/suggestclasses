@@ -81,6 +81,9 @@ def list(request):
 
 
 def departamento_list(request):
+    """
+            Lista todos os componentes curriculares.
+    """
     departamentos = Departamento.objects.all()
 
     context = {
@@ -91,6 +94,9 @@ def departamento_list(request):
 
 
 def curso_list(request):
+    """
+            Lista todos os componentes curriculares.
+    """
     cursos = Curso.objects.all()
 
     context = {
@@ -101,6 +107,9 @@ def curso_list(request):
 
 
 def componente_list(request):
+    """
+        Lista todos os componentes curriculares.
+    """
     componentes = ComponenteCurricular.objects.all()
 
     context = {
