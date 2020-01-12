@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = '0=g3v2dc35@o++q&0vewmkrkyn3b@!-w5v6_8*^c#6(ltx)1%2'
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver']
-
 
 # Application definition
 
@@ -70,7 +68,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
@@ -85,20 +82,19 @@ DATABASES = {
         'TEST': {
             'NAME': 'scdb_test',
         },
-        #optional:
+        # optional:
         'OPTIONS': {
-            'charset' : 'utf8',
-            'use_unicode' : True,
-             'init_command': 'SET '
-                'storage_engine=INNODB,'
-                'character_set_connection=utf8,'
-                'collation_connection=utf8_bin,'
-                'sql_mode=STRICT_TRANS_TABLES'    # see note below
-                #'SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
+            'charset': 'utf8',
+            'use_unicode': True,
+            'init_command': 'SET '
+                            'storage_engine=INNODB,'
+                            'character_set_connection=utf8,'
+                            'collation_connection=utf8_bin,'
+                            'sql_mode=STRICT_TRANS_TABLES'  # see note below
+            # 'SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
         }
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -118,7 +114,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -131,7 +126,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
