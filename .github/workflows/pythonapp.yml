@@ -21,6 +21,9 @@ jobs:
           mysql database: scdb_dev
           mysql user: sc_user
           mysql password: ${{ secrets.DatabasePassword }}
+      - name: Systems Update
+        run: |
+          sudo apt install python3-dev libssl-dev libffi-dev
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
