@@ -62,7 +62,8 @@ class Sala(models.Model):
 
 class ComponenteCurricular(models.Model):
     """
-        Um componente curricular tem código, nome, ementa, departamento, carga horária, equivalências, requisitos, data de criação.
+        Um componente curricular tem código, nome, ementa, departamento, carga horária,
+        equivalências, requisitos, data de criação.
     """
     id_componente = models.IntegerField(unique=True)
     tipo = models.CharField(max_length=50)

@@ -24,7 +24,7 @@ def main():
     # estruturas()
     # organizacao()
     # criar_docentes()
-    criar_turmas()
+    # criar_turmas()
 
 
 def centros():
@@ -427,6 +427,10 @@ def download_docentes():
           '-48aebd7db070/download/docentes.csv'
     file_name = "docentes.csv"
     urllib.request.urlretrieve(url, file_name)
+
+
+def imprimir():
+    print("Imprimiu!")
 
 
 if __name__ == "__main__":
