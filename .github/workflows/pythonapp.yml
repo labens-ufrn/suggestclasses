@@ -23,8 +23,8 @@ jobs:
           mysql password: ${{ secrets.DatabasePassword }}
       - name: System Update
         run: |
-          sudo apt install python3-dev
-          sudo apt install default-lib mysqlclient-dev
+          sudo apt-get install python3.7-dev
+          sudo apt-get install default-libmysqlclient-dev
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
