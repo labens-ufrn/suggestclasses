@@ -1,3 +1,8 @@
+import io
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+from random import sample
+
 from typing import List
 
 from django.contrib.auth import authenticate, logout, login, update_session_auth_hash
@@ -9,6 +14,7 @@ from django.template import loader
 from django.shortcuts import render, redirect
 
 from core.models import Curso, Departamento, ComponenteCurricular, Centro, EstruturaCurricular, OrganizacaoCurricular
+from .bo.pedagogia import get_estrutura_pedagogia, get_oc_by_semestre, get_ch_by_semestre
 from .forms import CadastroAlunoForm
 from .models import Horario
 from django.db.models import Sum
@@ -177,6 +183,31 @@ def flow_bsi_op(request):
     return render(request, 'core/flow/bsi-op.html', context)
 
 
+def flow_ped(request):
+    ped_ec = get_estrutura_pedagogia()
+
+    ped_oc_semestres = []
+    ped_ch_semestres = []
+    ped_oc_op = get_oc_by_semestre(ped_ec, 0)
+
+    headers: List[str] = []
+
+    for s in range(1, 9):
+        headers.append(f"{s}º Semestre")
+        ped_oc_semestres.append(get_oc_by_semestre(ped_ec, s))
+        ped_ch_semestres.append(get_ch_by_semestre(ped_ec, s))
+
+    context = {
+        'ped_ec': ped_ec,
+        'headers': headers,
+        'ped_oc_semestres': ped_oc_semestres,
+        'ped_oc_op': ped_oc_op,
+        'ped_ch_semestres': ped_ch_semestres,
+    }
+
+    return render(request, 'core/flow/pedagogia.html', context)
+
+
 def cadastrar_usuario(request):
     if request.method == "POST":
         form_usuario = CadastroAlunoForm(request.POST)
@@ -226,3 +257,36 @@ def alterar_senha(request):
     else:
         form_senha = PasswordChangeForm(request.user)
     return render(request, 'core/usuario/alterar_senha.html', {'form_senha': form_senha})
+
+
+def plot(request):
+    # Creamos los datos para representar en el gráfico
+    x = range(1, 11)
+    y = sample(range(20), len(x))
+
+    # Creamos una figura y le dibujamos el gráfico
+    f = plt.figure()
+
+    # Creamos los ejes
+    axes = f.add_axes([0.15, 0.15, 0.75, 0.75])  # [left, bottom, width, height]
+    axes.plot(x, y)
+    axes.set_xlabel("Eje X")
+    axes.set_ylabel("Eje Y")
+    axes.set_title("Mi gráfico dinámico")
+
+    # Como enviaremos la imagen en bytes la guardaremos en un buffer
+    buf = io.BytesIO()
+    canvas = FigureCanvasAgg(f)
+    canvas.print_png(buf)
+
+    # Creamos la respuesta enviando los bytes en tipo imagen png
+    response = HttpResponse(buf.getvalue(), content_type='image/png')
+
+    # Limpiamos la figura para liberar memoria
+    f.clear()
+
+    # Añadimos la cabecera de longitud de fichero para más estabilidad
+    response['Content-Length'] = str(len(response.content))
+
+    # Devolvemos la response
+    return response
