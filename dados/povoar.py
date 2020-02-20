@@ -22,7 +22,7 @@ def main():
     # departamentos()
     # cursos()
     # componentes()
-    # estruturas()
+    estruturas()
     # organizacao()
     criar_docentes()
     # criar_turmas()
@@ -201,26 +201,33 @@ def estruturas():
                 ano_entrada_vigor = row[26] if row[26] != '' else None
                 observacao = row[27]
 
-                ec = EstruturaCurricular(id_curriculo=id_curriculo, codigo=codigo, nome=nome_matriz,
-                                         semestre_conclusao_minimo=semestre_conclusao_minimo,
-                                         semestre_conclusao_ideal=semestre_conclusao_ideal,
-                                         semestre_conclusao_maximo=semestre_conclusao_maximo,
-                                         meses_conclusao_minimo=meses_conclusao_minimo,
-                                         meses_conclusao_ideal=meses_conclusao_ideal,
-                                         meses_conclusao_maximo=meses_conclusao_maximo,
-                                         cr_total_minimo=cr_total_minimo, ch_total_minima=ch_total_minima,
-                                         ch_optativas_minima=ch_optativas_minima,
-                                         ch_complementar_minima=ch_complementar_minima, max_eletivos=max_eletivos,
-                                         ch_nao_atividade_obrigatoria=ch_nao_atividade_obrigatoria,
-                                         cr_nao_atividade_obrigatorio=cr_nao_atividade_obrigatorio,
-                                         ch_atividade_obrigatoria=ch_atividade_obrigatoria,
-                                         cr_minimo_semestre=cr_minimo_semestre,
-                                         cr_ideal_semestre=cr_ideal_semestre, cr_maximo_semestre=cr_maximo_semestre,
-                                         ch_minima_semestre=ch_minima_semestre, ch_ideal_semestre=ch_ideal_semestre,
-                                         ch_maxima_semestre=ch_maxima_semestre,
-                                         periodo_entrada_vigor=periodo_entrada_vigor,
-                                         ano_entrada_vigor=ano_entrada_vigor, observacao=observacao, curso=curso_ceres)
-                ec.save()
+                if not EstruturaCurricular.objects.filter(id_curriculo=id_curriculo).exists():
+                    print("Adicionando Estrutura: " + id_curriculo + " - " + codigo + " - " + nome_matriz)
+                    ec = EstruturaCurricular(id_curriculo=id_curriculo, codigo=codigo, nome=nome_matriz,
+                                             semestre_conclusao_minimo=semestre_conclusao_minimo,
+                                             semestre_conclusao_ideal=semestre_conclusao_ideal,
+                                             semestre_conclusao_maximo=semestre_conclusao_maximo,
+                                             meses_conclusao_minimo=meses_conclusao_minimo,
+                                             meses_conclusao_ideal=meses_conclusao_ideal,
+                                             meses_conclusao_maximo=meses_conclusao_maximo,
+                                             cr_total_minimo=cr_total_minimo, ch_total_minima=ch_total_minima,
+                                             ch_optativas_minima=ch_optativas_minima,
+                                             ch_complementar_minima=ch_complementar_minima, max_eletivos=max_eletivos,
+                                             ch_nao_atividade_obrigatoria=ch_nao_atividade_obrigatoria,
+                                             cr_nao_atividade_obrigatorio=cr_nao_atividade_obrigatorio,
+                                             ch_atividade_obrigatoria=ch_atividade_obrigatoria,
+                                             cr_minimo_semestre=cr_minimo_semestre,
+                                             cr_ideal_semestre=cr_ideal_semestre,
+                                             cr_maximo_semestre=cr_maximo_semestre,
+                                             ch_minima_semestre=ch_minima_semestre,
+                                             ch_ideal_semestre=ch_ideal_semestre,
+                                             ch_maxima_semestre=ch_maxima_semestre,
+                                             periodo_entrada_vigor=periodo_entrada_vigor,
+                                             ano_entrada_vigor=ano_entrada_vigor, observacao=observacao,
+                                             curso=curso_ceres)
+                    ec.save()
+                else:
+                    print("Estrutura " + id_curriculo + " - " + codigo + " - " + nome_matriz + " já adicionada!")
 
 
 def organizacao():
