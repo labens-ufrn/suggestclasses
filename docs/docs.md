@@ -6,7 +6,7 @@ horários para professores, alunos, por sala e por período.
 
 ## Documento de Visão
 
-O Documento de Visão completo pode ser encontrado na página [Documento de Visão](docs/DocVisao.md).
+O Documento de Visão completo pode ser encontrado na página [Documento de Visão](DocVisao.md).
 
 ### Lista de Requisitos
 ### Modelo Conceitual
@@ -16,4 +16,4 @@ O Documento de Visão completo pode ser encontrado na página [Documento de Vis�
 
 ## Plano de Iteração
 
-Os detalhes do Plano de Iteração pode ser encontrado na página [Plano de Iteração](docs/PlanoIteracao.md).
+Os detalhes do Plano de Iteração pode ser encontrado na página [Plano de Iteração](PlanoIteracao.md).
