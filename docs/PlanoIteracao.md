@@ -7,14 +7,14 @@ Este plano de interação será usando como exemplo da disciplina Engenharia de 
 Iteração | Data início | Data Final | Apresentação | Gerente
 -------- | ----------- | ---------- | ------------ | -------
 It0      | 21/02/2020  | 29/02/2020 | -            | Gerente 1
-It1      | 02/03/2020  | 21/03/2020 | 20/03/2020   | Gerente 1
-It2      | 23/03/2020  | 11/04/2020 | 10/04/2020   | Gerente 2
-It3      | 13/04/2020  | 02/05/2020 | 01/05/2020   | Gerente 3
-It4      | 04/05/2020  | 23/05/2020 | 22/05/2020   | Gerente 4
-It5      | 25/05/2020  | 13/06/2020 | 12/06/2020   | Gerente 5
-It6      | 15/06/2020  | 27/06/2020 | 26/06/2020   | Gerente 6
+It1      | 02/03/2020  | 14/03/2020 | 13/03/2020   | Gerente 1
+It2      | 16/03/2020  | 04/04/2020 | 03/04/2020   | Gerente 2
+It3      | 06/04/2020  | 25/04/2020 | 24/04/2020   | Gerente 3
+It4      | 27/04/2020  | 16/05/2020 | 15/05/2020   | Gerente 4
+It5      | 18/05/2020  | 06/06/2020 | 05/06/2020   | Gerente 5
+It6      | 08/06/2020  | 27/06/2020 | 26/06/2020   | Gerente 6
 
-* Observação: Será feito ajustes devidos os feriados.
+* Observação: Cada Iteração de ser cadastrada como Milestones no GitHub.
 
 ## Descrição das Tarefas em cada Iteração
 
