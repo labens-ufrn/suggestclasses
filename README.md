@@ -7,6 +7,8 @@ O sistema SuggestClasses terá o cadastro de sugestões de horários para turmas
 
 Os requisitos funcionais detalhados estã na página wiki [Requisitos Funcionais](https://github.com/labens-ufrn/suggestclasses/wiki).
 
+Na página [Documentação](docs/docs.md) temos os detalhes do projeto e a lista de documentos.
+
 ## Migrations
 
 Ao modificar os models (em models.py), execute:
