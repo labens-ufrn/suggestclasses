@@ -219,4 +219,4 @@ class Turma(models.Model):
 
     def __str__(self):
         return self.id_turma.__str__() + ' - ' + self.codigo_turma + ' - ' + self.componente.__str__() + ' - ' \
-               + self.siape.__str__()
+               + self.siape.__str__() + ' - ' + self.descricao_horario
