@@ -13,7 +13,7 @@ def downloads_dados():
     print("Download dados sobre o CERES/UFRN ...!")
     #download_departamentos()
     #download_cursos()
-    #download_componentes()
+    download_componentes()
     download_estruturas()
     #download_curriculos()
     download_docentes()
@@ -38,10 +38,13 @@ def download_cursos():
 
 def download_componentes():
     print("Download do CSV dos Componentes do CERES/UFRN ...!")
-    url = 'http://dados.ufrn.br/dataset/3fea67e8-6916-4ed0-aaa6-9a8ca06a9bdc/resource/9a3521d2-4bc5-4fda-93f0' \
-          '-f701c8a20727/download/componentes-curriculares-presenciais.csv'
     file_name = 'componentes-curriculares-presenciais.csv'
-    urllib.request.urlretrieve(url, file_name)
+    if os.path.exists(file_name):
+        print("Arquivo componentes-curriculares-presenciais.csv já existe!")
+    else:
+        url = 'http://dados.ufrn.br/dataset/3fea67e8-6916-4ed0-aaa6-9a8ca06a9bdc/resource/9a3521d2-4bc5-4fda-93f0' \
+          '-f701c8a20727/download/componentes-curriculares-presenciais.csv'
+        urllib.request.urlretrieve(url, file_name)
 
 
 def download_estruturas():

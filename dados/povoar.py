@@ -21,7 +21,7 @@ def main():
     # centros()  # Adicionamos apenas o CERES.
     # departamentos()
     # cursos()
-    # componentes()
+    componentes()
     estruturas()
     # organizacao()
     criar_docentes()
@@ -147,14 +147,18 @@ def componentes():
                 # if depto.id_unidade == 9726 or depto.id_unidade == 235:
                 print(id_componente)
 
-                cc = ComponenteCurricular(id_componente=id_componente, tipo=tipo_componente,
+                if not ComponenteCurricular.objects.filter(codigo=codigo_componente).exists():
+                    cc = ComponenteCurricular(id_componente=id_componente, tipo=tipo_componente,
                                           codigo=codigo_componente, nivel=nivel_componente, nome=nome_componente,
                                           ch_teorica=ch_teorico, ch_pratica=ch_pratico, ch_estagio=ch_estagio,
                                           ch_total=ch_total, ch_docente=ch_dedicada_docente, ch_ead=ch_ead,
                                           cr_max_ead=cr_max_ead, equivalencia=equivalencia,
                                           requisito=pre_requisito, corequisito=co_requisito, ementa=ementa,
                                           modalidade=modalidade, departamento=depto)
-                cc.save()
+                    cc.save()
+                else:
+                    print("Componente " + id_componente + " - " + codigo_componente + " - "
+                          + nome_componente + " já adicionada!")
 
 
 def estruturas():
