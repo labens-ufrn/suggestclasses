@@ -14,7 +14,10 @@ from django.template import loader
 from django.shortcuts import render, redirect
 
 from core.models import Curso, Departamento, ComponenteCurricular, Centro, EstruturaCurricular, OrganizacaoCurricular
-from .bo.pedagogia import get_estrutura_pedagogia, get_oc_by_semestre, get_ch_by_semestre
+from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre
+from .bo.pedagogia import get_estrutura_pedagogia
+from .bo.sistemas import get_estrutura_sistemas_dct
+from .bo.turma import get_turmas, get_turmas_por_horario
 from .forms import CadastroAlunoForm
 from .models import Horario
 from django.db.models import Sum
@@ -257,6 +260,35 @@ def alterar_senha(request):
     else:
         form_senha = PasswordChangeForm(request.user)
     return render(request, 'core/usuario/alterar_senha.html', {'form_senha': form_senha})
+
+
+def turma_list(request):
+    return render(request, 'core/turma/list.html')
+
+
+def turma_bsi(request):
+    horarios = []
+    tt = []
+
+    bsi_dct = get_estrutura_sistemas_dct()
+    turmas1p = get_turmas(bsi_dct, 1)
+
+    # Criar objeto para guardar Horário e Turmas;
+    for i in range(1, 7):
+        horario = Horario.objects.filter(ordem=i, turno='M').order_by('dia')
+        horarios.append(horario)
+
+    for i in range(1, 7):
+        horario = Horario.objects.filter(ordem=i, turno='T').order_by('dia')
+        horarios.append(horario)
+
+    context = {
+        'horarios': horarios,
+        'turmas': turmas1p,
+        'tt': tt
+    }
+
+    return render(request, 'core/turma/bsi.html', context)
 
 
 def plot(request):

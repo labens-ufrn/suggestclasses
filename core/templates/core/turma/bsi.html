@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+  <section class="page-section" id="horarios">
+    <div class="container">
+
+      <h2 class="page-section-heading text-center text-secondary mb-0">Turmas do Curso Sistemas de Informação</h2>
+      <br />
+      {% for t in turmas %}
+        {{ t }} <br />
+      {% endfor %}
+      <br />
+      <table class="table">
+        <tr align="center">
+          <th></th>
+          <th>Segunda</th>
+          <th>Terça</th>
+          <th>Quarta</th>
+          <th>Quinta</th>
+          <th>Sexta</th>
+        </tr>
+          {% for semana in horarios %}
+            <tr>
+              <td align="center" width="20%">{{ semana.0.get_ordem_display }} <br>
+                  {{ semana.0.hora_inicio }} - {{ semana.0.hora_final }}
+              </td>
+              {% for horario in semana %}
+                <td align="center" width="16%">
+                  {% if horario.dia %}
+                    <p><a href="/core/{{ horario.id }}/">{{ horario }}</a></p>
+                    <p>{{ tt }}</p>
+                  {% else %}
+                    <p>Sem Horário!</p>
+                  {% endif %}
+                </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+      </table>
+    </div>
+  </section>
+{% endblock %}
+

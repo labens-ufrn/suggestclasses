@@ -19,5 +19,7 @@ urlpatterns = [
     path('usuario/logar', views.logar_usuario, name='Login de Usuário'),
     path('usuario/deslogar', views.deslogar_usuario, name='Logout de Usuário'),
     path('usuario/alterar_senha', views.alterar_senha, name='Alterar Senha de Usuário'),
+    path('turma/', views.turma_list, name='Lista de Turmas por Curso'),
+    path('turma/bsi', views.turma_bsi, name='Turmas de Sistemas de Informação'),
     path('plot/', views.plot, name='Plot de Gráfico'),
 ]
