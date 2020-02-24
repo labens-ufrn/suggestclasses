@@ -1,6 +1,6 @@
-# Plano de Interação
+# Plano de Iteração
 
-Este plano de interação será usando como exemplo da disciplina Engenharia de Software II.
+Este plano de iteração será usando como exemplo da disciplina Engenharia de Software II.
 
 ## Calendário da Iterações
 
