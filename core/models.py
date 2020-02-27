@@ -168,6 +168,10 @@ class Horario(models.Model):
     class Meta:
         unique_together = ("dia", "turno", "ordem")
 
+    def __eq__(self, other):
+        """Override the default Equals behavior"""
+        return self.dia == other.dia and self.turno == other.turno and self.ordem == other.ordem
+
     def __str__(self):
         return self.dia + self.turno + self.ordem
 

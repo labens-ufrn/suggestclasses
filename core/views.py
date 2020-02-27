@@ -17,7 +17,7 @@ from core.models import Curso, Departamento, ComponenteCurricular, Centro, Estru
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre
 from .bo.pedagogia import get_estrutura_pedagogia
 from .bo.sistemas import get_estrutura_sistemas_dct
-from .bo.turma import get_turmas, get_turmas_por_horario
+from .bo.turma import get_turmas, get_turmas_por_horario, TurmaHorario
 from .forms import CadastroAlunoForm
 from .models import Horario
 from django.db.models import Sum
@@ -273,18 +273,29 @@ def turma_bsi(request):
     bsi_dct = get_estrutura_sistemas_dct()
     turmas1p = get_turmas(bsi_dct, 1)
 
-    # Criar objeto para guardar Horário e Turmas;
-    for i in range(1, 7):
-        horario = Horario.objects.filter(ordem=i, turno='M').order_by('dia')
-        horarios.append(horario)
 
     for i in range(1, 7):
-        horario = Horario.objects.filter(ordem=i, turno='T').order_by('dia')
-        horarios.append(horario)
+        horario = Horario.objects.filter(turno='M', ordem=i).order_by('dia')
+        turma_horarios = []
+        for h in horario:
+            turmas = get_turmas_por_horario(turmas=turmas1p, dia=h.dia, turno='M', ordem=i)
+            th = TurmaHorario(h, turmas)
+            turma_horarios.append(th)
+        tt.append(turma_horarios)
+
+    for i in range(1, 7):
+        horario = Horario.objects.filter(turno='T', ordem=i).order_by('dia')
+        turma_horarios = []
+        for h in horario:
+            turmas = get_turmas_por_horario(turmas=turmas1p, dia=h.dia, turno='T', ordem=i)
+            th = TurmaHorario(h, turmas)
+            turma_horarios.append(th)
+        tt.append(turma_horarios)
 
     context = {
         'horarios': horarios,
         'turmas': turmas1p,
+        'turma_horarios': turma_horarios,
         'tt': tt
     }
 
