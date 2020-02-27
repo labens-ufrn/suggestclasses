@@ -5,7 +5,7 @@ Sistema de Sugestão de Horários para o BSI/UFRN.
 
 O sistema SuggestClasses terá o cadastro de sugestões de horários para turmas de componentes curriculares de um curso em um certo período. Também manterá o horário aprovado das turmas e exibirá relatórios de horários para professores, alunos, por sala e por período.
 
-Os requisitos funcionais detalhados estã na página wiki [Requisitos Funcionais](https://github.com/labens-ufrn/suggestclasses/wiki).
+Os requisitos funcionais detalhados estão na página wiki [Requisitos Funcionais](https://github.com/labens-ufrn/suggestclasses/wiki).
 
 Na página [Documentação](docs/docs.md) temos os detalhes do projeto e a lista de documentos.
 

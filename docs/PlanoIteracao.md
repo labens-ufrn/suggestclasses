@@ -7,7 +7,7 @@ Este plano de iteração será usando como exemplo da disciplina Engenharia de S
 Iteração | Data início | Data Final | Apresentação | Gerente
 -------- | ----------- | ---------- | ------------ | -------
 It0      | 21/02/2020  | 29/02/2020 | -            | Gerente 1
-It1      | 02/03/2020  | 14/03/2020 | 13/03/2020   | Gerente 1
+It1      | 02/03/2020  | 14/03/2020 | 19/03/2020   | Gerente 1
 It2      | 16/03/2020  | 04/04/2020 | 03/04/2020   | Gerente 2
 It3      | 06/04/2020  | 25/04/2020 | 24/04/2020   | Gerente 3
 It4      | 27/04/2020  | 16/05/2020 | 15/05/2020   | Gerente 4
