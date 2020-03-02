@@ -11,21 +11,17 @@
       <br />
       <table class="table">
         <tr align="center">
-          <th>ID</th>
           <th>Estrutura</th>
+          <th>Código</th>
           <th>Componente</th>
-          <th>Semestre</th>
-          <th>Tipo</th>
-          <th>Nível</th>
+          <th>CH</th>
         </tr>
           {% for oc in bsi_oc_op %}
             <tr>
-              <td align="center">{{ oc.id_curriculo_componente }}</td>
               <td align="center">{{ oc.estrutura.codigo }}</td>
+              <td align="center">{{ oc.componente.codigo }}</td>
               <td align="center">{{ oc.componente.nome }}</td>
-              <td align="center">{{ oc.semestre }}</td>
-              <td align="center">{{ oc.tipo }}</td>
-              <td align="center">{{ oc.nivel }}</td>
+              <td align="center">{{ oc.componente.ch_total }}</td>
             </tr>
           {% endfor %}
       </table>

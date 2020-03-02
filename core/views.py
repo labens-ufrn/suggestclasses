@@ -186,6 +186,31 @@ def flow_bsi_op(request):
     return render(request, 'core/flow/bsi-op.html', context)
 
 
+def flow_bsi_1b(request):
+    bsi_ec = get_estrutura_sistemas_dct()
+
+    bsi_oc_semestres = []
+    bsi_ch_semestres = []
+    bsi_oc_op = get_oc_by_semestre(bsi_ec, 0)
+
+    headers: List[str] = []
+
+    for s in range(1, 9):
+        headers.append(f"{s}º Semestre")
+        bsi_oc_semestres.append(get_oc_by_semestre(bsi_ec, s))
+        bsi_ch_semestres.append(get_ch_by_semestre(bsi_ec, s))
+
+    context = {
+        'bsi_ec': bsi_ec,
+        'headers': headers,
+        'bsi_oc_semestres': bsi_oc_semestres,
+        'bsi_oc_op': bsi_oc_op,
+        'bsi_ch_semestres': bsi_ch_semestres,
+    }
+
+    return render(request, 'core/flow/bsi-1b.html', context)
+
+
 def flow_ped(request):
     ped_ec = get_estrutura_pedagogia()
 
