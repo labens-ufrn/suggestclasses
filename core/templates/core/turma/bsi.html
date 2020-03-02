@@ -6,10 +6,36 @@
     <div class="container">
 
       <h2 class="page-section-heading text-center text-secondary mb-0">Turmas do Curso Sistemas de Informação</h2>
+      <h4 class="text-center">Semestre: 2019.2</h4>
       <br />
-      {% for t in turmas %}
-        {{ t }} <br />
-      {% endfor %}
+      <div class="text-center" id="div_periodos" style="font-size: 90%">
+        <form method="get">
+          <fieldset>
+            <input type="checkbox" id="1p" name="periodos" value="1">
+            <label for="1p">1º Período</label>
+            <input type="checkbox" id="2p" name="periodos" value="2">
+            <label for="2p">2º Período</label>
+            <input type="checkbox" id="3p" name="periodos" value="3">
+            <label for="3p">3º Período</label>
+            <input type="checkbox" id="4p" name="periodos" value="4">
+            <label for="4p">4º Período</label>
+            <input type="checkbox" id="5p" name="periodos" value="5">
+            <label for="5p">5º Período</label>
+            <input type="checkbox" id="6p" name="periodos" value="6">
+            <label for="6p">6º Período</label>
+            <input type="checkbox" id="7p" name="periodos" value="7">
+            <label for="7p">7º Período</label>
+            <input type="checkbox" id="8p" name="periodos" value="8">
+            <label for="8p">8º Período</label>
+            <input type="checkbox" id="0p" name="periodos" value="0">
+            <label for="0p">Opcionais</label>
+            <input type="checkbox" id="todos" name="periodos" value="100">
+            <label for="todos">Todos</label>
+          </fieldset>
+          <button id="get_turmas" type="submit">Carregar Turmas</button>
+        </form>
+      </div>
+
       <br />
       <table class="table table-striped table-sm table-bordered">
         <thead class="thead-light">
@@ -25,13 +51,14 @@
         <tbody>
           {% for semana in tt %}
             <tr>
-              <th scope="row" align="center" width="15%" style="font-size: 12px">
+              <th scope="row" align="center" width="10%" style="font-size: 12px">
                 {{ semana.0.horario.ordem }}º: {{ semana.0.horario.hora_inicio }} - {{ semana.0.horario.hora_final }}
               </th>
               {% for th in semana %}
-                <td align="center" width="17%">
+                <td align="center" width="18%">
                   {% for turma in th.turmas %}
-                    <p  style="font-size: 10px">{{ turma.componente.nome }}</p>
+                    <p  style="font-size: 10px">{{ turma.componente.codigo }} - T{{ turma.codigo_turma }} <br />
+                      {{ turma.componente.nome }}</p>
                   {% endfor %}
                 </td>
               {% endfor %}
@@ -41,5 +68,13 @@
       </table>
     </div>
   </section>
+  <script>
+    $(document).ready(function() {
+      $('#get_turmas').click({
+        serviceUrl: '/core/turma/bsi',
+        paramName: 'periodos',
+      });
+    });
+  </script>
 {% endblock %}
 

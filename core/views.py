@@ -268,18 +268,25 @@ def turma_list(request):
 
 def turma_bsi(request):
     horarios = []
+    turmas = []
     tt = []
+    periodos = request.GET.getlist('periodos')
 
     bsi_dct = get_estrutura_sistemas_dct()
-    turmas1p = get_turmas(bsi_dct, 1)
 
+    if periodos.__contains__('100'):
+        periodos = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+
+    for s in periodos:
+        ts = get_turmas(bsi_dct, s)
+        turmas.extend(ts)
 
     for i in range(1, 7):
         horario = Horario.objects.filter(turno='M', ordem=i).order_by('dia')
         turma_horarios = []
         for h in horario:
-            turmas = get_turmas_por_horario(turmas=turmas1p, dia=h.dia, turno='M', ordem=i)
-            th = TurmaHorario(h, turmas)
+            turmas_por_horario = get_turmas_por_horario(turmas=turmas, dia=h.dia, turno='M', ordem=i)
+            th = TurmaHorario(h, turmas_por_horario)
             turma_horarios.append(th)
         tt.append(turma_horarios)
 
@@ -287,14 +294,14 @@ def turma_bsi(request):
         horario = Horario.objects.filter(turno='T', ordem=i).order_by('dia')
         turma_horarios = []
         for h in horario:
-            turmas = get_turmas_por_horario(turmas=turmas1p, dia=h.dia, turno='T', ordem=i)
-            th = TurmaHorario(h, turmas)
+            turmas_por_horario = get_turmas_por_horario(turmas=turmas, dia=h.dia, turno='T', ordem=i)
+            th = TurmaHorario(h, turmas_por_horario)
             turma_horarios.append(th)
         tt.append(turma_horarios)
 
     context = {
         'horarios': horarios,
-        'turmas': turmas1p,
+        'turmas': turmas,
         'turma_horarios': turma_horarios,
         'tt': tt
     }
