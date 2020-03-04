@@ -1,7 +1,7 @@
 # Documentação SuggestClasses
 
-O sistema SuggestClasses terá o cadastro de sugestões de horários para turmas de componentes curriculares 
-de um curso em um certo período. Também manterá o horário aprovado das turmas e exibirá relatórios de 
+O sistema SuggestClasses terá o cadastro de sugestões de horários para turmas de componentes curriculares
+de um curso em um certo período. Também manterá o horário aprovado das turmas e exibirá relatórios de
 horários para professores, alunos, por sala e por período.
 
 ## Plano de Iteração
@@ -23,4 +23,8 @@ Os detalhes do Plano de Iteração pode ser encontrado na página [Plano de Iter
 O Documento de Visão completo pode ser encontrado na página [Documento de Visão](DocVisao.md).
 
 ## Lista de User Stories
+
+## Documento de Visão
+
+Tutorial de [Deploy de Aplicação Django](deploy.md) em servidor web linux.
 
