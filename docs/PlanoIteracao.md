@@ -49,3 +49,54 @@ Analistas:
 - Avisar ao gerente quando concluir uma tarefa;
 
 O gerente deve enviar nesta tarefa o link do repositório e o link dos dois documentos.
+
+### T01 - Iteração 1 - Inicialização
+
+A Iteração 1 começou dia 02/03 e vai até 14/03. As atividades dessa tarefa são:
+
+- Atualização do Documento de Visão (formato Markdown), adicionar requisitos funcionais, se necessário;
+- Criar documento com a lista de User Stories, coloque no diretório "docs" do repositório
+[Modelo aqui!](https://docs.google.com/document/d/1Ns2J9KTpLgNOpCZjXJXw_RSCSijTJhUx4zgFhYecEJg/edit#);
+  - Deve ser detalhado pelo menos três User Stories;
+  - Um User Store pode ser formado de um ou mais requisitos funcionais;
+- Definir qual será o User Story (Caso de Uso) *base* para implementação, chame de US00 ou CDU00;
+- Criar modelo (imagem) da Arquitetura Geral do Sistema e descreva cada parte da arquitetura
+ (não é o documento Arquitetural completo) [Modelo aqui!](https://docs.google.com/document/d/1i80vPaInPi5lSpI7rk4QExnO86iEmrsHBfmYRy6RDSM/edit?usp=sharing);
+- Criar documento com a Contagem de Ponto de Função, coloque no diretório "docs" do repositório
+ [Modelo aqui!](https://docs.google.com/document/d/1s4bMbrpQt9RF6tymXvI0HHfQO14hMyL08UxmX1eH82s/edit?usp=sharing);
+  - Faça a contagem indicativa do tamanho funcional do software;
+  - Faça a contagem detalhada do tamanho funcional de pelo menos três User Stories;
+
+Gerentes:
+
+- Criar Milestones da Iteração 1;
+- Definir e descrever as tarefas (issues) da Iteração 1 (milestones) e
+alocar as issues para cada membro da equipe;
+- Definir qual User Story cada membro da equipe vai especificar/detalhar;
+   - Detalhar ou Especificar um US é cria a descrição (estória do usuário) e os testes de aceitação);
+- Definir quem vai construir a Arquitetura Geral do Sistema que faz parte do documento com modelo conceitual cada membro da equipe vai preparar;
+- O gerente deve fazer a contagem indicativa do tamanho funcional de Projeto;
+- Definir quem vai fazer a contagem detalhada do tamanho funcional de cada User Story;
+- Fechar tarefas se concluída;
+
+Analistas:
+
+- Trabalhar nas tarefas e realizar pequenos commits marcando com a hashtag da issue;
+- Enviar commits do User Story que detalhou;
+- Enviar commits da contagem do User Story que detalhou;
+- Avisar ao gerente quando concluir uma tarefa;
+
+Desenvolvedor
+
+- Trabalhar nas tarefas e realizar pequenos commits marcando com a hashtag da issue;
+- Enviar commits da implementação do User Story;
+- Enviar commits da implementação de testes de unidade do User Story que implementou;
+- Avisar ao gerente quando concluir uma tarefa;
+
+Testador
+
+- Trabalhar nas tarefas e realizar pequenos commits marcando com a hashtag da issue;
+- Executar cada teste de aceitação do User Story, anotando o resultado em um Markdown dos
+Resultados dos Testes de Aceitação;
+- Cadastrar issues de bugs caso os Testes de Aceitação não passem;
+- Avisar ao gerente quando concluir uma tarefa;
