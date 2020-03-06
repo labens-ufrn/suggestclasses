@@ -56,16 +56,19 @@ A Iteração 1 começou dia 02/03 e vai até 14/03. As atividades dessa tarefa s
 
 - Atualização do Documento de Visão (formato Markdown), adicionar requisitos funcionais, se necessário;
 - Criar documento com a lista de User Stories, coloque no diretório "docs" do repositório
-[Modelo aqui!](https://docs.google.com/document/d/1Ns2J9KTpLgNOpCZjXJXw_RSCSijTJhUx4zgFhYecEJg/edit#);
+  - [Modelo aqui!](https://docs.google.com/document/d/1Ns2J9KTpLgNOpCZjXJXw_RSCSijTJhUx4zgFhYecEJg/edit#);
   - Deve ser detalhado pelo menos três User Stories;
   - Um User Store pode ser formado de um ou mais requisitos funcionais;
 - Definir qual será o User Story (Caso de Uso) *base* para implementação, chame de US00 ou CDU00;
 - Criar modelo (imagem) da Arquitetura Geral do Sistema e descreva cada parte da arquitetura
- (não é o documento Arquitetural completo) [Modelo aqui!](https://docs.google.com/document/d/1i80vPaInPi5lSpI7rk4QExnO86iEmrsHBfmYRy6RDSM/edit?usp=sharing);
+ (não é o documento Arquitetural completo);
+  - [Modelo aqui!](https://docs.google.com/document/d/1i80vPaInPi5lSpI7rk4QExnO86iEmrsHBfmYRy6RDSM/edit?usp=sharing);
 - Criar documento com a Contagem de Ponto de Função, coloque no diretório "docs" do repositório
- [Modelo aqui!](https://docs.google.com/document/d/1s4bMbrpQt9RF6tymXvI0HHfQO14hMyL08UxmX1eH82s/edit?usp=sharing);
+  - [Modelo aqui!](https://docs.google.com/document/d/1s4bMbrpQt9RF6tymXvI0HHfQO14hMyL08UxmX1eH82s/edit?usp=sharing);
   - Faça a contagem indicativa do tamanho funcional do software;
   - Faça a contagem detalhada do tamanho funcional de pelo menos três User Stories;
+ - Criar documento com o Termo de Abertura do Projeto, no google docs
+   - [Modelo Aqui!](https://docs.google.com/document/d/1xGwEppR2qmQ7H3EdevWBCWferzY3RuoZim_GEz6LZ90/edit?usp=sharing);
 
 Gerentes:
 
