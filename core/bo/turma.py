@@ -56,6 +56,32 @@ def get_turno(horario):
         return 'N'
     return None
 
+
+def carrega_turmas(estrutura, periodos):
+    turmas = []
+    for s in periodos:
+        ts = get_turmas(estrutura, s)
+        turmas.extend(ts)
+    return turmas
+
+
+def carrega_turmas_horario(turmas, turno):
+    tt = []
+    n = 7
+    if turno == 'N':
+        n = 5
+
+    for i in range(1, n):
+        horario = Horario.objects.filter(turno=turno, ordem=i).order_by('dia')
+        turma_horarios = []
+        for h in horario:
+            turmas_por_horario = get_turmas_por_horario(turmas=turmas, dia=h.dia, turno=turno, ordem=i)
+            th = TurmaHorario(h, turmas_por_horario)
+            turma_horarios.append(th)
+        tt.append(turma_horarios)
+    return tt
+
+
 class TurmaHorario:
 
     def __init__(self, horario, turmas):

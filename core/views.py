@@ -17,7 +17,7 @@ from core.models import Curso, Departamento, ComponenteCurricular, Centro, Estru
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre
 from .bo.pedagogia import get_estrutura_pedagogia
 from .bo.sistemas import get_estrutura_sistemas_dct
-from .bo.turma import get_turmas, get_turmas_por_horario, TurmaHorario
+from .bo.turma import get_turmas, get_turmas_por_horario, TurmaHorario, carrega_turmas, carrega_turmas_horario
 from .forms import CadastroAlunoForm
 from .models import Horario
 from django.db.models import Sum
@@ -332,6 +332,28 @@ def turma_bsi(request):
     }
 
     return render(request, 'core/turma/bsi.html', context)
+
+
+def turma_ped(request):
+    periodos = request.GET.getlist('periodos')
+
+    ped_deduc = get_estrutura_pedagogia()
+
+    if periodos.__contains__('100'):
+        periodos = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+
+    turmas = carrega_turmas(ped_deduc, periodos)
+
+    tt = []
+    tt.extend(carrega_turmas_horario(turmas, 'M'))
+    tt.extend(carrega_turmas_horario(turmas, 'T'))
+    tt.extend(carrega_turmas_horario(turmas, 'N'))
+
+    context = {
+        'tt': tt
+    }
+
+    return render(request, 'core/turma/ped.html', context)
 
 
 def plot(request):

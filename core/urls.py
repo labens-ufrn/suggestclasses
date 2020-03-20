@@ -22,5 +22,6 @@ urlpatterns = [
     path('usuario/alterar_senha', views.alterar_senha, name='Alterar Senha de Usuário'),
     path('turma/', views.turma_list, name='Lista de Turmas por Curso'),
     path('turma/bsi', views.turma_bsi, name='Turmas de Sistemas de Informação'),
+    path('turma/ped', views.turma_ped, name='Turmas de Pedagogia'),
     path('plot/', views.plot, name='Plot de Gráfico'),
 ]
