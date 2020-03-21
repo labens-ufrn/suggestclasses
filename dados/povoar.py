@@ -122,7 +122,7 @@ def componentes():
                 codigo_componente = row[2]
                 nivel_componente = row[3]
                 nome_componente = row[4]
-                unidade_responsavel = row[5].strip()
+
                 ch_teorico = row[6]
                 ch_pratico = row[7]
                 ch_estagio = row[8]
@@ -149,12 +149,12 @@ def componentes():
 
                 if not ComponenteCurricular.objects.filter(codigo=codigo_componente).exists():
                     cc = ComponenteCurricular(id_componente=id_componente, tipo=tipo_componente,
-                                          codigo=codigo_componente, nivel=nivel_componente, nome=nome_componente,
-                                          ch_teorica=ch_teorico, ch_pratica=ch_pratico, ch_estagio=ch_estagio,
-                                          ch_total=ch_total, ch_docente=ch_dedicada_docente, ch_ead=ch_ead,
-                                          cr_max_ead=cr_max_ead, equivalencia=equivalencia,
-                                          requisito=pre_requisito, corequisito=co_requisito, ementa=ementa,
-                                          modalidade=modalidade, departamento=depto)
+                                              codigo=codigo_componente, nivel=nivel_componente, nome=nome_componente,
+                                              ch_teorica=ch_teorico, ch_pratica=ch_pratico, ch_estagio=ch_estagio,
+                                              ch_total=ch_total, ch_docente=ch_dedicada_docente, ch_ead=ch_ead,
+                                              cr_max_ead=cr_max_ead, equivalencia=equivalencia,
+                                              requisito=pre_requisito, corequisito=co_requisito, ementa=ementa,
+                                              modalidade=modalidade, departamento=depto)
                     cc.save()
                 else:
                     print("Componente " + id_componente + " - " + codigo_componente + " - "
@@ -253,8 +253,7 @@ def organizacao():
                     cc = ComponenteCurricular.objects.get(id_componente=id_componente_curricular)
 
                     id_curriculo_componente = row[0]
-                    id_curriculo = row[1]
-                    id_componente_curricular = row[2]
+
                     semestre_oferta = row[3]
                     tipo_vinculo_componente = row[4]
                     nivel_ensino = row[5]
