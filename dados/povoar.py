@@ -32,7 +32,7 @@ def centros():
     # Cadastrando o Centro CERES
     centro = Centro(id_unidade=1482, codigo=1800, nome='Centro de Ensino Superior do Seridó',
                     sigla='CERES', endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
-                    site='http://www.ceres.ufrn.br/')
+                    site='https://www.ceres.ufrn.br/')
     centro.save()
 
 
@@ -319,11 +319,7 @@ def criar_turmas():
                 cc = ComponenteCurricular.objects.get(id_componente=id_componente_curricular)
                 print(cc)
 
-                docente = None
-                if siape != '' and Docente.objects.filter(siape=siape).exists():
-                    # Professores Substitutos e Temporários não estão na lista
-                    docente = Docente.objects.get(siape=siape)
-                    print(docente)
+                docente = get_docente(siape)
 
                 id_turma = row[0]
                 codigo_turma = row[1]
@@ -370,6 +366,14 @@ def criar_turmas():
                               situacao_turma=situacao_turma, convenio=convenio,
                               modalidade_participantes=modalidade_participantes)
                 turma.save()
+
+
+def get_docente(siape):
+    docente = None
+    if siape != '' and Docente.objects.filter(siape=siape).exists():
+        # Professores Substitutos e Temporários não estão na lista
+        docente = Docente.objects.get(siape=siape)
+    return docente
 
 
 if __name__ == "__main__":
