@@ -13,12 +13,14 @@ from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, redirect
 
-from core.models import Curso, Departamento, ComponenteCurricular, Centro, EstruturaCurricular, OrganizacaoCurricular
+from core.models import Curso, Departamento, ComponenteCurricular, Centro, EstruturaCurricular, OrganizacaoCurricular, \
+    SugestaoTurma
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre
 from .bo.pedagogia import get_estrutura_pedagogia
 from .bo.sistemas import get_estrutura_sistemas_dct
-from .bo.turma import get_turmas, get_turmas_por_horario, TurmaHorario, carrega_turmas, carrega_turmas_horario
-from .forms import CadastroAlunoForm
+from .bo.turma import get_turmas, get_turmas_por_horario, TurmaHorario, carrega_turmas, carrega_turmas_horario, \
+    carrega_sugestao_turmas
+from .forms import CadastroAlunoForm, SugestaoTurmaForm
 from .models import Horario
 from django.db.models import Sum
 
@@ -68,7 +70,7 @@ def curso_detail(request, curso_id):
     return HttpResponse("You're looking at Curso %s." % curso)
 
 
-def list(request):
+def horarios_list(request):
     horario_list = Horario.objects.all()
     horarios = []
 
@@ -354,6 +356,59 @@ def turma_ped(request):
     }
 
     return render(request, 'core/turma/ped.html', context)
+
+
+def sugestao_list(request):
+    return render(request, 'core/sugestao/list.html')
+
+
+@login_required(login_url='/core/usuario/logar')
+def sugestao_bsi_incluir(request):
+    if request.method == "POST":
+        form_sugestao = SugestaoTurmaForm(request.POST)
+        if form_sugestao.is_valid():
+            sugestao_turma = form_sugestao.save()
+            sugestao_turma.save()
+            print(sugestao_turma)
+            return sugestao_bsi(request)
+    else:
+        form_sugestao = SugestaoTurmaForm()
+    return render(request, 'core/sugestao/incluir.html', {'form_sugestao': form_sugestao})
+
+
+def sugestao_bsi(request):
+    semestres = request.GET.getlist('periodos')
+
+    bsi_dct = get_estrutura_sistemas_dct()
+
+    if semestres.__contains__('100'):
+        semestres = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+    ano = 2020
+    periodo = 1
+    turmas = carrega_sugestao_turmas(bsi_dct, semestres, ano, periodo)
+
+    tt = []
+    tt.extend(carrega_turmas_horario(turmas, 'M'))
+    tt.extend(carrega_turmas_horario(turmas, 'T'))
+    tt.extend(carrega_turmas_horario(turmas, 'N'))
+
+    context = {
+        'tt': tt
+    }
+
+    return render(request, 'core/sugestao/bsi.html', context)
+
+
+def sugestao_ped(request):
+    if request.method == "POST":
+        form_sugestao = SugestaoTurmaForm(request.POST)
+        if form_sugestao.is_valid():
+            sugestao_turma = form_sugestao.save()
+            print(sugestao_turma)
+            return redirect('index')
+    else:
+        form_sugestao = SugestaoTurmaForm()
+    return render(request, 'core/sugestao/incluir.html', {'form_sugestao': form_sugestao})
 
 
 def plot(request):

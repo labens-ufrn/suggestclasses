@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('list/', views.list, name='list'),
+    path('horarios_list/', views.horarios_list, name='list'),
     path('<int:horario_id>/', views.detail, name='detail'),
     path('curso/<int:curso_id>/', views.curso_detail, name='curso_detail'),
     path('curso/list/', views.curso_list, name='Lista de Cursos'),
@@ -23,5 +23,9 @@ urlpatterns = [
     path('turma/', views.turma_list, name='Lista de Turmas por Curso'),
     path('turma/bsi', views.turma_bsi, name='Turmas de Sistemas de Informação'),
     path('turma/ped', views.turma_ped, name='Turmas de Pedagogia'),
+    path('sugestao/', views.sugestao_list, name='Lista de Sugestão de Turmas por Curso'),
+    path('sugestao/incluir', views.sugestao_bsi_incluir, name='Sugestão de Turmas de Sistemas de Informação'),
+    path('sugestao/bsi', views.sugestao_bsi, name='Sugestão de Turmas de Sistemas de Informação'),
+    path('sugestao/ped', views.sugestao_ped, name='Sugestão de Turmas de Pedagogia'),
     path('plot/', views.plot, name='Plot de Gráfico'),
 ]

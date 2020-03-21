@@ -1,6 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.forms import Form, ModelForm
+
+from core.models import SugestaoTurma
 
 
 class CadastroAlunoForm(UserCreationForm):
@@ -11,3 +14,10 @@ class CadastroAlunoForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
+
+
+class SugestaoTurmaForm(ModelForm):
+    class Meta:
+        model = SugestaoTurma
+        fields = ['codigo_turma', 'siape', 'componente', 'descricao_horario', 'ano', 'periodo',
+                  'campus_turma', 'capacidade_aluno']

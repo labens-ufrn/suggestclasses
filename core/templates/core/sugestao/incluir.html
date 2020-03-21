@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+{% block title %} Suggest Classes - Cadastro de Sugestão de Turma {% endblock %}
+{% block content %}
+
+  <div class="container">
+
+    <h2 class="page-section-heading text-center text-secondary mb-0">Cadastro de Sugestão de Turma</h2>
+      <br />
+      <form method="post">
+        {% csrf_token %}
+        {% for field in form_sugestao %}
+          <div class="form-group">
+            <label>{{ field.label_tag }}</label><br>
+            {{ field }}
+            {% if field.help_text %}
+              <small style="color: grey">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+              <p style="color: red">{{ error }}</p>
+              {% endfor %}
+          </div>
+        {% endfor %}
+        <div class="form-group">
+          <input type="submit" value="Cadastrar" class="btn btn-primary">
+        </div>
+      </form>
+  </div>
+{% endblock %}
