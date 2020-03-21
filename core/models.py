@@ -224,3 +224,21 @@ class Turma(models.Model):
     def __str__(self):
         return self.id_turma.__str__() + ' - ' + self.codigo_turma + ' - ' + self.componente.__str__() + ' - ' \
                + self.siape.__str__() + ' - ' + self.descricao_horario
+
+
+class SugestaoTurma(models.Model):
+    codigo_turma = models.CharField(max_length=50)
+    siape = models.IntegerField(null=True)
+    matricula_docente_externo = models.IntegerField(null=True)
+    componente = models.ForeignKey(ComponenteCurricular, on_delete=models.PROTECT)
+    campus_turma = models.CharField(max_length=50)
+    local = models.CharField(max_length=50)
+    ano = models.IntegerField()
+    periodo = models.IntegerField()
+    descricao_horario = models.CharField(max_length=150)
+    capacidade_aluno = models.IntegerField()
+    tipo = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.codigo_turma + ' - ' + self.componente.__str__() + ' - ' \
+               + self.siape.__str__() + ' - ' + self.descricao_horario
