@@ -16,6 +16,7 @@ SCLASSES_PATH = '/home/taciano/dev/workspace/suggestclasses'
 
 def main():
     print("Lendo dados sobre o CERES/UFRN ...!")
+    print(os.getcwd())
     os.chdir(DADOS_PATH)
     print(os.getcwd())
 
@@ -394,19 +395,33 @@ def get_docente(siape):
 
 def testes():
     print("Povoando para Testes ...")
+    print(os.getcwd())
     os.chdir(DADOS_PATH)
     print(os.getcwd())
 
-    centros()
-    departamentos()
+    centro_testes()
+    depart_testes()
     componentes_testes()
 
     os.chdir(SCLASSES_PATH)
     print(os.getcwd())
 
 
+def centro_testes():
+    Centro.objects.create(id_unidade=9999, codigo=9999, nome='Centro de Teste',
+           sigla='CTESTE', endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
+           site='https://www.ceres.ufrn.br/')
+
+
+def depart_testes():
+    centro = Centro.objects.get(id_unidade=9999)
+    Departamento.objects.create(id_unidade=9998, codigo=9998, nome="Departamento de Teste", sigla="DTS",
+                                     endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
+                                     centro=centro)
+
+
 def componentes_testes():
-    depto = Departamento.objects.get(id_unidade=9726)
+    depto = Departamento.objects.get(id_unidade=9998)
     ComponenteCurricular.objects.create(id_componente=99999, tipo='DISCIPLINA',
                                         codigo='DCT9999', nivel='G', nome='BANCO DE DADOS',
                                         ch_teorica=30, ch_pratica=30, ch_estagio=0,
