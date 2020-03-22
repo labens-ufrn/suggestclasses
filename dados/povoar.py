@@ -396,15 +396,10 @@ def get_docente(siape):
 def testes():
     print("Povoando para Testes ...")
     print(os.getcwd())
-    os.chdir(DADOS_PATH)
-    print(os.getcwd())
 
     centro_testes()
     depart_testes()
     componentes_testes()
-
-    os.chdir(SCLASSES_PATH)
-    print(os.getcwd())
 
 
 def centro_testes():
