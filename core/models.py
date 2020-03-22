@@ -67,7 +67,7 @@ class ComponenteCurricular(models.Model):
     """
     id_componente = models.IntegerField(unique=True)
     tipo = models.CharField(max_length=50)
-    codigo = models.CharField(max_length=10)
+    codigo = models.CharField(max_length=25)
     nivel = models.CharField(max_length=50)
     nome = models.CharField(max_length=200)
     ementa = models.TextField(max_length=500)
