@@ -404,15 +404,15 @@ def testes():
 
 def centro_testes():
     Centro.objects.create(id_unidade=9999, codigo=9999, nome='Centro de Teste',
-           sigla='CTESTE', endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
-           site='https://www.ceres.ufrn.br/')
+                          sigla='CTESTE', endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
+                          site='https://www.ceres.ufrn.br/')
 
 
 def depart_testes():
     centro = Centro.objects.get(id_unidade=9999)
     Departamento.objects.create(id_unidade=9998, codigo=9998, nome="Departamento de Teste", sigla="DTS",
-                                     endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
-                                     centro=centro)
+                                endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
+                                centro=centro)
 
 
 def componentes_testes():
