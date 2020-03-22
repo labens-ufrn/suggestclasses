@@ -11,6 +11,7 @@ from core.models import Curso, Centro, Departamento, ComponenteCurricular, Estru
     OrganizacaoCurricular, Docente, Turma
 
 DADOS_PATH = '/home/taciano/dev/workspace/suggestclasses/dados'
+SCLASSES_PATH = '/home/taciano/dev/workspace/suggestclasses'
 
 
 def main():
@@ -153,10 +154,6 @@ def componentes():
                 periodo_programa = row[26]
                 modalidade = row[27]
                 curso_componente = row[28]
-
-                # if depto.id_unidade == 9726 or depto.id_unidade == 235:
-                print(id_componente)
-                print(codigo_componente)
 
                 if not ComponenteCurricular.objects.filter(codigo=codigo_componente).exists():
                     cc = ComponenteCurricular(id_componente=id_componente, tipo=tipo_componente,
@@ -393,6 +390,30 @@ def get_docente(siape):
         # Professores Substitutos e Temporários não estão na lista
         docente = Docente.objects.get(siape=siape)
     return docente
+
+
+def testes():
+    print("Povoando para Testes ...")
+    os.chdir(DADOS_PATH)
+    print(os.getcwd())
+
+    centros()
+    departamentos()
+    componentes_testes()
+
+    os.chdir(SCLASSES_PATH)
+    print(os.getcwd())
+
+
+def componentes_testes():
+    depto = Departamento.objects.get(id_unidade=9726)
+    ComponenteCurricular.objects.create(id_componente=99999, tipo='DISCIPLINA',
+                                        codigo='DCT9999', nivel='G', nome='BANCO DE DADOS',
+                                        ch_teorica=30, ch_pratica=30, ch_estagio=0,
+                                        ch_total=60, ch_docente=60, ch_ead=0,
+                                        cr_max_ead=0, equivalencia='( BSI2201 )',
+                                        requisito='( ( BSI1106 ) OU ( DCT1106 ) )', corequisito='',
+                                        ementa='ementa', modalidade='Presencial', departamento=depto)
 
 
 if __name__ == "__main__":
