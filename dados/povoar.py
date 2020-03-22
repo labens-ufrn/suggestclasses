@@ -1,11 +1,12 @@
 import csv
-from dateutil.parser import parse
 import os
 import django
 
-from dados.downloads import downloads_dados
-
 django.setup()
+
+from dateutil.parser import parse
+
+from dados.baixar_dados import downloads_dados
 from core.models import Curso, Centro, Departamento, ComponenteCurricular, EstruturaCurricular, \
     OrganizacaoCurricular, Docente, Turma
 
@@ -18,14 +19,14 @@ def main():
     print(os.getcwd())
 
     downloads_dados()
-    # centros()  # Adicionamos apenas o CERES.
-    # departamentos()
-    # cursos()
+    centros()  # Adicionamos apenas o CERES.
+    departamentos()
+    cursos()
     componentes()
     estruturas()
-    # organizacao()
+    organizacao()
     criar_docentes()
-    # criar_turmas()
+    criar_turmas()
 
 
 def centros():
@@ -33,7 +34,10 @@ def centros():
     centro = Centro(id_unidade=1482, codigo=1800, nome='Centro de Ensino Superior do Seridó',
                     sigla='CERES', endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
                     site='https://www.ceres.ufrn.br/')
-    centro.save()
+    if not Centro.objects.filter(id_unidade=1482).exists():
+        centro.save()
+    else:
+        print("Centro " + centro.codigo.__str__() + " - " + centro.sigla + " já adicionado!")
 
 
 def departamentos():
@@ -64,10 +68,13 @@ def departamentos():
                 print(municipio)
                 print(tipo_unidade_organizacional)
                 print(id_unidade_responsavel)
-                d = Departamento(id_unidade=id_dep, codigo=codigo_dep, nome=nome_dep, sigla=sigla_dep,
-                                 endereco=municipio,
-                                 centro=ceres)
-                d.save()
+                if not Departamento.objects.filter(id_unidade=id_dep).exists():
+                    d = Departamento(id_unidade=id_dep, codigo=codigo_dep, nome=nome_dep, sigla=sigla_dep,
+                                     endereco=municipio,
+                                     centro=ceres)
+                    d.save()
+                else:
+                    print("Departamento " + id_dep + " - " + sigla_dep + " já adicionado!")
 
 
 def cursos():
@@ -97,9 +104,12 @@ def cursos():
                 print(modalidade_educacao)
                 print(turno)
                 print(id_unidade_responsavel)
-                c = Curso(codigo=id_curso, nome=nome_curso, nivel=nivel_ensino, grau=grau_academico,
-                          modalidade=modalidade_educacao, turno=turno, centro=ceres)
-                c.save()
+                if not Curso.objects.filter(codigo=id_curso).exists():
+                    c = Curso(codigo=id_curso, nome=nome_curso, nivel=nivel_ensino, grau=grau_academico,
+                              modalidade=modalidade_educacao, turno=turno, centro=ceres)
+                    c.save()
+                else:
+                    print("Curso " + id_curso + " - " + nome_curso + " já adicionado!")
 
 
 def componentes():
@@ -146,6 +156,7 @@ def componentes():
 
                 # if depto.id_unidade == 9726 or depto.id_unidade == 235:
                 print(id_componente)
+                print(codigo_componente)
 
                 if not ComponenteCurricular.objects.filter(codigo=codigo_componente).exists():
                     cc = ComponenteCurricular(id_componente=id_componente, tipo=tipo_componente,
@@ -252,16 +263,21 @@ def organizacao():
                 if ComponenteCurricular.objects.filter(id_componente=id_componente_curricular).exists():
                     cc = ComponenteCurricular.objects.get(id_componente=id_componente_curricular)
 
-                    id_curriculo_componente = row[0]
+                    id_curriculo_comp = row[0]
 
                     semestre_oferta = row[3]
                     tipo_vinculo_componente = row[4]
                     nivel_ensino = row[5]
 
-                    oc = OrganizacaoCurricular(id_curriculo_componente=id_curriculo_componente, estrutura=ec,
-                                               componente=cc, semestre=semestre_oferta,
-                                               tipo_vinculo=tipo_vinculo_componente, nivel=nivel_ensino)
-                    oc.save()
+                    if not OrganizacaoCurricular.objects.filter(id_curriculo_componente=id_curriculo_comp).exists():
+                        oc = OrganizacaoCurricular(id_curriculo_componente=id_curriculo_comp, estrutura=ec,
+                                                   componente=cc, semestre=semestre_oferta,
+                                                   tipo_vinculo=tipo_vinculo_componente, nivel=nivel_ensino)
+                        oc.save()
+                    else:
+                        print(
+                            "OrganizacaoCurricular " + id_curriculo_comp + " - " + ec.curso.nome + " - " +
+                            cc.codigo + " - " + cc.nome + " já adicionada!")
 
 
 def criar_docentes():
@@ -353,18 +369,22 @@ def criar_turmas():
                 convenio = row[24]
                 modalidade_participantes = row[25]
 
-                turma = Turma(id_turma=id_turma, codigo_turma=codigo_turma, siape=siape,
-                              matricula_docente_externo=matricula_docente_externo, observacao=observacao,
-                              componente=cc, ch_dedicada_periodo=ch_dedicada_periodo,
-                              nivel_ensino=nivel_ensino, campus_turma=campus_turma, local=local, ano=ano,
-                              periodo=periodo, data_inicio=data_inicio, data_fim=data_fim,
-                              descricao_horario=descricao_horario, total_solicitacoes=total_solicitacoes,
-                              capacidade_aluno=capacidade_aluno, tipo=tipo, distancia=distancia,
-                              data_consolidacao=data_consolidacao, agrupadora=agrupadora,
-                              id_turma_agrupadora=id_turma_agrupadora, qtd_aulas_lancadas=qtd_aulas_lancadas,
-                              situacao_turma=situacao_turma, convenio=convenio,
-                              modalidade_participantes=modalidade_participantes)
-                turma.save()
+                if not Turma.objects.filter(id_turma=id_turma).exists():
+                    turma = Turma(id_turma=id_turma, codigo_turma=codigo_turma, siape=siape,
+                                  matricula_docente_externo=matricula_docente_externo, observacao=observacao,
+                                  componente=cc, ch_dedicada_periodo=ch_dedicada_periodo,
+                                  nivel_ensino=nivel_ensino, campus_turma=campus_turma, local=local, ano=ano,
+                                  periodo=periodo, data_inicio=data_inicio, data_fim=data_fim,
+                                  descricao_horario=descricao_horario, total_solicitacoes=total_solicitacoes,
+                                  capacidade_aluno=capacidade_aluno, tipo=tipo, distancia=distancia,
+                                  data_consolidacao=data_consolidacao, agrupadora=agrupadora,
+                                  id_turma_agrupadora=id_turma_agrupadora, qtd_aulas_lancadas=qtd_aulas_lancadas,
+                                  situacao_turma=situacao_turma, convenio=convenio,
+                                  modalidade_participantes=modalidade_participantes)
+                    turma.save()
+                else:
+                    print("Turma " + id_turma + " - " + codigo_turma + "- " + cc.codigo + " - " +
+                          cc.nome + " - " + descricao_horario + " já adicionada!")
 
 
 def get_docente(siape):
