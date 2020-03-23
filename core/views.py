@@ -17,25 +17,29 @@ from core.models import Curso, Departamento, ComponenteCurricular, Centro, Estru
     SugestaoTurma
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre
 from .bo.pedagogia import get_estrutura_pedagogia
-from .bo.sistemas import get_estrutura_sistemas_dct
+from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .bo.turma import get_turmas, get_turmas_por_horario, TurmaHorario, carrega_turmas, carrega_turmas_horario, \
     carrega_sugestao_turmas
+from .dao.centro_dao import get_ceres
+from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
+from .dao.departamento_dao import get_departamentos
 from .forms import CadastroAlunoForm, SugestaoTurmaForm
 from .models import Horario
 from django.db.models import Sum
 
 
 def index(request):
-    ceres = Centro.objects.get(id_unidade=1482)
-    departamentos = Departamento.objects.all()
+    """
+        View index para o Dashboard.
+    :param request: Requisição do http.
+    :return: retorna um HttpResponse
+    """
+    ceres = get_ceres()
+    departamentos = get_departamentos()
     estruturas = EstruturaCurricular.objects.all()
-    dct = Departamento.objects.get(id_unidade=9726)
-    print(dct)
-    cursos = Curso.objects.all()
-    componentes = ComponenteCurricular.objects.all()
-    componentes_dct = ComponenteCurricular.objects.filter(departamento=dct)
 
-    def get_componentes_by_depto(depto): return ComponenteCurricular.objects.filter(departamento=depto)
+    cursos = Curso.objects.all()
+    componentes = get_componentes_curriculares()
 
     componentes_by_depto = []
     headers: List[str] = []
@@ -45,9 +49,6 @@ def index(request):
         componentes_by_depto.append(get_componentes_by_depto(d))
 
     template = loader.get_template('core/index.html')
-
-    # response = requests.get("https://servicos.jfrn.jus.br/cartaapi/servicos")
-    # comments = json.loads(response.content)
 
     context = {
         'ceres': ceres,
@@ -95,7 +96,7 @@ def departamento_list(request):
     """
             Lista todos os componentes curriculares.
     """
-    departamentos = Departamento.objects.all()
+    departamentos = get_departamentos()
 
     context = {
         'departamentos': departamentos
@@ -145,24 +146,18 @@ def flow_list(request):
 
 
 def flow_bsi(request):
-    id_ec = 510230607
-    bsi_ec = EstruturaCurricular.objects.get(id_curriculo=id_ec)
-
-    def get_oc_by_semestre(semestre): return OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=semestre)
-
-    get_ch_by_semestre = lambda ch: OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=s).aggregate(Sum(
-        "componente__ch_total"))
+    bsi_ec = get_estrutura_sistemas()
 
     bsi_oc_semestres = []
     bsi_ch_semestres = []
-    bsi_oc_op = get_oc_by_semestre(0)
+    bsi_oc_op = get_oc_by_semestre(bsi_ec, 0)
 
     headers: List[str] = []
 
     for s in range(1, 9):
         headers.append(f"{s}º Semestre")
-        bsi_oc_semestres.append(get_oc_by_semestre(s))
-        bsi_ch_semestres.append(get_ch_by_semestre(s))
+        bsi_oc_semestres.append(get_oc_by_semestre(bsi_ec, s))
+        bsi_ch_semestres.append(get_ch_by_semestre(bsi_ec, s))
 
     context = {
         'bsi_ec': bsi_ec,
@@ -294,9 +289,6 @@ def turma_list(request):
 
 
 def turma_bsi(request):
-    horarios = []
-    turmas = []
-    tt = []
     periodos = request.GET.getlist('periodos')
 
     bsi_dct = get_estrutura_sistemas_dct()
@@ -304,32 +296,14 @@ def turma_bsi(request):
     if periodos.__contains__('100'):
         periodos = [1, 2, 3, 4, 5, 6, 7, 8, 0]
 
-    for s in periodos:
-        ts = get_turmas(bsi_dct, s)
-        turmas.extend(ts)
+    turmas = carrega_turmas(bsi_dct, periodos)
 
-    for i in range(1, 7):
-        horario = Horario.objects.filter(turno='M', ordem=i).order_by('dia')
-        turma_horarios = []
-        for h in horario:
-            turmas_por_horario = get_turmas_por_horario(turmas=turmas, dia=h.dia, turno='M', ordem=i)
-            th = TurmaHorario(h, turmas_por_horario)
-            turma_horarios.append(th)
-        tt.append(turma_horarios)
-
-    for i in range(1, 7):
-        horario = Horario.objects.filter(turno='T', ordem=i).order_by('dia')
-        turma_horarios = []
-        for h in horario:
-            turmas_por_horario = get_turmas_por_horario(turmas=turmas, dia=h.dia, turno='T', ordem=i)
-            th = TurmaHorario(h, turmas_por_horario)
-            turma_horarios.append(th)
-        tt.append(turma_horarios)
+    tt = []
+    tt.extend(carrega_turmas_horario(turmas, 'M'))
+    tt.extend(carrega_turmas_horario(turmas, 'T'))
+    tt.extend(carrega_turmas_horario(turmas, 'N'))
 
     context = {
-        'horarios': horarios,
-        'turmas': turmas,
-        'turma_horarios': turma_horarios,
         'tt': tt
     }
 
@@ -408,7 +382,7 @@ def sugestao_ped(request):
             return redirect('index')
     else:
         form_sugestao = SugestaoTurmaForm()
-    return render(request, 'core/sugestao/incluir.html', {'form_sugestao': form_sugestao})
+    return render(request, 'core/sugestao/ped.html', {'form_sugestao': form_sugestao})
 
 
 def plot(request):
