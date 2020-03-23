@@ -29,7 +29,7 @@ class EstruturaCurricularTests(TestCase):
 class SugestaoTurmaTests(TestCase):
 
     def setUp(self):
-        povoar.testes()
+        povoar.dados_testes()
 
     def test_create_sugestao(self):
         """

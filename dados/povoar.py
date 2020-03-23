@@ -393,10 +393,11 @@ def get_docente(siape):
     return docente
 
 
-def testes():
+def dados_testes():
     print("Povoando para Testes ...")
     print(os.getcwd())
 
+    centros()
     centro_testes()
     depart_testes()
     componentes_testes()
