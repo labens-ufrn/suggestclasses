@@ -63,13 +63,6 @@ def departamentos():
 
             if id_unidade_responsavel == '1482' and (tipo_unidade_organizacional == 'DEPARTAMENTO'
                                                      or tipo_unidade_organizacional == 'ASSESSORIA'):
-                print(id_dep)
-                print(codigo_dep)
-                print(nome_dep)
-                print(sigla_dep)
-                print(municipio)
-                print(tipo_unidade_organizacional)
-                print(id_unidade_responsavel)
                 if not Departamento.objects.filter(id_unidade=id_dep).exists():
                     d = Departamento(id_unidade=id_dep, codigo=codigo_dep, nome=nome_dep, sigla=sigla_dep,
                                      endereco=municipio,
@@ -99,13 +92,6 @@ def cursos():
             id_unidade_responsavel = row[14]
 
             if id_unidade_responsavel == '1482':
-                print(id_curso)
-                print(nome_curso)
-                print(nivel_ensino)
-                print(grau_academico)
-                print(modalidade_educacao)
-                print(turno)
-                print(id_unidade_responsavel)
                 if not Curso.objects.filter(codigo=id_curso).exists():
                     c = Curso(codigo=id_curso, nome=nome_curso, nivel=nivel_ensino, grau=grau_academico,
                               modalidade=modalidade_educacao, turno=turno, centro=ceres)
@@ -127,7 +113,6 @@ def componentes():
 
             if Departamento.objects.filter(nome=unidade_responsavel).exists():
                 depto = Departamento.objects.get(nome=unidade_responsavel)
-                print("Departamento " + depto.sigla)
 
                 id_componente = row[0]
                 tipo_componente = row[1]
@@ -157,6 +142,8 @@ def componentes():
                 curso_componente = row[28]
 
                 if not ComponenteCurricular.objects.filter(codigo=codigo_componente).exists():
+                    print("Adicionando Componente " + id_componente + " - " + codigo_componente + " - "
+                          + nome_componente)
                     cc = ComponenteCurricular(id_componente=id_componente, tipo=tipo_componente,
                                               codigo=codigo_componente, nivel=nivel_componente, nome=nome_componente,
                                               ch_teorica=ch_teorico, ch_pratica=ch_pratico, ch_estagio=ch_estagio,
@@ -166,8 +153,8 @@ def componentes():
                                               modalidade=modalidade, departamento=depto)
                     cc.save()
                 else:
-                    print("Componente " + id_componente + " - " + codigo_componente + " - "
-                          + nome_componente + " já adicionada!")
+                    print('.', end="")
+        print()
 
 
 def estruturas():
@@ -183,7 +170,6 @@ def estruturas():
 
             if Curso.objects.filter(codigo=curso_ufrn).exists():
                 curso_ceres = Curso.objects.get(codigo=curso_ufrn)
-                print(curso_ceres)
 
                 id_curriculo = row[0]
                 codigo = row[1]
@@ -240,11 +226,12 @@ def estruturas():
                                              curso=curso_ceres)
                     ec.save()
                 else:
-                    print("Estrutura " + id_curriculo + " - " + codigo + " - " + nome_matriz + " já adicionada!")
+                    print('.', end="")
+        print()
 
 
 def organizacao():
-    print("Criando Estruturas Curriculares para os Cursos do CERES ...!")
+    print("Criando Organizações Curriculares para os Cursos do CERES ...!")
 
     with open('curriculo-componente-graduacao.csv') as csvfile:
         ccg = csv.reader(csvfile, delimiter=';')
@@ -268,14 +255,15 @@ def organizacao():
                     nivel_ensino = row[5]
 
                     if not OrganizacaoCurricular.objects.filter(id_curriculo_componente=id_curriculo_comp).exists():
+                        print("Adicionando Docente: " + id_curriculo_comp + " - " + ec.curso.nome + " - " +
+                              cc.codigo + " - " + cc.nome)
                         oc = OrganizacaoCurricular(id_curriculo_componente=id_curriculo_comp, estrutura=ec,
                                                    componente=cc, semestre=semestre_oferta,
                                                    tipo_vinculo=tipo_vinculo_componente, nivel=nivel_ensino)
                         oc.save()
                     else:
-                        print(
-                            "OrganizacaoCurricular " + id_curriculo_comp + " - " + ec.curso.nome + " - " +
-                            cc.codigo + " - " + cc.nome + " já adicionada!")
+                        print('.', end="")
+        print()
 
 
 def criar_docentes():
@@ -301,9 +289,6 @@ def criar_docentes():
             admissao = parse(admissao_str)
 
             if id_unidade_lotacao == '1482' or Departamento.objects.filter(id_unidade=id_unidade_lotacao).exists():
-                print(siape)
-                print(nome)
-                print(lotacao)
 
                 if not Docente.objects.filter(siape=siape).exists():
                     print("Adicionando Docente: " + siape + " - " + nome)
@@ -313,13 +298,22 @@ def criar_docentes():
                                         id_unidade_lotacao=id_unidade_lotacao, lotacao=lotacao, admissao=admissao)
                     professor.save()
                 else:
-                    print("Docente " + siape + " - " + nome + " já adicionado!")
+                    print('.', end="")
+        print()
 
 
 def criar_turmas():
-    print("Criando Turmas 2019.1 e 2019.2 para os Cursos do CERES ...!")
+    print("Criando Turmas 2019.1, 2019.2 e 2020.1 para os Cursos do CERES ...!")
 
-    with open('turmas-2019.2.csv') as csvfile:
+    criar_turmas_semestre('turmas-2019.1.csv')  # O arquivo não estava no servidor dados.ufrn.br - estava no 2020.1
+    criar_turmas_semestre('turmas-2019.2.csv')
+    # criar_turmas_semestre('turmas-2020.1.csv')
+
+
+def criar_turmas_semestre(turma_csv):
+    print("Criando Turmas: " + turma_csv + " para os Cursos do CERES ...!")
+
+    with open(turma_csv) as csvfile:
         turmas = csv.reader(csvfile, delimiter=';')
         next(turmas)  # skip header
 
@@ -330,17 +324,12 @@ def criar_turmas():
 
             if ComponenteCurricular.objects.filter(id_componente=id_componente_curricular).exists():
                 cc = ComponenteCurricular.objects.get(id_componente=id_componente_curricular)
-                print(cc)
 
                 docente = get_docente(siape)
 
                 id_turma = row[0]
                 codigo_turma = row[1]
                 matricula_docente_externo = row[3] if row[3] != '' else None
-
-                if row[3] != '' and row[3] is not None:
-                    print(matricula_docente_externo)
-
                 observacao = row[4].strip()
                 ch_dedicada_periodo = row[6] if row[6] != '' else None
                 nivel_ensino = row[7]
@@ -368,7 +357,9 @@ def criar_turmas():
                 modalidade_participantes = row[25]
 
                 if not Turma.objects.filter(id_turma=id_turma).exists():
-                    turma = Turma(id_turma=id_turma, codigo_turma=codigo_turma, siape=siape,
+                    print("Adicionando Turma " + id_turma + " - " + codigo_turma + "- " + cc.codigo + " - " +
+                          cc.nome + " - " + descricao_horario)
+                    turma = Turma(id_turma=id_turma, codigo_turma=codigo_turma, docente=docente,
                                   matricula_docente_externo=matricula_docente_externo, observacao=observacao,
                                   componente=cc, ch_dedicada_periodo=ch_dedicada_periodo,
                                   nivel_ensino=nivel_ensino, campus_turma=campus_turma, local=local, ano=ano,
@@ -381,8 +372,8 @@ def criar_turmas():
                                   modalidade_participantes=modalidade_participantes)
                     turma.save()
                 else:
-                    print("Turma " + id_turma + " - " + codigo_turma + "- " + cc.codigo + " - " +
-                          cc.nome + " - " + descricao_horario + " já adicionada!")
+                    print('.', end="")
+        print()
 
 
 def get_docente(siape):
