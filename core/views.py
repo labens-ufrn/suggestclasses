@@ -14,7 +14,7 @@ from django.template import loader
 from django.shortcuts import render, redirect
 
 from core.models import Curso, Departamento, ComponenteCurricular, Centro, EstruturaCurricular, OrganizacaoCurricular, \
-    SugestaoTurma
+    SugestaoTurma, Sala, Docente
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre
 from .bo.pedagogia import get_estrutura_pedagogia
 from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
@@ -139,6 +139,32 @@ def curriculo_list(request):
     }
 
     return render(request, 'core/curriculo/list.html', context)
+
+
+def docente_list(request):
+    """
+            Lista todas os docentes do centro.
+    """
+    docentes = Docente.objects.all()
+
+    context = {
+        'docentes': docentes
+    }
+
+    return render(request, 'core/docente/list.html', context)
+
+
+def sala_list(request):
+    """
+            Lista todas as salas do centro.
+    """
+    salas = Sala.objects.all()
+
+    context = {
+        'salas': salas
+    }
+
+    return render(request, 'core/sala/list.html', context)
 
 
 def flow_list(request):
@@ -343,8 +369,7 @@ def sugestao_bsi_incluir(request):
         if form_sugestao.is_valid():
             sugestao_turma = form_sugestao.save()
             sugestao_turma.save()
-            print(sugestao_turma)
-            return sugestao_bsi(request)
+            return redirect('/core/sugestao/bsi')
     else:
         form_sugestao = SugestaoTurmaForm()
     return render(request, 'core/sugestao/incluir.html', {'form_sugestao': form_sugestao})

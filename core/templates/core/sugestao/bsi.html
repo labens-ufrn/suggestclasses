@@ -59,7 +59,10 @@
                 <td align="center" width="18%">
                   {% for turma in th.turmas %}
                     <p  style="font-size: 10px">{{ turma.componente.codigo }} - T{{ turma.codigo_turma }} <br />
-                      {{ turma.componente.nome }}</p>
+                      {{ turma.componente.nome }} <br />
+                      {{ turma.siape }} <br />
+                      {{ turma.local }} <br />
+                      {{ turma.campus_turma }}</p>
                   {% endfor %}
                 </td>
               {% endfor %}
