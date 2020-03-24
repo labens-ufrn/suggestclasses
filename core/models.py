@@ -192,6 +192,10 @@ class Docente(models.Model):
     lotacao = models.CharField(max_length=150)
     admissao = models.DateField()
 
+    def primeiro_nome(self):
+        split_nome = self.nome.split(' ')
+        return split_nome[0]
+
     def __str__(self):
         return self.siape.__str__() + ' - ' + self.nome + ' - ' + self.lotacao
 
@@ -199,9 +203,9 @@ class Docente(models.Model):
 class Turma(models.Model):
     id_turma = models.IntegerField()
     codigo_turma = models.CharField(max_length=50)
-    siape = models.IntegerField(null=True)
-    matricula_docente_externo = models.IntegerField(null=True)
-    observacao = models.CharField(max_length=250)
+    docente = models.ForeignKey(Docente, on_delete=models.PROTECT, null=True, blank=True)
+    matricula_docente_externo = models.IntegerField(null=True, blank=True)
+    observacao = models.CharField(max_length=250, blank=True)
     componente = models.ForeignKey(ComponenteCurricular, on_delete=models.PROTECT)
     ch_dedicada_periodo = models.IntegerField()
     nivel_ensino = models.CharField(max_length=50)
@@ -217,16 +221,16 @@ class Turma(models.Model):
     tipo = models.CharField(max_length=50)
     distancia = models.BooleanField()
     data_consolidacao = models.DateField(null=True)
-    agrupadora = models.BooleanField()
-    id_turma_agrupadora = models.IntegerField(null=True)
+    agrupadora = models.BooleanField(blank=True)
+    id_turma_agrupadora = models.IntegerField(null=True, blank=True)
     qtd_aulas_lancadas = models.IntegerField(null=True)
     situacao_turma = models.CharField(max_length=50)
-    convenio = models.CharField(max_length=50)
+    convenio = models.CharField(max_length=50, null=True, blank=True)
     modalidade_participantes = models.CharField(max_length=50)
 
     def __str__(self):
         return self.id_turma.__str__() + ' - ' + self.codigo_turma + ' - ' + self.componente.__str__() + ' - ' \
-               + self.siape.__str__() + ' - ' + self.descricao_horario
+               + self.docente.__str__() + ' - ' + self.descricao_horario
 
 
 class SugestaoTurma(models.Model):

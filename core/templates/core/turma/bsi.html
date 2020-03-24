@@ -58,7 +58,17 @@
                 <td align="center" width="18%">
                   {% for turma in th.turmas %}
                     <p  style="font-size: 10px">{{ turma.componente.codigo }} - T{{ turma.codigo_turma }} <br />
-                      {{ turma.componente.nome }}</p>
+                      <b>{{ turma.componente.nome }}</b> <br />
+                      {% if turma.docente is not None %}
+                        <span style="color: darkblue">{{ turma.docente.primeiro_nome }}
+                          ({{ turma.docente.siape }})</span> <br />
+                      {% elif turma.matricula_docente_externo is not None and turma.matricula_docente_externo != '' %}
+                        <i style="color: orangered">Prof. Substituto ({{ turma.matricula_docente_externo }})</i> <br />
+                      {% else %}
+                        <b style="color: red">DOCENTE NÃO DEFINIDO</b> <br />
+                      {% endif %}
+                      <i>{{ turma.local }}</i> <br />
+                      {{ turma.campus_turma }}</p>
                   {% endfor %}
                 </td>
               {% endfor %}

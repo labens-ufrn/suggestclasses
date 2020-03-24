@@ -50,8 +50,6 @@ def converte_desc_horario(descricao_horario, turno):
     horario_split = descricao_horario.split(turno)
     dias = horario_split[0]
     ordens = horario_split[1]
-    dias_size = len(dias)
-    ordens_size = len(ordens)
     for d in dias:
         for o in ordens:
             horario = Horario(dia=str(d), turno=turno, ordem=str(o))
