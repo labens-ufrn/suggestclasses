@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+  <section class="page-section" id="estuturas">
+    <div class="container">
+
+      <h2 class="page-section-heading text-center text-secondary mb-0">Docentes do CERES</h2>
+      <br />
+      <table class="table">
+        <tr align="center">
+          <th>Siape</th>
+          <th>Nome</th>
+          <th>Formação</th>
+          <th>Classe Funcional</th>
+          <th>Id Unidade Lotação</th>
+          <th>Lotação</th>
+        </tr>
+          {% for docente in docentes %}
+            <tr>
+              <td align="center">{{ docente.siape }}</td>
+              <td align="center">{{ docente.nome }}</td>
+              <td align="center">{{ docente.formacao }}</td>
+              <td align="center">{{ docente.classe_funcional }}</td>
+              <td align="center">{{ docente.id_unidade_lotacao }}</td>
+              <td align="center">{{ docente.lotacao }}</td>
+            </tr>
+          {% endfor %}
+      </table>
+    </div>
+  </section>
+{% endblock %}
+

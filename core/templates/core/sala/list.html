@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+  <section class="page-section" id="estuturas">
+    <div class="container">
+
+      <h2 class="page-section-heading text-center text-secondary mb-0">Salas do CERES</h2>
+      <br />
+      <table class="table">
+        <tr align="center">
+          <th>Sigla</th>
+          <th>Nome</th>
+          <th>Capacidade</th>
+          <th>Tamanho</th>
+          <th>Bloco</th>
+          <th>Centro</th>
+        </tr>
+          {% for sala in salas %}
+            <tr>
+              <td align="center">{{ sala.sigla }}</td>
+              <td align="center">{{ sala.nome }}</td>
+              <td align="center">{{ sala.capacidade }}</td>
+              <td align="center">{{ sala.tamanho }}</td>
+              <td align="center">{{ sala.bloco }}</td>
+              <td align="center">{{ sala.centro.nome }}</td>
+            </tr>
+          {% endfor %}
+      </table>
+    </div>
+  </section>
+{% endblock %}
+
