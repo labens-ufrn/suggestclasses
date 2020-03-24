@@ -259,6 +259,17 @@ def flow_ped(request):
     return render(request, 'core/flow/pedagogia.html', context)
 
 
+def flow_ped_op(request):
+    ped_ec = get_estrutura_pedagogia()
+    ped_oc_op = get_oc_by_semestre(ped_ec, 0)
+
+    context = {
+        'ped_oc_op': ped_oc_op,
+    }
+
+    return render(request, 'core/flow/ped-op.html', context)
+
+
 def cadastrar_usuario(request):
     if request.method == "POST":
         form_usuario = CadastroAlunoForm(request.POST)
