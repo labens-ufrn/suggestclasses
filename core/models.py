@@ -59,6 +59,9 @@ class Sala(models.Model):
     bloco = models.CharField(max_length=10)
     centro = models.ForeignKey(Centro, on_delete=models.PROTECT)
 
+    def __str__(self):
+        return self.nome + ' - ' + self.bloco + ' (' + self.capacidade.__str__() + ')'
+
 
 class ComponenteCurricular(models.Model):
     """
