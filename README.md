@@ -59,6 +59,32 @@ sonar-scanner \
   -Dsonar.login=02254c57898053f6e25acfb70756ef6f840d4d35
 ```
 
+## Arquivo .env com a SECRET_KEY
+
+Here's one way to do it that is compatible with deployment on Heroku:
+Create a gitignored file named .env containing:
+
+```shell script
+    export DJANGO_SECRET_KEY='replace-this-with-the-secret-key'
+```
+
+Then edit settings.py to remove the actual SECRET_KEY and add this instead:
+
+```shell script
+    SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+```
+
+Then when you want to run the development server locally, use:
+
+```shell script
+    source .env
+    python manage.py runserver
+```
+
+When you finally deploy to Heroku, go to your app Settings tab and add DJANGO_SECRET_KEY to the Config Vars.
+
+
+
 # Outras Configurações
 
 * Arquivo _.editorconfig_ de estilo de codificação adicionado.
