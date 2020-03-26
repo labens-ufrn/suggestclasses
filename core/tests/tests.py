@@ -6,7 +6,7 @@ django.setup()
 from dados import povoar
 from django.test import TestCase, Client
 from django.urls import reverse
-from core.models import EstruturaCurricular, ComponenteCurricular, SugestaoTurma, Docente, Departamento, Centro
+from core.models import EstruturaCurricular, ComponenteCurricular, SugestaoTurma, Docente, Departamento, Centro, Sala
 
 
 class EstruturaCurricularTests(TestCase):
@@ -50,18 +50,18 @@ class SugestaoTurmaTests(TestCase):
 
         cc = ComponenteCurricular.objects.get(codigo='DCT9999')
         campus_turma = 'CERES - Caicó'
-        local = 'Sala B1'
+        local = Sala.objects.get(nome='Sala B1')
         ano = 2020
         periodo = 1
         descricao_horario = '56M12'
         capacidade_aluno = 25
         tipo = 'REGULAR'
 
-        sugestao = SugestaoTurma(codigo_turma=codigo_turma, siape=siape,
+        sugestao = SugestaoTurma(codigo_turma=codigo_turma, docente=docente,
                                  matricula_docente_externo=matricula_docente_externo, componente=cc,
                                  campus_turma=campus_turma, local=local, ano=ano, periodo=periodo,
                                  descricao_horario=descricao_horario, capacidade_aluno=capacidade_aluno, tipo=tipo)
 
         self.assertEqual('01', sugestao.codigo_turma, 'Código da Turma')
-        self.assertEqual('1721652', sugestao.siape, 'Matrícula Siape do Docente')
+        self.assertEqual(1721652, sugestao.docente.siape, 'Matrícula Siape do Docente')
         self.assertEqual('', sugestao.matricula_docente_externo, 'Matrícula do Docente Externo')
