@@ -12,25 +12,25 @@
       <div class="text-center" id="div_periodos" style="font-size: 90%">
         <form method="get">
           <fieldset>
-            <input type="checkbox" id="1p" name="periodos" value="1">
+            <input type="checkbox" id="1p" name="semestres" value="1">
             <label for="1p">1º Período</label>
-            <input type="checkbox" id="2p" name="periodos" value="2">
+            <input type="checkbox" id="2p" name="semestres" value="2">
             <label for="2p">2º Período</label>
-            <input type="checkbox" id="3p" name="periodos" value="3">
+            <input type="checkbox" id="3p" name="semestres" value="3">
             <label for="3p">3º Período</label>
-            <input type="checkbox" id="4p" name="periodos" value="4">
+            <input type="checkbox" id="4p" name="semestres" value="4">
             <label for="4p">4º Período</label>
-            <input type="checkbox" id="5p" name="periodos" value="5">
+            <input type="checkbox" id="5p" name="semestres" value="5">
             <label for="5p">5º Período</label>
-            <input type="checkbox" id="6p" name="periodos" value="6">
+            <input type="checkbox" id="6p" name="semestres" value="6">
             <label for="6p">6º Período</label>
-            <input type="checkbox" id="7p" name="periodos" value="7">
+            <input type="checkbox" id="7p" name="semestres" value="7">
             <label for="7p">7º Período</label>
-            <input type="checkbox" id="8p" name="periodos" value="8">
+            <input type="checkbox" id="8p" name="semestres" value="8">
             <label for="8p">8º Período</label>
-            <input type="checkbox" id="0p" name="periodos" value="0">
+            <input type="checkbox" id="0p" name="semestres" value="0">
             <label for="0p">Opcionais</label>
-            <input type="checkbox" id="todos" name="periodos" value="100">
+            <input type="checkbox" id="todos" name="semestres" value="100">
             <label for="todos">Todos</label>
           </fieldset>
           <button id="get_sugestoes" type="submit">Carregar Sugestões de Turmas</button>
@@ -73,7 +73,7 @@
     $(document).ready(function() {
       $('#get_sugestoes').click({
         serviceUrl: '/core/sugestao/ped',
-        paramName: 'periodos',
+        paramName: 'semestres',
       });
     });
   </script>

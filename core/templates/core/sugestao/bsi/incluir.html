@@ -8,7 +8,15 @@
     <br/>
     <form method="post">
       {% csrf_token %}
-      {% for field in form_sugestao %}
+      {% for field in form.hidden_fields %}
+        <div class="form-group row">
+          {{ field }}
+          {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
+      {% for field in form_sugestao.visible_fields %}
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">{{ field.label_tag }}</label><br>
           {{ field }}

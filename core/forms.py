@@ -19,22 +19,22 @@ class CadastroAlunoForm(UserCreationForm):
 
 
 class SugestaoTurmaForm(ModelForm):
-    siape = forms.ChoiceField(choices=[('0', '--Selecione--')] +
-                                      [(docente.siape, docente.nome + " - " + docente.siape.__str__())
-                                       for docente in Docente.objects.all()],
-                              label='Docente')
+    docente = forms.ModelChoiceField(queryset=Docente.objects.all(), label='Docente')
 
     componente = forms.ModelChoiceField(queryset=get_cc_by_estrutura(get_estrutura_sistemas_dct()),
                                         label='Componente Curricular')
 
-    descricao_horario = forms.CharField(label='Descrição do Horário', help_text='A valid email address, please.',
+    descricao_horario = forms.CharField(label='Descrição do Horário',
                                         widget=forms.TextInput(attrs={'placeholder': 'Ex: 24M34'}))
+    ANO_ATUAL = 2020
+    PERIODO_ATUAL = 1
+    ano = forms.CharField(initial=ANO_ATUAL)
+    periodo = forms.CharField(initial=PERIODO_ATUAL)
 
     class Meta:
         model = SugestaoTurma
-        fields = ['codigo_turma', 'componente', 'siape', 'descricao_horario', 'ano', 'periodo',
-                  'campus_turma', 'capacidade_aluno']
+        fields = ['codigo_turma', 'componente', 'docente', 'descricao_horario',
+                  'local', 'capacidade_aluno', 'ano', 'periodo']
         widgets = {
             'codigo_turma': forms.TextInput(attrs={'placeholder': '01'}),
-            'descricao_horario': forms.TextInput(attrs={'placeholder': 'Ex: 24M34'}),
         }

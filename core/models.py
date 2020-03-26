@@ -58,9 +58,10 @@ class Sala(models.Model):
     tamanho = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     bloco = models.CharField(max_length=10)
     centro = models.ForeignKey(Centro, on_delete=models.PROTECT)
+    campus = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return self.nome + ' - ' + self.bloco + ' (' + self.capacidade.__str__() + ')'
+        return self.nome + ' (' + self.capacidade.__str__() + ')' + ' - ' + self.bloco
 
 
 class ComponenteCurricular(models.Model):
@@ -235,17 +236,17 @@ class Turma(models.Model):
 
 class SugestaoTurma(models.Model):
     codigo_turma = models.CharField(max_length=50)
-    siape = models.IntegerField(null=True)
-    matricula_docente_externo = models.IntegerField(null=True)
+    docente = models.ForeignKey(Docente, on_delete=models.PROTECT, null=True, blank=True)
+    matricula_docente_externo = models.IntegerField(null=True, blank=True)
     componente = models.ForeignKey(ComponenteCurricular, on_delete=models.PROTECT)
     campus_turma = models.CharField(max_length=50)
-    local = models.CharField(max_length=50)
+    local = models.ForeignKey(Sala, on_delete=models.PROTECT, null=True, blank=True)
     ano = models.IntegerField()
     periodo = models.IntegerField()
     descricao_horario = models.CharField(max_length=150)
     capacidade_aluno = models.IntegerField()
-    tipo = models.CharField(max_length=50)
+    tipo = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
         return self.codigo_turma + ' - ' + self.componente.__str__() + ' - ' \
-               + self.siape.__str__() + ' - ' + self.descricao_horario
+               + self.docente.__str__() + ' - ' + self.descricao_horario

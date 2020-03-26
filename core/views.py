@@ -378,16 +378,45 @@ def sugestao_bsi_incluir(request):
     if request.method == "POST":
         form_sugestao = SugestaoTurmaForm(request.POST)
         if form_sugestao.is_valid():
-            sugestao_turma = form_sugestao.save()
+            sugestao_turma = form_sugestao.save(commit=False)
+            sugestao_turma.tipo = 'REGULAR'
             sugestao_turma.save()
-            return redirect('/core/sugestao/bsi')
+            return redirect('/core/sugestao/bsi/list')
     else:
         form_sugestao = SugestaoTurmaForm()
-    return render(request, 'core/sugestao/incluir.html', {'form_sugestao': form_sugestao})
+    return render(request, 'core/sugestao/bsi/incluir.html', {'form_sugestao': form_sugestao})
+
+
+def atualiza_semestres(semestres):
+    if semestres.__contains__('100'):
+        semestres = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+    return semestres
 
 
 def sugestao_bsi(request):
-    semestres = request.GET.getlist('periodos')
+    bsi_dct = get_estrutura_sistemas_dct()
+
+    semestres = request.GET.getlist('semestres')
+    semestres = atualiza_semestres(semestres)
+
+    ano = 2020
+    periodo = 1
+    turmas = carrega_sugestao_turmas(bsi_dct, semestres, ano, periodo)
+
+    tt = []
+    tt.extend(carrega_turmas_horario(turmas, 'M'))
+    tt.extend(carrega_turmas_horario(turmas, 'T'))
+    tt.extend(carrega_turmas_horario(turmas, 'N'))
+
+    context = {
+        'tt': tt
+    }
+
+    return render(request, 'core/sugestao/bsi/list.html', context)
+
+
+def sugestao_ped(request):
+    semestres = request.GET.getlist('semestres')
 
     bsi_dct = get_estrutura_sistemas_dct()
 
@@ -406,19 +435,20 @@ def sugestao_bsi(request):
         'tt': tt
     }
 
-    return render(request, 'core/sugestao/bsi.html', context)
+    return render(request, 'core/sugestao/bsi/list.html', context)
 
 
-def sugestao_ped(request):
+@login_required(login_url='/core/usuario/logar')
+def sugestao_ped_incluir(request):
     if request.method == "POST":
         form_sugestao = SugestaoTurmaForm(request.POST)
         if form_sugestao.is_valid():
             sugestao_turma = form_sugestao.save()
-            print(sugestao_turma)
-            return redirect('index')
+            sugestao_turma.save()
+            return redirect('/core/sugestao/ped/list')
     else:
         form_sugestao = SugestaoTurmaForm()
-    return render(request, 'core/sugestao/ped.html', {'form_sugestao': form_sugestao})
+    return render(request, 'core/sugestao/ped/incluir.html', {'form_sugestao': form_sugestao})
 
 
 def plot(request):

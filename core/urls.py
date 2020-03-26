@@ -27,8 +27,8 @@ urlpatterns = [
     path('turma/bsi', views.turma_bsi, name='Turmas de Sistemas de Informação'),
     path('turma/ped', views.turma_ped, name='Turmas de Pedagogia'),
     path('sugestao/', views.sugestao_list, name='Lista de Sugestão de Turmas por Curso'),
-    path('sugestao/incluir', views.sugestao_bsi_incluir, name='Sugestão de Turmas de Sistemas de Informação'),
-    path('sugestao/bsi', views.sugestao_bsi, name='Sugestão de Turmas de Sistemas de Informação'),
-    path('sugestao/ped', views.sugestao_ped, name='Sugestão de Turmas de Pedagogia'),
+    path('sugestao/bsi/incluir', views.sugestao_bsi_incluir, name='Sugestão de Turmas de Sistemas de Informação'),
+    path('sugestao/bsi/list', views.sugestao_bsi, name='Sugestão de Turmas de Sistemas de Informação'),
+    path('sugestao/ped/list', views.sugestao_ped, name='Sugestão de Turmas de Pedagogia'),
     path('plot/', views.plot, name='Plot de Gráfico'),
 ]
