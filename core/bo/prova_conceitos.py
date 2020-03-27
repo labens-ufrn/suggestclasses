@@ -1,5 +1,8 @@
 import os
 import django
+
+from mysite.settings import BASE_DIR
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
 
@@ -11,6 +14,8 @@ from core.models import Horario
 def main():
     print("Executável para testes de conceitos e ideias!")
     print(os.getcwd())
+    print('BASE_DIR')
+    print(BASE_DIR)
 
     # criar_organizacao_sistemas_dct()
 
