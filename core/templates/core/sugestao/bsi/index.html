@@ -1,0 +1,62 @@
+{% extends 'core/base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-1 col-xs-1 col-sm-1"></div>
+      <div class="col-md-10 col-xs-10 col-sm-10">
+        <h3 class="round3" style="text-align:center;">Sugestões de Turmas</h3>
+      </div>
+      <div class="col-md-1 col-xs-1 col-sm-1"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-9 col-xs-9 col-sm-9"></div>
+      <div class="col-md-2 col-xs-1 col-sm-1">
+        <br/>
+        <a href="{% url 'sugestao_create' %}">
+          <button type="button" class="btn btn-success">
+            <span class="glyphicon glyphicon-plus">Criar Sugestão de Turma</span>
+          </button>
+        </a>
+      </div>
+    </div>
+    <br/>
+    {% for sugestao in sugestao_list %}
+      <div class="row">
+        <div class="col-md-1 col-xs-1 col-sm-1"></div>
+        <div class="col-md-6 col-xs-6 col-sm-6">
+          <ul class="list-group">
+
+            <li class="list-group-item ">
+              <a href="{% url 'sugestao_detail' sugestao.pk %}"> {{ sugestao.componente.codigo }}
+                {{ sugestao.componente.nome }} </a> <span class="badge"></span>
+            </li>
+          </ul>
+          <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+          <a href="{% url 'sugestao_detail' sugestao.pk %}">
+            <button type="button" class="btn btn-info">
+              <span class="glyphicon glyphicon-open">Detalhar</span>
+            </button>
+          </a>
+        </div>
+        <div class="col-md-1">
+          <a href="{% url 'sugestao_edit' sugestao.pk %}">
+            <button type="button" class="btn btn-info">
+              <span class="glyphicon glyphicon-pencil">Editar</span>
+            </button>
+          </a>
+        </div>
+        <div class="col-md-1">
+          <a href="{% url 'sugestao_delete' sugestao.pk %}">
+            <button type="button" class="btn btn-danger">
+              <span class="glyphicon glyphicon-trash">Excluir</span>
+            </button>
+          </a>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">Aqui vai algo?</div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

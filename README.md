@@ -102,6 +102,7 @@ M6 – 11h40 às 12h30 | T6 – 17h40 às 18h30 |
 
 # Links
 
+* https://www.techiediaries.com/django/django-3-tutorial-and-crud-example-with-mysql-and-bootstrap/
 * https://automationpanda.com/2017/09/14/django-projects-in-pycharm-community-edition/
 * http://craigthomas.ca/blog/2014/06/02/python-code-inspection-with-sonarqube/
 * https://docs.sonarqube.org/display/PLUG/Python+Unit+Tests+Execution+Reports+Import
