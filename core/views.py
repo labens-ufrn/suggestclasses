@@ -375,6 +375,24 @@ def sugestao_list(request):
     return render(request, 'core/sugestao/list.html')
 
 
+def sugestao_bsi_manter(request):
+    """
+            Lista todas as salas do centro.
+    """
+    bsi_dct = get_estrutura_sistemas_dct()
+    semestres = ['100']
+    semestres = atualiza_semestres(semestres)
+    ano = 2020
+    periodo = 1
+    st_list = carrega_sugestao_turmas(bsi_dct, semestres, ano, periodo)
+
+    context = {
+        'sugestao_list': st_list
+    }
+
+    return render(request, 'core/sugestao/bsi/manter.html', context)
+
+
 @login_required(login_url='/core/usuario/logar')
 def sugestao_bsi_incluir(request):
     if request.method == "POST":

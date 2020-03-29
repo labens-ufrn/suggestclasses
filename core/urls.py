@@ -1,5 +1,8 @@
+from django.conf.global_settings import STATIC_ROOT
+from django.conf.urls.static import static
 from django.urls import path
 
+from mysite.settings import STATIC_URL, MEDIA_URL, MEDIA_ROOT, DEBUG
 from . import views
 
 urlpatterns = [
@@ -27,8 +30,9 @@ urlpatterns = [
     path('turma/bsi', views.turma_bsi, name='Turmas de Sistemas de Informação'),
     path('turma/ped', views.turma_ped, name='Turmas de Pedagogia'),
     path('sugestao/', views.sugestao_list, name='Lista de Sugestão de Turmas por Curso'),
-    path('sugestao/bsi/incluir', views.sugestao_bsi_incluir, name='Sugestão de Turmas de Sistemas de Informação'),
-    path('sugestao/bsi/list', views.sugestao_bsi, name='Sugestão de Turmas de Sistemas de Informação'),
+    path('sugestao/bsi/incluir', views.sugestao_bsi_incluir, name='Incluir Sugestão de Turmas Sistemas de Informação'),
+    path('sugestao/bsi/list', views.sugestao_bsi, name='Listar Sugestão de Turmas de Sistemas de Informação'),
+    path('sugestao/bsi/manter', views.sugestao_bsi_manter, name='Manter Sugestão de Turmas de Sistemas de Informação'),
     path('sugestao/ped/list', views.sugestao_ped, name='Sugestão de Turmas de Pedagogia'),
     path('plot/', views.plot, name='Plot de Gráfico'),
     path('sugestao/index', views.IndexView.as_view(), name='sugestao_index'),
@@ -37,3 +41,7 @@ urlpatterns = [
     path('sugestao/create/', views.create, name='sugestao_create'),
     path('sugestao/delete/<int:pk>/', views.delete, name='sugestao_delete')
 ]
+
+if DEBUG:
+    urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
+    urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
