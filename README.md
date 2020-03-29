@@ -103,8 +103,10 @@ M6 – 11h40 às 12h30 | T6 – 17h40 às 18h30 |
 # Links
 
 * https://www.techiediaries.com/django/django-3-tutorial-and-crud-example-with-mysql-and-bootstrap/
+* https://learndjango.com/tutorials/django-favicon-tutorial
 * https://automationpanda.com/2017/09/14/django-projects-in-pycharm-community-edition/
 * http://craigthomas.ca/blog/2014/06/02/python-code-inspection-with-sonarqube/
 * https://docs.sonarqube.org/display/PLUG/Python+Unit+Tests+Execution+Reports+Import
 * https://stackoverflow.com/questions/34114427/django-upgrading-to-1-9-error-appregistrynotready-apps-arent-loaded-yet
 * https://simpleisbetterthancomplex.com/tutorial/2017/02/18/how-to-create-user-sign-up-view.html
+* https://stackoverflow.com/questions/32612690/bootstrap-4-glyphicons-migration
