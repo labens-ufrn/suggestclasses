@@ -21,7 +21,7 @@ from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre
 from .bo.pedagogia import get_estrutura_pedagogia
 from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .bo.turma import get_turmas, get_turmas_por_horario, TurmaHorario, carrega_turmas, carrega_turmas_horario, \
-    carrega_sugestao_turmas
+    carrega_sugestao_turmas, atualiza_semestres
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
 from .dao.departamento_dao import get_departamentos
@@ -350,14 +350,12 @@ def turma_bsi(request):
 
 
 def turma_ped(request):
-    periodos = request.GET.getlist('periodos')
-
     ped_deduc = get_estrutura_pedagogia()
 
-    if periodos.__contains__('100'):
-        periodos = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+    semestres = request.GET.getlist('semestres')
+    semestres = atualiza_semestres(semestres)
 
-    turmas = carrega_turmas(ped_deduc, periodos)
+    turmas = carrega_turmas(ped_deduc, semestres)
 
     tt = []
     tt.extend(carrega_turmas_horario(turmas, 'M'))
@@ -405,12 +403,6 @@ def sugestao_bsi_incluir(request):
     else:
         form_sugestao = SugestaoTurmaForm()
     return render(request, 'core/sugestao/bsi/incluir.html', {'form_sugestao': form_sugestao})
-
-
-def atualiza_semestres(semestres):
-    if semestres.__contains__('100'):
-        semestres = [1, 2, 3, 4, 5, 6, 7, 8, 0]
-    return semestres
 
 
 def sugestao_bsi(request):

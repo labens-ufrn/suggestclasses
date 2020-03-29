@@ -75,6 +75,12 @@ def carrega_turmas(estrutura, periodos):
     return turmas
 
 
+def atualiza_semestres(semestres):
+    if semestres.__contains__('100'):
+        semestres = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+    return semestres
+
+
 def carrega_sugestao_turmas(estrutura, semestres, ano, periodo):
     turmas = []
     for s in semestres:
