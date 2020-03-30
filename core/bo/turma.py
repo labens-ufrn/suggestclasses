@@ -34,21 +34,32 @@ def get_turmas_por_horario(turmas, dia, turno, ordem):
         desc_horario = t.descricao_horario
         if desc_horario == '':
             print('Turma sem Horário: ' + t.componente.nome)
-        horarios = converte_desc_horario(descricao_horario=desc_horario, turno=get_turno(desc_horario))
+        horarios = converte_desc_horario(descricao_horario=desc_horario)
 
         if desc_horario != "" and horarios.__contains__(horario):
             turmas_horario.append(t)
     return turmas_horario
 
 
-def converte_desc_horario(descricao_horario, turno):
+def converte_desc_horario(descricao_horario):
     horarios_list = []
     # Trata descricao_horario vazia e turno None.
-    if descricao_horario == '' or turno is None:
+    if descricao_horario == '' or descricao_horario is None:
         return horarios_list
 
-    # TODO quando há modificações de período é necessário quebrar o horário antes
-    horario_split = descricao_horario.split(turno)
+    horarios_split = descricao_horario.split()
+
+    for hs in horarios_split:
+        turno = get_turno(hs)
+        horarios = converte_horario_simples(hs, turno)
+        horarios_list.extend(horarios)
+
+    return horarios_list
+
+
+def converte_horario_simples(horario, turno):
+    horarios_list = []
+    horario_split = horario.split(turno)
     dias = horario_split[0]
     ordens = horario_split[1]
     for d in dias:
