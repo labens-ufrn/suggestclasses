@@ -110,3 +110,4 @@ M6 – 11h40 às 12h30 | T6 – 17h40 às 18h30 |
 * https://stackoverflow.com/questions/34114427/django-upgrading-to-1-9-error-appregistrynotready-apps-arent-loaded-yet
 * https://simpleisbetterthancomplex.com/tutorial/2017/02/18/how-to-create-user-sign-up-view.html
 * https://stackoverflow.com/questions/32612690/bootstrap-4-glyphicons-migration
+* https://engineering.contaazul.com/versionamento-de-software-na-era-%C3%A1gil-8b53f6c08192
