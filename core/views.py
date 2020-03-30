@@ -398,6 +398,7 @@ def sugestao_bsi_incluir(request):
         if form_sugestao.is_valid():
             sugestao_turma = form_sugestao.save(commit=False)
             sugestao_turma.tipo = 'REGULAR'
+            sugestao_turma.campus_turma = sugestao_turma.local.campus
             sugestao_turma.save()
             return redirect('/core/sugestao/bsi/list')
     else:
