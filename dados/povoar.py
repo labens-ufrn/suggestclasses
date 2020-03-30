@@ -27,10 +27,10 @@ def main():
     centros()  # Adicionamos apenas o CERES.
     departamentos()
     cursos()
-    # componentes()
-    # estruturas()
-    # organizacao()
-    # criar_docentes()
+    componentes()
+    estruturas()
+    organizacao()
+    criar_docentes()
     criar_turmas()
 
 
@@ -379,40 +379,6 @@ def criar_turmas_semestre(turma_csv):
                 else:
                     print('.', end="")
         print()
-
-
-def dados_testes():
-    print("Povoando para Testes ...")
-    print(os.getcwd())
-
-    centros()
-    centro_testes()
-    depart_testes()
-    componentes_testes()
-
-
-def centro_testes():
-    Centro.objects.create(id_unidade=9999, codigo=9999, nome='Centro de Teste',
-                          sigla='CTESTE', endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
-                          site='https://www.ceres.ufrn.br/')
-
-
-def depart_testes():
-    centro = Centro.objects.get(id_unidade=9999)
-    Departamento.objects.create(id_unidade=9998, codigo=9998, nome="Departamento de Teste", sigla="DTS",
-                                endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
-                                centro=centro)
-
-
-def componentes_testes():
-    depto = Departamento.objects.get(id_unidade=9998)
-    ComponenteCurricular.objects.create(id_componente=99999, tipo='DISCIPLINA',
-                                        codigo='DCT9999', nivel='G', nome='BANCO DE DADOS',
-                                        ch_teorica=30, ch_pratica=30, ch_estagio=0,
-                                        ch_total=60, ch_docente=60, ch_ead=0,
-                                        cr_max_ead=0, equivalencia='( BSI2201 )',
-                                        requisito='( ( BSI1106 ) OU ( DCT1106 ) )', corequisito='',
-                                        ementa='ementa', modalidade='Presencial', departamento=depto)
 
 
 if __name__ == "__main__":
