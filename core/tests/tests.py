@@ -3,7 +3,7 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
 
-from dados import povoar
+from core.tests.povoar_testes import criar_dados, remover_dados
 from django.test import TestCase, Client
 from django.urls import reverse
 from core.models import EstruturaCurricular, ComponenteCurricular, SugestaoTurma, Docente, Departamento, Centro, Sala
@@ -29,7 +29,10 @@ class EstruturaCurricularTests(TestCase):
 class SugestaoTurmaTests(TestCase):
 
     def setUp(self):
-        povoar.dados_testes()
+        criar_dados()
+
+    def tearDown(self):
+        remover_dados()
 
     def test_create_sugestao(self):
         """
