@@ -47,6 +47,7 @@ def converte_desc_horario(descricao_horario, turno):
     if descricao_horario == '' or turno is None:
         return horarios_list
 
+    # TODO quando há modificações de período é necessário quebrar o horário antes
     horario_split = descricao_horario.split(turno)
     dias = horario_split[0]
     ordens = horario_split[1]

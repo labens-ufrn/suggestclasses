@@ -1,33 +1,36 @@
 import csv
 import os
 import django
-
 django.setup()
 
+from mysite.settings import BASE_DIR
 from dateutil.parser import parse
 
 from dados.baixar_dados import downloads_dados
 from core.models import Curso, Centro, Departamento, ComponenteCurricular, EstruturaCurricular, \
     OrganizacaoCurricular, Docente, Turma
+from core.bo.curriculo import get_curriculo_by_cc
+from core.bo.docente import get_docente_by_siape
 
-DADOS_PATH = '/home/taciano/dev/workspace/suggestclasses/dados'
-SCLASSES_PATH = '/home/taciano/dev/workspace/suggestclasses'
+DADOS_PATH = os.path.join(BASE_DIR, 'dados')
 
 
 def main():
     print("Lendo dados sobre o CERES/UFRN ...!")
     print(os.getcwd())
+    print(os.path.join(BASE_DIR, 'dados'))
     os.chdir(DADOS_PATH)
     print(os.getcwd())
+    print(os.path.join(BASE_DIR, 'dados'))
 
     downloads_dados()
     centros()  # Adicionamos apenas o CERES.
     departamentos()
     cursos()
-    componentes()
-    estruturas()
-    organizacao()
-    criar_docentes()
+    # componentes()
+    # estruturas()
+    # organizacao()
+    # criar_docentes()
     criar_turmas()
 
 
@@ -141,7 +144,7 @@ def componentes():
                 modalidade = row[27]
                 curso_componente = row[28]
 
-                if not ComponenteCurricular.objects.filter(codigo=codigo_componente).exists():
+                if not ComponenteCurricular.objects.filter(id_componente=id_componente).exists():
                     print("Adicionando Componente " + id_componente + " - " + codigo_componente + " - "
                           + nome_componente)
                     cc = ComponenteCurricular(id_componente=id_componente, tipo=tipo_componente,
@@ -325,7 +328,9 @@ def criar_turmas_semestre(turma_csv):
             if ComponenteCurricular.objects.filter(id_componente=id_componente_curricular).exists():
                 cc = ComponenteCurricular.objects.get(id_componente=id_componente_curricular)
 
-                docente = get_docente(siape)
+                docente = get_docente_by_siape(siape)
+
+                curriculo = get_curriculo_by_cc(id_componente_curricular)
 
                 id_turma = row[0]
                 codigo_turma = row[1]
@@ -374,14 +379,6 @@ def criar_turmas_semestre(turma_csv):
                 else:
                     print('.', end="")
         print()
-
-
-def get_docente(siape):
-    docente = None
-    if siape != '' and Docente.objects.filter(siape=siape).exists():
-        # Professores Substitutos e Temporários não estão na lista
-        docente = Docente.objects.get(siape=siape)
-    return docente
 
 
 def dados_testes():
