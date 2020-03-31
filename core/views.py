@@ -1,33 +1,30 @@
 import io
-import matplotlib.pyplot as plt
-from django.views.generic import ListView, DetailView
-from matplotlib.backends.backend_agg import FigureCanvasAgg
 from random import sample
-
 from typing import List
 
+import matplotlib.pyplot as plt
 from django.contrib.auth import authenticate, logout, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import Group
 from django.http import HttpResponse
-from django.template import loader
 from django.shortcuts import render, redirect, get_object_or_404
-from requests import post
+from django.template import loader
+from django.views.generic import ListView, DetailView
+from matplotlib.backends.backend_agg import FigureCanvasAgg
 
-from core.models import Curso, Departamento, ComponenteCurricular, Centro, EstruturaCurricular, OrganizacaoCurricular, \
+from core.models import Curso, ComponenteCurricular, EstruturaCurricular, OrganizacaoCurricular, \
     SugestaoTurma, Sala, Docente
-from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre
 from .bo.pedagogia import get_estrutura_pedagogia
+from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre
 from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
-from .bo.turma import get_turmas, get_turmas_por_horario, TurmaHorario, carrega_turmas, carrega_turmas_horario, \
+from .bo.turma import carrega_turmas, carrega_turmas_horario, \
     carrega_sugestao_turmas, atualiza_semestres
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
 from .dao.departamento_dao import get_departamentos
 from .forms import CadastroAlunoForm, SugestaoTurmaForm
 from .models import Horario
-from django.db.models import Sum
 
 
 def index(request):
@@ -331,17 +328,19 @@ def turma_bsi(request):
     bsi_dct = get_estrutura_sistemas_dct()
 
     semestres = request.GET.getlist('semestres')
-    semestres = atualiza_semestres(semestres)
+    periodo = request.GET.getlist('periodo')
 
-    turmas = carrega_turmas(bsi_dct, semestres, ano=2019, periodo=2)
+    turmas = carrega_turmas(bsi_dct, semestres, periodo)
 
-    tt = []
-    tt.extend(carrega_turmas_horario(turmas, 'M'))
-    tt.extend(carrega_turmas_horario(turmas, 'T'))
-    tt.extend(carrega_turmas_horario(turmas, 'N'))
+    tt = carrega_turmas_horario(turmas)
+
+    periodo_atual = [] if not periodo else periodo[0]
+    semestres_atual = atualiza_semestres(semestres)
 
     context = {
-        'tt': tt
+        'tt': tt,
+        'periodo_atual': periodo_atual,
+        'semestres_atual': semestres_atual
     }
 
     return render(request, 'core/turma/bsi.html', context)
@@ -351,17 +350,19 @@ def turma_ped(request):
     ped_deduc = get_estrutura_pedagogia()
 
     semestres = request.GET.getlist('semestres')
-    semestres = atualiza_semestres(semestres)
+    periodo = request.GET.getlist('periodo')
 
-    turmas = carrega_turmas(ped_deduc, semestres, ano=2019, periodo=2)
+    turmas = carrega_turmas(ped_deduc, semestres, periodo)
 
-    tt = []
-    tt.extend(carrega_turmas_horario(turmas, 'M'))
-    tt.extend(carrega_turmas_horario(turmas, 'T'))
-    tt.extend(carrega_turmas_horario(turmas, 'N'))
+    tt = carrega_turmas_horario(turmas)
+
+    periodo_atual = [] if not periodo else periodo[0]
+    semestres_atual = atualiza_semestres(semestres)
 
     context = {
-        'tt': tt
+        'tt': tt,
+        'periodo_atual': periodo_atual,
+        'semestres_atual': semestres_atual
     }
 
     return render(request, 'core/turma/ped.html', context)
@@ -410,43 +411,36 @@ def sugestao_bsi(request):
     semestres = request.GET.getlist('semestres')
     semestres = atualiza_semestres(semestres)
 
-    ano = 2020
-    periodo = 1
-    turmas = carrega_sugestao_turmas(bsi_dct, semestres, ano, periodo)
+    turmas = carrega_sugestao_turmas(bsi_dct, semestres, ano=2020, periodo=1)
 
-    tt = []
-    tt.extend(carrega_turmas_horario(turmas, 'M'))
-    tt.extend(carrega_turmas_horario(turmas, 'T'))
-    tt.extend(carrega_turmas_horario(turmas, 'N'))
+    tt = carrega_turmas_horario(turmas)
 
     context = {
-        'tt': tt
+        'tt': tt,
+        'periodo_atual': '2020.1',
+        'semestres_atual': semestres
     }
 
     return render(request, 'core/sugestao/bsi/list.html', context)
 
 
 def sugestao_ped(request):
+    ped_deduc = get_estrutura_pedagogia()
+
     semestres = request.GET.getlist('semestres')
+    semestres = atualiza_semestres(semestres)
 
-    bsi_dct = get_estrutura_sistemas_dct()
+    turmas = carrega_sugestao_turmas(ped_deduc, semestres, ano=2020, periodo=1)
 
-    if semestres.__contains__('100'):
-        semestres = [1, 2, 3, 4, 5, 6, 7, 8, 0]
-    ano = 2020
-    periodo = 1
-    turmas = carrega_sugestao_turmas(bsi_dct, semestres, ano, periodo)
-
-    tt = []
-    tt.extend(carrega_turmas_horario(turmas, 'M'))
-    tt.extend(carrega_turmas_horario(turmas, 'T'))
-    tt.extend(carrega_turmas_horario(turmas, 'N'))
+    tt = carrega_turmas_horario(turmas)
 
     context = {
-        'tt': tt
+        'tt': tt,
+        'periodo_atual': '2020.1',
+        'semestres_atual': semestres
     }
 
-    return render(request, 'core/sugestao/bsi/list.html', context)
+    return render(request, 'core/sugestao/ped/list.html', context)
 
 
 @login_required(login_url='/core/usuario/logar')

@@ -6,10 +6,16 @@
     <div class="container">
 
       <h2 class="page-section-heading text-center text-secondary mb-0">Turmas do Curso Pedagogia</h2>
-      <h4 class="text-center">Semestre: 2019.2</h4>
       <br />
       <div class="text-center" id="div_semestres" style="font-size: 90%">
-        <form method="get">
+        <form id="form_semestres" method="get">
+          <fieldset>
+            <input type="radio" id="p19.1" name="periodo" value="2019.1">
+            <label for="p19.1">Período 2019.1</label>
+            <input type="radio" id="p19.2" name="periodo" value="2019.2">
+            <label for="p19.2">Período 2019.2</label>
+          </fieldset>
+          <br />
           <fieldset>
             <input type="checkbox" id="1p" name="semestres" value="1">
             <label for="1p">1º Período</label>
@@ -37,8 +43,12 @@
       </div>
 
       <br />
+      <p class="text-center alert-info">Obs.: Exibido apenas turmas da estrutura curricular atual!</p>
       <table class="table table-striped table-sm table-bordered">
         <thead class="thead-light">
+          <tr align="center">
+            <th colspan="6">Turmas do Período {{ periodo_atual }} - Semestres: {{ semestres_atual }}</th>
+          </tr>
           <tr align="center">
             <th scope="col">#</th>
             <th scope="col">Segunda</th>
@@ -81,8 +91,9 @@
   <script>
     $(document).ready(function() {
       $('#get_turmas').click({
-        serviceUrl: '/core/turma/ped',
+        serviceUrl: '/core/turma/bsi',
         paramName: 'semestres',
+        paramName: 'periodo',
       });
     });
   </script>

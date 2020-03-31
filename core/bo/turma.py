@@ -30,7 +30,6 @@ def get_turmas_por_horario(turmas, dia, turno, ordem):
     turmas_horario = []
     horario = Horario(dia=str(dia), turno=turno, ordem=str(ordem))
     for t in turmas:
-        print('Desc Horário: ' + t.descricao_horario)
         desc_horario = t.descricao_horario
         if desc_horario == '':
             print('Turma sem Horário: ' + t.componente.nome)
@@ -79,9 +78,13 @@ def get_turno(horario):
     return None
 
 
-def carrega_turmas(estrutura, periodos, ano, periodo):
+def carrega_turmas(estrutura, semestres, periodo):
+    semestres = atualiza_semestres(semestres)
+    ano = get_ano(periodo)
+    periodo = get_periodo(periodo)
+
     turmas = []
-    for s in periodos:
+    for s in semestres:
         ts = get_turmas(estrutura, s, ano, periodo)
         turmas.extend(ts)
     return turmas
@@ -93,6 +96,24 @@ def atualiza_semestres(semestres):
     return semestres
 
 
+def teste_vazio(periodo):
+    return periodo is None or not periodo or periodo[0] == ''
+
+
+def get_ano(periodo):
+    ano = 2019
+    if not teste_vazio(periodo):
+        ano = periodo[0].split('.')[0]
+    return ano
+
+
+def get_periodo(periodo):
+    p = 2
+    if not teste_vazio(periodo):
+        p = periodo[0].split('.')[1]
+    return p
+
+
 def carrega_sugestao_turmas(estrutura, semestres, ano, periodo):
     turmas = []
     for s in semestres:
@@ -101,7 +122,15 @@ def carrega_sugestao_turmas(estrutura, semestres, ano, periodo):
     return turmas
 
 
-def carrega_turmas_horario(turmas, turno):
+def carrega_turmas_horario(turmas):
+    tt = []
+    tt.extend(carrega_horario_turmas_por_turno(turmas, 'M'))
+    tt.extend(carrega_horario_turmas_por_turno(turmas, 'T'))
+    tt.extend(carrega_horario_turmas_por_turno(turmas, 'N'))
+    return tt
+
+
+def carrega_horario_turmas_por_turno(turmas, turno):
     tt = []
     n = 7
     if turno == 'N':
