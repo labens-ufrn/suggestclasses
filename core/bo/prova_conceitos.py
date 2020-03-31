@@ -21,7 +21,8 @@ def main():
 
     bsi_dct = get_estrutura_sistemas_dct()
 
-    turmas1p = get_turmas(bsi_dct, 1)
+    semestre = 1
+    turmas1p = get_turmas(bsi_dct, semestre, ano=2019, periodo=2)
 
     for t in turmas1p:
         print('Turma: ' + t.__str__())

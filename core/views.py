@@ -328,14 +328,12 @@ def turma_list(request):
 
 
 def turma_bsi(request):
-    periodos = request.GET.getlist('periodos')
-
     bsi_dct = get_estrutura_sistemas_dct()
 
-    if periodos.__contains__('100'):
-        periodos = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+    semestres = request.GET.getlist('semestres')
+    semestres = atualiza_semestres(semestres)
 
-    turmas = carrega_turmas(bsi_dct, periodos)
+    turmas = carrega_turmas(bsi_dct, semestres, ano=2019, periodo=2)
 
     tt = []
     tt.extend(carrega_turmas_horario(turmas, 'M'))
@@ -355,7 +353,7 @@ def turma_ped(request):
     semestres = request.GET.getlist('semestres')
     semestres = atualiza_semestres(semestres)
 
-    turmas = carrega_turmas(ped_deduc, semestres)
+    turmas = carrega_turmas(ped_deduc, semestres, ano=2019, periodo=2)
 
     tt = []
     tt.extend(carrega_turmas_horario(turmas, 'M'))

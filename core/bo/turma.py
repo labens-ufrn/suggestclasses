@@ -2,12 +2,12 @@ from core.bo.sevices import get_oc_by_semestre
 from core.models import Turma, Horario, SugestaoTurma
 
 
-def get_turmas(estrutura, semestre):
+def get_turmas(estrutura, semestre, ano, periodo):
     org_curricular = get_oc_by_semestre(estrutura, semestre)
 
     turmas = []
     for oc in org_curricular:
-        turma = Turma.objects.filter(componente=oc.componente, ano=2019, periodo=2)
+        turma = Turma.objects.filter(componente=oc.componente, ano=ano, periodo=periodo)
         for t in turma:
             turmas.append(t)
 
@@ -79,10 +79,10 @@ def get_turno(horario):
     return None
 
 
-def carrega_turmas(estrutura, periodos):
+def carrega_turmas(estrutura, periodos, ano, periodo):
     turmas = []
     for s in periodos:
-        ts = get_turmas(estrutura, s)
+        ts = get_turmas(estrutura, s, ano, periodo)
         turmas.extend(ts)
     return turmas
 
