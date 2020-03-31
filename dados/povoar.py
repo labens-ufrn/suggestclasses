@@ -42,7 +42,7 @@ def centros():
     if not Centro.objects.filter(id_unidade=1482).exists():
         centro.save()
     else:
-        print("Centro " + centro.codigo.__str__() + " - " + centro.sigla + " já adicionado!")
+        print('.', end="")
 
 
 def departamentos():
@@ -72,7 +72,7 @@ def departamentos():
                                      centro=ceres)
                     d.save()
                 else:
-                    print("Departamento " + id_dep + " - " + sigla_dep + " já adicionado!")
+                    print('.', end="")
 
 
 def cursos():
@@ -100,7 +100,7 @@ def cursos():
                               modalidade=modalidade_educacao, turno=turno, centro=ceres)
                     c.save()
                 else:
-                    print("Curso " + id_curso + " - " + nome_curso + " já adicionado!")
+                    print("Curso " + id_curso + " - " + nome_curso)
 
 
 def componentes():
