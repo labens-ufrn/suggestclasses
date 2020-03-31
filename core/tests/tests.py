@@ -21,7 +21,7 @@ class EstruturaCurricularTests(TestCase):
 
     def test_view(self):
         client = Client()
-        response = client.get(reverse('list'))
+        response = client.get(reverse('horarios_list'))
 
         self.assertEqual(200, response.status_code, 'Testando View list_horarios')
 
