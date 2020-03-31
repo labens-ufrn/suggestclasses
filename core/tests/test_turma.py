@@ -1,14 +1,23 @@
 import os
 import django
+
+from core.tests.povoar_testes import criar_dados, remover_dados
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
 
-from core.bo.turma import get_turno, converte_desc_horario
+from core.bo.turma import get_turno, converte_desc_horario, get_turmas
 from django.test import TestCase
-from core.models import Horario
+from core.models import Horario, EstruturaCurricular
 
 
 class TurmaBOTests(TestCase):
+
+    def setUp(self):
+        criar_dados()
+
+    def tearDown(self):
+        remover_dados()
 
     def test_get_turno(self):
         hm = '246M12'
@@ -62,3 +71,19 @@ class TurmaBOTests(TestCase):
         self.assertEqual(hmm_list, converte_desc_horario(hmm), 'Testando horários: ' + hmm)
         self.assertEqual(6, len(converte_desc_horario(hmtn)), 'Testando quantidade de horários: ' + hmtn)
         self.assertEqual(hmtn_list, converte_desc_horario(hmtn), 'Testando horários: ' + hmtn)
+
+    def test_get_turmas(self):
+        estrutura = EstruturaCurricular.objects.get(id_curriculo=999999999)
+        print(estrutura)
+        semestre = 1
+        turmas = get_turmas(estrutura, semestre, 2020, 1)
+
+        self.assertEqual(2, len(turmas), 'Testando Quantidade de Turma - 1º Semestre')
+        self.assertEqual('DCT9999', turmas[0].componente.codigo, 'Testando Código do Componente de Turma')
+        self.assertEqual('DCT9998', turmas[1].componente.codigo, 'Testando Código do Componente de Turma')
+
+        semestre = 2
+        turmas = get_turmas(estrutura, semestre, 2020, 1)
+        self.assertEqual(2, len(turmas), 'Testando Quantidade de Turma - 2º Semestre')
+        self.assertEqual('DCT9997', turmas[0].componente.codigo, 'Testando Código do Componente de Turma')
+        self.assertEqual('DCT9997', turmas[1].componente.codigo, 'Testando Código do Componente de Turma')

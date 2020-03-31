@@ -23,6 +23,6 @@ class DocenteTests(TestCase):
 
         self.assertIsNotNone(docente, 'Docente não é None?')
         self.assertEqual(9999999, docente.siape, 'Testando siape docente')
-        self.assertEqual('Nome Docente Teste', docente.nome, 'Testando nome docente')
+        self.assertEqual('Nome Docente Teste 1', docente.nome, 'Testando nome docente')
         self.assertEqual(9998, docente.id_unidade_lotacao, 'Testando id unidade de lotação docente')
         self.assertEqual('Departamento de Teste', docente.lotacao, 'Testando nome lotação docente')

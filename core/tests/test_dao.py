@@ -78,4 +78,4 @@ class ComponenteDAOTests(TestCase):
         depto = get_depto_by_id(9998)
         ccs = get_componentes_by_depto(depto)
 
-        self.assertEqual(1, len(ccs), 'Testando componentes')
+        self.assertEqual(3, len(ccs), 'Testando componentes')
