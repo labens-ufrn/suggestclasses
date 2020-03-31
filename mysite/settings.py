@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import sys
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -27,7 +29,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cg#p$g+j9tax!#a3cup@1$8obt2_+&
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', '192.168.0.106']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver']
 
 # Application definition
 
@@ -75,16 +77,19 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+password = os.getenv("password")
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'scdb_dev',
         'USER': 'sc_user',
-        'PASSWORD': 'sc_user',
+        'PASSWORD': password,
         'HOST': '127.0.0.1',
         'PORT': '3306',
         'TEST': {
             'NAME': 'scdb_test',
+            'ENGINE': 'django.db.backends.sqlite3'
         },
         # optional:
         'OPTIONS': {
@@ -99,6 +104,12 @@ DATABASES = {
         }
     }
 }
+
+# if 'test' in sys.argv and 'keepdb' in sys.argv:
+# and this allows you to use --keepdb to skip re-creating the db,
+# even faster! DADOS_PATH = os.path.join(BASE_DIR, 'dados')
+DADOS_PATH = os.path.join(BASE_DIR, 'dados')
+DATABASES['default']['TEST']['scdb_test'] = DADOS_PATH + '/mysite.test.db.sqlite3'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
