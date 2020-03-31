@@ -34,12 +34,11 @@ urlpatterns = [
     path('sugestao/bsi/list', views.sugestao_bsi, name='Listar Sugestão de Turmas de Sistemas de Informação'),
     path('sugestao/bsi/manter', views.sugestao_bsi_manter, name='Manter Sugestão de Turmas de Sistemas de Informação'),
     path('sugestao/ped/list', views.sugestao_ped, name='Sugestão de Turmas de Pedagogia'),
-    path('plot/', views.plot, name='Plot de Gráfico'),
-    path('sugestao/index', views.IndexView.as_view(), name='sugestao_index'),
     path('sugestao/<int:pk>/', views.SugestaoTurmaDetailView.as_view(), name='sugestao_detail'),
     path('sugestao/edit/<int:pk>/', views.edit, name='sugestao_edit'),
     path('sugestao/create/', views.create, name='sugestao_create'),
-    path('sugestao/delete/<int:pk>/', views.delete, name='sugestao_delete')
+    path('sugestao/delete/<int:pk>/', views.delete, name='sugestao_delete'),
+    path('plot/', views.plot, name='Plot de Gráfico')
 ]
 
 if DEBUG:

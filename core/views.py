@@ -456,6 +456,41 @@ def sugestao_ped_incluir(request):
     return render(request, 'core/sugestao/ped/incluir.html', {'form_sugestao': form_sugestao})
 
 
+class SugestaoTurmaDetailView(DetailView):
+    model = SugestaoTurma
+    template_name = 'core/sugestao/bsi/sugestao_detail.html'
+
+
+def create(request):
+    if request.method == 'POST':
+        sugestao_form = SugestaoTurmaForm(request.POST)
+        if sugestao_form.is_valid():
+            sugestao_form.save(commit=False)
+            sugestao_form.tipo = 'REGULAR'
+            sugestao_form.save()
+            return redirect('sugestao_index')
+    sugestao_form = SugestaoTurmaForm()
+
+    return render(request, 'core/sugestao/bsi/create.html', {'form': sugestao_form})
+
+
+def edit(request, pk, template_name='core/sugestao/bsi/editar.html'):
+    sugestao = get_object_or_404(SugestaoTurma, pk=pk)
+    form = SugestaoTurmaForm(request.POST or None, instance=sugestao)
+    if form.is_valid():
+        form.save()
+        return redirect('/core/sugestao/bsi/manter')
+    return render(request, template_name, {'form': form})
+
+
+def delete(request, pk, template_name='core/sugestao/bsi/confirm_delete.html'):
+    sugestao = get_object_or_404(SugestaoTurma, pk=pk)
+    if request.method == 'POST':
+        sugestao.delete()
+        return redirect('/core/sugestao/bsi/manter')
+    return render(request, template_name, {'object': sugestao})
+
+
 def plot(request):
     # Creamos los datos para representar en el gráfico
     x = range(1, 11)
@@ -487,46 +522,3 @@ def plot(request):
 
     # Devolvemos la response
     return response
-
-
-class IndexView(ListView):
-    template_name = 'core/sugestao/bsi/index.html'
-    context_object_name = 'sugestao_list'
-
-    def get_queryset(self):
-        return SugestaoTurma.objects.all()
-
-
-class SugestaoTurmaDetailView(DetailView):
-    model = SugestaoTurma
-    template_name = 'core/sugestao/bsi/sugestao_detail.html'
-
-
-def create(request):
-    if request.method == 'POST':
-        sugestao_form = SugestaoTurmaForm(request.POST)
-        if sugestao_form.is_valid():
-            sugestao_form.save(commit=False)
-            sugestao_form.tipo = 'REGULAR'
-            sugestao_form.save()
-            return redirect('sugestao_index')
-    sugestao_form = SugestaoTurmaForm()
-
-    return render(request, 'core/sugestao/bsi/create.html', {'form': sugestao_form})
-
-
-def edit(request, pk, template_name='core/sugestao/bsi/editar.html'):
-    sugestao = get_object_or_404(SugestaoTurma, pk=pk)
-    form = SugestaoTurmaForm(request.POST or None, instance=sugestao)
-    if form.is_valid():
-        form.save()
-        return redirect('index')
-    return render(request, template_name, {'form': form})
-
-
-def delete(request, pk, template_name='core/sugestao/bsi/confirm_delete.html'):
-    sugestao = get_object_or_404(SugestaoTurma, pk=pk)
-    if request.method == 'POST':
-        sugestao.delete()
-        return redirect('index')
-    return render(request, template_name, {'object': sugestao})
