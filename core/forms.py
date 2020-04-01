@@ -9,9 +9,9 @@ from core.models import SugestaoTurma, Docente, ComponenteCurricular
 
 
 class CadastroAlunoForm(UserCreationForm):
-    username = forms.CharField(max_length=30, required=True, label='Primeiro Nome',
+    username = forms.CharField(max_length=30, required=True,
                                help_text='Obrigatório. 30 caracteres ou menos. '
-                                         'Letras minúsculas, números e @/./+/-/_ apenas.')
+                                         'Letras minúsculas, números e @ . + - _ apenas.')
     first_name = forms.CharField(max_length=30, required=False, help_text='Optional.', label='Primeiro Nome')
     last_name = forms.CharField(max_length=30, required=False, help_text='Optional.', label='Sobrenome')
     grupo = forms.ModelChoiceField(queryset=Group.objects.all(), label='Grupo',
