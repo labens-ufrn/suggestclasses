@@ -4,7 +4,7 @@ from typing import List
 
 import matplotlib.pyplot as plt
 from django.contrib.auth import authenticate, logout, login, update_session_auth_hash
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import Group
 from django.http import HttpResponse
@@ -274,7 +274,7 @@ def cadastrar_usuario(request):
         form_usuario = CadastroAlunoForm(request.POST)
         if form_usuario.is_valid():
             usuario = form_usuario.save()
-            grupo = Group.objects.get(name='Alunos')
+            grupo = form_usuario.cleaned_data.get('grupo')
             usuario.groups.add(grupo)
             username = form_usuario.cleaned_data.get('username')
             raw_password = form_usuario.cleaned_data.get('password1')
@@ -390,7 +390,7 @@ def sugestao_bsi_manter(request):
     return render(request, 'core/sugestao/bsi/manter.html', context)
 
 
-@login_required(login_url='/core/usuario/logar')
+@permission_required("core.add_sugestao_turma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_bsi_incluir(request):
     if request.method == "POST":
         form_sugestao = SugestaoTurmaForm(request.POST)
@@ -489,6 +489,14 @@ def delete(request, pk, template_name='core/sugestao/bsi/confirm_delete.html'):
         sugestao.delete()
         return redirect('/core/sugestao/bsi/manter')
     return render(request, template_name, {'object': sugestao})
+
+
+def error_403(request, exception):
+    messages = 'Você não tem permissão de acessar: ' + request.get_full_path()
+    context = {
+        'messages': messages
+    }
+    return render(request, 'core/sugestao/bsi/list.html', context, status=403)
 
 
 def plot(request):

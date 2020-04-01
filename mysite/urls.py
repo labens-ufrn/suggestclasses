@@ -20,3 +20,5 @@ urlpatterns = [
     path('core/', include('core.urls')),
     path('admin/', admin.site.urls),
 ]
+
+handler403 = 'core.views.error_403'

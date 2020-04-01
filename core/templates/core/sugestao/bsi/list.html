@@ -8,6 +8,9 @@
       <h2 class="page-section-heading text-center text-secondary mb-0">Sugestões de Turmas
         do Curso Sistemas de Informação</h2>
       <h4 class="text-center">Período 2020.1</h4>
+      {% if messages != '' %}
+        <p class="text-center alert-danger">{{ messages }}</p>
+      {% endif %}
       <div id="manter" class="center text-center form-group">
         <a class="btn btn-primary btn-success" href="/core/sugestao/bsi/incluir">Incluir Sugestões de Turmas</a>
         <a class="btn btn-primary btn-info" href="/core/sugestao/bsi/manter">Manter Sugestões de Turmas</a>

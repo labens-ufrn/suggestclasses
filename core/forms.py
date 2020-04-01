@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.forms import Form, ModelForm
 
 from core.bo.sevices import get_cc_by_estrutura
@@ -9,13 +9,18 @@ from core.models import SugestaoTurma, Docente, ComponenteCurricular
 
 
 class CadastroAlunoForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-    last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-    email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
+    username = forms.CharField(max_length=30, required=True, label='Primeiro Nome',
+                               help_text='Obrigatório. 30 caracteres ou menos. '
+                                         'Letras minúsculas, números e @/./+/-/_ apenas.')
+    first_name = forms.CharField(max_length=30, required=False, help_text='Optional.', label='Primeiro Nome')
+    last_name = forms.CharField(max_length=30, required=False, help_text='Optional.', label='Sobrenome')
+    grupo = forms.ModelChoiceField(queryset=Group.objects.all(), label='Grupo',
+                                   help_text='Obrigatório. Grupo do usuário.')
+    email = forms.EmailField(max_length=254, help_text='Obrigatório. Informe um e-mail válido.')
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2',)
+        fields = ('username', 'first_name', 'last_name', 'grupo', 'email', 'password1', 'password2',)
 
 
 class SugestaoTurmaForm(ModelForm):
