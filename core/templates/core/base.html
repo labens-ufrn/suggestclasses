@@ -1,5 +1,4 @@
 {% load static %}
-{% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -9,7 +8,7 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min-4.1.3.css' %}">
-    <link rel="shortcut icon" type="image/png" href="{%  static 'favicon.ico' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}">
 </head>
 <body>
   <!-- Navigation -->
@@ -30,9 +29,6 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Contact</a>
@@ -70,14 +66,14 @@
       </nav>
 
       <div class="content container">
-          {% if user.is_authenticated %}
-					<p class="logged-in-p">
+        {% if user.is_authenticated %}
+					<p class="logged-in-p alert-info">
             Bem Vindo <b>{{ user.get_full_name }} [{{ user.username }}]</b>
 						<span class="sair"><a href="{% url 'Logout de Usuário' %}">Sair</a></span>
 					</p>
 				{% endif %}
-        {% block content %}
-        {% endblock %}
+        {% include 'core/messages.html' %}
+        {% block content %} {% endblock content %}
       </div>
 
     </div>
@@ -104,5 +100,14 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
             integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
             crossorigin="anonymous"></script>
+{# script to set the time if the message id is having the length greater than 0, #}
+{# then we will remove the message after 2000 milliseconds i.e. 2 seconds. #}
+    <script>
+      setTimeout(function(){
+        if ($('#msg').length > 0) {
+          $('#msg').remove();
+        }
+      }, 2000)
+    </script>
 </body>
 </html>

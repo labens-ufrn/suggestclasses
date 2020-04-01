@@ -3,10 +3,10 @@ from random import sample
 from typing import List
 
 import matplotlib.pyplot as plt
+from django.contrib import messages
 from django.contrib.auth import authenticate, logout, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
-from django.contrib.auth.models import Group
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
@@ -280,7 +280,10 @@ def cadastrar_usuario(request):
             raw_password = form_usuario.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
+            messages.success(request, 'Usuário cadastrado com sucesso.')
             return redirect('index')
+        else:
+            messages.error(request, 'O formulário contém dados inválidos')
     else:
         form_usuario = CadastroAlunoForm()
     return render(request, 'core/usuario/cadastro.html', {'form_usuario': form_usuario})
@@ -293,8 +296,10 @@ def logar_usuario(request):
         usuario = authenticate(request, username=username, password=password)
         if usuario is not None:
             login(request, usuario)
+            messages.success(request, 'Usuário logado com sucesso.')
             return redirect('index')
         else:
+            messages.error(request, 'Erro ao logar usuário.')
             form_login = AuthenticationForm()
     else:
         form_login = AuthenticationForm()
@@ -304,6 +309,7 @@ def logar_usuario(request):
 @login_required(login_url='/core/usuario/logar')
 def deslogar_usuario(request):
     logout(request)
+    messages.success(request, 'Usuário deslogado com sucesso.')
     return redirect('index')
 
 
@@ -314,6 +320,7 @@ def alterar_senha(request):
         if form_senha.is_valid():
             user = form_senha.save()
             update_session_auth_hash(request, user)
+            messages.success(request, 'Usuário atualizado com sucesso.')
             return redirect('index')
     else:
         form_senha = PasswordChangeForm(request.user)
@@ -399,6 +406,7 @@ def sugestao_bsi_incluir(request):
             sugestao_turma.tipo = 'REGULAR'
             sugestao_turma.campus_turma = sugestao_turma.local.campus
             sugestao_turma.save()
+            messages.success(request, 'Sugestão de Turma cadastrada com sucesso.')
             return redirect('/core/sugestao/bsi/list')
     else:
         form_sugestao = SugestaoTurmaForm()
@@ -450,6 +458,7 @@ def sugestao_ped_incluir(request):
         if form_sugestao.is_valid():
             sugestao_turma = form_sugestao.save()
             sugestao_turma.save()
+            messages.success(request, 'Sugestão de Turma cadastrada com sucesso.')
             return redirect('/core/sugestao/ped/list')
     else:
         form_sugestao = SugestaoTurmaForm()
@@ -492,11 +501,8 @@ def delete(request, pk, template_name='core/sugestao/bsi/confirm_delete.html'):
 
 
 def error_403(request, exception):
-    messages = 'Você não tem permissão de acessar: ' + request.get_full_path()
-    context = {
-        'messages': messages
-    }
-    return render(request, 'core/sugestao/bsi/list.html', context, status=403)
+    messages.success(request, 'Você não tem permissão de acessar: ' + request.get_full_path())
+    return redirect('/core/sugestao/bsi/list')
 
 
 def plot(request):
