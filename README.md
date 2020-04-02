@@ -112,3 +112,8 @@ M6 – 11h40 às 12h30 | T6 – 17h40 às 18h30 |
 * https://stackoverflow.com/questions/32612690/bootstrap-4-glyphicons-migration
 * https://engineering.contaazul.com/versionamento-de-software-na-era-%C3%A1gil-8b53f6c08192
 * https://studygyaan.com/django/how-to-use-message-framework-django-templates
+* https://realpython.com/django-redirects/
+* https://stackoverflow.com/questions/5836674/why-does-debug-false-setting-make-my-django-static-files-access-fail
+* https://casesup.com/category/knowledgebase/howtos/python-django-handling-custom-error-page
+* https://coderbook.com/@marcus/how-to-restrict-access-with-django-permissions/
+* https://www.agiliq.com/blog/2018/05/django-unit-testing/
