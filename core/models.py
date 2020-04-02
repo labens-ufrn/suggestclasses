@@ -110,6 +110,11 @@ class ComponenteCurricular(models.Model):
     modalidade = models.CharField(max_length=200)
     departamento = models.ForeignKey(Departamento, on_delete=models.PROTECT)
 
+    class Meta:
+        # ordering = ('name',)
+        verbose_name = 'componente curricular'
+        verbose_name_plural = 'componentes curriculares'
+
     def __str__(self):
         return self.codigo + ' - ' + self.nome
 
@@ -143,6 +148,11 @@ class EstruturaCurricular(models.Model):
     observacao = models.TextField(max_length=500, null=True)
     curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
 
+    class Meta:
+        # ordering = ('name',)
+        verbose_name = 'estrutura curricular'
+        verbose_name_plural = 'estruturas curriculares'
+
     def __str__(self):
         return self.codigo + ' - ' + self.nome
 
@@ -154,6 +164,11 @@ class OrganizacaoCurricular(models.Model):
     semestre = models.IntegerField()
     tipo_vinculo = models.CharField(max_length=50)
     nivel = models.CharField(max_length=50)
+
+    class Meta:
+        # ordering = ('name',)
+        verbose_name = 'organização curricular'
+        verbose_name_plural = 'organizações curriculares'
 
     def __str__(self):
         return self.componente.nome + ' - ' + self.estrutura.nome
@@ -230,6 +245,9 @@ class Turma(models.Model):
     convenio = models.CharField(max_length=50, null=True, blank=True)
     modalidade_participantes = models.CharField(max_length=50)
 
+    class Meta:
+        unique_together = ('codigo_turma', 'componente', 'ano', 'periodo')
+
     def __str__(self):
         return self.id_turma.__str__() + ' - ' + self.codigo_turma + ' - ' + self.componente.__str__() + ' - ' \
                + self.docente.__str__() + ' - ' + self.descricao_horario
@@ -247,6 +265,12 @@ class SugestaoTurma(models.Model):
     descricao_horario = models.CharField(max_length=150)
     capacidade_aluno = models.IntegerField()
     tipo = models.CharField(max_length=50, null=True, blank=True)
+
+    class Meta:
+        unique_together = ('codigo_turma', 'componente', 'ano', 'periodo')
+        # ordering = ('name',)
+        verbose_name = 'sugestão de turma'
+        verbose_name_plural = 'sugestões de turmas'
 
     def __str__(self):
         return self.codigo_turma + ' - ' + self.componente.__str__() + ' - ' \
