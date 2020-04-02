@@ -85,13 +85,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'scdb_dev',
         'USER': 'sc_user',
-        'PASSWORD': password,
+        'PASSWORD': 'sc_user',
         'HOST': '127.0.0.1',
         'PORT': '3306',
-        'TEST': {
-            'NAME': 'scdb_test',
-            'ENGINE': 'django.db.backends.sqlite3'
-        },
         # optional:
         'OPTIONS': {
             'charset': 'utf8',
@@ -102,15 +98,12 @@ DATABASES = {
                             'collation_connection=utf8_bin,'
                             'sql_mode=NO_ENGINE_SUBSTITUTION'  # see note below
             # 'SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
-        }
+        },
+        'TEST': {
+            'NAME': 'scdb_test'
+        },
     }
 }
-
-# if 'test' in sys.argv and 'keepdb' in sys.argv:
-# and this allows you to use --keepdb to skip re-creating the db,
-# even faster! DADOS_PATH = os.path.join(BASE_DIR, 'dados')
-DADOS_PATH = os.path.join(BASE_DIR, 'dados')
-DATABASES['default']['TEST']['scdb_test'] = DADOS_PATH + '/mysite.test.db.sqlite3'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -156,7 +149,34 @@ MESSAGE_TAGS = {
 
 STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static-files')
+STATIC_ROOT = ''
 
 # User_Uploaded_Files
 MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, '/media')
+
+# A sample logging configuration. The only tangible logging
+# performed by this configuration is to send an email to
+# the site admins on every HTTP 500 error when DEBUG=False.
+# See http://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+    },
+}
