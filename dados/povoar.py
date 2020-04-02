@@ -10,7 +10,7 @@ from dados.baixar_dados import downloads_dados
 from core.models import Curso, Centro, Departamento, ComponenteCurricular, EstruturaCurricular, \
     OrganizacaoCurricular, Docente, Turma
 from core.bo.curriculo import get_curriculo_by_cc
-from core.bo.docente import get_docente_by_siape
+from core.bo.docente import get_docente_by_siape, get_docente_by_nome
 
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')
 
@@ -26,11 +26,11 @@ def main():
     downloads_dados()
     centros()  # Adicionamos apenas o CERES.
     departamentos()
+    criar_docentes()
     cursos()
     componentes()
     estruturas()
     organizacao()
-    criar_docentes()
     criar_turmas()
 
 
@@ -88,6 +88,11 @@ def cursos():
 
             id_curso = row[0]
             nome_curso = row[1]
+
+            coordenador = row[3]
+            # TODO a busca foi feita pelo nome pois na tabela curso não tem o SIAPE do coordenador
+            docente = get_docente_by_nome(coordenador)
+
             nivel_ensino = row[5]
             grau_academico = row[6]
             modalidade_educacao = row[7]
@@ -96,11 +101,12 @@ def cursos():
 
             if id_unidade_responsavel == '1482':
                 if not Curso.objects.filter(codigo=id_curso).exists():
-                    c = Curso(codigo=id_curso, nome=nome_curso, nivel=nivel_ensino, grau=grau_academico,
-                              modalidade=modalidade_educacao, turno=turno, centro=ceres)
+                    c = Curso(codigo=id_curso, nome=nome_curso, coordenador=docente, nivel=nivel_ensino,
+                              grau=grau_academico, modalidade=modalidade_educacao, turno=turno, centro=ceres)
                     c.save()
                 else:
-                    print("Curso " + id_curso + " - " + nome_curso)
+                    print('.', end="")
+    print()
 
 
 def componentes():

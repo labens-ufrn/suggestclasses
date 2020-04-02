@@ -11,6 +11,7 @@
         <tr align="center">
           <th>Código</th>
           <th>Nome</th>
+          <th>Coordenador</th>
           <th>Nível</th>
           <th>Grau</th>
           <th>Modalidade</th>
@@ -21,11 +22,12 @@
             <tr>
               <td align="center">{{ curso.codigo }}</td>
               <td align="center">{{ curso.nome }}</td>
+              <td align="center">{{ curso.coordenador.nome }}</td>
               <td align="center">{{ curso.nivel }}</td>
               <td align="center">{{ curso.grau }}</td>
               <td align="center">{{ curso.modalidade }}</td>
               <td align="center">{{ curso.turno }}</td>
-              <td align="center">{{ curso.centro.nome }}</td>
+              <td align="center">{{ curso.centro.sigla }}</td>
             </tr>
           {% endfor %}
       </table>

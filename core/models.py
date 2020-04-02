@@ -32,12 +32,34 @@ class Departamento(models.Model):
         return self.nome + ' - ' + self.sigla
 
 
+class Docente(models.Model):
+    siape = models.IntegerField(unique=True)
+    nome = models.CharField(max_length=200)
+    sexo = models.CharField(max_length=10)
+    formacao = models.CharField(max_length=50)
+    tipo_jornada_trabalho = models.CharField(max_length=50)
+    vinculo = models.CharField(max_length=50)
+    categoria = models.CharField(max_length=50)
+    classe_funcional = models.CharField(max_length=50)
+    id_unidade_lotacao = models.IntegerField()
+    lotacao = models.CharField(max_length=150)
+    admissao = models.DateField()
+
+    def primeiro_nome(self):
+        split_nome = self.nome.split(' ')
+        return split_nome[0]
+
+    def __str__(self):
+        return self.siape.__str__() + ' - ' + self.nome + ' - ' + self.lotacao
+
+
 class Curso(models.Model):
     """
         Um curso tem: código, nome, nível de ensino, grau acadêmico, modalidade, turno e centro.
     """
     codigo = models.IntegerField(unique=True)
     nome = models.CharField(max_length=200)
+    coordenador = models.ForeignKey(Docente, on_delete=models.PROTECT, blank=True, null=True)
     nivel = models.CharField(max_length=250)
     grau = models.CharField(max_length=250)
     modalidade = models.CharField(max_length=250)
@@ -178,27 +200,6 @@ class Horario(models.Model):
 
     def __str__(self):
         return self.dia + self.turno + self.ordem
-
-
-class Docente(models.Model):
-    siape = models.IntegerField(unique=True)
-    nome = models.CharField(max_length=200)
-    sexo = models.CharField(max_length=10)
-    formacao = models.CharField(max_length=50)
-    tipo_jornada_trabalho = models.CharField(max_length=50)
-    vinculo = models.CharField(max_length=50)
-    categoria = models.CharField(max_length=50)
-    classe_funcional = models.CharField(max_length=50)
-    id_unidade_lotacao = models.IntegerField()
-    lotacao = models.CharField(max_length=150)
-    admissao = models.DateField()
-
-    def primeiro_nome(self):
-        split_nome = self.nome.split(' ')
-        return split_nome[0]
-
-    def __str__(self):
-        return self.siape.__str__() + ' - ' + self.nome + ' - ' + self.lotacao
 
 
 class Turma(models.Model):
