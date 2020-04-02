@@ -117,3 +117,6 @@ M6 – 11h40 às 12h30 | T6 – 17h40 às 18h30 |
 * https://casesup.com/category/knowledgebase/howtos/python-django-handling-custom-error-page
 * https://coderbook.com/@marcus/how-to-restrict-access-with-django-permissions/
 * https://www.agiliq.com/blog/2018/05/django-unit-testing/
+* https://coderbook.com/@marcus/how-to-change-name-of-django-application/
+* https://stackoverflow.com/questions/16797623/how-do-i-rename-a-django-project-in-pycharm
+* https://django-project-skeleton.readthedocs.io/en/latest/structure.html
