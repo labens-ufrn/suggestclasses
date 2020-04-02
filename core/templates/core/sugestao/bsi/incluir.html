@@ -28,6 +28,7 @@
           {% endfor %}
         </div>
       {% endfor %}
+      <input type="hidden" name="next" value="{{ request.GET.next }}">
       <div class="form-group">
         <input type="submit" value="Salvar" class="btn btn-primary">
       </div>

@@ -31,6 +31,10 @@ class SugestaoTurmaForm(ModelForm):
 
     descricao_horario = forms.CharField(label='Descrição do Horário',
                                         widget=forms.TextInput(attrs={'placeholder': 'Ex: 24M34'}))
+
+    capacidade_aluno = forms.CharField(label='Vagas', max_length=3,
+                                       help_text='Obrigatório. As vagas deve ser menor que a capacidade da sala.')
+
     ANO_ATUAL = 2020
     PERIODO_ATUAL = 1
     ano = forms.CharField(initial=ANO_ATUAL)

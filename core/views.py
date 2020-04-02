@@ -407,7 +407,9 @@ def sugestao_bsi_incluir(request):
             sugestao_turma.campus_turma = sugestao_turma.local.campus
             sugestao_turma.save()
             messages.success(request, 'Sugestão de Turma cadastrada com sucesso.')
-            return redirect('/core/sugestao/bsi/list')
+            return redirect('/core/sugestao/bsi/manter')
+        else:
+            messages.error(request, form_sugestao.errors['__all__'])
     else:
         form_sugestao = SugestaoTurmaForm()
     return render(request, 'core/sugestao/bsi/incluir.html', {'form_sugestao': form_sugestao})
@@ -483,26 +485,33 @@ def create(request):
     return render(request, 'core/sugestao/bsi/create.html', {'form': sugestao_form})
 
 
+@permission_required("core.change_sugestao_turma", login_url='/core/usuario/logar', raise_exception=True)
 def edit(request, pk, template_name='core/sugestao/bsi/editar.html'):
     sugestao = get_object_or_404(SugestaoTurma, pk=pk)
     form = SugestaoTurmaForm(request.POST or None, instance=sugestao)
     if form.is_valid():
         form.save()
+        messages.success(request, 'Sugestão de Turma alterada com sucesso.')
         return redirect('/core/sugestao/bsi/manter')
+    else:
+        messages.error(request, form.errors['__all__'])
     return render(request, template_name, {'form': form})
 
 
+@permission_required("core.delete_sugestao_turma", login_url='/core/usuario/logar', raise_exception=True)
 def delete(request, pk, template_name='core/sugestao/bsi/confirm_delete.html'):
     sugestao = get_object_or_404(SugestaoTurma, pk=pk)
     if request.method == 'POST':
         sugestao.delete()
+        messages.success(request, 'Sugestão de Turma excluída com sucesso.')
         return redirect('/core/sugestao/bsi/manter')
     return render(request, template_name, {'object': sugestao})
 
 
 def error_403(request, exception):
-    messages.success(request, 'Você não tem permissão de acessar: ' + request.get_full_path())
-    return redirect('/core/sugestao/bsi/list')
+    messages.success(request, 'Você não tem permissão de acessar: ' + request.path)
+    next = request.GET.get('next', '/')
+    return redirect(next)
 
 
 def plot(request):
