@@ -120,3 +120,5 @@ M6 – 11h40 às 12h30 | T6 – 17h40 às 18h30 |
 * https://coderbook.com/@marcus/how-to-change-name-of-django-application/
 * https://stackoverflow.com/questions/16797623/how-do-i-rename-a-django-project-in-pycharm
 * https://django-project-skeleton.readthedocs.io/en/latest/structure.html
+* https://stackoverflow.com/questions/35796195/how-to-redirect-to-previous-page-in-django-after-post-request/35796330
+* https://github.com/hjwp/Test-Driven-Django-Tutorial
