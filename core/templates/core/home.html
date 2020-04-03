@@ -1,0 +1,133 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+  <!-- Dashboard Section -->
+  <section class="page-section" id="dashboard">
+    <div class="container">
+
+      <!-- Portfolio Section Heading -->
+      <h2 class="page-section-heading text-center text-secondary mb-0">SuggestClasses</h2>
+      <h4 class="age-section-heading text-center text-secondary">
+        <p>Sistema de Sugestão de Turmas e Análise de Dados Educacionais</p>
+      </h4>
+
+      <p><b>Observação:</b> Todos os dados são provenientes de Dados Abertos em
+        <a href="http://dados.ufrn.br">http://dados.ufrn.br</a>. Dependendo do dado não temos o mais atual.</p>
+      <br/>
+      <!-- Icon Divider -->
+      <div class="divider-custom">
+        <div class="divider-custom-line"></div>
+        <div class="divider-custom-icon">
+          <i class="fas fa-star"></i>
+        </div>
+        <div class="divider-custom-line"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8 mb-5">
+          <h2>What We Do</h2>
+          <hr>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A deserunt neque tempore recusandae animi soluta
+            quasi? Asperiores rem dolore eaque vel, porro, soluta unde debitis aliquam laboriosam. Repellat explicabo,
+            maiores!</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis optio neque consectetur consequatur magni
+            in nisi, natus beatae quidem quam odit commodi ducimus totam eum, alias, adipisci nesciunt voluptate.
+            Voluptatum.</p>
+          <a class="btn btn-primary btn-lg" href="#">Call to Action &raquo;</a>
+        </div>
+        <div class="col-md-4 mb-5">
+          <h2>Contact Us</h2>
+          <hr>
+          <address>
+            <strong>Start Bootstrap</strong>
+            <br>3481 Melrose Place
+            <br>Beverly Hills, CA 90210
+            <br>
+          </address>
+          <address>
+            <abbr title="Phone">P:</abbr>
+            (123) 456-7890
+            <br>
+            <abbr title="Email">E:</abbr>
+            <a href="mailto:#">name@example.com</a>
+          </address>
+        </div>
+      </div>
+
+
+      <!-- Portfolio Grid Items -->
+      <div class="row">
+
+      <div class="col-lg-4 col-md-3 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h4 class="card-title">
+                <b href="#">Centros</b>
+              </h4>
+              <p class="card-text">
+                <p class="fonte_pequena">
+                  {{ ceres }} <br/>
+                  {{ ceres.endereco }} <br/>
+                  {{ ceres.site }}
+                </p>
+                Total: {{ ceres.count }}
+              </p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted"><a href="/core/componente/list/">Listar Todas</a></small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-3 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h4 class="card-title">
+                <b>Departamentos</b>
+              </h4>
+              <p class="card-text">
+              <p class="fonte_pequena">
+                {% for depto in departamentos %}
+                  {{ depto.nome }} <br/>
+                {% endfor %}
+              </p>
+              <p>Total: {{ departamentos.count }}</p>
+              </p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted"><a href="/core/departamento/list/">Listar Todas</a></small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-3 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h4 class="card-title">
+                <b>Cursos</b>
+              </h4>
+              <p class="card-text">
+              <p class="fonte_pequena">
+                {% for curso in cursos %}
+                  {{ curso.nome }} - {{ curso.grau }} <br/>
+                {% endfor %}
+              </p>
+              <p>Total: {{ cursos.count }}</p>
+              </p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted"><a href="/core/curso/list/">Listar Todas</a></small>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+      <!-- /.row -->
+
+    </div>
+  </section>
+
+{% endblock %}
