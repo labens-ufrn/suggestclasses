@@ -16,7 +16,9 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 from core.models import Curso, ComponenteCurricular, EstruturaCurricular, OrganizacaoCurricular, \
     SugestaoTurma, Sala, Docente
 from .bo.curso import get_cursos
+from .bo.docente import get_docentes
 from .bo.pedagogia import get_estrutura_pedagogia
+from .bo.sala import get_salas
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre
 from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .bo.turma import carrega_turmas, carrega_turmas_horario, \
@@ -30,17 +32,24 @@ from .models import Horario
 
 def index(request):
     """
-    View para o Home (Tela Inicial).
+        View para o Home (Tela Inicial).
     :param request: Uma requisição http.
     :return: Um response com dados sobre o CERES/UFRN.
     """
     ceres = get_ceres()
     departamentos = get_departamentos()
     cursos = get_cursos()
+    componentes = get_componentes_curriculares()
+    salas = get_salas()
+    docentes = get_docentes()
+
     context = {
         'ceres': ceres,
         'departamentos': departamentos,
-        'cursos': cursos
+        'docentes': docentes,
+        'cursos': cursos,
+        'componentes': componentes,
+        'salas': salas,
     }
 
     return render(request, 'core/home.html', context)

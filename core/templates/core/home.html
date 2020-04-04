@@ -7,14 +7,15 @@
     <div class="container">
 
       <!-- Portfolio Section Heading -->
-      <h2 class="page-section-heading text-center text-secondary mb-0">SuggestClasses</h2>
-      <h4 class="age-section-heading text-center text-secondary">
-        <p>Sistema de Sugestão de Turmas e Análise de Dados Educacionais</p>
-      </h4>
+      <h2 class="page-section-heading text-center text-secondary mb-0">
+        Sistema de Sugestão de Turmas e Análise de Dados Educacionais
+      </h2>
+      <br>
+      <p class="alert-danger"><b>Obs. 1:</b> SuggestClasses v1.0-alpha: Versão de Testes que pode conter bugs e
+        funcionalidades em desenvolvimento. Os dados cadastrados não serão salvos! Atualmente apenas dados
+        do <b>Centro de Ensino Superior do Seridó - CERES/UFRN</b> estão carregados.
+      </p>
 
-      <p><b>Observação:</b> Todos os dados são provenientes de Dados Abertos em
-        <a href="http://dados.ufrn.br">http://dados.ufrn.br</a>. Dependendo do dado não temos o mais atual.</p>
-      <br/>
       <!-- Icon Divider -->
       <div class="divider-custom">
         <div class="divider-custom-line"></div>
@@ -26,107 +27,74 @@
 
       <div class="row">
         <div class="col-md-8 mb-5">
-          <h2>What We Do</h2>
           <hr>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A deserunt neque tempore recusandae animi soluta
-            quasi? Asperiores rem dolore eaque vel, porro, soluta unde debitis aliquam laboriosam. Repellat explicabo,
-            maiores!</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis optio neque consectetur consequatur magni
-            in nisi, natus beatae quidem quam odit commodi ducimus totam eum, alias, adipisci nesciunt voluptate.
-            Voluptatum.</p>
-          <a class="btn btn-primary btn-lg" href="#">Call to Action &raquo;</a>
+          <p>O Sistema <b>SuggestClass</b> permite o carregamento de <b>Dados Abertos da UFRN</b> e exibe informações
+            tratadas que possam ser utilizadas por gestores, docentes e discentes.</p>
+          <p>O objetivo da versão 1.0 é exibir <a href="/core/turma/"><b>Turmas do Período Atual</b></a> e
+            <a href="/core/sugestao/"><b>Sugestões de Turmas do Próximo Período</b></a> em formato de
+            tabela de horários. Sendo possível exibir a tabela de horários por Curso (Pedagogia, Sistema de Informação),
+            por Sala (em desenvolvimento), por Docente e por Discente.</p>
+          <hr>
+          <div class="row">
+            <div class="col-sm-3 col-md-6 col-lg-6">
+              <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <a href="/core/curso/list/">Cursos</a>
+                  <span class="badge badge-primary badge-pill">{{ cursos.count }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="/core/departamento/list/">Departamentos</a>
+                  <span class="badge badge-primary badge-pill">{{ departamentos.count }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <a href="/core/componente/list/">Componentes Curriculares</a>
+                  <span class="badge badge-primary badge-pill">{{ componentes.count }}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+              <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <a href="/core/discente/list/" class="disabled" tabindex="-1">Discentes</a>
+                  <span class="badge badge-primary badge-pill">--</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="/core/docente/list/">Docentes</a>
+                  <span class="badge badge-primary badge-pill">{{ docentes.count }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <a href="/core/sala/list/">Salas</a>
+                  <span class="badge badge-primary badge-pill">{{ salas.count }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <br>
+          <p class="alert-danger"><b>Obs. 2:</b> Todos os dados são provenientes de Dados Abertos em
+            <a href="http://dados.ufrn.br">http://dados.ufrn.br</a>. Como dependemos dos dados publicados
+            podemos não ter a informação mais atual.</p>
         </div>
         <div class="col-md-4 mb-5">
-          <h2>Contact Us</h2>
           <hr>
           <address>
-            <strong>Start Bootstrap</strong>
-            <br>3481 Melrose Place
-            <br>Beverly Hills, CA 90210
+            <strong>LABENS - Laboratório de Banco de Dados e Engenharia de Software</strong>
+            <br>Centro de Ensino Superior do Seridó - CERES/UFRN
+            <br>Caicó, RN
+            <br><a href="http://labens-ufrn.github.io/">http://labens-ufrn.github.io/</a>
             <br>
           </address>
           <address>
-            <abbr title="Phone">P:</abbr>
-            (123) 456-7890
+            <abbr title="Telefone/Whatsapp">Fone:</abbr>
+            (84) 9-9927-4706
             <br>
-            <abbr title="Email">E:</abbr>
-            <a href="mailto:#">name@example.com</a>
+            <abbr title="Email">E-mail:</abbr>
+            <a href="mailto:#">taciano@dct.ufrn.br</a>
           </address>
+          <p class="alert-info"><b>Obs. 3:</b> Sugestões de melhorias são bem-vindas por e-mail ou pelo
+            <b><a href="https://github.com/labens-ufrn/suggestclasses">GitHub do SuggestClasses</a></b>
+            (issues e pull requests).</p>
         </div>
       </div>
-
-
-      <!-- Portfolio Grid Items -->
-      <div class="row">
-
-      <div class="col-lg-4 col-md-3 mb-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h4 class="card-title">
-                <b href="#">Centros</b>
-              </h4>
-              <p class="card-text">
-                <p class="fonte_pequena">
-                  {{ ceres }} <br/>
-                  {{ ceres.endereco }} <br/>
-                  {{ ceres.site }}
-                </p>
-                Total: {{ ceres.count }}
-              </p>
-            </div>
-            <div class="card-footer">
-              <small class="text-muted"><a href="/core/componente/list/">Listar Todas</a></small>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-md-3 mb-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h4 class="card-title">
-                <b>Departamentos</b>
-              </h4>
-              <p class="card-text">
-              <p class="fonte_pequena">
-                {% for depto in departamentos %}
-                  {{ depto.nome }} <br/>
-                {% endfor %}
-              </p>
-              <p>Total: {{ departamentos.count }}</p>
-              </p>
-            </div>
-            <div class="card-footer">
-              <small class="text-muted"><a href="/core/departamento/list/">Listar Todas</a></small>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-md-3 mb-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h4 class="card-title">
-                <b>Cursos</b>
-              </h4>
-              <p class="card-text">
-              <p class="fonte_pequena">
-                {% for curso in cursos %}
-                  {{ curso.nome }} - {{ curso.grau }} <br/>
-                {% endfor %}
-              </p>
-              <p>Total: {{ cursos.count }}</p>
-              </p>
-            </div>
-            <div class="card-footer">
-              <small class="text-muted"><a href="/core/curso/list/">Listar Todas</a></small>
-            </div>
-          </div>
-        </div>
-
-
-
-      </div>
-      <!-- /.row -->
-
     </div>
   </section>
 
