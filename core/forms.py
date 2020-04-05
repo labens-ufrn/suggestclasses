@@ -5,7 +5,7 @@ from django.forms import Form, ModelForm
 
 from core.bo.sevices import get_cc_by_estrutura
 from core.bo.sistemas import get_estrutura_sistemas_dct
-from core.models import SugestaoTurma, Docente, ComponenteCurricular
+from core.models import SugestaoTurma, Docente, ComponenteCurricular, EstruturaCurricular
 
 
 class CadastroAlunoForm(UserCreationForm):
@@ -26,7 +26,7 @@ class CadastroAlunoForm(UserCreationForm):
 class SugestaoTurmaForm(ModelForm):
     docente = forms.ModelChoiceField(queryset=Docente.objects.all(), label='Docente')
 
-    componente = forms.ModelChoiceField(queryset=get_cc_by_estrutura(get_estrutura_sistemas_dct()),
+    componente = forms.ModelChoiceField(queryset=ComponenteCurricular.objects.all(),
                                         label='Componente Curricular')
 
     descricao_horario = forms.CharField(label='Descrição do Horário',
@@ -39,6 +39,12 @@ class SugestaoTurmaForm(ModelForm):
     PERIODO_ATUAL = 1
     ano = forms.CharField(initial=ANO_ATUAL)
     periodo = forms.CharField(initial=PERIODO_ATUAL)
+
+    def __init__(self, *args, **kwargs):
+        estrutura = kwargs.pop('estrutura')
+        # estrutura = EstruturaCurricular.objects.get(id_curriculo=my_arg.id_curriculo)
+        super(SugestaoTurmaForm, self).__init__(*args, **kwargs)
+        self.fields['componente'].queryset = get_cc_by_estrutura(estrutura)
 
     class Meta:
         model = SugestaoTurma

@@ -445,7 +445,8 @@ def sugestao_bsi_incluir(request):
         else:
             messages.error(request, form_sugestao.errors['__all__'])
     else:
-        form_sugestao = SugestaoTurmaForm()
+        bsi = get_estrutura_sistemas_dct()
+        form_sugestao = SugestaoTurmaForm(estrutura=bsi)
     return render(request, 'core/sugestao/bsi/incluir.html', {'form_sugestao': form_sugestao})
 
 
