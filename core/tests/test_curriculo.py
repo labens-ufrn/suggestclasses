@@ -21,5 +21,11 @@ class CurriculoTests(TestCase):
         componente = ComponenteCurricular.objects.get(id_componente=99999)
         curriculos = get_curriculo_by_cc(componente.id_componente)
 
-        self.assertIsNotNone(curriculos, 'Curriculos não é None?')
-        self.assertEqual(1, len(curriculos), 'Testando quantidade de currículos.')
+        self.assertIsNotNone(curriculos, 'Curriculos 1 não é None?')
+        self.assertEqual(1, len(curriculos), 'Testando quantidade de currículos 1.')
+
+        componente = ComponenteCurricular.objects.get(id_componente=99998)
+        curriculos = get_curriculo_by_cc(componente.id_componente)
+
+        self.assertIsNotNone(curriculos, 'Curriculos 2 não é None?')
+        self.assertEqual(2, len(curriculos), 'Testando quantidade de currículos 2.')

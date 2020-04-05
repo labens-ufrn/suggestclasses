@@ -13,69 +13,28 @@ def criar_dados():
 
     criar_centro()
     criar_salas()
-    criar_cursos()
     criar_departamentos()
+    criar_docentes()
+    criar_cursos()
     criar_componentes()
     criar_estruturas()
-    criar_organizacao_curricular()
-    criar_docentes()
+    criar_curriculos()
     criar_turmas()
     criar_sugestoes_turmas()
 
 
 def remover_dados():
     print("Removendo Dados dos Testes ...")
-    try:
-        SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99999).delete()
-        SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99998).delete()
-        SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99997).delete()
-        SugestaoTurma.objects.get(codigo_turma='02', componente__id_componente=99997).delete()
-    except SugestaoTurma.DoesNotExist:
-        print('SugestaoTurma não Existe!')
-    try:
-        Turma.objects.get(id_turma=99999999).delete()
-        Turma.objects.get(id_turma=99999998).delete()
-        Turma.objects.get(id_turma=99999997).delete()
-        Turma.objects.get(id_turma=99999996).delete()
-    except Turma.DoesNotExist:
-        print('Turma não Existe!')
-    try:
-        Docente.objects.get(siape=9999999).delete()
-        Docente.objects.get(siape=9999998).delete()
-    except Docente.DoesNotExist:
-        print('Docente não Existe!')
-    try:
-        OrganizacaoCurricular.objects.get(id_curriculo_componente=999999).delete()
-        OrganizacaoCurricular.objects.get(id_curriculo_componente=999998).delete()
-        OrganizacaoCurricular.objects.get(id_curriculo_componente=999997).delete()
-    except OrganizacaoCurricular.DoesNotExist:
-        print('OrganizacaoCurricular não Existe!')
-    try:
-        EstruturaCurricular.objects.get(id_curriculo=999999999).delete()
-    except EstruturaCurricular.DoesNotExist:
-        print('EstruturaCurricular não Existe!')
-    try:
-        ComponenteCurricular.objects.get(id_componente=99999).delete()
-        ComponenteCurricular.objects.get(id_componente=99998).delete()
-        ComponenteCurricular.objects.get(id_componente=99997).delete()
-    except ComponenteCurricular.DoesNotExist:
-        print('ComponenteCurricular não Existe!')
-    try:
-        Departamento.objects.get(id_unidade=9998).delete()
-    except Departamento.DoesNotExist:
-        print('Departamento não Existe!')
-    try:
-        Curso.objects.get(codigo=9999).delete()
-    except Curso.DoesNotExist:
-        print('Curso não Existe!')
-    try:
-        Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999).delete()
-    except Sala.DoesNotExist:
-        print('Sala não Existe!')
-    try:
-        Centro.objects.get(id_unidade=9999).delete()
-    except Centro.DoesNotExist:
-        print('Centro não Existe!')
+    remover_sugestoes_turmas()
+    remover_turmas()
+    remover_curriculos()
+    remover_estruturas()
+    remover_componentes()
+    remover_cursos()
+    remover_docentes()
+    remover_departamentos()
+    remover_salas()
+    remover_centro()
 
 
 def criar_centro():
@@ -84,10 +43,24 @@ def criar_centro():
                           site='https://www.ceres.ufrn.br/')
 
 
-def criar_cursos():
+def remover_centro():
+    try:
+        Centro.objects.get(id_unidade=9999).delete()
+    except Centro.DoesNotExist:
+        print('Centro não Existe!')
+
+
+def criar_salas():
     centro = Centro.objects.get(id_unidade=9999)
-    Curso.objects.create(codigo=9999, nome='Curso Teste', nivel='Graduação', grau='Bacharelado',
-                         modalidade='Presencial', turno='Matutino e Vespertino', centro=centro)
+    Sala.objects.create(nome='Sala A01', sigla='A01', capacidade=25, tamanho=None, bloco='Bloco A',
+                        centro=centro, campus='Campus Caicó')
+
+
+def remover_salas():
+    try:
+        Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999).delete()
+    except Sala.DoesNotExist:
+        print('Sala não Existe!')
 
 
 def criar_departamentos():
@@ -95,6 +68,55 @@ def criar_departamentos():
     Departamento.objects.create(id_unidade=9998, codigo=9998, nome='Departamento de Teste', sigla='DTS',
                                 endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
                                 centro=centro)
+
+
+def remover_departamentos():
+    try:
+        Departamento.objects.get(id_unidade=9998).delete()
+    except Departamento.DoesNotExist:
+        print('Departamento não Existe!')
+
+
+def criar_docentes():
+    departamento = Departamento.objects.get(id_unidade=9998)
+    Docente.objects.create(siape=9999999, nome='Nome Docente Teste 1', sexo='M', formacao='Mestrado',
+                           tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
+                           categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe C - Adjunto',
+                           id_unidade_lotacao=departamento.id_unidade,
+                           lotacao='Departamento de Teste', admissao=parse('2020/03/30'))
+    Docente.objects.create(siape=9999997, nome='Nome Docente Teste 2', sexo='F', formacao='Doutorado',
+                           tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
+                           categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe D - Adjunto',
+                           id_unidade_lotacao=departamento.id_unidade,
+                           lotacao='Departamento de Teste', admissao=parse('2020/03/30'))
+
+
+def remover_docentes():
+    try:
+        Docente.objects.get(siape=9999999).delete()
+        Docente.objects.get(siape=9999998).delete()
+    except Docente.DoesNotExist:
+        print('Docente não Existe!')
+
+
+def criar_cursos():
+    centro = Centro.objects.get(id_unidade=9999)
+    docente1 = Docente.objects.get(siape=9999999)
+    docente2 = Docente.objects.get(siape=9999997)
+    Curso.objects.create(codigo=9999, nome='Sistemas de Informação', coordenador=docente1, nivel='Graduação',
+                         grau='Bacharelado', modalidade='Presencial', turno='Matutino e Vespertino',
+                         centro=centro)
+    Curso.objects.create(codigo=9998, nome='Curso Pedagogia', coordenador=docente2, nivel='Graduação',
+                         grau='Licenciatura', modalidade='Presencial', turno='Matutino e Vespertino',
+                         centro=centro)
+
+
+def remover_cursos():
+    try:
+        Curso.objects.get(codigo=9999).delete()
+        Curso.objects.get(codigo=9998).delete()
+    except Curso.DoesNotExist:
+        print('Curso não Existe!')
 
 
 def criar_componentes():
@@ -120,57 +142,97 @@ def criar_componentes():
                                         cr_max_ead=0, equivalencia='( BSI2201 )',
                                         requisito='( ( BSI1106 ) OU ( DCT1106 ) )', corequisito='',
                                         ementa='ementa', modalidade='Presencial', departamento=departamento)
+    ComponenteCurricular.objects.create(id_componente=99996, tipo='DISCIPLINA',
+                                        codigo='DCT9996', nivel='G', nome='PROGRAMAÇÃO WEB',
+                                        ch_teorica=30, ch_pratica=30, ch_estagio=0,
+                                        ch_total=60, ch_docente=60, ch_ead=0,
+                                        cr_max_ead=0, equivalencia='( BSI2201 )',
+                                        requisito='( ( BSI1106 ) OU ( DCT1106 ) )', corequisito='',
+                                        ementa='ementa', modalidade='Presencial', departamento=departamento)
+
+
+def remover_componentes():
+    try:
+        ComponenteCurricular.objects.get(id_componente=99999).delete()
+        ComponenteCurricular.objects.get(id_componente=99998).delete()
+        ComponenteCurricular.objects.get(id_componente=99997).delete()
+        ComponenteCurricular.objects.get(id_componente=99996).delete()
+    except ComponenteCurricular.DoesNotExist:
+        print('ComponenteCurricular não Existe!')
 
 
 def criar_estruturas():
-    curso = Curso.objects.get(codigo=9999)
+    curso1 = Curso.objects.get(codigo=9999)
+    curso2 = Curso.objects.get(codigo=9998)
     EstruturaCurricular.objects.create(id_curriculo=999999999, codigo='01',
-                                       nome='Curso Teste - CAICÓ - MT - BACHARELADO', semestre_conclusao_minimo=8,
-                                       semestre_conclusao_ideal=8, semestre_conclusao_maximo=12,
-                                       meses_conclusao_minimo=None, meses_conclusao_ideal=None,
-                                       meses_conclusao_maximo=None, cr_total_minimo=148, ch_total_minima=3000,
-                                       ch_optativas_minima=300, ch_complementar_minima=180, max_eletivos=240,
-                                       ch_nao_atividade_obrigatoria=2220, cr_nao_atividade_obrigatorio=148,
-                                       ch_atividade_obrigatoria=480, cr_minimo_semestre=8, cr_ideal_semestre=24,
-                                       cr_maximo_semestre=28, ch_minima_semestre=120, ch_ideal_semestre=None,
-                                       ch_maxima_semestre=0, periodo_entrada_vigor=1, ano_entrada_vigor=2020,
-                                       observacao='', curso=curso)
+                                       nome='Sistemas de Informação - CAICÓ - MT - BACHARELADO',
+                                       semestre_conclusao_minimo=8, semestre_conclusao_ideal=8,
+                                       semestre_conclusao_maximo=12, meses_conclusao_minimo=None,
+                                       meses_conclusao_ideal=None, meses_conclusao_maximo=None, cr_total_minimo=148,
+                                       ch_total_minima=3000, ch_optativas_minima=300, ch_complementar_minima=180,
+                                       max_eletivos=240, ch_nao_atividade_obrigatoria=2220,
+                                       cr_nao_atividade_obrigatorio=148, ch_atividade_obrigatoria=480,
+                                       cr_minimo_semestre=8, cr_ideal_semestre=24, cr_maximo_semestre=28,
+                                       ch_minima_semestre=120, ch_ideal_semestre=None, ch_maxima_semestre=0,
+                                       periodo_entrada_vigor=1, ano_entrada_vigor=2020,
+                                       observacao='', curso=curso1)
+
+    EstruturaCurricular.objects.create(id_curriculo=999999998, codigo='01',
+                                       nome='Pedagogia - CAICÓ - MT - LICENCIATURA',
+                                       semestre_conclusao_minimo=8, semestre_conclusao_ideal=8,
+                                       semestre_conclusao_maximo=12, meses_conclusao_minimo=None,
+                                       meses_conclusao_ideal=None, meses_conclusao_maximo=None, cr_total_minimo=148,
+                                       ch_total_minima=3000, ch_optativas_minima=300, ch_complementar_minima=180,
+                                       max_eletivos=240, ch_nao_atividade_obrigatoria=2220,
+                                       cr_nao_atividade_obrigatorio=148, ch_atividade_obrigatoria=480,
+                                       cr_minimo_semestre=8, cr_ideal_semestre=24, cr_maximo_semestre=28,
+                                       ch_minima_semestre=120, ch_ideal_semestre=None, ch_maxima_semestre=0,
+                                       periodo_entrada_vigor=1, ano_entrada_vigor=2020,
+                                       observacao='', curso=curso2)
 
 
-def criar_organizacao_curricular():
-    estrutura = EstruturaCurricular.objects.get(id_curriculo=999999999)
+def remover_estruturas():
+    try:
+        EstruturaCurricular.objects.get(id_curriculo=999999999).delete()
+        EstruturaCurricular.objects.get(id_curriculo=999999998).delete()
+    except EstruturaCurricular.DoesNotExist:
+        print('EstruturaCurricular não Existe!')
+
+
+def criar_curriculos():
+    estrutura1 = EstruturaCurricular.objects.get(id_curriculo=999999999)
+    estrutura2 = EstruturaCurricular.objects.get(id_curriculo=999999998)
     componente1 = ComponenteCurricular.objects.get(id_componente=99999)
     componente2 = ComponenteCurricular.objects.get(id_componente=99998)
     componente3 = ComponenteCurricular.objects.get(id_componente=99997)
-    OrganizacaoCurricular.objects.create(id_curriculo_componente=999999, estrutura=estrutura,
+    componente4 = ComponenteCurricular.objects.get(id_componente=99996)
+    OrganizacaoCurricular.objects.create(id_curriculo_componente=999999, estrutura=estrutura1,
                                          componente=componente1, semestre=1, tipo_vinculo='OBRIGATÓRIO',
                                          nivel='GRADUAÇÃO')
-    OrganizacaoCurricular.objects.create(id_curriculo_componente=999998, estrutura=estrutura,
+    OrganizacaoCurricular.objects.create(id_curriculo_componente=999998, estrutura=estrutura1,
                                          componente=componente2, semestre=1, tipo_vinculo='OBRIGATÓRIO',
                                          nivel='GRADUAÇÃO')
-    OrganizacaoCurricular.objects.create(id_curriculo_componente=999997, estrutura=estrutura,
+    OrganizacaoCurricular.objects.create(id_curriculo_componente=999997, estrutura=estrutura1,
                                          componente=componente3, semestre=2, tipo_vinculo='OBRIGATÓRIO',
                                          nivel='GRADUAÇÃO')
 
-
-def criar_docentes():
-    departamento = Departamento.objects.get(id_unidade=9998)
-    Docente.objects.create(siape=9999999, nome='Nome Docente Teste 1', sexo='M', formacao='Mestrado',
-                           tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
-                           categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe C - Adjunto',
-                           id_unidade_lotacao=departamento.id_unidade,
-                           lotacao='Departamento de Teste', admissao=parse('2020/03/30'))
-    Docente.objects.create(siape=9999997, nome='Nome Docente Teste 2', sexo='F', formacao='Doutorado',
-                           tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
-                           categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe D - Adjunto',
-                           id_unidade_lotacao=departamento.id_unidade,
-                           lotacao='Departamento de Teste', admissao=parse('2020/03/30'))
+    OrganizacaoCurricular.objects.create(id_curriculo_componente=999996, estrutura=estrutura2,
+                                         componente=componente2, semestre=1, tipo_vinculo='OBRIGATÓRIO',
+                                         nivel='GRADUAÇÃO')
+    OrganizacaoCurricular.objects.create(id_curriculo_componente=999995, estrutura=estrutura2,
+                                         componente=componente4, semestre=2, tipo_vinculo='OPTATIVO',
+                                         nivel='GRADUAÇÃO')
 
 
-def criar_salas():
-    centro = Centro.objects.get(id_unidade=9999)
-    Sala.objects.create(nome='Sala A01', sigla='A01', capacidade=25, tamanho=None, bloco='Bloco A',
-                        centro=centro, campus='Campus Caicó')
+def remover_curriculos():
+    try:
+        OrganizacaoCurricular.objects.get(id_curriculo_componente=999999).delete()
+        OrganizacaoCurricular.objects.get(id_curriculo_componente=999998).delete()
+        OrganizacaoCurricular.objects.get(id_curriculo_componente=999997).delete()
+        OrganizacaoCurricular.objects.get(id_curriculo_componente=999996).delete()
+        OrganizacaoCurricular.objects.get(id_curriculo_componente=999995).delete()
+    except OrganizacaoCurricular.DoesNotExist:
+        print('OrganizacaoCurricular não Existe!')
 
 
 def criar_turmas():
@@ -219,6 +281,16 @@ def criar_turmas():
     print(Turma.objects.filter(id_turma=99999996))
 
 
+def remover_turmas():
+    try:
+        Turma.objects.get(id_turma=99999999).delete()
+        Turma.objects.get(id_turma=99999998).delete()
+        Turma.objects.get(id_turma=99999997).delete()
+        Turma.objects.get(id_turma=99999996).delete()
+    except Turma.DoesNotExist:
+        print('Turma não Existe!')
+
+
 def criar_sugestoes_turmas():
     docente1 = Docente.objects.get(siape=9999999)
     docente2 = Docente.objects.get(siape=9999997)
@@ -243,3 +315,13 @@ def criar_sugestoes_turmas():
                                  componente=componente3, campus_turma=sala.campus, local=sala, ano=2020,
                                  periodo=2, descricao_horario='35T34', capacidade_aluno=25, tipo='REGULAR')
     print(Turma.objects.filter(componente=componente3))
+
+
+def remover_sugestoes_turmas():
+    try:
+        SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99999).delete()
+        SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99998).delete()
+        SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99997).delete()
+        SugestaoTurma.objects.get(codigo_turma='02', componente__id_componente=99997).delete()
+    except SugestaoTurma.DoesNotExist:
+        print('SugestaoTurma não Existe!')

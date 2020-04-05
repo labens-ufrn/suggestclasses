@@ -59,11 +59,11 @@ class CentroDAOTests(TestCase):
         self.assertEqual(endereco, centro.endereco, 'Testando Endereço')
         self.assertEqual(site, centro.site, 'Testando Site')
 
-    def test_get_deptos_ceres(self):
+    def test_get_deptos_centro(self):
         deptos = get_departamentos()
-        print(deptos)
 
         self.assertIsNotNone(deptos, 'Testando departamentos dos centros')
+        self.assertEqual(11, len(deptos), 'Testando qtd departamentos')
 
 
 class ComponenteDAOTests(TestCase):
@@ -78,4 +78,4 @@ class ComponenteDAOTests(TestCase):
         depto = get_depto_by_id(9998)
         ccs = get_componentes_by_depto(depto)
 
-        self.assertEqual(3, len(ccs), 'Testando componentes')
+        self.assertEqual(4, len(ccs), 'Testando componentes')
