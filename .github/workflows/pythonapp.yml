@@ -41,7 +41,9 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Run Migrations
         run: |
+          --fake-initial
           python manage.py makemigrations core
+          python manage.py migrate --fake-initial
           python manage.py migrate
       - name: Test with pytest
         run: |
