@@ -111,7 +111,6 @@ class ComponenteCurricular(models.Model):
     departamento = models.ForeignKey(Departamento, on_delete=models.PROTECT)
 
     class Meta:
-        # ordering = ('name',)
         verbose_name = 'componente curricular'
         verbose_name_plural = 'componentes curriculares'
 
@@ -149,7 +148,6 @@ class EstruturaCurricular(models.Model):
     curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
 
     class Meta:
-        # ordering = ('name',)
         verbose_name = 'estrutura curricular'
         verbose_name_plural = 'estruturas curriculares'
 
@@ -166,7 +164,6 @@ class OrganizacaoCurricular(models.Model):
     nivel = models.CharField(max_length=50)
 
     class Meta:
-        # ordering = ('name',)
         verbose_name = 'organização curricular'
         verbose_name_plural = 'organizações curriculares'
 
@@ -268,7 +265,6 @@ class SugestaoTurma(models.Model):
 
     class Meta:
         unique_together = ('codigo_turma', 'componente', 'ano', 'periodo')
-        # ordering = ('name',)
         verbose_name = 'sugestão de turma'
         verbose_name_plural = 'sugestões de turmas'
 
