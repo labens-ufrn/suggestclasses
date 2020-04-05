@@ -58,16 +58,11 @@ body {
     font-size:12px;
 }
 
-isDisabled {
-  color: currentColor;
-  cursor: not-allowed;
-  opacity: 0.5;
-  text-decoration: none;
-}
-
 a.disabled {
   /* Make the disabled links grayish*/
-  color: gray;
+  color: currentColor;
   /* And disable the pointer events */
   pointer-events: none;
+  opacity: 0.5;
+  text-decoration: none;
 }
