@@ -1,11 +1,9 @@
 import os
 import django
-
-from core.bo.docente import get_docente_by_siape
-from core.tests.povoar_testes import criar_dados, remover_dados
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
+from core.bo.docente import get_docente_by_siape
+from core.tests.povoar_testes import criar_dados, remover_dados
 
 from django.test import TestCase
 

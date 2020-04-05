@@ -5,7 +5,7 @@ django.setup()
 
 from dateutil.parser import parse
 from core.models import Centro, Departamento, ComponenteCurricular, Docente, EstruturaCurricular, Curso, \
-    OrganizacaoCurricular, Turma, Sala
+    OrganizacaoCurricular, Turma, Sala, SugestaoTurma
 
 
 def criar_dados():
@@ -20,10 +20,18 @@ def criar_dados():
     criar_organizacao_curricular()
     criar_docentes()
     criar_turmas()
+    criar_sugestoes_turmas()
 
 
 def remover_dados():
     print("Removendo Dados dos Testes ...")
+    try:
+        SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99999).delete()
+        SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99998).delete()
+        SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99997).delete()
+        SugestaoTurma.objects.get(codigo_turma='02', componente__id_componente=99997).delete()
+    except SugestaoTurma.DoesNotExist:
+        print('SugestaoTurma não Existe!')
     try:
         Turma.objects.get(id_turma=99999999).delete()
         Turma.objects.get(id_turma=99999998).delete()
@@ -209,3 +217,29 @@ def criar_turmas():
                          qtd_aulas_lancadas=5, situacao_turma='ABERTA', convenio=None,
                          modalidade_participantes='Presencial')
     print(Turma.objects.filter(id_turma=99999996))
+
+
+def criar_sugestoes_turmas():
+    docente1 = Docente.objects.get(siape=9999999)
+    docente2 = Docente.objects.get(siape=9999997)
+    componente1 = ComponenteCurricular.objects.get(id_componente=99999)
+    componente2 = ComponenteCurricular.objects.get(id_componente=99998)
+    componente3 = ComponenteCurricular.objects.get(id_componente=99997)
+    sala = Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999)
+
+    SugestaoTurma.objects.create(codigo_turma='01', docente=docente1, matricula_docente_externo=None,
+                                 componente=componente1, campus_turma=sala.campus, local=sala, ano=2020,
+                                 periodo=2, descricao_horario='24T12', capacidade_aluno=25, tipo='REGULAR')
+
+    SugestaoTurma.objects.create(codigo_turma='01', docente=docente2, matricula_docente_externo=None,
+                                 componente=componente2, campus_turma=sala.campus, local=sala, ano=2020,
+                                 periodo=2, descricao_horario='24T34', capacidade_aluno=25, tipo='REGULAR')
+
+    SugestaoTurma.objects.create(codigo_turma='01', docente=docente1, matricula_docente_externo=None,
+                                 componente=componente3, campus_turma=sala.campus, local=sala, ano=2020,
+                                 periodo=2, descricao_horario='35T12', capacidade_aluno=25, tipo='REGULAR')
+
+    SugestaoTurma.objects.create(codigo_turma='02', docente=docente2, matricula_docente_externo=None,
+                                 componente=componente3, campus_turma=sala.campus, local=sala, ano=2020,
+                                 periodo=2, descricao_horario='35T34', capacidade_aluno=25, tipo='REGULAR')
+    print(Turma.objects.filter(componente=componente3))
