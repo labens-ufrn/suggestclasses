@@ -2,12 +2,14 @@ import io
 from random import sample
 from typing import List
 import logging
+from urllib.parse import urlparse
+
 import matplotlib.pyplot as plt
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.views.generic import ListView, DetailView
@@ -15,6 +17,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 from core.models import Curso, ComponenteCurricular, EstruturaCurricular, OrganizacaoCurricular, \
     SugestaoTurma, Sala, Docente
+from mysite.settings import DOMAINS_WHITELIST
 from .bo.curso import get_cursos
 from .bo.docente import get_docentes
 from .bo.pedagogia import get_estrutura_pedagogia
@@ -543,8 +546,15 @@ def error_403(request, exception):
     logger.error('Você não tem permissão de acessar "' + request.path + '" 403 ',
                  exc_info=exception)
     messages.error(request, 'Você não tem permissão de acessar: ' + request.path)
-    next = request.GET.get('next', '/')
-    return redirect(next)
+    return redirecionar(request)
+
+
+def redirecionar(request):
+    url = request.GET.get("next", "/")
+    parsed_uri = urlparse(url)
+    if parsed_uri.netloc == '' or parsed_uri.netloc in DOMAINS_WHITELIST:
+        return HttpResponseRedirect(url)
+    return HttpResponseRedirect("/core")
 
 
 def plot(request):

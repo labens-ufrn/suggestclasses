@@ -31,6 +31,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cg#p$g+j9tax!#a3cup@1$8obt2_+&
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver']
+DOMAINS_WHITELIST = ALLOWED_HOSTS
 
 # Application definition
 
@@ -148,7 +149,6 @@ MESSAGE_TAGS = {
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static-files')
 STATIC_ROOT = ''
 
 # User_Uploaded_Files
