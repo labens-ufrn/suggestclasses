@@ -1,7 +1,7 @@
 import io
 from random import sample
 from typing import List
-
+import logging
 import matplotlib.pyplot as plt
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout, login, update_session_auth_hash
@@ -28,6 +28,9 @@ from .dao.componente_dao import get_componentes_by_depto, get_componentes_curric
 from .dao.departamento_dao import get_departamentos
 from .forms import CadastroAlunoForm, SugestaoTurmaForm
 from .models import Horario
+
+# Get an instance of a logger
+logger = logging.getLogger('suggestclasses.logger')
 
 
 def index(request):
@@ -537,7 +540,9 @@ def delete(request, pk, template_name='core/sugestao/bsi/confirm_delete.html'):
 
 
 def error_403(request, exception):
-    messages.success(request, 'Você não tem permissão de acessar: ' + request.path)
+    logger.error('Você não tem permissão de acessar "' + request.path + '" 403 ',
+                 exc_info=exception)
+    messages.error(request, 'Você não tem permissão de acessar: ' + request.path)
     next = request.GET.get('next', '/')
     return redirect(next)
 
