@@ -43,7 +43,7 @@ jobs:
         run: |
           --fake-initial
           python manage.py makemigrations core
-          python manage.py migrate --fake-initial
+          python manage.py migrate --fake
           python manage.py migrate
       - name: Test with pytest
         run: |
