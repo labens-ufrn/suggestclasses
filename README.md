@@ -1,3 +1,12 @@
+ ![GitHub](https://img.shields.io/github/license/labens-ufrn/suggestclasses)
+ ![GitHub top language](https://img.shields.io/github/languages/top/labens-ufrn/suggestclasses)
+ ![GitHub All Releases](https://img.shields.io/github/downloads/labens-ufrn/suggestclasses/total)
+ [![GitHub forks](https://img.shields.io/github/forks/labens-ufrn/suggestclasses)](https://github.com/labens-ufrn/suggestclasses/network)
+ [![GitHub stars](https://img.shields.io/github/stars/labens-ufrn/suggestclasses)](https://github.com/labens-ufrn/suggestclasses/stargazers)
+ ![GitHub issues](https://img.shields.io/github/issues/labens-ufrn/suggestclasses)
+ [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Flabens-ufrn%2Fsuggestclasses)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Flabens-ufrn%2Fsuggestclasses)
+
+
 # SuggestClasses by LABENS/UFRN
 Sistema de Sugestão de Horários para o BSI/UFRN.
 
