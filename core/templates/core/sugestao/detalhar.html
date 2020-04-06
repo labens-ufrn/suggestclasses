@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+  <section class="page-section" id="horarios">
+    <div class="container">
+
+      <h2 class="page-section-heading text-center text-secondary mb-0">Detalhar Sugestões de Turma - Genérico</h2>
+      <p>Turma: {{ object.codigo_turma }}</p>
+      <p>Componente Curricular: {{ object.componente }}</p>
+      <p>Docente: {{ object.docente }}</p>
+      <p>Horário: {{ object.descricao_horario }}</p>
+      <p>Local: {{ object.local }}</p>
+      <p>Campus: {{ object.local.centro }} - {{ object.local.campus }}</p>
+      <p>Ementa: {{ object.componente.ementa }}</p>
+    </div>
+  </section>
+{% endblock %}

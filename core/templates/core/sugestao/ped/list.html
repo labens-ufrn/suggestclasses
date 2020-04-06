@@ -8,9 +8,15 @@
       <h2 class="page-section-heading text-center text-secondary mb-0">Sugestões de Turmas
         do Curso de Pedagogia</h2>
       <h4 class="text-center">Período 2020.1</h4>
-      <br />
+      {% if user.is_authenticated %}
+        <div id="manter" class="center text-center form-group">
+          <a class="btn btn-primary btn-success" href="/core/sugestao/ped/incluir?next={{ request.path|urlencode }}">Incluir Sugestões de Turmas</a>
+          <a class="btn btn-primary btn-info" href="/core/sugestao/ped/manter">Manter Sugestões de Turmas</a>
+        </div>
+      {% endif %}
+
       <div class="text-center" id="div_semestres" style="font-size: 90%">
-        <form method="get">
+        <form id="form_semestres" method="get">
           <fieldset>
             <input type="checkbox" id="1p" name="semestres" value="1">
             <label for="1p">1º Período</label>
@@ -62,7 +68,17 @@
                 <td align="center" width="18%">
                   {% for turma in th.turmas %}
                     <p  style="font-size: 10px">{{ turma.componente.codigo }} - T{{ turma.codigo_turma }} <br />
-                      {{ turma.componente.nome }}</p>
+                      <b>{{ turma.componente.nome }}</b> <br />
+                      {% if turma.docente is not None %}
+                        <span style="color: darkblue">{{ turma.docente.primeiro_nome }}
+                          ({{ turma.docente.siape }})</span> <br />
+                      {% elif turma.matricula_docente_externo is not None and turma.matricula_docente_externo != '' %}
+                        <i style="color: orangered">Prof. Substituto ({{ turma.matricula_docente_externo }})</i> <br />
+                      {% else %}
+                        <b style="color: red">DOCENTE NÃO DEFINIDO</b> <br />
+                      {% endif %}
+                      <i>{{ turma.local }}</i> <br />
+                      {{ turma.local.centro.sigla }} - {{ turma.local.campus }}</p>
                   {% endfor %}
                 </td>
               {% endfor %}
@@ -75,7 +91,7 @@
   <script>
     $(document).ready(function() {
       $('#get_sugestoes').click({
-        serviceUrl: '/core/sugestao/ped',
+        serviceUrl: '/core/sugestao/ped/list',
         paramName: 'semestres',
       });
     });

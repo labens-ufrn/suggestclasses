@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+{% block title %} SuggestClasses - Editar de Sugestão de Turma {% endblock %}
+{% block content %}
+
+  <div class="container">
+    <h2 class="page-section-heading text-center text-secondary mb-0">Editar de Sugestão de Turma</h2>
+    <br/>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% for hidden_field in form.hidden_fields %}
+        {{ hidden_field }}
+      {% endfor %}
+
+      {% for field in form.visible_fields %}
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">{{ field.label_tag }}</label><br>
+          {{ field }}
+          {% if field.help_text %}
+            <small style="color: grey">{{ field.help_text }}</small>
+          {% endif %}
+          {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
+
+      <input type="hidden" name="next" value="{{ request.GET.next }}">
+      <button type="submit" class="btn btn-primary">Salvar</button>
+    </form>
+  </div>
+{% endblock %}

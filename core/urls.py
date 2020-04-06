@@ -31,13 +31,19 @@ urlpatterns = [
     path('turma/bsi', views.turma_bsi, name='Turmas de Sistemas de Informação'),
     path('turma/ped', views.turma_ped, name='Turmas de Pedagogia'),
     path('sugestao/', views.sugestao_list, name='Lista de Sugestão de Turmas por Curso'),
+
     path('sugestao/bsi/incluir', views.sugestao_bsi_incluir, name='Incluir Sugestão de Turmas Sistemas de Informação'),
-    path('sugestao/bsi/list', views.sugestao_bsi, name='Listar Sugestão de Turmas de Sistemas de Informação'),
+    path('sugestao/bsi/editar/<int:pk>/', views.sugestao_bsi_editar, name='sugestao_bsi_editar'),
+    path('sugestao/bsi/list', views.sugestao_bsi, name='sugestao_bsi_list'),
     path('sugestao/bsi/manter', views.sugestao_bsi_manter, name='Manter Sugestão de Turmas de Sistemas de Informação'),
+
     path('sugestao/ped/list', views.sugestao_ped, name='Sugestão de Turmas de Pedagogia'),
-    path('sugestao/<int:pk>/', views.SugestaoTurmaDetailView.as_view(), name='sugestao_detail'),
+    path('sugestao/ped/incluir', views.sugestao_ped_incluir, name='Incluir Sugestão de Turmas de Pedagogia'),
+    path('sugestao/ped/editar/<int:pk>/', views.sugestao_ped_editar, name='sugestao_ped_editar'),
+    path('sugestao/ped/manter', views.sugestao_ped_manter, name='Manter Sugestão de Turmas de Pedagogia'),
+
+    path('sugestao/<int:pk>/', views.SugestaoTurmaDetailView.as_view(), name='sugestao_detalhar'),
     path('sugestao/edit/<int:pk>/', views.edit, name='sugestao_edit'),
-    path('sugestao/create/', views.create, name='sugestao_create'),
     path('sugestao/delete/<int:pk>/', views.delete, name='sugestao_delete'),
     path('plot/', views.plot, name='Plot de Gráfico')
 ]

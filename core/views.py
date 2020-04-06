@@ -425,6 +425,7 @@ def sugestao_bsi_manter(request):
     st_list = carrega_sugestao_turmas(bsi_dct, semestres, ano, periodo)
 
     context = {
+        'sugestao_bsi_list': '/core/sugestao/bsi/list',
         'sugestao_list': st_list
     }
 
@@ -433,8 +434,9 @@ def sugestao_bsi_manter(request):
 
 @permission_required("core.add_sugestao_turma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_bsi_incluir(request):
+    bsi = get_estrutura_sistemas_dct()
     if request.method == "POST":
-        form_sugestao = SugestaoTurmaForm(request.POST)
+        form_sugestao = SugestaoTurmaForm(request.POST, estrutura=bsi)
         if form_sugestao.is_valid():
             sugestao_turma = form_sugestao.save(commit=False)
             sugestao_turma.tipo = 'REGULAR'
@@ -445,9 +447,14 @@ def sugestao_bsi_incluir(request):
         else:
             messages.error(request, form_sugestao.errors['__all__'])
     else:
-        bsi = get_estrutura_sistemas_dct()
         form_sugestao = SugestaoTurmaForm(estrutura=bsi)
     return render(request, 'core/sugestao/bsi/incluir.html', {'form_sugestao': form_sugestao})
+
+
+@permission_required("core.change_sugestao_turma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_bsi_editar(request, pk):
+    bsi = get_estrutura_sistemas_dct()
+    return edit(request, pk, estrutura=bsi)
 
 
 def sugestao_bsi(request):
@@ -490,56 +497,73 @@ def sugestao_ped(request):
 
 @login_required(login_url='/core/usuario/logar')
 def sugestao_ped_incluir(request):
+    ped = get_estrutura_pedagogia()
     if request.method == "POST":
-        form_sugestao = SugestaoTurmaForm(request.POST)
+        form_sugestao = SugestaoTurmaForm(request.POST, estrutura=ped)
         if form_sugestao.is_valid():
-            sugestao_turma = form_sugestao.save()
+            sugestao_turma = form_sugestao.save(commit=False)
+            sugestao_turma.tipo = 'REGULAR'
+            sugestao_turma.campus_turma = sugestao_turma.local.campus
             sugestao_turma.save()
             messages.success(request, 'Sugestão de Turma cadastrada com sucesso.')
-            return redirect('/core/sugestao/ped/list')
+            return redirect('/core/sugestao/ped/manter')
+        else:
+            messages.error(request, form_sugestao.errors['__all__'])
     else:
-        form_sugestao = SugestaoTurmaForm()
-    return render(request, 'core/sugestao/ped/incluir.html', {'form_sugestao': form_sugestao})
+        form_sugestao = SugestaoTurmaForm(estrutura=ped)
+    return render(request, 'core/sugestao/incluir.html', {'form_sugestao': form_sugestao})
+
+
+def sugestao_ped_manter(request):
+    """
+        Lista de Sugestões de Turmas de Pedagogia.
+    """
+    ped_deduc = get_estrutura_pedagogia()
+    semestres = ['100']
+    semestres = atualiza_semestres(semestres)
+    ano = 2020
+    periodo = 1
+    st_list = carrega_sugestao_turmas(ped_deduc, semestres, ano, periodo)
+
+    context = {
+        'sugestao_ped_list': '/core/sugestao/ped/list',
+        'sugestao_list': st_list
+    }
+
+    return render(request, 'core/sugestao/ped/manter.html', context)
 
 
 class SugestaoTurmaDetailView(DetailView):
     model = SugestaoTurma
-    template_name = 'core/sugestao/bsi/sugestao_detail.html'
-
-
-def create(request):
-    if request.method == 'POST':
-        sugestao_form = SugestaoTurmaForm(request.POST)
-        if sugestao_form.is_valid():
-            sugestao_form.save(commit=False)
-            sugestao_form.tipo = 'REGULAR'
-            sugestao_form.save()
-            return redirect('sugestao_index')
-    sugestao_form = SugestaoTurmaForm()
-
-    return render(request, 'core/sugestao/bsi/create.html', {'form': sugestao_form})
+    template_name = 'core/sugestao/detalhar.html'
 
 
 @permission_required("core.change_sugestao_turma", login_url='/core/usuario/logar', raise_exception=True)
-def edit(request, pk, template_name='core/sugestao/bsi/editar.html'):
+def sugestao_ped_editar(request, pk):
+    ped = get_estrutura_pedagogia()
+    return edit(request, pk, estrutura=ped)
+
+
+@permission_required("core.change_sugestao_turma", login_url='/core/usuario/logar', raise_exception=True)
+def edit(request, pk, estrutura, template_name='core/sugestao/editar.html'):
     sugestao = get_object_or_404(SugestaoTurma, pk=pk)
-    form = SugestaoTurmaForm(request.POST or None, instance=sugestao)
+    form = SugestaoTurmaForm(request.POST or None, instance=sugestao, estrutura=estrutura)
     if form.is_valid():
         form.save()
         messages.success(request, 'Sugestão de Turma alterada com sucesso.')
-        return redirect('/core/sugestao/bsi/manter')
+        return redirecionar(request)
     else:
-        messages.error(request, form.errors['__all__'])
+        messages.error(request, form.errors)
     return render(request, template_name, {'form': form})
 
 
 @permission_required("core.delete_sugestao_turma", login_url='/core/usuario/logar', raise_exception=True)
-def delete(request, pk, template_name='core/sugestao/bsi/confirm_delete.html'):
+def delete(request, pk, template_name='core/sugestao/confirm_delete.html'):
     sugestao = get_object_or_404(SugestaoTurma, pk=pk)
     if request.method == 'POST':
         sugestao.delete()
         messages.success(request, 'Sugestão de Turma excluída com sucesso.')
-        return redirect('/core/sugestao/bsi/manter')
+        return redirecionar(request)
     return render(request, template_name, {'object': sugestao})
 
 
