@@ -68,8 +68,15 @@
               {% for th in semana %}
                 <td align="center" width="18%">
                   {% for turma in th.turmas %}
-                    <p  style="font-size: 10px">{{ turma.componente.codigo }} - T{{ turma.codigo_turma }} <br />
-                      <b>{{ turma.componente.nome }}</b> <br />
+                    <p  style="font-size: 10px">
+                      {{ turma.componente.codigo }} - T{{ turma.codigo_turma }}
+                      {% if turma.semestre != 0 %}
+                         - {{ turma.semestre }}º P
+                      {% endif %}
+                         - {{ turma.tipo_vinculo }}
+                      <br />
+                      <b>{{ turma.componente.nome }}</b>
+                      <br />
                       {% if turma.docente is not None %}
                         {% if turma.docente.nome == 'SUBSTITUTO' %}
                           <span style="color: darkgreen">
