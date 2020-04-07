@@ -25,7 +25,7 @@ from .bo.sala import get_salas
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre
 from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .bo.turma import carrega_turmas, carrega_turmas_horario, \
-    carrega_sugestao_turmas, atualiza_semestres
+    carrega_sugestao_turmas, atualiza_semestres, atualiza_ano_periodo
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
 from .dao.departamento_dao import get_departamentos
@@ -369,19 +369,19 @@ def turma_bsi(request):
     bsi_dct = get_estrutura_sistemas_dct()
 
     semestres = request.GET.getlist('semestres')
-    periodo = request.GET.getlist('periodo')
+    ano_periodo = request.GET.getlist('ano_periodo')
 
-    turmas = carrega_turmas(bsi_dct, semestres, periodo)
+    turmas = carrega_turmas(bsi_dct, semestres, ano_periodo)
 
     tt = carrega_turmas_horario(turmas)
 
-    periodo_atual = [] if not periodo else periodo[0]
-    semestres_atual = atualiza_semestres(semestres)
+    periodo_selecionado = atualiza_ano_periodo(ano_periodo)
+    semestres_selecionado = atualiza_semestres(semestres)
 
     context = {
         'tt': tt,
-        'periodo_atual': periodo_atual,
-        'semestres_atual': semestres_atual
+        'periodo_selecionado': periodo_selecionado,
+        'semestres_selecionado': semestres_selecionado
     }
 
     return render(request, 'core/turma/bsi.html', context)
@@ -391,19 +391,19 @@ def turma_ped(request):
     ped_deduc = get_estrutura_pedagogia()
 
     semestres = request.GET.getlist('semestres')
-    periodo = request.GET.getlist('periodo')
+    ano_periodo = request.GET.getlist('ano_periodo')
 
-    turmas = carrega_turmas(ped_deduc, semestres, periodo)
+    turmas = carrega_turmas(ped_deduc, semestres, ano_periodo)
 
     tt = carrega_turmas_horario(turmas)
 
-    periodo_atual = [] if not periodo else periodo[0]
-    semestres_atual = atualiza_semestres(semestres)
+    periodo_selecionado = atualiza_ano_periodo(ano_periodo)
+    semestres_selecionado = atualiza_semestres(semestres)
 
     context = {
         'tt': tt,
-        'periodo_atual': periodo_atual,
-        'semestres_atual': semestres_atual
+        'periodo_selecionado': periodo_selecionado,
+        'semestres_selecionado': semestres_selecionado
     }
 
     return render(request, 'core/turma/ped.html', context)

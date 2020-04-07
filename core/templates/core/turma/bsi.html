@@ -10,10 +10,12 @@
       <div class="text-center" id="div_semestres" style="font-size: 90%">
         <form id="form_semestres" method="get">
           <fieldset>
-            <input type="radio" id="p19.1" name="periodo" value="2019.1">
+            <input type="radio" id="p19.1" name="ano_periodo" value="2019.1">
             <label for="p19.1">Período 2019.1</label>
-            <input type="radio" id="p19.2" name="periodo" value="2019.2">
+            <input type="radio" id="p19.2" name="ano_periodo" value="2019.2">
             <label for="p19.2">Período 2019.2</label>
+            <input type="radio" id="p20.1" name="ano_periodo" value="2020.1">
+            <label for="p20.1">Período 2020.1</label>
           </fieldset>
           <br />
           <fieldset>
@@ -46,7 +48,7 @@
       <table class="table table-striped table-sm table-bordered">
         <thead class="thead-light">
           <tr align="center">
-            <th colspan="6">Turmas do Período {{ periodo_atual }} - Semestres: {{ semestres_atual }}</th>
+            <th colspan="6">Turmas do Período {{ periodo_selecionado }} - Semestres: {{ semestres_selecionado }}</th>
           </tr>
           <tr align="center">
             <th scope="col">#</th>
@@ -69,10 +71,15 @@
                     <p  style="font-size: 10px">{{ turma.componente.codigo }} - T{{ turma.codigo_turma }} <br />
                       <b>{{ turma.componente.nome }}</b> <br />
                       {% if turma.docente is not None %}
-                        <span style="color: darkblue">{{ turma.docente.primeiro_nome }}
-                          ({{ turma.docente.siape }})</span> <br />
+                        {% if turma.docente.nome == 'SUBSTITUTO' %}
+                          <span style="color: darkgreen">
+                        {% else %}
+                          <span style="color: darkblue">
+                        {% endif %}
+                          {{ turma.docente.primeiro_nome }} ({{ turma.docente.siape }})
+                        </span> <br />
                       {% elif turma.matricula_docente_externo is not None and turma.matricula_docente_externo != '' %}
-                        <i style="color: orangered">Prof. Substituto ({{ turma.matricula_docente_externo }})</i> <br />
+                        <i style="color: orangered">Prof. Voluntário/Externo ({{ turma.matricula_docente_externo }})</i> <br />
                       {% else %}
                         <b style="color: red">DOCENTE NÃO DEFINIDO</b> <br />
                       {% endif %}
@@ -92,7 +99,7 @@
       $('#get_turmas').click({
         serviceUrl: '/core/turma/bsi',
         paramName: 'semestres',
-        paramName: 'periodo',
+        paramName: 'ano_periodo',
       });
     });
   </script>

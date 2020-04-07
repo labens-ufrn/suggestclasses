@@ -1,3 +1,4 @@
+import re
 from core.bo.sevices import get_oc_by_semestre
 from core.models import Turma, Horario, SugestaoTurma
 
@@ -49,11 +50,25 @@ def converte_desc_horario(descricao_horario):
     horarios_split = descricao_horario.split()
 
     for hs in horarios_split:
-        turno = get_turno(hs)
-        horarios = converte_horario_simples(hs, turno)
-        horarios_list.extend(horarios)
+        hs_tratado = verificar_formato(hs)
+        if hs_tratado is not None:
+            turno = get_turno(hs)
+            horarios = converte_horario_simples(hs, turno)
+            horarios_list.extend(horarios)
 
     return horarios_list
+
+
+def verificar_formato(horario_simples):
+    hs_tratado = None
+
+    p = re.compile('[1-7]+[MTNmtn][1-6]+')
+    m = p.match(horario_simples)
+
+    if m is not None:
+        hs_tratado = m.group()
+
+    return hs_tratado
 
 
 def converte_horario_simples(horario, turno):
@@ -78,10 +93,11 @@ def get_turno(horario):
     return None
 
 
-def carrega_turmas(estrutura, semestres, periodo):
+def carrega_turmas(estrutura, semestres, ano_periodo):
     semestres = atualiza_semestres(semestres)
-    ano = get_ano(periodo)
-    periodo = get_periodo(periodo)
+    ano_periodo = atualiza_ano_periodo(ano_periodo)
+    ano = get_ano(ano_periodo)
+    periodo = get_periodo(ano_periodo)
 
     turmas = []
     for s in semestres:
@@ -91,27 +107,33 @@ def carrega_turmas(estrutura, semestres, periodo):
 
 
 def atualiza_semestres(semestres):
-    if semestres.__contains__('100'):
+    if semestres is None or semestres.__contains__('100') or semestres == []:
         semestres = [1, 2, 3, 4, 5, 6, 7, 8, 0]
     return semestres
 
 
-def teste_vazio(periodo):
-    return periodo is None or not periodo or periodo[0] == ''
+def atualiza_ano_periodo(ano_periodo):
+    if ano_periodo is None or ano_periodo == []:
+        ano_periodo = ['2020.1']
+    return ano_periodo
 
 
-def get_ano(periodo):
-    ano = 2019
-    if not teste_vazio(periodo):
-        ano = periodo[0].split('.')[0]
-    return ano
+def teste_vazio(ano_periodo):
+    return ano_periodo is None or ano_periodo == [] or ano_periodo[0] == ''
 
 
-def get_periodo(periodo):
-    p = 2
-    if not teste_vazio(periodo):
-        p = periodo[0].split('.')[1]
-    return p
+def get_ano(ano_periodo):
+    if not teste_vazio(ano_periodo):
+        ano = ano_periodo[0].split('.')[0]
+        return ano
+    return None
+
+
+def get_periodo(ano_periodo):
+    if not teste_vazio(ano_periodo):
+        p = ano_periodo[0].split('.')[1]
+        return p
+    return None
 
 
 def carrega_sugestao_turmas(estrutura, semestres, ano, periodo):
