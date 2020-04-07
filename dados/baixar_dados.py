@@ -1,5 +1,8 @@
+#!/usr/bin/python
 import os
 import urllib.request
+import django
+django.setup()
 
 from mysite.settings import BASE_DIR
 
@@ -8,8 +11,7 @@ DADOS_PATH = os.path.join(BASE_DIR, 'dados')
 
 def main():
     print("Download dados sobre o CERES/UFRN ...!")
-    print(os.getcwd())
-    print(os.path.join(BASE_DIR, 'dados'))
+    print('>> Salvando dados em: ' + os.path.join(BASE_DIR, 'dados'))
     os.chdir(DADOS_PATH)
     downloads_dados()
 
