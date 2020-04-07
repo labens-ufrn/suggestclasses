@@ -1,7 +1,7 @@
 import io
+import logging
 from random import sample
 from typing import List
-import logging
 from urllib.parse import urlparse
 
 import matplotlib.pyplot as plt
@@ -12,7 +12,7 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
-from django.views.generic import ListView, DetailView
+from django.views.generic import DetailView
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 from core.models import Curso, ComponenteCurricular, EstruturaCurricular, OrganizacaoCurricular, \
