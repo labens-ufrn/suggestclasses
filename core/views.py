@@ -380,7 +380,7 @@ def turma_bsi(request):
 
     context = {
         'tt': tt,
-        'periodo_selecionado': periodo_selecionado,
+        'periodo_selecionado': periodo_selecionado[0],
         'semestres_selecionado': semestres_selecionado
     }
 
@@ -402,7 +402,7 @@ def turma_ped(request):
 
     context = {
         'tt': tt,
-        'periodo_selecionado': periodo_selecionado,
+        'periodo_selecionado': periodo_selecionado[0],
         'semestres_selecionado': semestres_selecionado
     }
 

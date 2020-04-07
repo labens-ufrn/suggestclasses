@@ -36,7 +36,7 @@ def get_turmas_por_horario(turmas, dia, turno, ordem):
             print('Turma sem Horário: ' + t.componente.nome)
         horarios = converte_desc_horario(descricao_horario=desc_horario)
 
-        if desc_horario != "" and horarios.__contains__(horario):
+        if desc_horario != '' and horarios.__contains__(horario):
             turmas_horario.append(t)
     return turmas_horario
 
