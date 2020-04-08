@@ -30,8 +30,9 @@ urlpatterns = [
     path('turma/', views.turma_list, name='Lista de Turmas por Curso'),
     path('turma/bsi', views.turma_bsi, name='Turmas de Sistemas de Informação'),
     path('turma/ped', views.turma_ped, name='Turmas de Pedagogia'),
-    path('sugestao/', views.sugestao_list, name='Lista de Sugestão de Turmas por Curso'),
+    path('turma/<int:pk>/', views.TurmaDetailView.as_view(), name='turma_detalhar'),
 
+    path('sugestao/', views.sugestao_list, name='Lista de Sugestão de Turmas por Curso'),
     path('sugestao/bsi/incluir', views.sugestao_bsi_incluir, name='Incluir Sugestão de Turmas Sistemas de Informação'),
     path('sugestao/bsi/editar/<int:pk>/', views.sugestao_bsi_editar, name='sugestao_bsi_editar'),
     path('sugestao/bsi/list', views.sugestao_bsi, name='sugestao_bsi_list'),

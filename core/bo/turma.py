@@ -195,6 +195,7 @@ class TurmaEstendida(Turma):
                       id_turma_agrupadora=turma.id_turma_agrupadora, qtd_aulas_lancadas=turma.qtd_aulas_lancadas,
                       situacao_turma=turma.situacao_turma, convenio=turma.convenio,
                       modalidade_participantes=turma.modalidade_participantes)
+        self.pk = turma.pk
         self.tipo_vinculo = tipo_vinculo
         self.semestre = semestre
         self.curso = curso

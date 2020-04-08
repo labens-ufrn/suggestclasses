@@ -16,7 +16,7 @@ from django.views.generic import DetailView
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 from core.models import Curso, ComponenteCurricular, EstruturaCurricular, OrganizacaoCurricular, \
-    SugestaoTurma, Sala, Docente
+    SugestaoTurma, Sala, Docente, Turma
 from mysite.settings import DOMAINS_WHITELIST
 from .bo.curso import get_cursos
 from .bo.docente import get_docentes
@@ -531,6 +531,11 @@ def sugestao_ped_manter(request):
     }
 
     return render(request, 'core/sugestao/ped/manter.html', context)
+
+
+class TurmaDetailView(DetailView):
+    model = Turma
+    template_name = 'core/turma/detalhar.html'
 
 
 class SugestaoTurmaDetailView(DetailView):
