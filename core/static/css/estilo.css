@@ -66,3 +66,15 @@ a.disabled {
   opacity: 0.5;
   text-decoration: none;
 }
+
+#nav_menu {
+    width: 17vw;
+}
+
+.material-icons.md-18 {
+    font-size: 18px;
+}
+
+.material-icons.md-24 {
+    font-size: 24px;
+}
