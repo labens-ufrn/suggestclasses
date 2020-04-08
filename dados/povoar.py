@@ -320,10 +320,10 @@ def criar_turmas():
     criar_turmas_semestre('turmas-2020.1.csv')
 
 
-def criar_turmas_semestre(turma_csv):
-    print("Criando Turmas: " + turma_csv + " para os Cursos do CERES ...!")
+def criar_turmas_semestre(turmas_csv):
+    print("Criando Turmas: " + turmas_csv + " para os Cursos do CERES ...!")
 
-    with open(turma_csv) as csvfile:
+    with open(turmas_csv) as csvfile:
         turmas = csv.reader(csvfile, delimiter=';')
         next(turmas)  # skip header
 

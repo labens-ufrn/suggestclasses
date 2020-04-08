@@ -27,6 +27,8 @@ def downloads_dados():
     download_curriculos()
     download_docentes()
     download_turmas()
+    download_funcoes()
+    download_discentes()
 
 
 def download_departamentos():
@@ -131,6 +133,49 @@ def download_docentes():
               '-48aebd7db070/download/docentes.csv'
         urllib.request.urlretrieve(url, file_name)
         print('.................')
+
+
+def download_funcoes():
+    print("Download do CSV das Funções Gratificadas do CERES/UFRN ...!")
+    file_name = "funcoes-gratificadas.csv"
+    if os.path.exists(file_name):
+        print("Arquivo funcoes-gratificadas.csv já existe!")
+    else:
+        url = 'http://dados.ufrn.br/dataset/b8c62810-0ec4-4412-ad3b-52105dc8b391/resource/f9ac99fa-011e-4403-8b2a' \
+              '-c8d75888cbcf/download/funcoes-gratificadas.csv'
+        urllib.request.urlretrieve(url, file_name)
+        print('.................')
+
+
+def download_discentes():
+    print("Download do CSV dos Discentes da UFRN ...!")
+    url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/5fc61f78-19b4-4020-9f3c' \
+          '-c298cb8a63aa/download/discentes-2010.csv'
+    download_discentes_semestre(url, 'discentes-2010.csv')
+    url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/2bb3dec9-7f23-434c-a179' \
+          '-21515f91abc8/download/discentes-2011.csv'
+    download_discentes_semestre(url, 'discentes-2011.csv')
+    url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/fc283aa9-61a7-4cf0-91fb' \
+          '-c403c0817b48/download/discentes-2012.csv'
+    download_discentes_semestre(url, 'discentes-2012.csv')
+    url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/dba208c2-822f-4e26-adc3' \
+          '-b61d4cb110b6/download/discentes-2013.csv'
+    download_discentes_semestre(url, 'discentes-2013.csv')
+    url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/6c23a430-9a7c-4d0f-9602' \
+          '-1d5d97d40e6a/download/discentes-2014.csv'
+    download_discentes_semestre(url, 'discentes-2014.csv')
+    url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/e2b5b843-4f58-497e-8979' \
+          '-44daf8df8f94/download/discentes-2015.csv'
+    download_discentes_semestre(url, 'discentes-2015.csv')
+
+
+def download_discentes_semestre(url, discentes_csv):
+    file_name = discentes_csv
+    if os.path.exists(file_name):
+        print('Arquivo ' + discentes_csv + ' já existe!')
+    else:
+        urllib.request.urlretrieve(url, file_name)
+        print('........' + discentes_csv + '.........')
 
 
 if __name__ == "__main__":
