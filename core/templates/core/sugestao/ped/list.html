@@ -10,8 +10,16 @@
       <h4 class="text-center">Período 2020.1</h4>
       {% if user.is_authenticated %}
         <div id="manter" class="center text-center form-group">
-          <a class="btn btn-primary btn-success" href="/core/sugestao/ped/incluir?next={{ request.path|urlencode }}">Incluir Sugestões de Turmas</a>
-          <a class="btn btn-primary btn-info" href="/core/sugestao/ped/manter">Manter Sugestões de Turmas</a>
+          <a class="btn btn-primary btn-success" href="/core/sugestao/ped/incluir?next={{ request.path|urlencode }}">
+            <span class="material-icons align-middle">
+              create
+            </span>
+            Incluir Sugestões de Turmas</a>
+          <a class="btn btn-primary btn-info" href="/core/sugestao/ped/manter">
+            <span class="material-icons align-middle">
+              edit
+            </span>
+            Manter Sugestões de Turmas</a>
         </div>
       {% endif %}
 
