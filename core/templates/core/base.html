@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min-4.1.3.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
   <!-- Navigation -->
@@ -51,12 +52,12 @@
     <div class="d-flex" id="wrapper">
 
       <!-- Sidebar -->
-      <nav class="sidebar bg-light border-bottom">
+      <nav id="nav_menu" class="sidebar bg-light border-bottom">
         <div class="sidebar-heading center" align="center"><b>Menu</b></div>
         <div class="list-group list-group-flush">
           <a href="/core/" class="list-group-item list-group-item-action bg-light">Home</a>
           <a href="/core/dashboard" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-          <a href="/core/flow/" class="list-group-item list-group-item-action bg-light">Fluxograma</a>
+          <a href="/core/flow/" class="list-group-item list-group-item-action bg-light">Fluxogramas</a>
           <a href="/core/turma/" class="list-group-item list-group-item-action bg-light">Turmas</a>
           <a href="/core/sugestao/" class="list-group-item list-group-item-action bg-light">Sugestão de Turmas</a>
           <a href="#" class="list-group-item list-group-item-action bg-light" hidden>Alunos</a>
