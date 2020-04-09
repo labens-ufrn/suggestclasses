@@ -5,14 +5,25 @@
   <section class="page-section" id="estruturas">
     <div class="container">
 
-      <h2 class="page-section-heading text-center text-secondary mb-0">Estruturas Curriculares</h2>
-      <br />
+      <div id="manter" class="center text-center form-group">
+        <h2 class="page-section-heading text-center text-secondary mb-0">
+          Estruturas Curriculares</h2>
+        <h5 class="page-section-heading text-center text-secondary mb-0">CERES - Campus Caicó</h5>
+      </div>
       <div class="list-group list-group-flush">
-        <a href="/core/flow/bsi" class="list-group-item list-group-item-action bg-light">
-          Sistemas de Informação - 01A</a>
+        <a href="/core/flow/mat-h" class="list-group-item list-group-item-action bg-light">
+          <b>{{ mat_flow.curso.nome }}</b> - {{ mat_flow.curso.grau }} (Código Estrutura Curricular: {{ mat_flow.codigo }})</a>
+        <a href="/core/flow/ped" class="list-group-item list-group-item-action bg-light" hidden>
+          <b>{{ ped_flow.curso.nome }}</b> - {{ ped_flow.curso.grau }} (Código EC: {{ ped_flow.codigo }})</a>
+        <a href="/core/flow/ped-h" class="list-group-item list-group-item-action bg-light">
+          <b>{{ ped_flow.curso.nome }}</b> - {{ ped_flow.curso.grau }} (EC: {{ ped_flow.codigo }})</a>
+        <a href="/core/flow/bsi" class="list-group-item list-group-item-action bg-light" hidden>
+          <b>{{ bsi_flow_1a.curso.nome }}</b> ({{ bsi_flow_1a.curso.grau }} - EC: {{ bsi_flow_1a.codigo }})</a>
         <a href="/core/flow/bsi-1b" class="list-group-item list-group-item-action bg-light">
-          Sistemas de Informação - 01B</a>
-          <a href="/core/flow/ped" class="list-group-item list-group-item-action bg-light">Pedagogia</a>
+          <b>{{ bsi_flow_1b.curso.nome }}</b> ({{ bsi_flow_1b.curso.grau }} - EC: {{ bsi_flow_1b.codigo }})</a>
+        <a href="/core/flow/bsi-1b-h" class="list-group-item list-group-item-action bg-light">
+          <b>{{ bsi_flow_1b.curso.nome }}</b> ({{ bsi_flow_1b.curso.grau }} - EC: {{ bsi_flow_1b.codigo }}) - Horizontal</a>
+
       </div>
     </div>
   </section>

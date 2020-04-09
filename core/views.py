@@ -17,9 +17,11 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 from core.models import Curso, ComponenteCurricular, EstruturaCurricular, OrganizacaoCurricular, \
     SugestaoTurma, Sala, Docente, Turma
+from core.visoes.flow_view import flow_horizontal, flow_opcionais
 from mysite.settings import DOMAINS_WHITELIST
 from .bo.curso import get_cursos
 from .bo.docente import get_docentes
+from .bo.matematica import get_estrutura_matematica
 from .bo.pedagogia import get_estrutura_pedagogia
 from .bo.sala import get_salas
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre
@@ -206,7 +208,22 @@ def sala_list(request):
 
 
 def flow_list(request):
-    return render(request, 'core/flow/list.html')
+    """
+        Lista todas as Estruturas Curriculares do centro CERES.
+    """
+    bsi_flow_1a = get_estrutura_sistemas()
+    bsi_flow_1b = get_estrutura_sistemas_dct()
+    ped_flow = get_estrutura_pedagogia()
+    mat_flow = get_estrutura_matematica()
+
+    context = {
+        'mat_flow': mat_flow,
+        'ped_flow': ped_flow,
+        'bsi_flow_1a': bsi_flow_1a,
+        'bsi_flow_1b': bsi_flow_1b
+    }
+
+    return render(request, 'core/flow/list.html', context)
 
 
 def flow_bsi(request):
@@ -232,19 +249,6 @@ def flow_bsi(request):
     }
 
     return render(request, 'core/flow/bsi.html', context)
-
-
-def flow_bsi_op(request):
-    id_ec = 510230607
-    bsi_ec = EstruturaCurricular.objects.get(id_curriculo=id_ec)
-    print(bsi_ec)
-    bsi_oc_op = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec, semestre=0)
-
-    context = {
-        'bsi_oc_op': bsi_oc_op,
-    }
-
-    return render(request, 'core/flow/bsi-op.html', context)
 
 
 def flow_bsi_1b(request):
@@ -288,41 +292,29 @@ def flow_bsi_1b(request):
 
 def flow_bsi_1b_h(request):
     bsi_ec = get_estrutura_sistemas_dct()
+    link_opcionais = '/core/flow/bsi/opcionais'
+    return flow_horizontal(request, bsi_ec, link_opcionais)
 
-    bsi_oc_op = get_oc_by_semestre(bsi_ec, 0)
 
-    headers: List[str] = []
-    bsi_all = []
-    bsi_oc_max = 0
-    for s in range(1, 9):
-        bsi_row = []
-        oc = get_oc_by_semestre(bsi_ec, s)
-        ch = get_ch_by_semestre(bsi_ec, s)
+def flow_bsi_op(request):
+    bsi_ec = get_estrutura_sistemas_dct()
+    return flow_opcionais(request, bsi_ec)
 
-        tam = len(oc)
-        if tam >= bsi_oc_max:
-            bsi_oc_max = tam
 
-        bsi_row.append(f"{s}º")
-        bsi_row.append(oc)
-        bsi_row.append(tam)
-        bsi_row.append(ch)
-        bsi_all.append(bsi_row)
+def flow_mat_h(request):
+    mat_ec = get_estrutura_matematica()
+    link_opcionais = '/core/flow/mat/opcionais'
+    return flow_horizontal(request, mat_ec, link_opcionais)
 
-    for row in bsi_all:
-        row[2] = bsi_oc_max - row[2]
 
-    print(bsi_all)
+def flow_mat_op(request):
+    mat_ec = get_estrutura_matematica()
+    return flow_opcionais(request, mat_ec)
 
-    context = {
-        'bsi_ec': bsi_ec,
-        'headers': headers,
-        'bsi_oc_op': bsi_oc_op,
-        'bsi_oc_max': bsi_oc_max,
-        'bsi_all': bsi_all,
-    }
 
-    return render(request, 'core/flow/bsi-1b-horizontal.html', context)
+def flow_ped_op(request):
+    ped_ec = get_estrutura_pedagogia()
+    return flow_opcionais(request, ped_ec)
 
 
 def flow_ped(request):
@@ -350,15 +342,15 @@ def flow_ped(request):
     return render(request, 'core/flow/pedagogia.html', context)
 
 
+def flow_ped_h(request):
+    ped_ec = get_estrutura_pedagogia()
+    link_opcionais = '/core/flow/ped/opcionais'
+    return flow_horizontal(request, ped_ec, link_opcionais)
+
+
 def flow_ped_op(request):
     ped_ec = get_estrutura_pedagogia()
-    ped_oc_op = get_oc_by_semestre(ped_ec, 0)
-
-    context = {
-        'ped_oc_op': ped_oc_op,
-    }
-
-    return render(request, 'core/flow/ped-op.html', context)
+    return flow_opcionais(request, ped_ec)
 
 
 def cadastrar_usuario(request):

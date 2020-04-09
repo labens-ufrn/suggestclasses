@@ -42,9 +42,13 @@ def flow_horizontal(request, estrutura, link_opcionais):
     return render(request, 'core/flow/flow-horizontal.html', context)
 
 
-def flow_bsi_op(request, estrutura):
-    estrutura_opcionais = get_oc_by_semestre(estrutura, 0)
+def flow_opcionais(request, estrutura):
+    semestre_opcional = 0
+    estrutura_opcionais = get_oc_by_semestre(estrutura, semestre_opcional)
 
     context = {
+        'estrutura': estrutura,
         'estrutura_opcionais': estrutura_opcionais,
     }
+
+    return render(request, 'core/flow/flow-opcionais.html', context)

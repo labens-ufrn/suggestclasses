@@ -1,0 +1,80 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+  <section class="page-section" id="flow">
+    <div class="container" style="overflow: auto">
+
+      <div id="manter" class="center text-center form-group">
+        <h2 class="page-section-heading text-center text-secondary mb-0">
+          Fluxograma do Curso de <b>{{ estrutura.curso.nome }}</b></h2>
+        <h5 class="page-section-heading text-center text-secondary mb-0">CERES - Campus Caicó</h5>
+      </div>
+
+      <table class="table table-striped table-sm table-bordered">
+        <tr align="center">
+          <th class="font-weight-bold" colspan="8">{{ estrutura.nome }}</th>
+        </tr>
+        <tr>
+          <td class="font-weight-bold">Código</td>
+          <td align="center">{{ estrutura.codigo }}</td>
+          <td class="font-weight-bold">Carga Horária Total</td>
+          <td align="center">{{ estrutura.ch_total_minima }}</td>
+          <td class="font-weight-bold">Carga Horária Optativas</td>
+          <td align="center">{{ estrutura.ch_optativas_minima }}</td>
+          <td class="font-weight-bold">Carga Horária Complementar</td>
+          <td align="center">{{ estrutura.ch_complementar_minima }}</td>
+        </tr>
+      </table>
+
+      <table class="table table-striped table-sm table-bordered" style="table-layout: fixed; width: 100%">
+        <thead class="thead-light">
+        <tr class="font-weight-bold align-middle" align="center">
+          <th width="6%">Semestre</th>
+          <th width="86%" colspan="{{ max_comp_by_semestre }}">Componentes Curriculares</th>
+          <th width="8%">CH Total</th>
+        </tr>
+        </thead>
+        <tbody style="font-size: 12px">
+        {% for semestre in estrutura_all %}
+          <tr>
+            <td class="align-middle font-weight-bold" align="center" width="6%">{{ semestre.0 }}</td>
+            {% for oc in semestre.1 %}
+              <td align="center" style="font-size: 10px">
+                <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>
+                <span style="color: darkslateblue">
+                  {{ oc.componente.codigo }}
+                </span>
+                <span class="material-icons md-18 align-middle" style="color: darkslateblue">
+                  filter_{{ oc.semestre }}
+                </span><br/>
+                <b>{{ oc.componente.nome }}</b><br/>
+                <i>{{ oc.componente.ch_total }}h</i> <br/>
+                <a href="{% url 'componente_detalhar' oc.componente.pk %}">
+                  <span class="material-icons md-18 align-middle">
+                    find_in_page
+                  </span>
+                </a>
+              </td>
+            {% endfor %}
+            {% if semestre.2 > 0 %}
+              {% for i in "x"|ljust:semestre.2 %}
+                <td><span /></td>
+              {% endfor %}
+            {% endif %}
+            <td class="align-middle" align="center" width="8%">{{ semestre.3.componente__ch_total__sum }}h</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="8" align="center">
+            <a href="{{ link_opcionais }}">Listar Componentes Curriculares Opcionais</a>
+          </td>
+        </tr>
+        </tfoot>
+      </table>
+
+    </div>
+  </section>
+{% endblock %}

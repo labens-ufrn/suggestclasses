@@ -23,8 +23,14 @@ urlpatterns = [
     path('flow/bsi/opcionais', views.flow_bsi_op, name='Fluxograma BSI - Opcionais'),
     path('flow/bsi-1b/', views.flow_bsi_1b, name='Fluxograma BSI - 01B'),
     path('flow/bsi-1b-h/', views.flow_bsi_1b_h, name='Fluxograma BSI - 01B - Horizontal'),
+
     path('flow/ped/', views.flow_ped, name='Fluxograma Pedagogia'),
+    path('flow/ped-h/', views.flow_ped_h, name='flow_ped_h'),
     path('flow/ped/opcionais', views.flow_ped_op, name='Fluxograma Pedagogia - Opcionais'),
+
+    path('flow/mat-h/', views.flow_mat_h, name='flow_mat_h'),
+    path('flow/mat/opcionais', views.flow_mat_op, name='flow_mat_op'),
+
     path('usuario/cadastrar', views.cadastrar_usuario, name='Cadastro de Usuário'),
     path('usuario/logar', views.logar_usuario, name='Login de Usuário'),
     path('usuario/deslogar', views.deslogar_usuario, name='Logout de Usuário'),
