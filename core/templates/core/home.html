@@ -6,23 +6,20 @@
   <section class="page-section" id="dashboard">
     <div class="container">
 
-      <!-- Portfolio Section Heading -->
-      <h2 class="page-section-heading text-center text-secondary mb-0">
-        Sistema de Sugestão de Turmas e Análise de Dados Educacionais
-      </h2>
-      <br>
-      <p class="alert-danger"><b>Obs. 1:</b> SuggestClasses v1.0-alpha: Versão de Testes que pode conter bugs e
-        funcionalidades em desenvolvimento. Os dados cadastrados não serão salvos! Atualmente apenas dados
-        do <b>Centro de Ensino Superior do Seridó - CERES/UFRN</b> estão carregados.
-      </p>
+      <div id="manter" class="center text-center form-group">
+        <h2 class="page-section-heading text-center text-secondary mb-0">
+          Sistema de Sugestão de Turmas e Análise de Dados Educacionais</h2>
+        <h5 class="page-section-heading text-center text-secondary mb-0">CERES - Campus Caicó</h5>
+      </div>
 
-      <!-- Icon Divider -->
       <div class="divider-custom">
-        <div class="divider-custom-line"></div>
-        <div class="divider-custom-icon">
-          <i class="fas fa-star"></i>
+        <div class="divider-custom-line">
+          <span class="alert-danger">
+            <b>Obs. 1: </b>SuggestClasses v1.0-alpha: Versão de Testes que pode conter bugs e
+            funcionalidades em desenvolvimento. Os dados cadastrados não serão salvos! Atualmente apenas dados
+            do <b>Centro de Ensino Superior do Seridó - CERES/UFRN</b> estão carregados.
+          </span>
         </div>
-        <div class="divider-custom-line"></div>
       </div>
 
       <div class="row">
@@ -33,7 +30,7 @@
           <p>O objetivo da versão 1.0 é exibir <a href="/core/turma/"><b>Turmas do Período Atual</b></a> e
             <a href="/core/sugestao/"><b>Sugestões de Turmas do Próximo Período</b></a> em formato de
             tabela de horários. Sendo possível exibir a tabela de horários por Curso (Pedagogia, Sistema de Informação),
-            por Sala (em desenvolvimento), por Docente e por Discente.</p>
+            por Sala, por Docente e por Discente.</p>
           <hr>
           <div class="row">
             <div class="col-sm-3 col-md-6 col-lg-6">
@@ -43,7 +40,7 @@
                   <span class="badge badge-primary badge-pill">{{ cursos.count }}</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="/core/departamento/list/">Departamentos</a>
+                  <a href="/core/departamento/list/">Departamentos</a>
                   <span class="badge badge-primary badge-pill">{{ departamentos.count }}</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -59,7 +56,7 @@
                   <span class="badge badge-primary badge-pill">--</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="/core/docente/list/">Docentes</a>
+                  <a href="/core/docente/list/">Docentes</a>
                   <span class="badge badge-primary badge-pill">{{ docentes.count }}</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
