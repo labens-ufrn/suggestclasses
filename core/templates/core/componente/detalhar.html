@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+  <section class="page-section" id="horarios">
+    <div class="container">
+
+      <h2 class="page-section-heading text-center text-secondary mb-0">Detalhar Componente Curricular</h2>
+      <br/>
+      <table class="table table-striped table-sm table-bordered">
+        <tr>
+          <td class="font-weight-bold" width="20%">Tipo / Nível / Modalidade</td>
+          <td>{{ object.tipo }} - {{ object.nivel }} - {{ object.modalidade  }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold">Código</td>
+          <td>{{ object.codigo }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold">Nome</td>
+          <td>{{ object.nome }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold">Equivalências</td>
+          <td>{{ object.equivalencia }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold">Requisitos</td>
+          <td>{{ object.requisito }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold">Corequisitos</td>
+          <td>{{ object.corequisito }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold">Carga Horária</td>
+          <td>{{ object.ch_total }}h</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold">Departamento</td>
+          <td>{{ object.departamento }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold">Ementa</td>
+          <td class="text-justify flex-wrap">{{ object.ementa }}</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+{% endblock %}

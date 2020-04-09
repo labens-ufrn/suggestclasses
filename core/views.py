@@ -164,6 +164,11 @@ def componente_list(request):
     return render(request, 'core/componente/list.html', context)
 
 
+class ComponenteDetailView(DetailView):
+    model = ComponenteCurricular
+    template_name = 'core/componente/detalhar.html'
+
+
 def curriculo_list(request):
     estruturas = EstruturaCurricular.objects.all()
 
@@ -250,21 +255,74 @@ def flow_bsi_1b(request):
     bsi_oc_op = get_oc_by_semestre(bsi_ec, 0)
 
     headers: List[str] = []
-
+    bsi_tam = []
+    bsi_oc_max = 0
     for s in range(1, 9):
+        oc = get_oc_by_semestre(bsi_ec, s)
+        ch = get_ch_by_semestre(bsi_ec, s)
+
         headers.append(f"{s}º Semestre")
-        bsi_oc_semestres.append(get_oc_by_semestre(bsi_ec, s))
-        bsi_ch_semestres.append(get_ch_by_semestre(bsi_ec, s))
+        tam = len(oc)
+        bsi_tam.append(tam)
+        bsi_oc_semestres.append(oc)
+        bsi_ch_semestres.append(ch)
+
+        if tam >= bsi_oc_max:
+            bsi_oc_max = tam
+
+    for i in range(0, len(bsi_tam)):
+        bsi_tam[i] = bsi_oc_max - bsi_tam[i]
 
     context = {
         'bsi_ec': bsi_ec,
         'headers': headers,
         'bsi_oc_semestres': bsi_oc_semestres,
         'bsi_oc_op': bsi_oc_op,
+        'bsi_tam': bsi_tam,
+        'bsi_oc_max': bsi_oc_max,
         'bsi_ch_semestres': bsi_ch_semestres,
     }
 
     return render(request, 'core/flow/bsi-1b.html', context)
+
+
+def flow_bsi_1b_h(request):
+    bsi_ec = get_estrutura_sistemas_dct()
+
+    bsi_oc_op = get_oc_by_semestre(bsi_ec, 0)
+
+    headers: List[str] = []
+    bsi_all = []
+    bsi_oc_max = 0
+    for s in range(1, 9):
+        bsi_row = []
+        oc = get_oc_by_semestre(bsi_ec, s)
+        ch = get_ch_by_semestre(bsi_ec, s)
+
+        tam = len(oc)
+        if tam >= bsi_oc_max:
+            bsi_oc_max = tam
+
+        bsi_row.append(f"{s}º")
+        bsi_row.append(oc)
+        bsi_row.append(tam)
+        bsi_row.append(ch)
+        bsi_all.append(bsi_row)
+
+    for row in bsi_all:
+        row[2] = bsi_oc_max - row[2]
+
+    print(bsi_all)
+
+    context = {
+        'bsi_ec': bsi_ec,
+        'headers': headers,
+        'bsi_oc_op': bsi_oc_op,
+        'bsi_oc_max': bsi_oc_max,
+        'bsi_all': bsi_all,
+    }
+
+    return render(request, 'core/flow/bsi-1b-horizontal.html', context)
 
 
 def flow_ped(request):

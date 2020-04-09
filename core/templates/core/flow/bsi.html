@@ -7,11 +7,25 @@
 
     <h2 class="page-section-heading text-center text-secondary mb-0">Fluxograma BSI</h2>
     <br />
-    <p>Estrutura: {{ bsi_ec }}</p>
-    <p>Carga Horária Total: {{ bsi_ec.ch_total_minima }}</p>
-    <p>Carga Horária Optativas: {{ bsi_ec.ch_optativas_minima }}</p>
-    <p>Carga Horária Complementar: {{ bsi_ec.ch_complementar_minima }}</p>
-    <br />
+    <table class="table table-striped table-sm table-bordered">
+      <tr>
+        <td class="font-weight-bold" width="25%">Estrutura</td>
+        <td>{{ bsi_ec }}</td>
+      </tr>
+      <tr>
+        <td class="font-weight-bold" width="25%">Carga Horária Total</td>
+        <td>{{ bsi_ec.ch_total_minima }}</td>
+      </tr>
+      <tr>
+        <td class="font-weight-bold" width="25%">Carga Horária Optativas</td>
+        <td>{{ bsi_ec.ch_optativas_minima }}</td>
+      </tr>
+      <tr>
+        <td id="td-ch-comp" class="font-weight-bold" width="25%">
+          Carga Horária Complementar</td>
+        <td class="alert-danger">{{ bsi_ec.ch_complementar_minima }} (Informação não preenchida em dados.ufrn.br)</td>
+      </tr>
+    </table>
 
     <table class="table table-sm table-bordered" border="1" padding="0" cellspacing="20px" cellpadding="0" style="font-size:70%">
       <tr align="center">

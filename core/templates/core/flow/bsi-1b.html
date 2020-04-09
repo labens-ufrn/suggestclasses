@@ -2,54 +2,93 @@
 
 {% block content %}
 
-<section class="page-section" id="bsi">
-  <div class="container" style="overflow: auto">
+  <section class="page-section" id="bsi">
+    <div class="container" style="overflow: auto">
 
-    <h2 class="page-section-heading text-center text-secondary mb-0">Fluxograma BSI</h2>
-    <br />
-    <p>Estrutura: {{ bsi_ec }}</p>
-    <p>Carga Horária Total: {{ bsi_ec.ch_total_minima }}</p>
-    <p>Carga Horária Optativas: {{ bsi_ec.ch_optativas_minima }}</p>
-    <p>Carga Horária Complementar: {{ bsi_ec.ch_complementar_minima }}</p>
-    <br />
+      <h2 class="page-section-heading text-center text-secondary mb-0">Fluxograma BSI</h2>
+      <br/>
+      <table class="table table-striped table-sm table-bordered">
+        <tr>
+          <td class="font-weight-bold" width="25%">Estrutura</td>
+          <td>{{ bsi_ec }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold" width="25%">Carga Horária Total</td>
+          <td>{{ bsi_ec.ch_total_minima }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold" width="25%">Carga Horária Optativas</td>
+          <td>{{ bsi_ec.ch_optativas_minima }}</td>
+        </tr>
+        <tr>
+          <td id="td-ch-comp" class="font-weight-bold" width="25%">
+            Carga Horária Complementar
+          </td>
+          <td>{{ bsi_ec.ch_complementar_minima }}</td>
+        </tr>
+      </table>
 
-    <table class="table table-sm table-bordered" border="1" padding="0" cellspacing="20px" cellpadding="0" style="font-size:70%">
-      <tr align="center">
-        {% for header in headers %}
-        <th>{{ header }}</th>
-        {% endfor %}
-      </tr>
-      <tr>
-        {% for semestre in bsi_oc_semestres %}
-        <td align="center" width="12.5%" style="padding: 0;">
-          <table>
-            {% for oc in semestre %}
-            <tr align="center">
-              <td height="100px">
-                <b>{{ oc.componente.codigo }}</b><br />
-                {{ oc.componente.nome }}<br />
-                {{ oc.componente.ch_total }}h
-              </td>
-            </tr>
-            {% endfor %}
-          </table>
-        </td>
-        {% endfor %}
-      </tr>
-      <tfoot>
-            <tr align="center">
-              {% for semestre in bsi_ch_semestres %}
-                <td>CH Total: {{ semestre.componente__ch_total__sum }}</td>
-              {% endfor %}
-            </tr>
-            <tr>
-              <td colspan="8" align="center">
-                <a href="/core/flow/bsi/opcionais">Listar Componentes Curriculares Opcionais</a>
-              </td>
-            </tr>
-          </tfoot>
-    </table>
+      <table class="table table-sm table-bordered" padding="0" cellspacing="20px" cellpadding="0"
+             style="font-size:70%">
+        <thead class="thead-light">
+        <tr align="center">
+          {% for header in headers %}
+            <th class="font-weight-bold">{{ header }}</th>
+          {% endfor %}
+        </tr>
+        </thead>
+        <tr>
+          {% for semestre in bsi_oc_semestres %}
+            <td align="center" width="12.5%" style="padding: 0;">
+              <table class="table table-sm">
+                {% for oc in semestre %}
+                  <tr align="center">
+                    <td height="100px">
+                      <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>
+                      <span style="color: darkslateblue">
+                        {{ oc.componente.codigo }}
+                      </span>
+                      <span class="material-icons md-18 align-middle" style="color: darkslateblue">
+                          filter_{{ oc.semestre }}
+                      </span><br/>
+                      <b>{{ oc.componente.nome }}</b><br/>
+                      <i>{{ oc.componente.ch_total }}h</i> <br/>
+                      <a href="{% url 'componente_detalhar' oc.componente.pk %}">
+                        <span class="material-icons md-18 align-middle">
+                          find_in_page
+                        </span>
+                      </a>
+                    </td>
+                  </tr>
+                {% endfor %}
+                {% for tam in bsi_tam %}
+                  {% if forloop.counter0 == forloop.parentloop.counter0 and tam > 0 %}
+                    {% for i in "x"|ljust:tam %}
+                      <tr>
+                        <td height="100px">
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  {% endif %}
+                {% endfor %}
+              </table>
+            </td>
+          {% endfor %}
+        </tr>
+        <tfoot>
+        <tr align="center">
+          {% for semestre in bsi_ch_semestres %}
+            <td>CH Total: {{ semestre.componente__ch_total__sum }}</td>
+          {% endfor %}
+        </tr>
+        <tr>
+          <td colspan="8" align="center">
+            <a href="/core/flow/bsi/opcionais">Listar Componentes Curriculares Opcionais</a>
+          </td>
+        </tr>
+        </tfoot>
+      </table>
 
-  </div>
-</section>
+    </div>
+  </section>
 {% endblock %}
