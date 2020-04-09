@@ -29,7 +29,7 @@ class Departamento(models.Model):
     centro = models.ForeignKey(Centro, on_delete=models.PROTECT)
 
     def __str__(self):
-        return self.nome + ' - ' + self.sigla
+        return self.nome + ' - ' + self.sigla + '/' + self.centro.sigla
 
 
 class Docente(models.Model):
