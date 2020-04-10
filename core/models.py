@@ -275,6 +275,9 @@ class SugestaoTurma(models.Model):
 
 
 class FuncaoGratificada(models.Model):
+    """
+    Modelo para as funções gratificadas (designações).
+    """
     siape = models.IntegerField()
     nome = models.CharField(max_length=200)
     situacao_servidor = models.CharField(max_length=25)
