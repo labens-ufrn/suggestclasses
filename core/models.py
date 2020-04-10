@@ -272,3 +272,18 @@ class SugestaoTurma(models.Model):
         return self.codigo_turma + ' - ' + self.componente.__str__() + ' - ' \
                + self.docente.primeiro_nome() + ' (' + self.docente.siape.__str__() + ') - ' \
                + self.descricao_horario
+
+
+class FuncaoGratificada(models.Model):
+    siape = models.IntegerField()
+    nome = models.CharField(max_length=200)
+    situacao_servidor = models.CharField(max_length=25)
+    id_unidade = models.IntegerField()
+    lotacao = models.CharField(max_length=200)
+    sigla = models.CharField(max_length=15)
+    inicio = models.DateField()
+    fim = models.DateField(null=True)
+    id_unidade_designacao = models.IntegerField()
+    unidade_designacao = models.CharField(max_length=200)
+    atividade = models.CharField(max_length=100)
+    observacoes = models.CharField(max_length=200, null=True)
