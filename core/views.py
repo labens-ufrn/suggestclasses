@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, logout, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
@@ -35,6 +36,8 @@ from .forms import CadastroAlunoForm, SugestaoTurmaForm
 from .models import Horario
 
 # Get an instance of a logger
+from .visoes.user_view import criar_usuario, autenticar_logar
+
 logger = logging.getLogger('suggestclasses.logger')
 
 
@@ -357,17 +360,15 @@ def cadastrar_usuario(request):
     if request.method == "POST":
         form_usuario = CadastroAlunoForm(request.POST)
         if form_usuario.is_valid():
-            usuario = form_usuario.save()
-            grupo = form_usuario.cleaned_data.get('grupo')
-            usuario.groups.add(grupo)
-            username = form_usuario.cleaned_data.get('username')
-            raw_password = form_usuario.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            messages.success(request, 'Usuário cadastrado com sucesso.')
-            return redirect('index')
+            try:
+                criar_usuario(request, form_usuario)
+                autenticar_logar(request, form_usuario)
+                messages.success(request, 'Usuário cadastrado com sucesso.')
+                return redirect('index')
+            except ValidationError as e:
+                form_usuario.add_error(None, e)
         else:
-            messages.error(request, 'O formulário contém dados inválidos')
+            messages.error(request, 'O formulário contém dados inválidos!')
     else:
         form_usuario = CadastroAlunoForm()
     return render(request, 'core/usuario/cadastro.html', {'form_usuario': form_usuario})
