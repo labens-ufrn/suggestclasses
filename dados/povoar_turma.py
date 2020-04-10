@@ -4,7 +4,7 @@ from core.models import ComponenteCurricular, Docente, Turma
 from dateutil.parser import parse
 
 
-def carregar_docente(siape, componente):
+def carregar_docente_substituto(siape, componente):
     docente = get_docente_by_siape(siape)
 
     # Carregamento de Docente com Contrato de Professor Substituto
@@ -29,7 +29,7 @@ def carregar_turma(row):
     if ComponenteCurricular.objects.filter(id_componente=id_componente_curricular).exists():
         cc = ComponenteCurricular.objects.get(id_componente=id_componente_curricular)
 
-        docente = carregar_docente(siape=siape, componente=cc)
+        docente = carregar_docente_substituto(siape=siape, componente=cc)
 
         curriculo = get_curriculo_by_cc(id_componente_curricular)
 
