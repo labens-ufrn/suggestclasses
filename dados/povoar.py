@@ -5,13 +5,12 @@ django.setup()
 
 from mysite.settings import BASE_DIR
 from dateutil.parser import parse
-
+from dados.povoar_funcoes_gratificadas import carregar_funcoes_gratificadas
 from dados.povoar_turma import carregar_turma
 from dados.baixar_dados import downloads_dados
 from core.models import Curso, Centro, Departamento, ComponenteCurricular, EstruturaCurricular, \
-    OrganizacaoCurricular, Docente, Turma
-from core.bo.curriculo import get_curriculo_by_cc
-from core.bo.docente import get_docente_by_siape, get_docente_by_nome
+    OrganizacaoCurricular, Docente
+from core.bo.docente import get_docente_by_nome
 
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')
 
@@ -33,6 +32,7 @@ def main():
     estruturas()
     organizacao()
     criar_turmas()
+    criar_funcoes_gratificadas()
 
 
 def centros():
@@ -329,6 +329,19 @@ def criar_turmas_semestre(turmas_csv):
 
         for row in turmas:
             carregar_turma(row)
+        print()
+
+
+def criar_funcoes_gratificadas():
+    funcoes_gratificadas_csv = 'funcoes-gratificadas.csv'
+    print("Criando Funções Gratificadas: " + funcoes_gratificadas_csv + " para os Docentes do CERES ...!")
+
+    with open(funcoes_gratificadas_csv) as csvfile:
+        funcoes_gratificadas = csv.reader(csvfile, delimiter=';')
+        next(funcoes_gratificadas)  # skip header
+
+        for row in funcoes_gratificadas:
+            carregar_funcoes_gratificadas(row)
         print()
 
 
