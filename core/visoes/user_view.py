@@ -1,9 +1,11 @@
+from datetime import datetime, date
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout, login, update_session_auth_hash
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
 
-from core.models import Docente
+from core.models import Docente, FuncaoGratificada
 
 grupos = []
 
@@ -45,11 +47,21 @@ def check_grupos(request, form_usuario, usuario):
         if Group.objects.filter(name=docentes).exists():
             grupo_docentes = Group.objects.get(name=docentes)
             grupos.append(grupo_docentes)
-            return
-        # TODO Criar model de Função Gratificada para essa checagem
-        # if FuncaoGratificada.objects.filter(siape=matricula).exists():
-        #    grupo_chefes = form_usuario.cleaned_data.get('Chefes')
-        #    usuario.groups.add(grupo_chefes)
+        # Verifica a existência da função gratificada ativa
+        hoje = date.today()
+        if FuncaoGratificada.objects.filter(siape=matricula, inicio__lte=hoje, fim__gt=hoje).exists():
+            fgs = FuncaoGratificada.objects.filter(siape=matricula, inicio__lte=hoje, fim__gt=hoje)
+            for fg in fgs:
+                print(fg.atividade + " " + fg.atividade)
+                if fg.atividade == 'CHEFE DE DEPARTAMENTO':
+                    chefes = 'Chefes'
+                    grupo_docentes = Group.objects.get(name=chefes)
+                    grupos.append(grupo_docentes)
+                if fg.atividade == 'COORDENADOR DE CURSO':
+                    coordenadores = 'Coordenadores'
+                    grupo_docentes = Group.objects.get(name=coordenadores)
+                    grupos.append(grupo_docentes)
+        return
     # TODO Criar model de Discente para essa checagem
     # elif Discente.objects.filter(matricula=matricula).exists():
     #      grupo_chefes = form_usuario.cleaned_data.get('Chefes')
