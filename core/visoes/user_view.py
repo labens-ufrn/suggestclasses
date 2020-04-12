@@ -38,7 +38,6 @@ def check_email(request, form_usuario):
 
 def check_grupos(request, form_usuario, usuario):
     matricula = form_usuario.cleaned_data.get('matricula')
-    grupo_selecionado = form_usuario.cleaned_data.get('grupo')
     grupos = []
     if Docente.objects.filter(siape=matricula).exists():
         grupos.append(get_grupo_docentes())
