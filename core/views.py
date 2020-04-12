@@ -21,6 +21,7 @@ from core.models import Curso, ComponenteCurricular, EstruturaCurricular, Organi
 from core.visoes.flow_view import flow_horizontal, flow_opcionais
 from mysite.settings import DOMAINS_WHITELIST
 from .bo.curso import get_cursos
+from .bo.discentes import get_discentes
 from .bo.docente import get_docentes
 from .bo.matematica import get_estrutura_matematica
 from .bo.pedagogia import get_estrutura_pedagogia
@@ -53,6 +54,7 @@ def index(request):
     componentes = get_componentes_curriculares()
     salas = get_salas()
     docentes = get_docentes()
+    discentes = get_discentes()
 
     context = {
         'ceres': ceres,
@@ -61,6 +63,7 @@ def index(request):
         'cursos': cursos,
         'componentes': componentes,
         'salas': salas,
+        'discentes': discentes,
     }
 
     return render(request, 'core/home.html', context)
