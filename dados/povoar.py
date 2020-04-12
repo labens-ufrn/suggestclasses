@@ -3,11 +3,12 @@ import os
 import django
 django.setup()
 
+from dados.baixar_dados import downloads_dados
 from mysite.settings import BASE_DIR
 from dateutil.parser import parse
 from dados.povoar_funcoes_gratificadas import carregar_funcoes_gratificadas
 from dados.povoar_turma import carregar_turma
-from dados.baixar_dados import downloads_dados
+from dados.povoar_discentes import carregar_discentes
 from core.models import Curso, Centro, Departamento, ComponenteCurricular, EstruturaCurricular, \
     OrganizacaoCurricular, Docente
 from core.bo.docente import get_docente_by_nome
@@ -33,6 +34,7 @@ def main():
     organizacao()
     criar_turmas()
     criar_funcoes_gratificadas()
+    criar_discentes()
 
 
 def centros():
@@ -315,7 +317,7 @@ def criar_docentes():
 def criar_turmas():
     print("Criando Turmas 2019.1, 2019.2 e 2020.1 para os Cursos do CERES ...!")
 
-    criar_turmas_semestre('turmas-2019.1.csv')  # O arquivo não estava no servidor dados.ufrn.br - estava no 2020.1
+    criar_turmas_semestre('turmas-2019.1.csv')
     criar_turmas_semestre('turmas-2019.2.csv')
     criar_turmas_semestre('turmas-2020.1.csv')
 
@@ -342,6 +344,29 @@ def criar_funcoes_gratificadas():
 
         for row in funcoes_gratificadas:
             carregar_funcoes_gratificadas(row)
+        print()
+
+
+def criar_discentes():
+    print("Criando Discentes por Ano de Ingresso para os Cursos do CERES ...!")
+
+    criar_discentes_anual('discentes-2010.csv')
+    criar_discentes_anual('discentes-2011.csv')
+    criar_discentes_anual('discentes-2012.csv')
+    criar_discentes_anual('discentes-2013.csv')
+    criar_discentes_anual('discentes-2014.csv')
+    criar_discentes_anual('discentes-2015.csv')
+
+
+def criar_discentes_anual(discentes_csv):
+    print("Criando Discentes Ingressantes: " + discentes_csv + " para os Cursos do CERES ...!")
+
+    with open(discentes_csv) as csvfile:
+        discentes = csv.reader(csvfile, delimiter=';')
+        next(discentes)  # skip header
+
+        for row in discentes:
+            carregar_discentes(row)
         print()
 
 
