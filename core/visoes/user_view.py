@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, logout, login, update_session_auth
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
 
-from core.models import Docente, FuncaoGratificada
+from core.models import Docente, FuncaoGratificada, Discente
 
 
 def criar_usuario(request, form_usuario):
@@ -52,14 +52,21 @@ def check_grupos(request, form_usuario, usuario):
                 if fg.atividade == 'COORDENADOR DE CURSO':
                     grupos.append(get_grupo_coordenadores())
         return grupos
-    # TODO Criar model de Discente para essa checagem
-    # elif Discente.objects.filter(matricula=matricula).exists():
-    #      grupo_chefes = form_usuario.cleaned_data.get('Chefes')
-    #      usuario.groups.add(grupo_chefes)
-    msg = 'A matrícula informada não está associada a um discente ou docente!'
+    # Realiza a checagem da existência do aluno e verifica se têm matrícula ativa
+    elif Discente.objects.filter(matricula=matricula).exists():
+        discente = Discente.objects.get(matricula=matricula)
+        if discente.status == 'ATIVO' or discente.status == 'ATIVO - FORMANDO':
+            grupos.append(get_grupo_discentes())
+        else:
+            msg = 'A matrícula do discente informada não está ATIVA!'
+            form_usuario.add_error('matricula', msg)
+        return grupos
+    # TODO Acrescentar checagem para Servidores do Apoio e Secretários de Curso/Departamento
+
+    msg = 'A matrícula informada não está associada a um discente ou docente do CERES!'
     form_usuario.add_error('matricula', msg)
     messages.error(request, msg)
-    raise ValidationError("A matrícula não foi encontrada!")
+    raise ValidationError("A matrícula não foi encontrada no CERES!")
 
 
 def get_grupo_docentes():
