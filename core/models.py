@@ -290,3 +290,31 @@ class FuncaoGratificada(models.Model):
     unidade_designacao = models.CharField(max_length=200)
     atividade = models.CharField(max_length=100)
     observacoes = models.CharField(max_length=200, null=True)
+
+
+class Discente(models.Model):
+    """
+    Modelo para os dados dos Discentes.
+    """
+    matricula = models.IntegerField()
+    nome_discente = models.CharField(max_length=200, null=False)
+    sexo = models.CharField(max_length=1)
+    ano_ingresso = models.IntegerField()
+    periodo_ingresso = models.IntegerField()
+    forma_ingresso = models.CharField(max_length=100)
+    tipo_discente = models.CharField(max_length=100)
+    status = models.CharField(max_length=100)
+    sigla_nivel_ensino = models.CharField(max_length=5)
+    nivel_ensino = models.CharField(max_length=50)
+    id_curso = models.CharField(max_length=100)
+    nome_curso = models.CharField(max_length=200, null=False)
+    modalidade_educacao = models.CharField(max_length=50)
+    id_unidade = models.IntegerField()
+    nome_unidade = models.CharField(max_length=200)
+    id_unidade_gestora = models.IntegerField()
+    nome_unidade_gestora = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.nome + ' (' + self.matricula.__str__() + ') - ' \
+               + self.nome_curso + ' (' + self.nome_unidade + ' - ' \
+               + self.nome_unidade_gestora + ') - '
