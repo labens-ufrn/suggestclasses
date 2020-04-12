@@ -5,24 +5,31 @@
   <div class="container">
 
     <h2 class="page-section-heading text-center text-secondary mb-0">Cadastro de Usuário</h2>
-      <br />
+    <br/>
+    <div>
       <form method="post">
         {% csrf_token %}
-        {% for field in form_usuario %}
-          <div class="form-group">
-            <label>{{ field.label_tag }}</label><br>
-            {{ field }}
-            {% if field.help_text %}
-              <small style="color: grey">{{ field.help_text }}</small>
-            {% endif %}
-            {% for error in field.errors %}
-              <p style="color: red">{{ error }}</p>
-            {% endfor %}
-          </div>
-        {% endfor %}
+        <table>
+          {% for field in form_usuario %}
+            <tr class="align-middle">
+              <th class="align-middle"><label>{{ field.label_tag }}</label></th>
+              <td>{{ field }}
+                {% for error in field.errors %}
+                  <p style="color: red">{{ error }}</p>
+                {% endfor %}
+              </td>
+              <td class="align-middle">
+                {% if field.help_text %}
+                  <small style="color: grey">{{ field.help_text|safe }}</small>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
         <div class="form-group">
           <input type="submit" value="Cadastrar" class="btn btn-primary">
         </div>
       </form>
+    </div>
   </div>
 {% endblock %}
