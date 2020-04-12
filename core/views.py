@@ -32,7 +32,7 @@ from .bo.turma import carrega_turmas, carrega_turmas_horario, \
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
 from .dao.departamento_dao import get_departamentos
-from .forms import CadastroAlunoForm, SugestaoTurmaForm
+from .forms import CadastroUsuarioForm, SugestaoTurmaForm
 from .models import Horario
 
 # Get an instance of a logger
@@ -358,7 +358,7 @@ def flow_ped_op(request):
 
 def cadastrar_usuario(request):
     if request.method == "POST":
-        form_usuario = CadastroAlunoForm(request.POST)
+        form_usuario = CadastroUsuarioForm(request.POST)
         if form_usuario.is_valid():
             try:
                 criar_usuario(request, form_usuario)
@@ -370,7 +370,7 @@ def cadastrar_usuario(request):
         else:
             messages.error(request, 'O formulário contém dados inválidos!')
     else:
-        form_usuario = CadastroAlunoForm()
+        form_usuario = CadastroUsuarioForm()
     return render(request, 'core/usuario/cadastro.html', {'form_usuario': form_usuario})
 
 
