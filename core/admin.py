@@ -15,4 +15,12 @@ admin.site.register(Turma)
 admin.site.register(SugestaoTurma)
 admin.site.register(Sala)
 admin.site.register(FuncaoGratificada)
-admin.site.register(Discente)
+
+
+class DiscenteAdmin(admin.ModelAdmin):
+    list_display = ('matricula', 'nome_discente', 'nome_curso', 'nome_unidade', 'status')
+    list_filter = ['ano_ingresso', 'periodo_ingresso', 'status']
+    search_fields = ['nome_discente']
+
+
+admin.site.register(Discente, DiscenteAdmin)
