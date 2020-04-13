@@ -1,5 +1,6 @@
 import re
 from core.bo.sevices import get_oc_by_semestre
+from core.config.config import get_config
 from core.models import Turma, Horario, SugestaoTurma
 
 
@@ -117,7 +118,8 @@ def atualiza_semestres(semestres):
 
 def atualiza_ano_periodo(ano_periodo):
     if ano_periodo is None or ano_periodo == []:
-        ano_periodo = ['2020.1']
+        config = get_config()
+        ano_periodo = [config.get('PeriodoAtual', 'ano_periodo')]
     return ano_periodo
 
 
