@@ -24,10 +24,6 @@ def carregar_discentes(row):
         id_unidade_gestora = row[15]
         nome_unidade_gestora = row[16]
 
-        print(matricula)
-        print(ano_ingresso)
-        print(periodo_ingresso)
-
         if not Discente.objects.filter(matricula=matricula).exists():
             print("Adicionando Discente " + matricula + " - " + nome_discente + "- " + nome_curso)
             discente = Discente(matricula=matricula, nome_discente=nome_discente, sexo=sexo,

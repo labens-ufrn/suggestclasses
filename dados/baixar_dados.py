@@ -168,6 +168,26 @@ def download_discentes():
           '-44daf8df8f94/download/discentes-2015.csv'
     download_discentes_semestre(url, 'discentes-2015.csv')
 
+    url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/7d2fa5b3-743f-465f-8450' \
+          '-91719b34a002/download/discentes-2016.csv'
+    download_discentes_semestre(url, 'discentes-2016.csv')
+
+    url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/dc732572-a51a-4d4a-a39d' \
+          '-2db37cbe5382/download/discentes-2017.csv'
+    download_discentes_semestre(url, 'discentes-2017.csv')
+
+    url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/146b749b-b9d0-49b2-b114' \
+          '-ac6cc82a4051/download/discentes-2018.csv'
+    download_discentes_semestre(url, 'discentes-2018.csv')
+
+    url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/a55aef81-e094-4267-8643' \
+          '-f283524e3dd7/download/discentes-2019.csv'
+    download_discentes_semestre(url, 'discentes-2019.csv')
+
+    url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/e12dfbbd-b6fb-42cc-ba0c' \
+          '-c123d4c49e2e/download/discentes-2020.csv'
+    download_discentes_semestre(url, 'discentes-2020.csv')
+
 
 def download_discentes_semestre(url, discentes_csv):
     file_name = discentes_csv

@@ -356,6 +356,11 @@ def criar_discentes():
     criar_discentes_anual('discentes-2013.csv')
     criar_discentes_anual('discentes-2014.csv')
     criar_discentes_anual('discentes-2015.csv')
+    criar_discentes_anual('discentes-2016.csv')
+    criar_discentes_anual('discentes-2017.csv')
+    criar_discentes_anual('discentes-2018.csv')
+    criar_discentes_anual('discentes-2019.csv')
+    criar_discentes_anual('discentes-2020.csv')
 
 
 def criar_discentes_anual(discentes_csv):
