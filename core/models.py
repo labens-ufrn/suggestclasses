@@ -296,7 +296,7 @@ class Discente(models.Model):
     """
     Modelo para os dados dos Discentes.
     """
-    matricula = models.IntegerField()
+    matricula = models.CharField(max_length=15, unique=True)
     nome_discente = models.CharField(max_length=200, null=False)
     sexo = models.CharField(max_length=1)
     ano_ingresso = models.IntegerField()
@@ -315,6 +315,5 @@ class Discente(models.Model):
     nome_unidade_gestora = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.nome + ' (' + self.matricula.__str__() + ') - ' \
-               + self.nome_curso + ' (' + self.nome_unidade + ' - ' \
-               + self.nome_unidade_gestora + ') - '
+        return self.nome_discente + ' (' + self.matricula.__str__() + ') - ' \
+               + self.nome_curso + ' (' + self.nome_unidade + ')'
