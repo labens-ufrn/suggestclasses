@@ -4,8 +4,12 @@
 
   <div class="container">
 
-    <h2 class="page-section-heading text-center text-secondary mb-0">Cadastro de Sugestão de Turma</h2>
-    <br/>
+    <div id="manter" class="center text-center form-group">
+        <h2 class="page-section-heading text-center text-secondary mb-0">
+          Cadastro de Sugestão de Turma - <b>{{ estrutura.curso.nome }}</b></h2>
+        <h5 class="page-section-heading text-center text-secondary mb-0">
+           Período: {{ ano_periodo }}</h5>
+    </div>
     <form method="post">
       {% csrf_token %}
       {% for field in form_sugestao.hidden_fields %}

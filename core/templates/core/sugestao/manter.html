@@ -5,17 +5,20 @@
   <section class="page-section" id="sugestoes_manter">
     <div class="container">
 
-      <h2 class="page-section-heading text-center text-secondary mb-0">Sugestões de Turmas
-        do Curso de Pedagogia</h2>
-      <h4 class="text-center">Período 2020.1</h4>
+      <div id="manter" class="center text-center form-group">
+        <h2 class="page-section-heading text-center text-secondary mb-0">
+          Sugestões de Turmas - <b>{{ estrutura.curso.nome }}</b></h2>
+        <h5 class="page-section-heading text-center text-secondary mb-0">
+          Período: {{ ano_periodo }}</h5>
+      </div>
       {% if user.is_authenticated %}
-        <div id="grade" class="center text-center form-group">
-          <a class="btn btn-primary btn-success" href="/core/sugestao/ped/incluir?next={{ request.path|urlencode }}">
+        <div id="manter" class="center text-center form-group">
+          <a class="btn btn-primary btn-success" href="{{ sugestao_incluir_link }}?next={{ request.path|urlencode }}">
             <span class="material-icons align-middle">
               create
             </span>
             Incluir Sugestões de Turmas</a>
-          <a class="btn btn-primary btn-info" href="{{ sugestao_ped_list }}">
+          <a class="btn btn-primary btn-info align-middle" href="{{ sugestao_grade_link }}">
             <span class="material-icons align-middle">
               view_list
             </span>
@@ -57,7 +60,7 @@
                 </a>
               </td>
               <td align="center">
-                <a href="{% url 'sugestao_ped_editar' turma.pk %}?next={{ request.path|urlencode }}">
+                <a href="{% url 'sugestao_bsi_editar' turma.pk %}?next={{ request.path|urlencode }}">
                   <button type="button" class="btn btn-info">
                     <span class="material-icons align-middle">
                       edit

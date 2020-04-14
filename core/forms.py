@@ -35,11 +35,6 @@ class SugestaoTurmaForm(ModelForm):
     capacidade_aluno = forms.CharField(label='Vagas', max_length=3,
                                        help_text='Obrigatório. As vagas deve ser menor que a capacidade da sala.')
 
-    ANO_ATUAL = 2020
-    PERIODO_ATUAL = 1
-    ano = forms.CharField(initial=ANO_ATUAL)
-    periodo = forms.CharField(initial=PERIODO_ATUAL)
-
     def __init__(self, *args, **kwargs):
         estrutura = kwargs.pop('estrutura')
         # estrutura = EstruturaCurricular.objects.get(id_curriculo=my_arg.id_curriculo)
@@ -49,7 +44,7 @@ class SugestaoTurmaForm(ModelForm):
     class Meta:
         model = SugestaoTurma
         fields = ['codigo_turma', 'componente', 'docente', 'descricao_horario',
-                  'local', 'capacidade_aluno', 'ano', 'periodo']
+                  'local', 'capacidade_aluno']
         widgets = {
             'codigo_turma': forms.TextInput(attrs={'placeholder': '01'}),
         }

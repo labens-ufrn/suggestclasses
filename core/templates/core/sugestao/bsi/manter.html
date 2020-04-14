@@ -5,9 +5,12 @@
   <section class="page-section" id="sugestoes_manter">
     <div class="container">
 
-      <h2 class="page-section-heading text-center text-secondary mb-0">Sugestões de Turmas
-        do Curso Sistemas de Informação</h2>
-      <h4 class="text-center">Período 2020.1</h4>
+      <div id="manter" class="center text-center form-group">
+        <h2 class="page-section-heading text-center text-secondary mb-0">
+          Sugestões de Turmas do Curso <b>{{ estrutura.curso.nome }}</b></h2>
+        <h5 class="page-section-heading text-center text-secondary mb-0">
+          Período: {{ ano_periodo }}</h5>
+      </div>
       {% if user.is_authenticated %}
         <div id="manter" class="center text-center form-group">
           <a class="btn btn-primary btn-success" href="/core/sugestao/bsi/incluir?next={{ request.path|urlencode }}">

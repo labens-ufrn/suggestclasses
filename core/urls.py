@@ -54,6 +54,7 @@ urlpatterns = [
     path('sugestao/<int:pk>/', views.SugestaoTurmaDetailView.as_view(), name='sugestao_detalhar'),
     path('sugestao/edit/<int:pk>/', views.edit, name='sugestao_edit'),
     path('sugestao/delete/<int:pk>/', views.delete, name='sugestao_delete'),
+
     path('plot/', views.plot, name='Plot de Gráfico')
 ]
 

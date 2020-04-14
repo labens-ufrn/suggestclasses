@@ -6,18 +6,19 @@
     <div class="container">
 
       <div id="manter" class="center text-center form-group">
-        <h2 class="page-section-heading text-center text-secondary mb-0">Sugestões de Turmas
-          do Curso de Pedagogia</h2>
-        <h5 class="page-section-heading text-center text-secondary mb-0">CERES - Campus Caicó</h5>
+        <h2 class="page-section-heading text-center text-secondary mb-0">
+          Sugestões de Turmas - <b>{{ estrutura.curso.nome }}</b></h2>
+        <h5 class="page-section-heading text-center text-secondary mb-0">
+          Período: {{ ano_periodo }}</h5>
       </div>
       {% if user.is_authenticated %}
         <div id="manter" class="center text-center form-group">
-          <a class="btn btn-primary btn-success" href="/core/sugestao/ped/incluir?next={{ request.path|urlencode }}">
+          <a class="btn btn-primary btn-success" href="{{ sugestao_incluir_link }}?next={{ request.path|urlencode }}">
             <span class="material-icons align-middle">
               create
             </span>
             Incluir Sugestões de Turmas</a>
-          <a class="btn btn-primary btn-info" href="/core/sugestao/ped/manter">
+          <a class="btn btn-primary btn-info" href="{{ sugestao_manter_link }}">
             <span class="material-icons align-middle">
               edit
             </span>
@@ -57,7 +58,7 @@
       <table class="table table-striped table-sm table-bordered">
         <thead class="thead-light">
         <tr align="center">
-          <th colspan="6">Sugestões de Turmas do Período {{ periodo_atual }} - Semestres: {{ semestres_atual }}
+          <th colspan="6">Sugestões de Turmas do Período {{ ano_periodo }} - Semestres: {{ semestres_atual }}
             <div class="align-middle" style="font-size: 12px">
               <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>Obrigatória
               <span class="material-icons md-18 align-middle" style="color: green">bookmark</span> Optativa
