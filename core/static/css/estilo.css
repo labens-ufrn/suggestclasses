@@ -78,3 +78,9 @@ a.disabled {
 .material-icons.md-24 {
     font-size: 24px;
 }
+
+.sugestao-turma {
+    text-align: center;
+    font-size: 10px;
+    margin: 5px 2px 5px 2px;
+}
