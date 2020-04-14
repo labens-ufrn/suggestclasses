@@ -71,6 +71,7 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
             sugestao_turma.ano = ano
             sugestao_turma.periodo = periodo
             sugestao_turma.campus_turma = sugestao_turma.local.campus
+            sugestao_turma.criador = request.user
             sugestao_turma.save()
             messages.success(request, 'Sugestão de Turma cadastrada com sucesso.')
             return redirect(sugestao_manter_link)

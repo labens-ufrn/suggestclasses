@@ -14,7 +14,13 @@
         </tr>
         <tr>
           <td class="font-weight-bold" width="18%">Componente Curricular</td>
-          <td>{{ object.componente }}</td>
+          <td>{{ object.componente }}
+            <a href="{% url 'componente_detalhar' object.componente.pk %}">
+              <span class="material-icons md-18 align-middle">
+                find_in_page
+              </span>
+            </a>
+          </td>
         </tr>
         <tr>
           <td class="font-weight-bold" width="18%">Docente</td>
@@ -25,8 +31,16 @@
           <td>{{ object.descricao_horario }}</td>
         </tr>
         <tr>
+          <td class="font-weight-bold" width="18%">Capacidade</td>
+          <td>{{ object.capacidade_aluno }}</td>
+        </tr>
+        <tr>
           <td class="font-weight-bold" width="18%">Local</td>
           <td>{{ object.local }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold" width="18%">Criador</td>
+          <td>{{ object.criador.get_full_name }}</td>
         </tr>
         <tr>
           <td class="font-weight-bold" width="18%">Campus</td>

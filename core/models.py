@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -262,6 +263,7 @@ class SugestaoTurma(models.Model):
     descricao_horario = models.CharField(max_length=150)
     capacidade_aluno = models.IntegerField()
     tipo = models.CharField(max_length=50, null=True, blank=True)
+    criador = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         unique_together = ('codigo_turma', 'componente', 'ano', 'periodo')
