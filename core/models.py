@@ -261,6 +261,7 @@ class SugestaoTurma(models.Model):
     ano = models.IntegerField()
     periodo = models.IntegerField()
     descricao_horario = models.CharField(max_length=150)
+    total_solicitacoes = models.IntegerField(null=True)
     capacidade_aluno = models.IntegerField()
     tipo = models.CharField(max_length=50, null=True, blank=True)
     criador = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)

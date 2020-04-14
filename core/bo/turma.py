@@ -26,7 +26,8 @@ def get_sugestao_turmas(estrutura, semestre, ano, periodo):
     for oc in org_curricular:
         turma = SugestaoTurma.objects.filter(componente=oc.componente, ano=ano, periodo=periodo)
         for t in turma:
-            turmas.append(t)
+            turma_estendida = SugestaoTurmaEstendida(t, oc.tipo_vinculo, oc.semestre, estrutura.curso)
+            turmas.append(turma_estendida)
 
     return turmas
 
@@ -197,6 +198,22 @@ class TurmaEstendida(Turma):
                       id_turma_agrupadora=turma.id_turma_agrupadora, qtd_aulas_lancadas=turma.qtd_aulas_lancadas,
                       situacao_turma=turma.situacao_turma, convenio=turma.convenio,
                       modalidade_participantes=turma.modalidade_participantes)
+        self.pk = turma.pk
+        self.tipo_vinculo = tipo_vinculo
+        self.semestre = semestre
+        self.curso = curso
+
+
+class SugestaoTurmaEstendida(SugestaoTurma):
+
+    def __init__(self, turma, tipo_vinculo, semestre, curso):
+        super(SugestaoTurmaEstendida, self)\
+            .__init__(codigo_turma=turma.codigo_turma, docente=turma.docente,
+                      matricula_docente_externo=turma.matricula_docente_externo,
+                      componente=turma.componente, campus_turma=turma.campus_turma, local=turma.local,
+                      ano=turma.ano, periodo=turma.periodo, descricao_horario=turma.descricao_horario,
+                      total_solicitacoes=turma.total_solicitacoes,
+                      capacidade_aluno=turma.capacidade_aluno, tipo=turma.tipo, criador=turma.criador)
         self.pk = turma.pk
         self.tipo_vinculo = tipo_vinculo
         self.semestre = semestre
