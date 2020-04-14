@@ -16,8 +16,7 @@ from django.template import loader
 from django.views.generic import DetailView
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 
-from core.models import Curso, ComponenteCurricular, EstruturaCurricular, OrganizacaoCurricular, \
-    SugestaoTurma, Sala, Docente, Turma
+from core.models import Curso, ComponenteCurricular, EstruturaCurricular, SugestaoTurma, Sala, Docente, Turma
 from core.visoes.flow_view import flow_horizontal, flow_opcionais
 from mysite.settings import DOMAINS_WHITELIST
 from .bo.curso import get_cursos
@@ -36,7 +35,6 @@ from .dao.componente_dao import get_componentes_by_depto, get_componentes_curric
 from .dao.departamento_dao import get_departamentos
 from .forms import CadastroUsuarioForm, SugestaoTurmaForm
 from .models import Horario
-
 # Get an instance of a logger
 from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir
 from .visoes.user_view import criar_usuario, autenticar_logar
@@ -493,7 +491,7 @@ def sugestao_bsi_manter(request):
     return render(request, 'core/sugestao/bsi/manter.html', context)
 
 
-@permission_required("core.add_sugestao_turma", login_url='/core/usuario/logar', raise_exception=True)
+@permission_required("core.add_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_bsi_incluir(request):
     bsi = get_estrutura_sistemas_dct()
     config = get_config()
@@ -523,7 +521,7 @@ def sugestao_bsi_incluir(request):
     return render(request, 'core/sugestao/bsi/incluir.html', context)
 
 
-@permission_required("core.change_sugestao_turma", login_url='/core/usuario/logar', raise_exception=True)
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_bsi_editar(request, pk):
     bsi = get_estrutura_sistemas_dct()
     return edit(request, pk, estrutura=bsi)
@@ -558,6 +556,7 @@ def sugestao_ped(request):
     return sugestao_grade_horarios(request, ped_deduc, sugestao_incluir_link, sugestao_manter_link)
 
 
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_ped_manter(request):
     ped_deduc = get_estrutura_pedagogia()
     sugestao_incluir_link = '/core/sugestao/ped/incluir'
@@ -565,7 +564,7 @@ def sugestao_ped_manter(request):
     return sugestao_manter(request, ped_deduc, sugestao_incluir_link, sugestao_grade_link)
 
 
-@login_required(login_url='/core/usuario/logar')
+@permission_required("core.add_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_ped_incluir(request):
     ped = get_estrutura_pedagogia()
     sugestao_manter_link = '/core/sugestao/ped/manter'
@@ -582,13 +581,13 @@ class SugestaoTurmaDetailView(DetailView):
     template_name = 'core/sugestao/detalhar.html'
 
 
-@permission_required("core.change_sugestao_turma", login_url='/core/usuario/logar', raise_exception=True)
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_ped_editar(request, pk):
     ped = get_estrutura_pedagogia()
     return edit(request, pk, estrutura=ped)
 
 
-@permission_required("core.change_sugestao_turma", login_url='/core/usuario/logar', raise_exception=True)
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def edit(request, pk, estrutura, template_name='core/sugestao/editar.html'):
     sugestao = get_object_or_404(SugestaoTurma, pk=pk)
     form = SugestaoTurmaForm(request.POST or None, instance=sugestao, estrutura=estrutura)

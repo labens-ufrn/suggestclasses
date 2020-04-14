@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.shortcuts import render, redirect
+
 from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, carrega_turmas_horario
 from core.config.config import get_config
 from core.forms import SugestaoTurmaForm

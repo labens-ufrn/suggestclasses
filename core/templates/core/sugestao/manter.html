@@ -13,11 +13,13 @@
       </div>
       {% if user.is_authenticated %}
         <div id="manter" class="center text-center form-group">
-          <a class="btn btn-primary btn-success" href="{{ sugestao_incluir_link }}?next={{ request.path|urlencode }}">
+          {% if perms.core.add_sugestaoturma %}
+            <a class="btn btn-primary btn-success" href="{{ sugestao_incluir_link }}?next={{ request.path|urlencode }}">
             <span class="material-icons align-middle">
               create
             </span>
-            Incluir Sugestões de Turmas</a>
+              Incluir Sugestões de Turmas</a>
+          {% endif %}
           <a class="btn btn-primary btn-info align-middle" href="{{ sugestao_grade_link }}">
             <span class="material-icons align-middle">
               view_list
@@ -35,52 +37,52 @@
           <th>Editar</th>
           <th>Excluir</th>
         </tr>
-          {% for turma in sugestao_list %}
-            <tr>
-              <td align="center">{{ turma.codigo_turma }}</td>
-              <td align="left">{{ turma.componente }}</td>
-              <td align="center">{% if turma.docente is not None %}
-                        <span style="color: darkblue">{{ turma.docente.primeiro_nome }}
-                          ({{ turma.docente.siape }})</span> <br />
-                      {% elif turma.matricula_docente_externo is not None and turma.matricula_docente_externo != '' %}
-                        <i style="color: orangered">Prof. Substituto ({{ turma.matricula_docente_externo }})</i> <br />
-                      {% else %}
-                        <b style="color: red">DOCENTE NÃO DEFINIDO</b> <br />
-                      {% endif %}
-              </td>
-              <td></td>
-              <td align="center">
-                <a href="{% url 'sugestao_detalhar' turma.pk %}">
-                  <button type="button" class="btn btn-info">
+        {% for turma in sugestao_list %}
+          <tr>
+            <td align="center">{{ turma.codigo_turma }}</td>
+            <td align="left">{{ turma.componente }}</td>
+            <td align="center">{% if turma.docente is not None %}
+              <span style="color: darkblue">{{ turma.docente.primeiro_nome }}
+                          ({{ turma.docente.siape }})</span> <br/>
+            {% elif turma.matricula_docente_externo is not None and turma.matricula_docente_externo != '' %}
+              <i style="color: orangered">Prof. Substituto ({{ turma.matricula_docente_externo }})</i> <br/>
+            {% else %}
+              <b style="color: red">DOCENTE NÃO DEFINIDO</b> <br/>
+            {% endif %}
+            </td>
+            <td></td>
+            <td align="center">
+              <a href="{% url 'sugestao_detalhar' turma.pk %}">
+                <button type="button" class="btn btn-info">
                     <span class="material-icons align-middle">
                       find_in_page
                     </span>
-                    Detalhar
-                  </button>
-                </a>
-              </td>
-              <td align="center">
-                <a href="{% url 'sugestao_bsi_editar' turma.pk %}?next={{ request.path|urlencode }}">
-                  <button type="button" class="btn btn-info">
+                  Detalhar
+                </button>
+              </a>
+            </td>
+            <td align="center">
+              <a href="{% url 'sugestao_bsi_editar' turma.pk %}?next={{ request.path|urlencode }}">
+                <button type="button" class="btn btn-info">
                     <span class="material-icons align-middle">
                       edit
                     </span>
-                    Editar
-                  </button>
-                </a>
-              </td>
-              <td align="center">
-                <a href="{% url 'sugestao_delete' turma.pk %}?next={{ request.path|urlencode }}">
-                  <button type="button" class="btn btn-danger">
+                  Editar
+                </button>
+              </a>
+            </td>
+            <td align="center">
+              <a href="{% url 'sugestao_delete' turma.pk %}?next={{ request.path|urlencode }}">
+                <button type="button" class="btn btn-danger">
                     <span class="material-icons align-middle">
                       delete
                     </span>
-                    Excluir
-                  </button>
-                </a>
-              </td>
-            </tr>
-          {% endfor %}
+                  Excluir
+                </button>
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
       </table>
     </div>
   </section>
