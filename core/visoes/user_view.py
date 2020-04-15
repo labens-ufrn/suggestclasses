@@ -1,7 +1,7 @@
-from datetime import datetime, date
+from datetime import date
 
 from django.contrib import messages
-from django.contrib.auth import authenticate, logout, login, update_session_auth_hash
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
 
@@ -17,7 +17,21 @@ def criar_usuario(request, form_usuario):
 
     usuario.save()
     for g in grupos:
+        check_usuario(usuario, form_usuario, g)
         usuario.groups.add(g)
+    return usuario
+
+
+def check_usuario(usuario, form_usuario, g):
+    matricula = form_usuario.cleaned_data.get('matricula')
+    if g.name == 'Docentes' and Docente.objects.filter(siape=matricula).exists():
+        docente = Docente.objects.get(siape=matricula)
+        docente.usuario = usuario
+        docente.save()
+    elif g.name == 'Discentes' and Discente.objects.filter(matricula=matricula).exists():
+        discente = Discente.objects.get(matricula=matricula)
+        discente.usuario = usuario
+        discente.save()
 
 
 def check_username(request, form_usuario):

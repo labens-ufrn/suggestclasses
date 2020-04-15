@@ -35,7 +35,6 @@ from .dao.componente_dao import get_componentes_by_depto, get_componentes_curric
 from .dao.departamento_dao import get_departamentos
 from .forms import CadastroUsuarioForm, SugestaoTurmaForm
 from .models import Horario
-# Get an instance of a logger
 from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir
 from .visoes.user_view import criar_usuario, autenticar_logar
 
