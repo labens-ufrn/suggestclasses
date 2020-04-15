@@ -7,7 +7,15 @@ admin.site.register(Centro)
 admin.site.register(Departamento)
 admin.site.register(ComponenteCurricular)
 admin.site.register(EstruturaCurricular)
-admin.site.register(OrganizacaoCurricular)
+
+
+class OrganizacaoCurricularAdmin(admin.ModelAdmin):
+    list_display = ('id_curriculo_componente', 'componente', 'semestre', 'tipo_vinculo')
+    list_filter = ['estrutura', 'semestre']
+    search_fields = ['id_curriculo_componente']
+
+
+admin.site.register(OrganizacaoCurricular, OrganizacaoCurricularAdmin)
 admin.site.register(Curso)
 admin.site.register(Horario)
 
