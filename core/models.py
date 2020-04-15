@@ -300,6 +300,10 @@ class FuncaoGratificada(models.Model):
     atividade = models.CharField(max_length=100)
     observacoes = models.CharField(max_length=200, null=True)
 
+    def __str__(self):
+        return self.nome + ' (' + self.siape.__str__() + ') - ' \
+               + self.atividade + ' (' + self.unidade_designacao + ')'
+
 
 class Discente(models.Model):
     """
