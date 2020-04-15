@@ -14,7 +14,15 @@ admin.site.register(Docente)
 admin.site.register(Turma)
 admin.site.register(SugestaoTurma)
 admin.site.register(Sala)
-admin.site.register(FuncaoGratificada)
+
+
+class FuncaoGratificadaAdmin(admin.ModelAdmin):
+    list_display = ('siape', 'nome', 'lotacao', 'atividade', 'unidade_designacao')
+    list_filter = ['atividade']
+    search_fields = ['nome', 'atividade']
+
+
+admin.site.register(FuncaoGratificada, FuncaoGratificadaAdmin)
 
 
 class DiscenteAdmin(admin.ModelAdmin):
