@@ -71,7 +71,13 @@
       <div class="content container">
         {% if user.is_authenticated %}
 					<p class="logged-in-p alert-info">
-            Bem Vindo <b>{{ user.get_full_name }} [{{ user.username }}]</b>
+            Bem Vindo <b>{{ user.get_full_name }} [{{ user.username }}]
+          {% if user.docente %}
+            - [{{ user.docente.siape }}, {{ user.docente.lotacao }}]
+          {% elif user.discente %}
+            - [{{ user.discente.matricula }}, {{ user.discente.nome_curso }}]
+          {% endif %}
+          </b>
 						<span class="sair"><a href="{% url 'Logout de Usuário' %}">Sair</a></span>
 					</p>
 				{% endif %}
