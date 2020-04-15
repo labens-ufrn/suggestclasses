@@ -24,9 +24,9 @@ class CadastroUsuarioForm(UserCreationForm):
 
 
 class SugestaoTurmaForm(ModelForm):
-    docente = forms.ModelChoiceField(queryset=Docente.objects.all(), label='Docente')
+    docente = forms.ModelChoiceField(queryset=Docente.objects.all().order_by('nome'), label='Docente')
 
-    componente = forms.ModelChoiceField(queryset=ComponenteCurricular.objects.all(),
+    componente = forms.ModelChoiceField(queryset=ComponenteCurricular.objects.all().order_by('nome'),
                                         label='Componente Curricular')
 
     descricao_horario = forms.CharField(label='Descrição do Horário',
