@@ -600,7 +600,7 @@ def edit(request, pk, estrutura, template_name='core/sugestao/editar.html'):
     return render(request, template_name, {'form': form})
 
 
-@permission_required("core.delete_sugestao_turma", login_url='/core/usuario/logar', raise_exception=True)
+@permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def delete(request, pk, template_name='core/sugestao/confirm_delete.html'):
     sugestao = get_object_or_404(SugestaoTurma, pk=pk)
     if request.method == 'POST':
