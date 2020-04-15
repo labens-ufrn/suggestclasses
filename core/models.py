@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -45,6 +46,11 @@ class Docente(models.Model):
     id_unidade_lotacao = models.IntegerField()
     lotacao = models.CharField(max_length=150)
     admissao = models.DateField()
+    usuario = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True
+    )
 
     def primeiro_nome(self):
         split_nome = self.nome.split(' ')
@@ -316,6 +322,11 @@ class Discente(models.Model):
     nome_unidade = models.CharField(max_length=200)
     id_unidade_gestora = models.IntegerField()
     nome_unidade_gestora = models.CharField(max_length=200)
+    usuario = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True
+    )
 
     def __str__(self):
         return self.nome_discente + ' (' + self.matricula.__str__() + ') - ' \
