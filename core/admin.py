@@ -10,7 +10,15 @@ admin.site.register(EstruturaCurricular)
 admin.site.register(OrganizacaoCurricular)
 admin.site.register(Curso)
 admin.site.register(Horario)
-admin.site.register(Docente)
+
+
+class DocenteAdmin(admin.ModelAdmin):
+    list_display = ('siape', 'nome', 'lotacao', 'usuario')
+    list_filter = ['lotacao']
+    search_fields = ['siape', 'nome']
+
+
+admin.site.register(Docente, DocenteAdmin)
 admin.site.register(Turma)
 admin.site.register(SugestaoTurma)
 admin.site.register(Sala)
