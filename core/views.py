@@ -20,7 +20,7 @@ from core.models import Curso, ComponenteCurricular, EstruturaCurricular, Sugest
 from core.visoes.flow_view import flow_horizontal, flow_opcionais
 from mysite.settings import DOMAINS_WHITELIST
 from .bo.curso import get_cursos
-from .bo.discentes import get_discentes
+from .bo.discentes import get_discentes, get_discentes_ativos
 from .bo.docente import get_docentes
 from .bo.matematica import get_estrutura_matematica
 from .bo.pedagogia import get_estrutura_pedagogia
@@ -28,8 +28,7 @@ from .bo.sala import get_salas
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre
 from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .bo.turma import carrega_turmas, carrega_turmas_horario, \
-    carrega_sugestao_turmas, atualiza_semestres, atualiza_ano_periodo
-from .config.config import get_config
+    atualiza_semestres, atualiza_ano_periodo
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
 from .dao.departamento_dao import get_departamentos
@@ -54,6 +53,7 @@ def index(request):
     salas = get_salas()
     docentes = get_docentes()
     discentes = get_discentes()
+    discentes_ativos = get_discentes_ativos()
 
     context = {
         'ceres': ceres,
@@ -61,8 +61,8 @@ def index(request):
         'docentes': docentes,
         'cursos': cursos,
         'componentes': componentes,
-        'salas': salas,
         'discentes': discentes,
+        'discentes_ativos': discentes_ativos,
     }
 
     return render(request, 'core/home.html', context)
