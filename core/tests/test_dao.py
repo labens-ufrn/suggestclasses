@@ -23,17 +23,17 @@ class CentroDAOTests(TestCase):
         centros = get_centros()
 
         self.assertIsNotNone(centros, 'Testando centros')
-        self.assertEqual(2, len(centros), 'Testando centros')
+        self.assertEqual(1, len(centros), 'Testando centros')
 
     def test_get_ceres(self):
-        id_centro = 1482
-        codigo = 1800
-        sigla = 'CERES'
-        nome = 'Centro de Ensino Superior do Seridó'
+        id_centro = 9999
+        codigo = 9999
+        sigla = 'CTESTE'
+        nome = 'Centro de Teste'
         endereco = 'Rua Joaquim Gregório, Penedo, Caicó - RN'
         site = 'https://www.ceres.ufrn.br/'
 
-        centro = get_ceres()
+        centro = get_centro_by_id(9999)
 
         self.assertEqual(id_centro, centro.id_unidade, 'Testando Id Unidade')
         self.assertEqual(codigo, centro.codigo, 'Testando Código')
@@ -63,7 +63,7 @@ class CentroDAOTests(TestCase):
         deptos = get_departamentos()
 
         self.assertIsNotNone(deptos, 'Testando departamentos dos centros')
-        self.assertEqual(11, len(deptos), 'Testando qtd departamentos')
+        self.assertEqual(1, len(deptos), 'Testando qtd departamentos')
 
 
 class ComponenteDAOTests(TestCase):

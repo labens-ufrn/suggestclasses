@@ -1,5 +1,7 @@
 import os
 import django
+from django.contrib.auth.models import User
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
 
@@ -11,6 +13,7 @@ from core.models import Centro, Departamento, ComponenteCurricular, Docente, Est
 def criar_dados():
     print("Povoando Dados para Testes ...")
 
+    criar_usuario()
     criar_centro()
     criar_salas()
     criar_departamentos()
@@ -35,6 +38,13 @@ def remover_dados():
     remover_departamentos()
     remover_salas()
     remover_centro()
+    remover_usuario()
+
+
+def criar_usuario():
+    user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+    user.last_name = 'Lennon'
+    user.save()
 
 
 def criar_centro():
@@ -48,6 +58,13 @@ def remover_centro():
         Centro.objects.get(id_unidade=9999).delete()
     except Centro.DoesNotExist:
         print('Centro não Existe!')
+
+
+def remover_usuario():
+    try:
+        User.objects.get(username='john').delete()
+    except User.DoesNotExist:
+        print('Usuário não Existe!')
 
 
 def criar_salas():

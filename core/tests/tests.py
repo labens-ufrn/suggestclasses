@@ -1,5 +1,7 @@
 import os
 import django
+from django.contrib.auth.models import User
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
 
@@ -39,7 +41,7 @@ class SugestaoTurmaTests(TestCase):
                         Teste de Unidade em Python.
         """
         codigo_turma = '01'
-        siape = '1721652'
+        siape = '9999999'
         matricula_docente_externo = ''
 
         docente = None
@@ -53,18 +55,21 @@ class SugestaoTurmaTests(TestCase):
 
         cc = ComponenteCurricular.objects.get(codigo='DCT9999')
         campus_turma = 'CERES - Caicó'
-        local = Sala.objects.get(nome='Sala B1')
+        local = Sala.objects.get(nome='Sala A01')
         ano = 2020
         periodo = 1
         descricao_horario = '56M12'
         capacidade_aluno = 25
         tipo = 'REGULAR'
+        total_solicitacoes = 0
+        criador = User.objects.get(username='john')
 
         sugestao = SugestaoTurma(codigo_turma=codigo_turma, docente=docente,
                                  matricula_docente_externo=matricula_docente_externo, componente=cc,
                                  campus_turma=campus_turma, local=local, ano=ano, periodo=periodo,
-                                 descricao_horario=descricao_horario, capacidade_aluno=capacidade_aluno, tipo=tipo)
+                                 descricao_horario=descricao_horario, capacidade_aluno=capacidade_aluno,
+                                 total_solicitacoes=total_solicitacoes, tipo=tipo, criador=criador)
 
         self.assertEqual('01', sugestao.codigo_turma, 'Código da Turma')
-        self.assertEqual(1721652, sugestao.docente.siape, 'Matrícula Siape do Docente')
+        self.assertEqual(9999999, sugestao.docente.siape, 'Matrícula Siape do Docente')
         self.assertEqual('', sugestao.matricula_docente_externo, 'Matrícula do Docente Externo')
