@@ -461,7 +461,48 @@ def sugestao_list(request):
     """
         Tela para Listar os Curso com possibilidade de cadastrar Sugestões de Turmas.
     """
-    return render(request, 'core/sugestao/list.html')
+    bsi_flow = get_estrutura_sistemas_dct()
+    ped_flow = get_estrutura_pedagogia()
+    mat_flow = get_estrutura_matematica()
+
+    context = {
+        'mat_flow': mat_flow,
+        'ped_flow': ped_flow,
+        'bsi_flow': bsi_flow
+    }
+    return render(request, 'core/sugestao/list.html', context)
+
+
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_mat_manter(request):
+    """
+        Tela de Manter Sugestão de Turmas do Curso de Matemática.
+    """
+    mat_dcea = get_estrutura_matematica()
+    sugestao_incluir_link = '/core/sugestao/mat/incluir'
+    sugestao_grade_link = '/core/sugestao/mat/list'
+    return sugestao_manter(request, mat_dcea, sugestao_incluir_link, sugestao_grade_link)
+
+
+@permission_required("core.add_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_mat_incluir(request):
+    mat_dcea = get_estrutura_matematica()
+    sugestao_manter_link = '/core/sugestao/mat/manter'
+    return sugestao_incluir(request, mat_dcea, sugestao_manter_link)
+
+
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_mat_editar(request, pk):
+    mat_dcea = get_estrutura_matematica()
+    return edit(request, pk, estrutura=mat_dcea)
+
+
+def sugestao_mat_list(request):
+    mat_dcea = get_estrutura_matematica()
+    sugestao_incluir_link = '/core/sugestao/mat/incluir'
+    sugestao_manter_link = '/core/sugestao/mat/manter'
+    sugestao_list_link = '/core/sugestao/mat/list'
+    return sugestao_grade_horarios(request, mat_dcea, sugestao_incluir_link, sugestao_manter_link, sugestao_list_link)
 
 
 @permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
