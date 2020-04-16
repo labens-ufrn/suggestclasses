@@ -90,7 +90,7 @@ class Sala(models.Model):
     campus = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return self.nome + ' (' + self.capacidade.__str__() + ')' + ' - ' + self.bloco
+        return self.nome + ' (' + self.capacidade.__str__() + ')' + ' - ' + self.bloco + ' - ' + self.campus
 
 
 class ComponenteCurricular(models.Model):
