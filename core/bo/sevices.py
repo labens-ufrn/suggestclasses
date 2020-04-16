@@ -15,5 +15,5 @@ def get_ch_by_semestre(estrutura, semestre):
 def get_cc_by_estrutura(estrutura):
     oc = OrganizacaoCurricular.objects.filter(estrutura=estrutura).values_list('componente', flat=True)
     loc = list(oc)
-    componentes = ComponenteCurricular.objects.filter(pk__in=loc)
+    componentes = ComponenteCurricular.objects.filter(pk__in=loc).order_by('nome', 'codigo')
     return componentes
