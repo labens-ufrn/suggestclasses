@@ -64,8 +64,16 @@
         <tr align="center">
           <th colspan="6">Sugestões de Turmas do Período {{ ano_periodo }} - Semestres: {{ semestres_atual }}
             <div class="align-middle" style="font-size: 12px">
-              <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>Obrigatória
-              <span class="material-icons md-18 align-middle" style="color: green">bookmark</span> Optativa
+              <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>
+              <span class="align-middle">Obrigatória&nbsp;&nbsp;</span>
+              <span class="material-icons md-18 align-middle" style="color: green">bookmark</span>
+              <span class="align-middle">Optativa&nbsp;&nbsp;</span>
+              <span class="material-icons md-18 align-middle" style="color: dodgerblue">school</span>
+              <span class="align-middle">Vagas&nbsp;&nbsp;</span>
+              <span class="material-icons md-18 align-middle" style="color: dodgerblue">star</span>
+              <span class="align-middle">Interessados&nbsp;&nbsp;</span>
+              <span class="material-icons md-18 align-middle" style="color: dodgerblue">find_in_page</span>
+              <span class="align-middle">Detalhar&nbsp;&nbsp;</span>
             </div>
           </th>
         </tr>
@@ -81,27 +89,29 @@
         <tbody>
         {% for semana in tt %}
           <tr>
-            <th scope="row" align="center" width="10%" style="font-size: 12px">
+            <th class="align-middle" scope="row" width="10%" style="font-size: 12px;text-align: center;">
               {{ semana.0.horario.ordem }}º: {{ semana.0.horario.hora_inicio }} - {{ semana.0.horario.hora_final }}
             </th>
             {% for th in semana %}
               <td align="center" width="18%">
                 {% for turma in th.turmas %}
-                  <p style="font-size: 10px">
+                  <div class="sugestao-turma border">
                     {% if turma.semestre != 0 %}
                       <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>
-                      <span style="color: darkslateblue">
-                        {{ turma.componente.codigo }} - T{{ turma.codigo_turma }}
+                      <span class="align-middle" style="color: darkslateblue">
+                        &nbsp;{{ turma.componente.codigo }} - T{{ turma.codigo_turma }}&nbsp;
                       </span>
                       <span class="material-icons md-18 align-middle" style="color: darkslateblue">
                           filter_{{ turma.semestre }}
-                        </span>
+                      </span>
                     {% else %}
                       <span class="material-icons md-18 align-middle" style="color: green">bookmark</span>
-                      <b style="color: green">{{ turma.componente.codigo }} - T{{ turma.codigo_turma }}</b>
-                      <i class="material-icons md-18 align-middle" style="color: green">
+                      <span class="align-middle" style="color: green">
+                        &nbsp;{{ turma.componente.codigo }} - T{{ turma.codigo_turma }}&nbsp;
+                      </span>
+                      <span class="material-icons md-18 align-middle" style="color: green">
                         check_circle_outline
-                      </i>
+                      </span>
                     {% endif %}
                     <br/>
                     <b>{{ turma.componente.nome }}</b>
@@ -121,12 +131,21 @@
                       <b style="color: red">DOCENTE NÃO DEFINIDO</b> <br/>
                     {% endif %}
                     <i>{{ turma.local }}</i> <br/>
+                      <span class="material-icons md-18 align-middle" style="color: dodgerblue">school</span>
+                      <span class="align-middle" style="color: dodgerblue">
+                        <b>{{ turma.capacidade_aluno }}</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+
+                    <a href="">
+                      <span class="material-icons md-18 align-middle">star</span>
+                      <span class="align-middle">
+                        <b>{{ turma.capacidade_aluno }}</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    </a>
                     <a href="{% url 'sugestao_detalhar' turma.pk %}">
                       <span class="material-icons md-18 align-middle">
                         find_in_page
                       </span>
                     </a>
-                  </p>
+                  </div>
                 {% endfor %}
               </td>
             {% endfor %}
@@ -139,7 +158,7 @@
   <script>
     $(document).ready(function () {
       $('#get_sugestoes').click({
-        serviceUrl: '/core/sugestao/ped/list',
+        serviceUrl: '{{ sugestao_list_link }}',
         paramName: 'semestres',
       });
     });
