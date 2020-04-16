@@ -184,8 +184,8 @@ def download_discentes():
           '-f283524e3dd7/download/discentes-2019.csv'
     download_discentes_semestre(url, 'discentes-2019.csv')
 
-    url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/e12dfbbd-b6fb-42cc-ba0c' \
-          '-c123d4c49e2e/download/discentes-2020.csv'
+    url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/7795c538-86fc-483f-9da9' \
+          '-67b2fcc834ae/download/discentes-2020.csv'
     download_discentes_semestre(url, 'discentes-2020.csv')
 
 
