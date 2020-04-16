@@ -35,6 +35,7 @@ from .dao.departamento_dao import get_departamentos
 from .forms import CadastroUsuarioForm, SugestaoTurmaForm
 from .models import Horario
 from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir
+from .visoes.turma_view import turma_grade
 from .visoes.user_view import criar_usuario, autenticar_logar
 
 logger = logging.getLogger('suggestclasses.logger')
@@ -423,51 +424,37 @@ def alterar_senha(request):
 
 
 def turma_list(request):
-    return render(request, 'core/turma/list.html')
+    """
+        Lista todas as Turmas do centro CERES.
+    """
+    bsi_flow = get_estrutura_sistemas_dct()
+    ped_flow = get_estrutura_pedagogia()
+    mat_flow = get_estrutura_matematica()
+
+    context = {
+        'mat_flow': mat_flow,
+        'ped_flow': ped_flow,
+        'bsi_flow': bsi_flow
+    }
+    return render(request, 'core/turma/list.html', context)
+
+
+def turma_mat(request):
+    mat_dcea = get_estrutura_matematica()
+    turma_list_link = '/core/turma/mat'
+    return turma_grade(request, mat_dcea, turma_list_link)
 
 
 def turma_bsi(request):
     bsi_dct = get_estrutura_sistemas_dct()
-
-    semestres = request.GET.getlist('semestres')
-    ano_periodo = request.GET.getlist('ano_periodo')
-
-    turmas = carrega_turmas(bsi_dct, semestres, ano_periodo)
-
-    tt = carrega_turmas_horario(turmas)
-
-    periodo_selecionado = atualiza_ano_periodo(ano_periodo)
-    semestres_selecionado = atualiza_semestres(semestres)
-
-    context = {
-        'tt': tt,
-        'periodo_selecionado': periodo_selecionado[0],
-        'semestres_selecionado': semestres_selecionado
-    }
-
-    return render(request, 'core/turma/bsi.html', context)
+    turma_list_link = '/core/turma/bsi'
+    return turma_grade(request, bsi_dct, turma_list_link)
 
 
 def turma_ped(request):
     ped_deduc = get_estrutura_pedagogia()
-
-    semestres = request.GET.getlist('semestres')
-    ano_periodo = request.GET.getlist('ano_periodo')
-
-    turmas = carrega_turmas(ped_deduc, semestres, ano_periodo)
-
-    tt = carrega_turmas_horario(turmas)
-
-    periodo_selecionado = atualiza_ano_periodo(ano_periodo)
-    semestres_selecionado = atualiza_semestres(semestres)
-
-    context = {
-        'tt': tt,
-        'periodo_selecionado': periodo_selecionado[0],
-        'semestres_selecionado': semestres_selecionado
-    }
-
-    return render(request, 'core/turma/ped.html', context)
+    turma_list_link = '/core/turma/ped'
+    return turma_grade(request, ped_deduc, turma_list_link)
 
 
 def sugestao_list(request):

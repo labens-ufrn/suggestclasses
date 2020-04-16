@@ -2,11 +2,11 @@
 
 {% block content %}
 
-  <section class="page-section" id="horarios">
+  <section class="page-section" id="turma_horarios">
     <div class="container">
-
       <div id="manter" class="center text-center form-group">
-        <h2 class="page-section-heading text-center text-secondary mb-0">Turmas do Curso Pedagogia</h2>
+        <h2 class="page-section-heading text-center text-secondary mb-0">
+          Turmas do Curso de <b>{{ estrutura.curso.nome }}</b></h2>
         <h5 class="page-section-heading text-center text-secondary mb-0">CERES - Campus Caicó</h5>
       </div>
       <div class="text-center" id="div_semestres" style="font-size: 90%">
@@ -46,11 +46,10 @@
       </div>
 
       <br/>
-      <p class="text-center alert-info">Obs.: Exibido apenas turmas da estrutura curricular atual!</p>
       <table class="table table-striped table-sm table-bordered">
         <thead class="thead-light">
         <tr align="center">
-          <th colspan="6">Turmas do Período {{ periodo_selecionado }} - Semestres: {{ semestres_selecionado }}
+          <th colspan="6">Turmas do Período {{ periodo_selecionado }} - Semestres: {{ semestres_selecionado }} <br/>
             <div class="align-middle" style="font-size: 12px">
               <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>Obrigatória
               <span class="material-icons md-18 align-middle" style="color: green">bookmark</span> Optativa
@@ -67,15 +66,15 @@
         </tr>
         </thead>
         <tbody>
-        {% for semana in tt %}
+        {% for semana in turmas_por_horario %}
           <tr>
-            <th scope="row" align="center" width="10%" style="font-size: 12px">
+            <th class="align-middle" scope="row" width="10%" style="font-size: 12px;text-align: center;">
               {{ semana.0.horario.ordem }}º: {{ semana.0.horario.hora_inicio }} - {{ semana.0.horario.hora_final }}
             </th>
             {% for th in semana %}
               <td align="center" width="18%">
                 {% for turma in th.turmas %}
-                  <p style="font-size: 10px">
+                  <div class="sugestao-turma border">
                     {% if turma.semestre != 0 %}
                       <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>
                       <span style="color: darkslateblue">
@@ -83,7 +82,7 @@
                       </span>
                       <span class="material-icons md-18 align-middle" style="color: darkslateblue">
                           filter_{{ turma.semestre }}
-                        </span>
+                      </span>
                     {% else %}
                       <span class="material-icons md-18 align-middle" style="color: green">bookmark</span>
                       <b style="color: green">{{ turma.componente.codigo }} - T{{ turma.codigo_turma }}</b>
@@ -114,7 +113,7 @@
                         find_in_page
                       </span>
                     </a>
-                  </p>
+                  </div>
                 {% endfor %}
               </td>
             {% endfor %}
@@ -127,10 +126,11 @@
   <script>
     $(document).ready(function () {
       $('#get_turmas').click({
-        serviceUrl: '/core/turma/bsi',
+        serviceUrl: '{{ turma_list_link }}',
         paramName: 'semestres',
         paramName: 'ano_periodo',
       });
     });
   </script>
 {% endblock %}
+

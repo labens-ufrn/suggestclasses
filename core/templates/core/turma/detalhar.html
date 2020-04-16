@@ -14,7 +14,13 @@
         </tr>
         <tr>
           <td class="font-weight-bold" width="18%">Componente Curricular</td>
-          <td>{{ object.componente }}</td>
+          <td>{{ object.componente }}
+            <a href="{% url 'componente_detalhar' object.componente.pk %}">
+              <span class="material-icons md-18 align-middle">
+                find_in_page
+              </span>
+            </a>
+          </td>
         </tr>
         <tr>
           <td class="font-weight-bold" width="18%">Docente</td>
