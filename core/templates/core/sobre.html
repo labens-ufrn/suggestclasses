@@ -1,0 +1,99 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+  <!-- Dashboard Section -->
+  <section class="page-section" id="dashboard">
+    <div class="container">
+
+      <div id="manter" class="center text-center form-group">
+        <h2 class="page-section-heading text-center text-secondary mb-0">
+          Sistema de Sugestão de Turmas e Análise de Dados Educacionais</h2>
+        <h5 class="page-section-heading text-center text-secondary mb-0">CERES - Campus Caicó</h5>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8 mb-5 text-justify">
+          <hr>
+          <p>O Sistema <b>SuggestClasses</b> permite o carregamento de <a href="http://dados.ufrn.br"><b>Dados Abertos
+            da
+            UFRN</b></a> e exibe informações tratadas que possam ser utilizadas por gestores, docentes e discentes.</p>
+          <p>O objetivo da versão 1.0 é exibir <a href="/core/turma/"><b>Turmas do Período Atual</b></a> e
+            <a href="/core/sugestao/"><b>Sugestões de Turmas do Próximo Período</b></a> em formato de tabela de
+            horários. Sendo possível exibir a tabela de horários por Curso (Pedagogia, Sistema de Informação),
+            por Sala, por Docente e por Discente.</p>
+          <p>Na versão 1.0 do <b>SuggestClasses</b> temos implementado dois perfis de usuário: Docente e Dicente.
+            Onde os Docente pode ter permissões de Chefe e Coordenadores.</p>
+          <hr>
+          <div class="row">
+            <div class="col-sm-3 col-md-6 col-lg-6">
+              <label for="list-1"><b>Perfil Chefe/Coordenador</b></label>
+              <ul id="list-1" class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Visualizar Turmas do período atual;
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Criar Sugestão de Turma do próximo semestre;
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Editar Sugestão de Turma (mudar horário, docente, sala, vagas, etc);
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Visualizar discentes interessados na sugestão de turma;
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Visualizar a grade de horários de um docente, sala, semestre, etc;
+                </li>
+              </ul>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+              <label for="list-2"><b>Perfil Discente</b></label>
+              <ul id="list-2" class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Visualizar Turmas do período atual;
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Visualizar informações detalhadas das turmas;
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Visualizar Sugestões de Turma e informar interesse na turma;
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Visualizar a grade de horários do discente;
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  Visualizar a grade de horários de um docente, sala, semestre, etc;
+                </li>
+              </ul>
+            </div>
+          </div>
+          <br>
+          <p class="alert-danger"><b>Obs.:</b> Todos os dados são provenientes de Dados Abertos em
+            <a href="http://dados.ufrn.br">http://dados.ufrn.br</a>. Como dependemos dos dados publicados
+            podemos não ter a informação mais atual.</p>
+        </div>
+        <div class="col-md-4 mb-5">
+          <hr>
+          <address>
+            <strong>LABENS - Laboratório de Banco de Dados e Engenharia de Software</strong>
+            <br>Centro de Ensino Superior do Seridó - CERES/UFRN
+            <br>Caicó, RN
+            <br><a href="http://labens-ufrn.github.io/">http://labens-ufrn.github.io/</a>
+            <br>
+          </address>
+          <address>
+            <abbr title="Telefone/Whatsapp">Fone:</abbr>
+            (84) 9-9927-4706
+            <br>
+            <abbr title="Email">E-mail:</abbr>
+            <a href="mailto:#">taciano@dct.ufrn.br</a>
+          </address>
+          <p class="alert-info"><b>Obs. 3:</b> Sugestões de melhorias são bem-vindas por e-mail ou pelo
+            <b><a href="https://github.com/labens-ufrn/suggestclasses">GitHub do SuggestClasses</a></b>
+            (issues e pull requests).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

@@ -68,6 +68,14 @@ def index(request):
     return render(request, 'core/home.html', context)
 
 
+def sobre(request):
+    ceres = get_ceres()
+    context = {
+        'ceres': ceres,
+    }
+    return render(request, 'core/sobre.html', context)
+
+
 def dashboard(request):
     """
         View index para o Dashboard.
