@@ -6,7 +6,7 @@ from core.config.config import get_config
 from core.forms import SugestaoTurmaForm
 
 
-def sugestao_grade_horarios(request, estrutura, sugestao_incluir_link, sugestao_manter_link):
+def sugestao_grade_horarios(request, estrutura, sugestao_incluir_link, sugestao_manter_link, sugestao_list_link):
     semestres = request.GET.getlist('semestres')
     semestres = atualiza_semestres(semestres)
 
@@ -26,6 +26,7 @@ def sugestao_grade_horarios(request, estrutura, sugestao_incluir_link, sugestao_
         'semestres_atual': semestres,
         'sugestao_incluir_link': sugestao_incluir_link,
         'sugestao_manter_link': sugestao_manter_link,
+        'sugestao_list_link': sugestao_list_link,
     }
 
     return render(request, 'core/sugestao/grade_horarios.html', context)
@@ -72,6 +73,7 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
             sugestao_turma.periodo = periodo
             sugestao_turma.campus_turma = sugestao_turma.local.campus
             sugestao_turma.criador = request.user
+            sugestao_turma.total_solicitacoes = 0
             sugestao_turma.save()
             messages.success(request, 'Sugestão de Turma cadastrada com sucesso.')
             return redirect(sugestao_manter_link)

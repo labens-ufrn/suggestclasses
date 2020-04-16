@@ -463,100 +463,57 @@ def turma_ped(request):
 
 
 def sugestao_list(request):
+    """
+        Tela para Listar os Curso com possibilidade de cadastrar Sugestões de Turmas.
+    """
     return render(request, 'core/sugestao/list.html')
 
 
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_bsi_manter(request):
     """
-            Lista todas as salas do centro.
+        Tela de Manter Sugestão de Turmas do Curso de Sistemas de Informação.
     """
     bsi_dct = get_estrutura_sistemas_dct()
-    # Todos os Semestres
-    semestres = ['100']
-    semestres = atualiza_semestres(semestres)
-
-    config = get_config()
-    ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
-    ano = config.get('PeriodoSeguinte', 'ano')
-    periodo = config.get('PeriodoSeguinte', 'periodo')
-    st_list = carrega_sugestao_turmas(bsi_dct, semestres, ano, periodo)
-
-    context = {
-        'ano_periodo': ano_periodo,
-        'sugestao_bsi_list': '/core/sugestao/bsi/list',
-        'sugestao_list': st_list
-    }
-
-    return render(request, 'core/sugestao/bsi/manter.html', context)
+    sugestao_incluir_link = '/core/sugestao/bsi/incluir'
+    sugestao_grade_link = '/core/sugestao/bsi/list'
+    return sugestao_manter(request, bsi_dct, sugestao_incluir_link, sugestao_grade_link)
 
 
 @permission_required("core.add_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_bsi_incluir(request):
-    bsi = get_estrutura_sistemas_dct()
-    config = get_config()
-    ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
-    ano = config.get('PeriodoSeguinte', 'ano')
-    periodo = config.get('PeriodoSeguinte', 'periodo')
-    if request.method == "POST":
-        form_sugestao = SugestaoTurmaForm(request.POST, estrutura=bsi)
-        if form_sugestao.is_valid():
-            sugestao_turma = form_sugestao.save(commit=False)
-            sugestao_turma.tipo = 'REGULAR'
-            sugestao_turma.ano = ano
-            sugestao_turma.periodo = periodo
-            sugestao_turma.campus_turma = sugestao_turma.local.campus
-            sugestao_turma.save()
-            messages.success(request, 'Sugestão de Turma cadastrada com sucesso.')
-            return redirect('/core/sugestao/bsi/manter')
-        else:
-            messages.error(request, form_sugestao.errors['__all__'])
-    else:
-        form_sugestao = SugestaoTurmaForm(estrutura=bsi)
-        context = {
-            'ano_periodo': ano_periodo,
-            'estrutura': bsi,
-            'form_sugestao': form_sugestao
-        }
-    return render(request, 'core/sugestao/bsi/incluir.html', context)
+    bsi_dct = get_estrutura_sistemas_dct()
+    sugestao_manter_link = '/core/sugestao/bsi/manter'
+    return sugestao_incluir(request, bsi_dct, sugestao_manter_link)
 
 
 @permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_bsi_editar(request, pk):
-    bsi = get_estrutura_sistemas_dct()
-    return edit(request, pk, estrutura=bsi)
-
-
-def sugestao_bsi(request):
     bsi_dct = get_estrutura_sistemas_dct()
-
-    semestres = request.GET.getlist('semestres')
-    semestres = atualiza_semestres(semestres)
-    config = get_config()
-    ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
-    ano = config.get('PeriodoSeguinte', 'ano')
-    periodo = config.get('PeriodoSeguinte', 'periodo')
-    turmas = carrega_sugestao_turmas(bsi_dct, semestres, ano, periodo)
-
-    tt = carrega_turmas_horario(turmas)
-
-    context = {
-        'tt': tt,
-        'periodo_atual': ano_periodo,
-        'semestres_atual': semestres
-    }
-
-    return render(request, 'core/sugestao/bsi/list.html', context)
+    return edit(request, pk, estrutura=bsi_dct)
 
 
-def sugestao_ped(request):
+def sugestao_bsi_list(request):
+    bsi_dct = get_estrutura_sistemas_dct()
+    sugestao_incluir_link = '/core/sugestao/bsi/incluir'
+    sugestao_manter_link = '/core/sugestao/bsi/manter'
+    sugestao_list_link = '/core/sugestao/bsi/list'
+    return sugestao_grade_horarios(request, bsi_dct, sugestao_incluir_link, sugestao_manter_link, sugestao_list_link)
+
+
+def sugestao_ped_list(request):
     ped_deduc = get_estrutura_pedagogia()
     sugestao_incluir_link = '/core/sugestao/ped/incluir'
     sugestao_manter_link = '/core/sugestao/ped/manter'
-    return sugestao_grade_horarios(request, ped_deduc, sugestao_incluir_link, sugestao_manter_link)
+    sugestao_list_link = '/core/sugestao/ped/list'
+    return sugestao_grade_horarios(request, ped_deduc, sugestao_incluir_link, sugestao_manter_link, sugestao_list_link)
 
 
 @permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_ped_manter(request):
+    """
+        Tela de Manter Sugestão de Turmas do Curso de Pedagogia.
+    """
     ped_deduc = get_estrutura_pedagogia()
     sugestao_incluir_link = '/core/sugestao/ped/incluir'
     sugestao_grade_link = '/core/sugestao/ped/list'
