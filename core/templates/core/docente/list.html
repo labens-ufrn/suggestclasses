@@ -14,17 +14,29 @@
         <tr align="center">
           <th>Siape</th>
           <th>Nome</th>
-          <th>Formação</th>
-          <th>Classe Funcional</th>
           <th>Lotação</th>
+          <th>SIGAA</th>
         </tr>
           {% for docente in docentes %}
             <tr>
-              <td align="center">{{ docente.siape }}</td>
-              <td align="center">{{ docente.nome }}</td>
-              <td align="center">{{ docente.formacao }}</td>
-              <td align="center">{{ docente.classe_funcional }}</td>
+              <td align="center">
+                  {{ docente.siape }}
+              </td>
+              <td align="center" width="43%">{{ docente.nome }}
+                <a href="{% url 'docente_detalhar' docente.pk %}">
+                  <span class="material-icons md-18 align-middle">
+                    find_in_page
+                  </span>
+                </a>
+              </td>
               <td align="center">{{ docente.lotacao }}</td>
+              <td align="center">
+                <a href="https://sigaa.ufrn.br/sigaa/public/docente/portal.jsf?siape={{ docente.siape }}">
+                  <span class="material-icons md-18 align-middle">
+                    account_box
+                  </span>
+                </a>
+              </td>
             </tr>
           {% endfor %}
       </table>

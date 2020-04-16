@@ -185,6 +185,11 @@ class ComponenteDetailView(DetailView):
     template_name = 'core/componente/detalhar.html'
 
 
+class DocenteDetailView(DetailView):
+    model = Docente
+    template_name = 'core/docente/detalhar.html'
+
+
 def curriculo_list(request):
     estruturas = EstruturaCurricular.objects.all()
 
@@ -199,7 +204,7 @@ def docente_list(request):
     """
             Lista todas os docentes do centro.
     """
-    docentes = Docente.objects.all()
+    docentes = Docente.objects.all().order_by('nome')
 
     context = {
         'docentes': docentes

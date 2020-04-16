@@ -16,8 +16,11 @@ urlpatterns = [
     path('departamento/list/', views.departamento_list, name='Lista de Departamentos'),
     path('componente/list/', views.componente_list, name='Lista de Componentes Curriculares'),
     path('componentes/<int:pk>/', views.ComponenteDetailView.as_view(), name='componente_detalhar'),
+
     path('curriculo/list/', views.curriculo_list, name='Lista de Estruturas Curriculares'),
     path('docente/list/', views.docente_list, name='Lista de Docentes'),
+    path('docente/<int:pk>/', views.DocenteDetailView.as_view(), name='docente_detalhar'),
+
     path('sala/list/', views.sala_list, name='Lista de Salas'),
     path('flow/', views.flow_list, name='Lista de Fluxogramas'),
     path('flow/bsi/', views.flow_bsi, name='Fluxograma BSI'),
