@@ -1,5 +1,8 @@
 import os
 import django
+
+from core.bo.sala import get_salas
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
 
@@ -82,3 +85,18 @@ class ComponenteDAOTests(TestCase):
         ccs = get_componentes_by_depto(depto)
 
         self.assertEqual(4, len(ccs), 'Testando componentes')
+
+
+class SalaTests(TestCase):
+
+    def setUp(self):
+        criar_dados()
+
+    def tearDown(self):
+        remover_dados()
+
+    def test_get_salas(self):
+        salas = get_salas()
+
+        self.assertIsNotNone(salas, 'Testando salas')
+        self.assertTrue(len(salas) > 0, 'Testando salas')
