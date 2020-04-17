@@ -1,12 +1,9 @@
 import os
 import django
-
-from core.bo.curso import get_cursos
-from core.bo.sala import get_salas
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
-
+from core.bo.curso import get_cursos
+from core.bo.sala import get_salas
 from django.test import TestCase
 from core.tests.povoar_testes import criar_dados, remover_dados
 from core.dao.centro_dao import get_ceres, get_centro_by_id, get_centros

@@ -46,7 +46,7 @@ urlpatterns = [
     path('turma/ped', views.turma_ped, name='Turmas de Pedagogia'),
     path('turma/<int:pk>/', views.TurmaDetailView.as_view(), name='turma_detalhar'),
 
-    path('sugestao/', views.sugestao_list, name='Lista de Sugestão de Turmas por Curso'),
+    path('sugestao/', views.sugestao_list, name='sugestao_list'),
     path('sugestao/<int:pk>/', views.SugestaoTurmaDetailView.as_view(), name='sugestao_detalhar'),
     path('sugestao/edit/<int:pk>/', views.edit, name='sugestao_edit'),
     path('sugestao/delete/<int:pk>/', views.delete, name='sugestao_delete'),

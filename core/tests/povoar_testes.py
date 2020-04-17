@@ -9,8 +9,8 @@ from core.models import Centro, Departamento, ComponenteCurricular, Docente, Est
 
 
 def criar_dados():
-    print("Povoando Dados para Testes ...")
-
+    print("..... Povoando Dados para Testes .....")
+    remover_dados()
     criar_usuario()
     criar_centro()
     criar_salas()
@@ -26,7 +26,7 @@ def criar_dados():
 
 
 def remover_dados():
-    print("Removendo Dados dos Testes ...")
+    print("..... Removendo Dados dos Testes .....")
     remover_discentes()
     remover_sugestoes_turmas()
     remover_turmas()
@@ -42,9 +42,7 @@ def remover_dados():
 
 
 def criar_usuario():
-    user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
-    user.last_name = 'Lennon'
-    user.save()
+    User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
 
 
 def criar_discentes():
@@ -68,21 +66,21 @@ def remover_centro():
     try:
         Centro.objects.get(id_unidade=9999).delete()
     except Centro.DoesNotExist:
-        print('Centro não Existe!')
+        print('.', end="")
 
 
 def remover_usuario():
     try:
         User.objects.get(username='john').delete()
     except User.DoesNotExist:
-        print('Usuário não Existe!')
+        print('.', end="")
 
 
 def remover_discentes():
     try:
         Discente.objects.get(matricula=20209876543).delete()
     except Discente.DoesNotExist:
-        print('Discente não Existe!')
+        print('.', end="")
 
 
 def criar_salas():
@@ -95,7 +93,7 @@ def remover_salas():
     try:
         Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999).delete()
     except Sala.DoesNotExist:
-        print('Sala não Existe!')
+        print('.', end="")
 
 
 def criar_departamentos():
@@ -109,7 +107,7 @@ def remover_departamentos():
     try:
         Departamento.objects.get(id_unidade=9998).delete()
     except Departamento.DoesNotExist:
-        print('Departamento não Existe!')
+        print('.', end="")
 
 
 def criar_docentes():
@@ -129,9 +127,9 @@ def criar_docentes():
 def remover_docentes():
     try:
         Docente.objects.get(siape=9999999).delete()
-        Docente.objects.get(siape=9999998).delete()
+        Docente.objects.get(siape=9999997).delete()
     except Docente.DoesNotExist:
-        print('Docente não Existe!')
+        print('.', end="")
 
 
 def criar_cursos():
@@ -151,7 +149,7 @@ def remover_cursos():
         Curso.objects.get(codigo=9999).delete()
         Curso.objects.get(codigo=9998).delete()
     except Curso.DoesNotExist:
-        print('Curso não Existe!')
+        print('.', end="")
 
 
 def criar_componentes():
@@ -193,7 +191,7 @@ def remover_componentes():
         ComponenteCurricular.objects.get(id_componente=99997).delete()
         ComponenteCurricular.objects.get(id_componente=99996).delete()
     except ComponenteCurricular.DoesNotExist:
-        print('ComponenteCurricular não Existe!')
+        print('.', end="")
 
 
 def criar_estruturas():
@@ -231,7 +229,7 @@ def remover_estruturas():
         EstruturaCurricular.objects.get(id_curriculo=999999999).delete()
         EstruturaCurricular.objects.get(id_curriculo=999999998).delete()
     except EstruturaCurricular.DoesNotExist:
-        print('EstruturaCurricular não Existe!')
+        print('.', end="")
 
 
 def criar_curriculos():
@@ -267,7 +265,7 @@ def remover_curriculos():
         OrganizacaoCurricular.objects.get(id_curriculo_componente=999996).delete()
         OrganizacaoCurricular.objects.get(id_curriculo_componente=999995).delete()
     except OrganizacaoCurricular.DoesNotExist:
-        print('OrganizacaoCurricular não Existe!')
+        print('.', end="")
 
 
 def criar_turmas():
@@ -313,7 +311,6 @@ def criar_turmas():
                          distancia=False, data_consolidacao=None, agrupadora=False, id_turma_agrupadora=None,
                          qtd_aulas_lancadas=5, situacao_turma='ABERTA', convenio=None,
                          modalidade_participantes='Presencial')
-    print(Turma.objects.filter(id_turma=99999996))
 
 
 def remover_turmas():
@@ -323,7 +320,7 @@ def remover_turmas():
         Turma.objects.get(id_turma=99999997).delete()
         Turma.objects.get(id_turma=99999996).delete()
     except Turma.DoesNotExist:
-        print('Turma não Existe!')
+        print('.', end="")
 
 
 def criar_sugestoes_turmas():
@@ -349,7 +346,6 @@ def criar_sugestoes_turmas():
     SugestaoTurma.objects.create(codigo_turma='02', docente=docente2, matricula_docente_externo=None,
                                  componente=componente3, campus_turma=sala.campus, local=sala, ano=2020,
                                  periodo=2, descricao_horario='35T34', capacidade_aluno=25, tipo='REGULAR')
-    print(Turma.objects.filter(componente=componente3))
 
 
 def remover_sugestoes_turmas():
@@ -359,4 +355,4 @@ def remover_sugestoes_turmas():
         SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99997).delete()
         SugestaoTurma.objects.get(codigo_turma='02', componente__id_componente=99997).delete()
     except SugestaoTurma.DoesNotExist:
-        print('SugestaoTurma não Existe!')
+        print('.', end="")
