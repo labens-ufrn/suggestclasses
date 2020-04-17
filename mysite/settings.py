@@ -100,7 +100,11 @@ DATABASES = {
             # 'SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
         },
         'TEST': {
-            'NAME': 'scdb_test'
+            'NAME': 'scdb_test',
+            'USER': 'sc_user',
+            'PASSWORD': 'sc_user',
+            'HOST': '127.0.0.1',
+            'PORT': '3306',
         },
     }
 }
