@@ -1,3 +1,4 @@
+ ![GitHub](https://github.com/labens-ufrn/suggestclasses/workflows/Python%20application/badge.svg)
  ![GitHub](https://img.shields.io/github/license/labens-ufrn/suggestclasses)
  ![GitHub top language](https://img.shields.io/github/languages/top/labens-ufrn/suggestclasses)
  ![GitHub All Releases](https://img.shields.io/github/downloads/labens-ufrn/suggestclasses/total)
