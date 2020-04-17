@@ -101,6 +101,10 @@ DATABASES = {
         },
         'TEST': {
             'NAME': 'scdb_test',
+            'USER': 'sc_user',
+            'PASSWORD': 'sc_user',
+            'HOST': '127.0.0.1',
+            'PORT': '3306',
         },
     }
 }
