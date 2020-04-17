@@ -1,13 +1,11 @@
 import os
 import django
-from django.contrib.auth.models import User
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
-
+from django.contrib.auth.models import User
 from dateutil.parser import parse
 from core.models import Centro, Departamento, ComponenteCurricular, Docente, EstruturaCurricular, Curso, \
-    OrganizacaoCurricular, Turma, Sala, SugestaoTurma
+    OrganizacaoCurricular, Turma, Sala, SugestaoTurma, Discente
 
 
 def criar_dados():
@@ -24,10 +22,12 @@ def criar_dados():
     criar_curriculos()
     criar_turmas()
     criar_sugestoes_turmas()
+    criar_discentes()
 
 
 def remover_dados():
     print("Removendo Dados dos Testes ...")
+    remover_discentes()
     remover_sugestoes_turmas()
     remover_turmas()
     remover_curriculos()
@@ -45,6 +45,17 @@ def criar_usuario():
     user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
     user.last_name = 'Lennon'
     user.save()
+
+
+def criar_discentes():
+    Discente.objects.create(matricula='20209876543', nome_discente='Zé Silva', sexo='M',
+                            ano_ingresso=2020, periodo_ingresso=1,
+                            forma_ingresso='SiSU', tipo_discente='REGULAR', status='ATIVO',
+                            sigla_nivel_ensino='G', nivel_ensino='GRADUAÇÃO',
+                            id_curso='7191770', nome_curso='SISTEMAS DE INFORMAÇÃO',
+                            modalidade_educacao='PRESENCIAL',
+                            id_unidade=1482, nome_unidade='CENTRO DE  ENSINO SUPERIOR DO SERIDÓ',
+                            id_unidade_gestora=1482, nome_unidade_gestora='CENTRO DE  ENSINO SUPERIOR DO SERIDÓ')
 
 
 def criar_centro():
@@ -65,6 +76,13 @@ def remover_usuario():
         User.objects.get(username='john').delete()
     except User.DoesNotExist:
         print('Usuário não Existe!')
+
+
+def remover_discentes():
+    try:
+        Discente.objects.get(matricula=20209876543).delete()
+    except Discente.DoesNotExist:
+        print('Discente não Existe!')
 
 
 def criar_salas():
