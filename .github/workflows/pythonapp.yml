@@ -59,7 +59,7 @@ jobs:
           python manage.py makemigrations core
           python manage.py migrate core
       - name: Test with manage.py test
-        run: python manage.py test core --keepdb
+        run: python manage.py test core
       - name: Test with pytest
         run: |
           pip install pytest
