@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'scdb_dev',
         'USER': 'sc_user',
         'PASSWORD': 'sc_user',
-        'HOST': '127.0.0.1',
+        'HOST': 'localhost',
         'PORT': '3306',
         # optional:
         'OPTIONS': {
