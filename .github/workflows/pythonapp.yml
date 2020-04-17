@@ -34,7 +34,7 @@ jobs:
       - name: Start MariaDB
         uses: getong/mariadb-action@v1.1
         with:
-          mysql database: scdb_dev
+          mysql database: scdb_dev, scdb_test
           mysql user: sc_user
           mysql password: ${{ secrets.DatabasePassword }}
       - name: System Update
