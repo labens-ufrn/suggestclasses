@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'scdb_dev',
         'USER': 'sc_user',
         'PASSWORD': 'sc_user',
-        'HOST': 'localhost',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
         # optional:
         'OPTIONS': {
@@ -201,8 +201,8 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
-            'level': 'INFO',
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
             'propagate': True,
         },
         'django.request': {
