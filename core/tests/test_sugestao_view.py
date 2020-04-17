@@ -27,9 +27,7 @@ class SugestaoViewTests(TestCase):
         client = Client()
         response = client.get(reverse('sugestao_list'))
 
-        bsi_flow = response.context[-1]['bsi_flow']
         self.assertEqual(200, response.status_code)
-        self.assertIsNone(bsi_flow)
 
     def test_sugestao_mat_list(self):
         client = Client()
