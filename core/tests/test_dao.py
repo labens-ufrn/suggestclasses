@@ -1,6 +1,7 @@
 import os
 import django
 
+from core.bo.curso import get_cursos
 from core.bo.sala import get_salas
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
@@ -100,3 +101,18 @@ class SalaTests(TestCase):
 
         self.assertIsNotNone(salas, 'Testando salas')
         self.assertTrue(len(salas) > 0, 'Testando salas')
+
+
+class CursoTests(TestCase):
+
+    def setUp(self):
+        criar_dados()
+
+    def tearDown(self):
+        remover_dados()
+
+    def test_get_salas(self):
+        cursos = get_cursos()
+
+        self.assertIsNotNone(cursos, 'Testando cursos')
+        self.assertTrue(len(cursos) > 0, 'Testando cursos')
