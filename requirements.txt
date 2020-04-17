@@ -5,3 +5,4 @@ mysqlclient==1.4.6
 requests==2.23.0
 matplotlib==3.2.1
 pytest-django==3.9.0
+pytest~=5.4.1

@@ -9,8 +9,8 @@ from core.models import Centro, Departamento, ComponenteCurricular, Docente, Est
 
 
 def criar_dados():
-    print("..... Povoando Dados para Testes .....")
     remover_dados()
+    print("..... Povoando Dados para Testes .....")
     criar_usuario()
     criar_centro()
     criar_salas()
@@ -39,6 +39,7 @@ def remover_dados():
     remover_salas()
     remover_centro()
     remover_usuario()
+    print()
 
 
 def criar_usuario():

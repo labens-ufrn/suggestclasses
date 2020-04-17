@@ -1,7 +1,7 @@
-from core.models import EstruturaCurricular
+from core.bo.sevices import get_estrutura_by_id
 
 
 def get_estrutura_pedagogia():
     id_ec = 133495154
-    ped_ec = EstruturaCurricular.objects.get(id_curriculo=id_ec)
+    ped_ec = get_estrutura_by_id(id_ec)
     return ped_ec

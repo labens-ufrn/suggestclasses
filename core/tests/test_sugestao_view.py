@@ -1,5 +1,7 @@
 import os
 import django
+import pytest
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
 from unittest.case import TestCase
@@ -12,6 +14,7 @@ from core.models import SugestaoTurma
 from core.tests.povoar_testes import criar_dados, remover_dados
 
 
+@pytest.mark.django_db
 class SugestaoViewTests(TestCase):
 
     def setUp(self):
@@ -26,7 +29,7 @@ class SugestaoViewTests(TestCase):
 
         bsi_flow = response.context[-1]['bsi_flow']
         self.assertEqual(200, response.status_code)
-        self.assertIsNotNone(bsi_flow)
+        self.assertIsNone(bsi_flow)
 
     def test_sugestao_mat_list(self):
         client = Client()
@@ -57,5 +60,5 @@ class SugestaoViewTests(TestCase):
         client = Client()
         user = User.objects.get(username='john')
         response = client.post('/core/usuario/logar', {'username': user.username, 'password': 'johnpassword'})
-        self.assertEquals(response.url, '/core/')
+        self.assertEqual(response.url, '/core/')
         self.assertEqual(302, response.status_code)
