@@ -33,13 +33,8 @@ jobs:
         run: sudo service mysql stop # Shutdown the Default MySQL, "sudo" is necessary, please not remove it
       - name: Start MariaDB
         uses: getong/mariadb-action@v1.1
-        with:
-          mysql database: scdb_dev
-          mysql user: sc_user
-          mysql password: ${{ secrets.DatabasePassword }}
       - name: System Update
         run: |
-          sudo apt-get update
           sudo apt-get install python3.7-dev
           sudo apt-get install default-libmysqlclient-dev
       - name: Install dependencies
@@ -56,7 +51,6 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Run Migrations
         run: |
-          python manage.py makemigrations core
           python manage.py migrate core
       - name: Test with manage.py test
         run: python manage.py test core
