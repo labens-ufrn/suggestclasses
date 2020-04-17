@@ -37,7 +37,6 @@ jobs:
             character set server: 'utf8'
             collation server: 'utf8_general_ci'
             mysql database: 'scdb_dev'
-            mysql root password: ${{ secrets.DatabasePassword }}
             mysql user: 'sc_user'
             mysql password: ${{ secrets.DatabasePassword }}
       - name: System Update
