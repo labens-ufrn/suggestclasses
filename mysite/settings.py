@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +78,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-password = os.getenv("password")
+password = os.getenv('password')
 
 DATABASES = {
     'default': {
@@ -149,7 +148,6 @@ MESSAGE_TAGS = {
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = ''
 
 # User_Uploaded_Files
 MEDIA_URL = 'media/'
@@ -207,11 +205,6 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
-        'django': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'propagate': False,
-        },
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
@@ -219,7 +212,7 @@ LOGGING = {
         },
         'suggestclasses.logger': {
             'handlers': ['console', 'mail_admins', 'file'],
-            'level': 'INFO',
+            'level': 'DEBUG',
             'propagate': True,
         },
     },
