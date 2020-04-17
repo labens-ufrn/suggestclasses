@@ -37,6 +37,7 @@ jobs:
             character set server: 'utf8'
             collation server: 'utf8_general_ci'
             mysql database: 'scdb_dev'
+            mysql root password: ${{ secrets.DatabasePassword }}
             mysql user: 'sc_user'
             mysql password: ${{ secrets.DatabasePassword }}
       - name: System Update
@@ -59,6 +60,11 @@ jobs:
         run: |
           python manage.py makemigrations core
           python manage.py migrate core
+      - name: Grant All
+        run: |
+          mysql -h127.0.0.1 -uroot -p${{ secrets.DatabasePassword }} -e "SHOW DATABASES"
+          mysql -h127.0.0.1 -uroot -p${{ secrets.DatabasePassword }} -e "GRANT ALL PRIVILEGES ON scdb_dev.*  TO 'sc_user'@'%';"
+          mysql -h127.0.0.1 -uroot -p${{ secrets.DatabasePassword }} -e "GRANT ALL PRIVILEGES ON scdb_test.*  TO 'sc_user'@'%';"
       - name: Test with manage.py test
         run: python manage.py test core
       - name: Test with pytest
