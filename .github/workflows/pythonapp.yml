@@ -37,12 +37,6 @@ jobs:
             mysql database: scdb_dev
             mysql user: sc_user
             mysql password: ${{ secrets.DatabasePassword }}
-      - name: Start MariaDB test
-        uses: getong/mariadb-action@v1.1
-        with:
-            mysql database: scdb_test
-            mysql user: sc_user
-            mysql password: ${{ secrets.DatabasePassword }}
       - name: System Update
         run: |
           sudo apt-get install python3.7-dev
