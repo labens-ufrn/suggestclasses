@@ -17,3 +17,16 @@ def get_discentes_ativos():
     query = Q(status='ATIVO')
     query.add(Q(status='ATIVO - FORMANDO'), Q.OR)
     return Discente.objects.filter(query)
+
+
+def get_discente_by_matricula(matricula):
+    """
+        Retorna um discente dada sua matrícula siape.
+    :param matricula: Matrícula do discente.
+    :return: Um objeto da classe @Discente.
+    """
+    discente = None
+    if matricula != '' and Discente.objects.filter(matricula=matricula).exists():
+        # Professores Substitutos e Temporários não estão na lista
+        discente = Discente.objects.get(matricula=matricula)
+    return discente
