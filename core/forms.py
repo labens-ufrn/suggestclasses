@@ -38,7 +38,6 @@ class SugestaoTurmaForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         estrutura = kwargs.pop('estrutura')
-        # estrutura = EstruturaCurricular.objects.get(id_curriculo=my_arg.id_curriculo)
         super(SugestaoTurmaForm, self).__init__(*args, **kwargs)
         self.fields['componente'].queryset = get_cc_by_estrutura(estrutura)
 

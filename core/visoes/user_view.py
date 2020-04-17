@@ -55,25 +55,11 @@ def check_grupos(request, form_usuario, usuario):
     grupos = []
     if Docente.objects.filter(siape=matricula).exists():
         grupos.append(get_grupo_docentes())
-
-        hoje = date.today()
-        if FuncaoGratificada.objects.filter(siape=matricula, inicio__lte=hoje, fim__gt=hoje).exists():
-            fgs = FuncaoGratificada.objects.filter(siape=matricula, inicio__lte=hoje, fim__gt=hoje)
-            for fg in fgs:
-                print(fg.atividade + " " + fg.atividade)
-                if fg.atividade == 'CHEFE DE DEPARTAMENTO':
-                    grupos.append(get_grupo_chefes())
-                if fg.atividade == 'COORDENADOR DE CURSO':
-                    grupos.append(get_grupo_coordenadores())
+        check_gestor(grupos, matricula)
         return grupos
     # Realiza a checagem da existência do aluno e verifica se têm matrícula ativa
     elif Discente.objects.filter(matricula=matricula).exists():
-        discente = Discente.objects.get(matricula=matricula)
-        if discente.status == 'ATIVO' or discente.status == 'ATIVO - FORMANDO':
-            grupos.append(get_grupo_discentes())
-        else:
-            msg = 'A matrícula do discente informada não está ATIVA!'
-            form_usuario.add_error('matricula', msg)
+        check_discente_ativo(form_usuario, grupos, matricula)
         return grupos
     # TODO Acrescentar checagem para Servidores do Apoio e Secretários de Curso/Departamento
 
@@ -81,6 +67,26 @@ def check_grupos(request, form_usuario, usuario):
     form_usuario.add_error('matricula', msg)
     messages.error(request, msg)
     raise ValidationError("A matrícula não foi encontrada no CERES!")
+
+
+def check_discente_ativo(form_usuario, grupos, matricula):
+    discente = Discente.objects.get(matricula=matricula)
+    if discente.status == 'ATIVO' or discente.status == 'ATIVO - FORMANDO':
+        grupos.append(get_grupo_discentes())
+    else:
+        msg = 'A matrícula do discente informada não está ATIVA!'
+        form_usuario.add_error('matricula', msg)
+
+
+def check_gestor(grupos, matricula):
+    hoje = date.today()
+    if FuncaoGratificada.objects.filter(siape=matricula, inicio__lte=hoje, fim__gt=hoje).exists():
+        fgs = FuncaoGratificada.objects.filter(siape=matricula, inicio__lte=hoje, fim__gt=hoje)
+        for fg in fgs:
+            if fg.atividade == 'CHEFE DE DEPARTAMENTO':
+                grupos.append(get_grupo_chefes())
+            if fg.atividade == 'COORDENADOR DE CURSO':
+                grupos.append(get_grupo_coordenadores())
 
 
 def get_grupo_docentes():

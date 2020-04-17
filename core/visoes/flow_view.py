@@ -10,7 +10,6 @@ def flow_horizontal(request, estrutura, link_opcionais):
     :param estrutura: Um objeto do tipo @EstruturaCurricular.
     :return: Um Response HTTP.
     """
-    headers: List[str] = []
     estrutura_all = []
     max_comp_by_semestre = 0
     for s in range(1, 9):
