@@ -54,5 +54,5 @@ class DocenteTests(TestCase):
         self.assertIsNotNone(chefe.nome, docente.nome)
         self.assertIsNotNone(chefe.id_unidade, docente.id_unidade_lotacao)
         grupo_chefes = Group.objects.get(name='ChefesTeste')
-        grupos = docente.usuario.groups
-        print(grupos)
+        grupos = docente.usuario.groups.all()
+        self.assertTrue(grupo_chefes in grupos, 'Docente é chefe!')

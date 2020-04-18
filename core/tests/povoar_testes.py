@@ -156,19 +156,22 @@ def remover_departamentos():
 
 def criar_docentes():
     departamento = Departamento.objects.get(id_unidade=9998)
-    docentes = Group.objects.get(name='DocentesTeste')
+    grupo_docentes = Group.objects.get(name='DocentesTeste')
+    grupo_chefes = Group.objects.get(name='ChefesTeste')
+
     usuario1 = User.objects.get(username='docente1')
-    usuario1.groups.add(docentes)
-    usuario1.groups.clear()
+    usuario1.groups.add(grupo_docentes)
     usuario1.save()
-    docentes = Group.objects.get(name='DocentesTeste')
+
     usuario2 = User.objects.get(username='docente2')
-    usuario2.groups.add(docentes)
-    usuario2.groups.add(Group.objects.get(name='ChefesTeste'))
+    usuario2.groups.add(grupo_docentes)
+    usuario2.groups.add(grupo_chefes)
     usuario2.save()
+
     usuario3 = User.objects.get(username='docente3')
-    usuario3.groups.add(docentes)
+    usuario3.groups.add(grupo_docentes)
     usuario3.save()
+
     Docente.objects.create(siape=9999999, nome='Nome Docente Teste 1', sexo='M', formacao='Mestrado',
                            tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
                            categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe C - Adjunto',
