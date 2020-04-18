@@ -151,6 +151,13 @@ def carrega_sugestao_turmas(estrutura, semestres, ano, periodo):
 
 
 def carrega_turmas_horario(turmas):
+    """
+    Carrega uma lista com 16 posições representando os 16 períodos de 50 min de aulas em todos os turnos.
+    Cada posição contém outra lista de 5 posições representando os dias da semana.
+    :param turmas: Uma lista de Turmas ou Sugestões de Turma.
+    :return: Uma lista bidimensional representando a grade de horários com a lista de turmas
+    em cada horário.
+    """
     tt = []
     tt.extend(carrega_horario_turmas_por_turno(turmas, 'M'))
     tt.extend(carrega_horario_turmas_por_turno(turmas, 'T'))
@@ -159,6 +166,14 @@ def carrega_turmas_horario(turmas):
 
 
 def carrega_horario_turmas_por_turno(turmas, turno):
+    """
+    Carrega uma lista com 16 posições representando os 16 períodos de 50 min de aulas para um turno.
+    Cada posição contém outra lista de 5 posições representando os dias da semana.
+    :param turmas: Uma lista de Turmas ou Sugestões de Turma.
+    :param turno: Turno selecionado entre as opções M, T e N.
+    :return: Uma lista bidimensional representando a grade de horários com a lista de turmas
+    em cada horário.
+    """
     tt = []
     n = 7
     if turno == 'N':
@@ -175,12 +190,15 @@ def carrega_horario_turmas_por_turno(turmas, turno):
     return tt
 
 
-class TurmaHorario:
+class TurmaHorario(object):
 
     def __init__(self, horario, turmas):
         # salva os dados  que foram passados
         self.turmas = turmas
         self.horario = horario
+
+    def __str__(self):
+        return self.horario.__str__() + self.turmas.__str__()
 
 
 class TurmaEstendida(Turma):
