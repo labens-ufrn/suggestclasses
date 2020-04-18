@@ -1,4 +1,5 @@
-from core.models import Docente
+from core.models import Docente, FuncaoGratificada
+from datetime import date
 
 
 def get_docentes():
@@ -31,3 +32,20 @@ def get_docente_by_nome(nome):
     if nome != '' and Docente.objects.filter(nome=nome).exists():
         docente = Docente.objects.get(nome=nome)
     return docente
+
+
+def get_funcao_by_siape(siape):
+    """
+        Retorna as funções gratificadas ativas do docente dada sua matrícula siape.
+    :param siape: Matrícula siape do docente.
+    :return: Um objeto da classe @FuncaoGratificada.
+    """
+    funcoes = []
+    if siape != '' and Docente.objects.filter(siape=siape).exists():
+        docente = Docente.objects.get(siape=siape)
+        hoje = date.today()
+        if FuncaoGratificada.objects.filter(siape=docente.siape, inicio__lte=hoje, fim__gt=hoje).exists():
+            fgs = FuncaoGratificada.objects.filter(siape=docente.siape, inicio__lte=hoje, fim__gt=hoje)
+            for fg in fgs:
+                funcoes.append(fg)
+    return funcoes

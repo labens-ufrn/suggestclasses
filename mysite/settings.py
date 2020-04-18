@@ -96,7 +96,7 @@ DATABASES = {
                             'storage_engine=INNODB,'
                             'character_set_connection=utf8,'
                             'collation_connection=utf8_bin,'
-                            'sql_mode=NO_ENGINE_SUBSTITUTION'  # see note below
+                            'sql_mode=STRICT_TRANS_TABLES'  # see note below
             # 'SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
         },
         'TEST': {

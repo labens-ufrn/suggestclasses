@@ -1,21 +1,25 @@
 import os
 import django
+from django.contrib.contenttypes.models import ContentType
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group, Permission
 from dateutil.parser import parse
 from core.models import Centro, Departamento, ComponenteCurricular, Docente, EstruturaCurricular, Curso, \
-    OrganizacaoCurricular, Turma, Sala, SugestaoTurma, Discente
+    OrganizacaoCurricular, Turma, Sala, SugestaoTurma, Discente, FuncaoGratificada
 
 
 def criar_dados():
     remover_dados()
     print("..... Povoando Dados para Testes .....")
     criar_usuario()
+    criar_grupos()
     criar_centro()
     criar_salas()
     criar_departamentos()
     criar_docentes()
+    criar_funcao_gratificada()
     criar_cursos()
     criar_componentes()
     criar_estruturas()
@@ -34,16 +38,52 @@ def remover_dados():
     remover_estruturas()
     remover_componentes()
     remover_cursos()
+    remover_funcao_gratificada()
     remover_docentes()
     remover_departamentos()
     remover_salas()
     remover_centro()
+    remover_grupos()
     remover_usuario()
     print()
 
 
 def criar_usuario():
     User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+    User.objects.create_user('docente1', 'lennon@thebeatles.com', 'johnpassword')
+    User.objects.create_user('docente2', 'lennon@thebeatles.com', 'johnpassword')
+    User.objects.create_user('docente3', 'lennon@thebeatles.com', 'johnpassword')
+
+
+def criar_grupos():
+    new_group, created = Group.objects.get_or_create(name='ChefesTeste')
+
+    # Code to add permission to group ???
+    ct = ContentType.objects.get_for_model(SugestaoTurma)
+
+    # Now what - Say I want to add 'Can add project' permission to new_group?
+    permission = Permission.objects.create(codename='core.change_sugestaoturma',
+                                           name='Can change sugestão de turma',
+                                           content_type=ct)
+    new_group.permissions.add(permission)
+
+    new_group, created = Group.objects.get_or_create(name='DocentesTeste')
+    # Code to add permission to group ???
+    ct = ContentType.objects.get_for_model(SugestaoTurma)
+
+    # Now what - Say I want to add 'Can add project' permission to new_group?
+    permission = Permission.objects.create(codename='core.view_sugestaoturma',
+                                           name='Can view sugestão de turma',
+                                           content_type=ct)
+    new_group.permissions.add(permission)
+
+
+def remover_grupos():
+    try:
+        Group.objects.get(name='DocentesTeste').delete()
+        Group.objects.get(name='ChefesTeste').delete()
+    except Group.DoesNotExist:
+        print('.', end="")
 
 
 def criar_discentes():
@@ -73,6 +113,9 @@ def remover_centro():
 def remover_usuario():
     try:
         User.objects.get(username='john').delete()
+        User.objects.get(username='docente1').delete()
+        User.objects.get(username='docente2').delete()
+        User.objects.get(username='docente3').delete()
     except User.DoesNotExist:
         print('.', end="")
 
@@ -113,23 +156,72 @@ def remover_departamentos():
 
 def criar_docentes():
     departamento = Departamento.objects.get(id_unidade=9998)
+    docentes = Group.objects.get(name='DocentesTeste')
+    usuario1 = User.objects.get(username='docente1')
+    usuario1.groups.add(docentes)
+    usuario1.groups.clear()
+    usuario1.save()
+    docentes = Group.objects.get(name='DocentesTeste')
+    usuario2 = User.objects.get(username='docente2')
+    usuario2.groups.add(docentes)
+    usuario2.groups.add(Group.objects.get(name='ChefesTeste'))
+    usuario2.save()
+    usuario3 = User.objects.get(username='docente3')
+    usuario3.groups.add(docentes)
+    usuario3.save()
     Docente.objects.create(siape=9999999, nome='Nome Docente Teste 1', sexo='M', formacao='Mestrado',
                            tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
                            categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe C - Adjunto',
                            id_unidade_lotacao=departamento.id_unidade,
-                           lotacao='Departamento de Teste', admissao=parse('2020/03/30'))
+                           lotacao='Departamento de Teste', admissao=parse('2020/03/30'),
+                           usuario=usuario1)
+    Docente.objects.create(siape=9999998, nome='Nome Docente Chefe', sexo='F', formacao='Doutorado',
+                           tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
+                           categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe D - Adjunto',
+                           id_unidade_lotacao=departamento.id_unidade,
+                           lotacao='Departamento de Teste', admissao=parse('2020/04/17'),
+                           usuario=usuario2)
     Docente.objects.create(siape=9999997, nome='Nome Docente Teste 2', sexo='F', formacao='Doutorado',
                            tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
                            categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe D - Adjunto',
                            id_unidade_lotacao=departamento.id_unidade,
-                           lotacao='Departamento de Teste', admissao=parse('2020/03/30'))
+                           lotacao='Departamento de Teste', admissao=parse('2020/03/30'),
+                           usuario=usuario3)
 
 
 def remover_docentes():
     try:
         Docente.objects.get(siape=9999999).delete()
+        Docente.objects.get(siape=9999998).delete()
         Docente.objects.get(siape=9999997).delete()
     except Docente.DoesNotExist:
+        print('.', end="")
+
+
+def criar_funcao_gratificada():
+    departamento = Departamento.objects.get(id_unidade=9998)
+    docente1 = Docente.objects.get(siape=9999998)
+    inicio = parse('2019/11/19')
+    fim = parse('2021/11/18')
+
+    FuncaoGratificada.objects.create(siape=9999998, nome=docente1.nome, situacao_servidor=docente1.vinculo,
+                                     id_unidade=docente1.id_unidade_lotacao, lotacao=departamento.nome,
+                                     sigla=departamento.sigla, inicio=inicio, fim=fim,
+                                     id_unidade_designacao=departamento.id_unidade,
+                                     unidade_designacao=departamento.nome, atividade='CHEFE DE DEPARTAMENTO',
+                                     observacoes='')
+
+
+def remover_funcao_gratificada():
+    id_unidade = 9998
+    siape = 9999998
+    inicio = parse('2019/11/19')
+    atividade = 'CHEFE DE DEPARTAMENTO'
+
+    try:
+        FuncaoGratificada.objects.get(
+            siape=siape, id_unidade=id_unidade, inicio=inicio, atividade=atividade).delete()
+    except FuncaoGratificada.DoesNotExist:
         print('.', end="")
 
 
@@ -327,6 +419,7 @@ def remover_turmas():
 def criar_sugestoes_turmas():
     docente1 = Docente.objects.get(siape=9999999)
     docente2 = Docente.objects.get(siape=9999997)
+    criador_chefe = Docente.objects.get(siape=9999998)
     componente1 = ComponenteCurricular.objects.get(id_componente=99999)
     componente2 = ComponenteCurricular.objects.get(id_componente=99998)
     componente3 = ComponenteCurricular.objects.get(id_componente=99997)
@@ -334,19 +427,23 @@ def criar_sugestoes_turmas():
 
     SugestaoTurma.objects.create(codigo_turma='01', docente=docente1, matricula_docente_externo=None,
                                  componente=componente1, campus_turma=sala.campus, local=sala, ano=2020,
-                                 periodo=2, descricao_horario='24T12', capacidade_aluno=25, tipo='REGULAR')
+                                 periodo=2, descricao_horario='24T12', capacidade_aluno=25, tipo='REGULAR',
+                                 total_solicitacoes=0, criador=criador_chefe.usuario)
 
     SugestaoTurma.objects.create(codigo_turma='01', docente=docente2, matricula_docente_externo=None,
                                  componente=componente2, campus_turma=sala.campus, local=sala, ano=2020,
-                                 periodo=2, descricao_horario='24T34', capacidade_aluno=25, tipo='REGULAR')
+                                 periodo=2, descricao_horario='24T34', capacidade_aluno=25, tipo='REGULAR',
+                                 total_solicitacoes=0, criador=criador_chefe.usuario)
 
     SugestaoTurma.objects.create(codigo_turma='01', docente=docente1, matricula_docente_externo=None,
                                  componente=componente3, campus_turma=sala.campus, local=sala, ano=2020,
-                                 periodo=2, descricao_horario='35T12', capacidade_aluno=25, tipo='REGULAR')
+                                 periodo=2, descricao_horario='35T12', capacidade_aluno=25, tipo='REGULAR',
+                                 total_solicitacoes=0, criador=criador_chefe.usuario)
 
     SugestaoTurma.objects.create(codigo_turma='02', docente=docente2, matricula_docente_externo=None,
                                  componente=componente3, campus_turma=sala.campus, local=sala, ano=2020,
-                                 periodo=2, descricao_horario='35T34', capacidade_aluno=25, tipo='REGULAR')
+                                 periodo=2, descricao_horario='35T34', capacidade_aluno=25, tipo='REGULAR',
+                                 total_solicitacoes=0, criador=criador_chefe.usuario)
 
 
 def remover_sugestoes_turmas():
