@@ -279,7 +279,6 @@ class SugestaoTurma(models.Model):
 
     def __str__(self):
         return self.codigo_turma + ' - ' + self.componente.__str__() + ' - ' \
-               + self.docente.primeiro_nome() + ' (' + self.docente.siape.__str__() + ') - ' \
                + self.descricao_horario
 
 
