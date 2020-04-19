@@ -1,11 +1,9 @@
 import os
-from datetime import time
-
 import django
-from django.contrib.contenttypes.models import ContentType
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
+from datetime import time
+
 from django.contrib.auth.models import User, Group, Permission
 from dateutil.parser import parse
 from core.models import Centro, Departamento, ComponenteCurricular, Docente, EstruturaCurricular, Curso, \
