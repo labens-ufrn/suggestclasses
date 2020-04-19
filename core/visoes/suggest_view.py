@@ -1,11 +1,20 @@
+import logging
+from urllib.parse import urlparse
+
 from django.contrib import messages
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from core.bo.docente import get_funcao_by_siape
 from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, carrega_turmas_horario
 from core.config.config import get_config
 from core.forms import SugestaoTurmaForm
+from core.models import SugestaoTurma
+from mysite.settings import DOMAINS_WHITELIST
+
+logger = logging.getLogger('suggestclasses.logger')
 
 
 def sugestao_grade_horarios(request, estrutura, sugestao_incluir_link, sugestao_manter_link, sugestao_list_link):
@@ -84,12 +93,37 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
             messages.error(request, form_sugestao.errors['__all__'])
     else:
         form_sugestao = SugestaoTurmaForm(estrutura=estrutura)
-        context = {
-            'ano_periodo': ano_periodo,
-            'estrutura': estrutura,
-            'form_sugestao': form_sugestao,
-        }
+
+    context = {
+        'ano_periodo': ano_periodo,
+        'estrutura': estrutura,
+        'form_sugestao': form_sugestao,
+    }
     return render(request, 'core/sugestao/incluir.html', context)
+
+
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_editar(request, pk, estrutura, template_name='core/sugestao/editar.html'):
+    sugestao = get_object_or_404(SugestaoTurma, pk=pk)
+    if not verificar_permissoes(request, sugestao):
+        messages.error(request, 'Você não tem permissão de Editar esta Sugestão de Turma.')
+        return redirecionar(request)
+    form = SugestaoTurmaForm(request.POST or None, instance=sugestao, estrutura=estrutura)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Sugestão de Turma alterada com sucesso.')
+        return redirecionar(request)
+    else:
+        messages.error(request, form.errors)
+    return render(request, template_name, {'form': form})
+
+
+def redirecionar(request):
+    url = request.GET.get("next", "/")
+    parsed_uri = urlparse(url)
+    if parsed_uri.netloc == '' or parsed_uri.netloc in DOMAINS_WHITELIST:
+        return HttpResponseRedirect(url)
+    return HttpResponseRedirect("/core")
 
 
 def verificar_permissoes(request, sugestao):

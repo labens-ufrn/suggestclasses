@@ -48,8 +48,8 @@ urlpatterns = [
 
     path('sugestao/', views.sugestao_list, name='sugestao_list'),
     path('sugestao/<int:pk>/', views.SugestaoTurmaDetailView.as_view(), name='sugestao_detalhar'),
-    path('sugestao/edit/<int:pk>/', views.edit, name='sugestao_edit'),
-    path('sugestao/delete/<int:pk>/', views.delete, name='sugestao_delete'),
+    # path('sugestao/edit/<int:pk>/', views.edit, name='sugestao_edit'),
+    path('sugestao/delete/<int:pk>/', views.sugestao_deletar, name='sugestao_delete'),
 
     path('sugestao/mat/list', views.sugestao_mat_list, name='sugestao_mat_list'),
     path('sugestao/mat/manter', views.sugestao_mat_manter, name='sugestao_mat_manter'),
@@ -65,8 +65,6 @@ urlpatterns = [
     path('sugestao/ped/manter', views.sugestao_ped_manter, name='sugestao_ped_manter'),
     path('sugestao/ped/incluir', views.sugestao_ped_incluir, name='sugestao_ped_incluir'),
     path('sugestao/ped/editar/<int:pk>/', views.sugestao_ped_editar, name='sugestao_ped_editar'),
-
-
 
     path('plot/', views.plot, name='Plot de Gráfico')
 ]

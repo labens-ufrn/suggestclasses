@@ -2,7 +2,6 @@ import io
 import logging
 from random import sample
 from typing import List
-from urllib.parse import urlparse
 
 import matplotlib.pyplot as plt
 from django.contrib import messages
@@ -10,7 +9,7 @@ from django.contrib.auth import authenticate, logout, login, update_session_auth
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.core.exceptions import ValidationError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.views.generic import DetailView
@@ -18,7 +17,6 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 from core.models import Curso, ComponenteCurricular, EstruturaCurricular, SugestaoTurma, Sala, Docente, Turma
 from core.visoes.flow_view import flow_horizontal, flow_opcionais
-from mysite.settings import DOMAINS_WHITELIST
 from .bo.curso import get_cursos
 from .bo.discentes import get_discentes, get_discentes_ativos
 from .bo.docente import get_docentes
@@ -29,9 +27,10 @@ from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
 from .dao.departamento_dao import get_departamentos
-from .forms import CadastroUsuarioForm, SugestaoTurmaForm
+from .forms import CadastroUsuarioForm
 from .models import Horario
-from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir, verificar_permissoes
+from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir, sugestao_editar, \
+    redirecionar, verificar_permissoes
 from .visoes.turma_view import turma_grade
 from .visoes.user_view import criar_usuario, autenticar_logar
 
@@ -327,11 +326,6 @@ def flow_mat_op(request):
     return flow_opcionais(request, mat_ec)
 
 
-def flow_ped_op(request):
-    ped_ec = get_estrutura_pedagogia()
-    return flow_opcionais(request, ped_ec)
-
-
 def flow_ped(request):
     ped_ec = get_estrutura_pedagogia()
 
@@ -496,7 +490,7 @@ def sugestao_mat_incluir(request):
 @permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_mat_editar(request, pk):
     mat_dcea = get_estrutura_matematica()
-    return edit(request, pk, estrutura=mat_dcea)
+    return sugestao_editar(request, pk, estrutura=mat_dcea)
 
 
 def sugestao_mat_list(request):
@@ -529,7 +523,7 @@ def sugestao_bsi_incluir(request):
 @permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_bsi_editar(request, pk):
     bsi_dct = get_estrutura_sistemas_dct()
-    return edit(request, pk, estrutura=bsi_dct)
+    return sugestao_editar(request, pk, estrutura=bsi_dct)
 
 
 def sugestao_bsi_list(request):
@@ -580,27 +574,11 @@ class SugestaoTurmaDetailView(DetailView):
 @permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_ped_editar(request, pk):
     ped = get_estrutura_pedagogia()
-    return edit(request, pk, estrutura=ped)
-
-
-@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
-def edit(request, pk, estrutura, template_name='core/sugestao/editar.html'):
-    sugestao = get_object_or_404(SugestaoTurma, pk=pk)
-    if not verificar_permissoes(request, sugestao):
-        messages.error(request, 'Você não tem permissão de Editar esta Sugestão de Turma.')
-        return redirecionar(request)
-    form = SugestaoTurmaForm(request.POST or None, instance=sugestao, estrutura=estrutura)
-    if form.is_valid():
-        form.save()
-        messages.success(request, 'Sugestão de Turma alterada com sucesso.')
-        return redirecionar(request)
-    else:
-        messages.error(request, form.errors)
-    return render(request, template_name, {'form': form})
+    return sugestao_editar(request, pk, estrutura=ped)
 
 
 @permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
-def delete(request, pk, template_name='core/sugestao/confirm_delete.html'):
+def sugestao_deletar(request, pk, template_name='core/sugestao/confirm_delete.html'):
     sugestao = get_object_or_404(SugestaoTurma, pk=pk)
     if not verificar_permissoes(request, sugestao):
         messages.error(request, 'Você não tem permissão de Excluir esta Sugestão de Turma.')
@@ -617,14 +595,6 @@ def error_403(request, exception):
                  exc_info=exception)
     messages.error(request, 'Você não tem permissão de acessar: ' + request.path)
     return redirecionar(request)
-
-
-def redirecionar(request):
-    url = request.GET.get("next", "/")
-    parsed_uri = urlparse(url)
-    if parsed_uri.netloc == '' or parsed_uri.netloc in DOMAINS_WHITELIST:
-        return HttpResponseRedirect(url)
-    return HttpResponseRedirect("/core")
 
 
 def plot(request):
