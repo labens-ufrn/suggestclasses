@@ -1,6 +1,8 @@
 from django.contrib import messages
+from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 
+from core.bo.docente import get_funcao_by_siape
 from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, carrega_turmas_horario
 from core.config.config import get_config
 from core.forms import SugestaoTurmaForm
@@ -89,3 +91,45 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
         }
     return render(request, 'core/sugestao/incluir.html', context)
 
+
+def verificar_permissoes(request, sugestao):
+    # Verificar se o Usuário é o criador da Sugestão de Turma
+    usuario = request.user
+    departamento = sugestao.componente.departamento
+    if is_criador(usuario, sugestao):
+        return True
+    # Verificar se o Usuário é o chefe do Departamento da Sugestão de Turma
+    if is_chefe(usuario, departamento):
+        return True
+    return False
+
+
+def is_criador(usuario, sugestao):
+    """
+    Verificar se o Usuário é o criador da Sugestão de Turma.
+    :param usuario: Usuário autenticado.
+    :param sugestao: Sugestão de Turma.
+    :return: True se o usuário for o criador da Sugestão de Turma.
+    """
+    return usuario == sugestao.criador
+
+
+def is_chefe(usuario, departamento):
+    """
+    Verificar se o Usuário tem a Função de Chefe de Departamento.
+    :param usuario: Usuário autenticado.
+    :param departamento: O departamento de interesse.
+    :return: True se o usuário for Chefe do Departamento.
+    """
+    grupo_chefes = Group.objects.get(name='Chefes')
+    grupos = usuario.groups.all()
+
+    id_unidade_lotacao = usuario.docente.id_unidade_lotacao
+    test_chefe1 = departamento.id_unidade == id_unidade_lotacao
+
+    siape = usuario.docente.siape
+    funcao = get_funcao_by_siape(siape)
+    id_unidade_designacao = funcao[0].id_unidade_designacao
+    test_chefe2 = departamento.id_unidade == id_unidade_designacao
+
+    return grupo_chefes in grupos and test_chefe1 and test_chefe2

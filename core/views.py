@@ -31,7 +31,7 @@ from .dao.componente_dao import get_componentes_by_depto, get_componentes_curric
 from .dao.departamento_dao import get_departamentos
 from .forms import CadastroUsuarioForm, SugestaoTurmaForm
 from .models import Horario
-from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir
+from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir, verificar_permissoes
 from .visoes.turma_view import turma_grade
 from .visoes.user_view import criar_usuario, autenticar_logar
 
@@ -586,6 +586,9 @@ def sugestao_ped_editar(request, pk):
 @permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def edit(request, pk, estrutura, template_name='core/sugestao/editar.html'):
     sugestao = get_object_or_404(SugestaoTurma, pk=pk)
+    if not verificar_permissoes(request, sugestao):
+        messages.error(request, 'Você não tem permissão de Editar esta Sugestão de Turma.')
+        return redirecionar(request)
     form = SugestaoTurmaForm(request.POST or None, instance=sugestao, estrutura=estrutura)
     if form.is_valid():
         form.save()
@@ -599,6 +602,9 @@ def edit(request, pk, estrutura, template_name='core/sugestao/editar.html'):
 @permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def delete(request, pk, template_name='core/sugestao/confirm_delete.html'):
     sugestao = get_object_or_404(SugestaoTurma, pk=pk)
+    if not verificar_permissoes(request, sugestao):
+        messages.error(request, 'Você não tem permissão de Excluir esta Sugestão de Turma.')
+        return redirecionar(request)
     if request.method == 'POST':
         sugestao.delete()
         messages.success(request, 'Sugestão de Turma excluída com sucesso.')
