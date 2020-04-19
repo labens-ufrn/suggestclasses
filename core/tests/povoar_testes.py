@@ -14,7 +14,7 @@ from core.models import Centro, Departamento, ComponenteCurricular, Docente, Est
 
 def criar_dados():
     remover_dados()
-    print("..... Povoando Dados para Testes .....")
+    print('.', end="")
     criar_horarios()
     criar_usuario()
     criar_grupos()
@@ -33,7 +33,7 @@ def criar_dados():
 
 
 def remover_dados():
-    print("..... Removendo Dados dos Testes .....")
+    print('.', end="")
     remover_discentes()
     remover_sugestoes_turmas()
     remover_turmas()
@@ -49,7 +49,6 @@ def remover_dados():
     remover_grupos()
     remover_usuario()
     remover_horarios()
-    print()
 
 
 def criar_horarios():
@@ -160,23 +159,23 @@ def criar_grupos():
     new_group, created = Group.objects.get_or_create(name='ChefesTeste')
 
     # Code to add permission to group ???
-    ct = ContentType.objects.get_for_model(SugestaoTurma)
+    # ct = ContentType.objects.get_for_model(SugestaoTurma)
 
     # Now what - Say I want to add 'Can add project' permission to new_group?
-    permission = Permission.objects.create(codename='core.change_sugestaoturma',
-                                           name='Can change sugestão de turma',
-                                           content_type=ct)
-    new_group.permissions.add(permission)
+    # permission = Permission.objects.create(codename='core.mudar_sugestaoturma',
+    #                                        name='Can change sugestão de turma',
+    #                                        content_type=ct)
+    # new_group.permissions.add(permission)
 
     new_group, created = Group.objects.get_or_create(name='DocentesTeste')
     # Code to add permission to group ???
-    ct = ContentType.objects.get_for_model(SugestaoTurma)
+    # ct = ContentType.objects.get_for_model(SugestaoTurma)
 
     # Now what - Say I want to add 'Can add project' permission to new_group?
-    permission = Permission.objects.create(codename='core.view_sugestaoturma',
-                                           name='Can view sugestão de turma',
-                                           content_type=ct)
-    new_group.permissions.add(permission)
+    # permission = Permission.objects.create(codename='core.ver_sugestaoturma',
+    #                                        name='Can view sugestão de turma',
+    #                                        content_type=ct)
+    # new_group.permissions.add(permission)
 
 
 def remover_grupos():
