@@ -39,9 +39,9 @@
         </tr>
         {% for turma in sugestao_list %}
           <tr>
-            <td align="center">{{ turma.codigo_turma }}</td>
-            <td align="left">{{ turma.componente }}</td>
-            <td align="center">{% if turma.docente is not None %}
+            <td class="align-middle" align="center">{{ turma.codigo_turma }}</td>
+            <td class="align-middle" align="left">{{ turma.componente }}</td>
+            <td class="align-middle" align="center">{% if turma.docente is not None %}
               <span style="color: darkblue">{{ turma.docente.primeiro_nome }}
                           ({{ turma.docente.siape }})</span> <br/>
             {% elif turma.matricula_docente_externo is not None and turma.matricula_docente_externo != '' %}
@@ -50,8 +50,8 @@
               <b style="color: red">DOCENTE NÃO DEFINIDO</b> <br/>
             {% endif %}
             </td>
-            <td></td>
-            <td align="center">
+            <td class="align-middle" align="center">{{ estrutura.curso.nome }}</td>
+            <td class="align-middle" align="center">
               <a href="{% url 'sugestao_detalhar' turma.pk %}">
                 <button type="button" class="btn btn-info">
                     <span class="material-icons align-middle">
@@ -61,8 +61,8 @@
                 </button>
               </a>
             </td>
-            <td align="center">
-              <a href="{% url 'sugestao_bsi_editar' turma.pk %}?next={{ request.path|urlencode }}">
+            <td class="align-middle" align="center">
+              <a href="{% url sugestao_editar_link turma.pk %}?next={{ request.path|urlencode }}">
                 <button type="button" class="btn btn-info">
                     <span class="material-icons align-middle">
                       edit
@@ -71,7 +71,7 @@
                 </button>
               </a>
             </td>
-            <td align="center">
+            <td class="align-middle" align="center">
               <a href="{% url 'sugestao_delete' turma.pk %}?next={{ request.path|urlencode }}">
                 <button type="button" class="btn btn-danger">
                     <span class="material-icons align-middle">

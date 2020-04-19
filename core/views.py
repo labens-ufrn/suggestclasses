@@ -481,8 +481,9 @@ def sugestao_mat_manter(request):
     """
     mat_dcea = get_estrutura_matematica()
     sugestao_incluir_link = '/core/sugestao/mat/incluir'
+    sugestao_editar_link = 'sugestao_mat_editar'
     sugestao_grade_link = '/core/sugestao/mat/list'
-    return sugestao_manter(request, mat_dcea, sugestao_incluir_link, sugestao_grade_link)
+    return sugestao_manter(request, mat_dcea, sugestao_incluir_link, sugestao_grade_link, sugestao_editar_link)
 
 
 @permission_required("core.add_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
@@ -513,8 +514,9 @@ def sugestao_bsi_manter(request):
     """
     bsi_dct = get_estrutura_sistemas_dct()
     sugestao_incluir_link = '/core/sugestao/bsi/incluir'
+    sugestao_editar_link = 'sugestao_bsi_editar'
     sugestao_grade_link = '/core/sugestao/bsi/list'
-    return sugestao_manter(request, bsi_dct, sugestao_incluir_link, sugestao_grade_link)
+    return sugestao_manter(request, bsi_dct, sugestao_incluir_link, sugestao_grade_link, sugestao_editar_link)
 
 
 @permission_required("core.add_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
@@ -553,8 +555,9 @@ def sugestao_ped_manter(request):
     """
     ped_deduc = get_estrutura_pedagogia()
     sugestao_incluir_link = '/core/sugestao/ped/incluir'
+    sugestao_editar_link = 'sugestao_ped_editar'
     sugestao_grade_link = '/core/sugestao/ped/list'
-    return sugestao_manter(request, ped_deduc, sugestao_incluir_link, sugestao_grade_link)
+    return sugestao_manter(request, ped_deduc, sugestao_incluir_link, sugestao_grade_link, sugestao_editar_link)
 
 
 @permission_required("core.add_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)

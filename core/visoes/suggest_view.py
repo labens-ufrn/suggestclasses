@@ -32,7 +32,7 @@ def sugestao_grade_horarios(request, estrutura, sugestao_incluir_link, sugestao_
     return render(request, 'core/sugestao/grade_horarios.html', context)
 
 
-def sugestao_manter(request, estrutura, sugestao_incluir_link, sugestao_grade_link):
+def sugestao_manter(request, estrutura, sugestao_incluir_link, sugestao_grade_link, sugestao_editar_link):
     """
             Lista todas as salas do centro.
     """
@@ -51,6 +51,7 @@ def sugestao_manter(request, estrutura, sugestao_incluir_link, sugestao_grade_li
         'ano_periodo': ano_periodo,
         'estrutura': estrutura,
         'sugestao_incluir_link': sugestao_incluir_link,
+        'sugestao_editar_link': sugestao_editar_link,
         'sugestao_grade_link': sugestao_grade_link,
         'sugestao_list': st_list
     }
