@@ -12,6 +12,4 @@ def get_curriculo_by_cc(id_componente_curricular):
     if id_componente_curricular != '' and \
        OrganizacaoCurricular.objects.filter(componente__id_componente=id_componente_curricular).exists():
         curriculo = OrganizacaoCurricular.objects.filter(componente__id_componente=id_componente_curricular)
-        if len(curriculo) > 1:
-            print(curriculo)
     return curriculo
