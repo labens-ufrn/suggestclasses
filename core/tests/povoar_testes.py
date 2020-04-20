@@ -11,8 +11,8 @@ from core.models import Centro, Departamento, ComponenteCurricular, Docente, Est
 
 
 def criar_dados():
+    print('...... povoando dados ......')
     remover_dados()
-    print('.', end="")
     criar_horarios()
     criar_usuario()
     criar_grupos()
@@ -31,7 +31,6 @@ def criar_dados():
 
 
 def remover_dados():
-    print('.', end="")
     remover_discentes()
     remover_sugestoes_turmas()
     remover_turmas()
@@ -288,6 +287,11 @@ def criar_docentes():
                            id_unidade_lotacao=departamento.id_unidade,
                            lotacao='Departamento de Teste', admissao=parse('2020/03/30'),
                            usuario=usuario3)
+    Docente.objects.create(siape=9999996, nome='Nome Docente Teste 4', sexo='F', formacao='Doutorado',
+                           tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
+                           categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe D - Adjunto',
+                           id_unidade_lotacao=departamento.id_unidade,
+                           lotacao='Departamento de Teste', admissao=parse('2020/03/30'))
 
 
 def remover_docentes():
@@ -295,6 +299,7 @@ def remover_docentes():
         Docente.objects.get(siape=9999999).delete()
         Docente.objects.get(siape=9999998).delete()
         Docente.objects.get(siape=9999997).delete()
+        Docente.objects.get(siape=9999996).delete()
     except Docente.DoesNotExist:
         print('.', end="")
 
