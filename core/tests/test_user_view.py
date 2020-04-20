@@ -61,7 +61,7 @@ class UserViewTests(TestCase):
         if User.objects.filter(username='johnteste').exists():
             print('Apagar Usuário')
             User.objects.get(username='johnteste').delete()
-
+        user_count = User.objects.count()
         client = Client()
         # https://micropyramid.com/blog/django-unit-test-cases-with-forms-and-views/
         url = '/core/usuario/cadastrar'
@@ -73,6 +73,8 @@ class UserViewTests(TestCase):
                                      'matricula': 9999996})
         # se passar no is_valid() o retorno é um redirecionamento.
         self.assertEqual(response.status_code, 302)
+        self.assertEqual(User.objects.count(), user_count + 1)
+        # self.assertTrue('"error": false' in response.content)
 
 
 class UserViewSimpleTests(SimpleTestCase):
