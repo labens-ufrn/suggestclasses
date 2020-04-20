@@ -11,6 +11,7 @@ from core.models import Centro, Departamento, ComponenteCurricular, Docente, Est
 
 
 def criar_dados():
+    print()
     print('...... povoando dados ......')
     remover_dados()
     criar_horarios()

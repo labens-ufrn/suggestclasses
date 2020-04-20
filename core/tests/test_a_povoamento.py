@@ -16,7 +16,6 @@ class DiscenteTests(TestCase):
 
     def tearDown(self):
         remover_dados()
-        print('não faz nada!')
 
     def test_get_discentes_by_matricula(self):
         discente = get_discente_by_matricula(20209876543)
