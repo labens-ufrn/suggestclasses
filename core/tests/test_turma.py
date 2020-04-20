@@ -13,10 +13,15 @@ from core.models import Horario, EstruturaCurricular
 
 class TurmaBOTests(TestCase):
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        print('\nTurmaBOTests')
         criar_dados()
 
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
         remover_dados()
 
     def test_get_turno(self):
@@ -74,7 +79,6 @@ class TurmaBOTests(TestCase):
 
     def test_get_turmas(self):
         estrutura = EstruturaCurricular.objects.get(id_curriculo=999999999)
-        print(estrutura)
         semestre = 1
         turmas = get_turmas(estrutura, semestre, 2020, 1)
 
@@ -90,7 +94,6 @@ class TurmaBOTests(TestCase):
 
     def test_get_sugestao_turmas(self):
         estrutura = EstruturaCurricular.objects.get(id_curriculo=999999999)
-        print(estrutura)
         semestre = 1
         turmas = get_sugestao_turmas(estrutura, semestre, 2020, 2)
 

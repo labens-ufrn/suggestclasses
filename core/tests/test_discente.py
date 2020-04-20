@@ -10,10 +10,15 @@ from django.test import TestCase
 
 class DiscenteTests(TestCase):
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        print('\nDiscenteTests')
         criar_dados()
 
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(self):
+        super().tearDownClass()
         remover_dados()
 
     def test_get_discentes_by_matricula(self):

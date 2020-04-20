@@ -9,11 +9,15 @@ from django.test import TestCase, Client
 
 class FlowViewTests(TestCase):
 
-    def setUp(self):
-        print('FlowViewTests')
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        print('\nFlowViewTests')
         criar_dados()
 
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
         remover_dados()
 
     def test_get_flow(self):

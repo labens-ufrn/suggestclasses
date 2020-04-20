@@ -12,12 +12,17 @@ from core.dao.componente_dao import get_componentes_by_depto
 from core.dao.departamento_dao import get_depto_by_id, get_departamentos
 
 
-class CentroDAOTests(TestCase):
+class DAOTests(TestCase):
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        print('\nDAOTests')
         criar_dados()
 
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
         remover_dados()
 
     def test_get_centros(self):
@@ -69,44 +74,17 @@ class CentroDAOTests(TestCase):
         self.assertIsNotNone(deptos, 'Testando departamentos dos centros')
         self.assertTrue(len(deptos) > 0, 'Testando qtd departamentos')
 
-
-class ComponenteDAOTests(TestCase):
-
-    def setUp(self):
-        criar_dados()
-
-    def tearDown(self):
-        remover_dados()
-
     def test_get_componentes_by_depto(self):
         depto = get_depto_by_id(9998)
         ccs = get_componentes_by_depto(depto)
 
         self.assertEqual(4, len(ccs), 'Testando componentes')
 
-
-class SalaTests(TestCase):
-
-    def setUp(self):
-        criar_dados()
-
-    def tearDown(self):
-        remover_dados()
-
     def test_get_salas(self):
         salas = get_salas()
 
         self.assertIsNotNone(salas, 'Testando salas')
         self.assertTrue(len(salas) > 0, 'Testando salas')
-
-
-class CursoTests(TestCase):
-
-    def setUp(self):
-        criar_dados()
-
-    def tearDown(self):
-        remover_dados()
 
     def test_get_salas(self):
         cursos = get_cursos()

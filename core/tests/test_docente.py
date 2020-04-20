@@ -12,10 +12,15 @@ from django.test import TestCase
 
 class DocenteTests(TestCase):
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        print('\nDocenteTests')
         criar_dados()
 
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
         remover_dados()
 
     def test_get_docentes(self):

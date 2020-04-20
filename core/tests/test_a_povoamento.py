@@ -8,13 +8,17 @@ from core.tests.povoar_testes import criar_dados, remover_dados
 from django.test import TestCase
 
 
-class DiscenteTests(TestCase):
+class ATests(TestCase):
 
-    def setUp(self):
-        print('Teste A')
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        print('\nTeste A')
         criar_dados()
 
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
         remover_dados()
 
     def test_get_discentes_by_matricula(self):

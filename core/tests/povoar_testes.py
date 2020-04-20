@@ -1,4 +1,5 @@
 import os
+import threading
 import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
@@ -10,10 +11,57 @@ from core.models import Centro, Departamento, ComponenteCurricular, Docente, Est
     OrganizacaoCurricular, Turma, Sala, SugestaoTurma, Discente, FuncaoGratificada, Horario
 
 
+class PovoarDadosTestes(object):
+    class __OnlyOne:
+        def __init__(self):
+            # Buscar esses dados em algum arquivo Config.
+            self.povoar = True
+            self.remover = False
+
+        def __str__(self):
+            return self.__hash__().__str__() + ' povoar: ' + self.povoar.__str__() + ' remover: ' + self.remover.__str__()
+
+    __singleton_lock = threading.Lock()
+    __singleton_instance = None
+
+    @classmethod
+    def load(cls):  # __new__ always a classmethod
+        # check for the singleton instance
+        if not cls.__singleton_instance:
+            with cls.__singleton_lock:
+                if not cls.__singleton_instance:
+                    cls.__singleton_instance = cls.__OnlyOne()
+
+        # return the singleton instance
+        return cls.__singleton_instance
+
+    def __getattr__(self, name):
+        return getattr(self.__singleton_instance, name)
+
+    def __setattr__(self, name):
+        return setattr(self.__singleton_instance, name)
+
+
 def criar_dados():
-    print()
-    print('...... povoando dados ......')
-    remover_dados()
+    dados = PovoarDadosTestes.load()
+    print('Criar Dados: ' + dados.__str__())
+    if dados.povoar:
+        print('...... povoando dados ......')
+        remover_tudo()
+        criar_tudo()
+        dados.povoar = False
+
+
+def remover_dados():
+    dados = PovoarDadosTestes.load()
+    if dados.remover:
+        print()
+        print('...... removendo dados ......')
+        remover_tudo()
+        dados.povoar = True
+
+
+def criar_tudo():
     criar_horarios()
     criar_usuario()
     criar_grupos()
@@ -31,7 +79,7 @@ def criar_dados():
     criar_discentes()
 
 
-def remover_dados():
+def remover_tudo():
     remover_discentes()
     remover_sugestoes_turmas()
     remover_turmas()

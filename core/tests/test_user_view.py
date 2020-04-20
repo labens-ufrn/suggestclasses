@@ -18,10 +18,15 @@ from core.tests.povoar_testes import criar_dados, remover_dados
 @pytest.mark.django_db
 class UserViewTests(TestCase):
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        print('\nUserViewTests')
         criar_dados()
 
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
         remover_dados()
 
     def test_usuario_cadastrar(self):

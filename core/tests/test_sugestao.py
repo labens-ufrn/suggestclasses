@@ -1,22 +1,28 @@
 import django
+from django.contrib.auth.models import User
 
 from core.bo.sevices import get_estrutura_by_id
 from core.bo.turma import get_sugestao_turmas, SugestaoTurmaEstendida, carrega_turmas_horario, carrega_sugestao_turmas, \
     converte_desc_horario
-from core.models import SugestaoTurma, Curso, Docente
+from core.models import SugestaoTurma, Curso, Docente, ComponenteCurricular, Sala
 
 from core.tests.povoar_testes import criar_dados, remover_dados
 
 from django.test import TestCase
 
 
-class DocenteTests(TestCase):
+class SugestaoTests(TestCase):
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        print('\nSugestaoTests')
         django.setup()
         criar_dados()
 
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
         remover_dados()
 
     def test_get_sugestao(self):
@@ -50,7 +56,45 @@ class DocenteTests(TestCase):
 
         turmas_por_horario = carrega_turmas_horario(sugestoes)
 
-        print(horarios[0])
-        print(turmas_por_horario[6][0])
+        # print(horarios[0])
+        # print(turmas_por_horario[6][0])
 
         self.assertIsNotNone(turmas_por_horario, 'turmas_por_horario não é None.')
+
+    def test_create_sugestao(self):
+        """
+                        Teste de Unidade em Python.
+        """
+        codigo_turma = '01'
+        siape = '9999999'
+        matricula_docente_externo = ''
+
+        docente = None
+        if siape != '' and Docente.objects.filter(siape=siape).exists():
+            # Professores Substitutos e Temporários não estão na lista
+            # TODO Adicionar docente como foreign key de SugestaoTurma
+            docente = Docente.objects.get(siape=siape)
+            # print(docente)
+
+        # print(ComponenteCurricular.objects.all())
+
+        cc = ComponenteCurricular.objects.get(codigo='DCT9999')
+        campus_turma = 'CERES - Caicó'
+        local = Sala.objects.get(nome='Sala A01')
+        ano = 2020
+        periodo = 1
+        descricao_horario = '56M12'
+        capacidade_aluno = 25
+        tipo = 'REGULAR'
+        total_solicitacoes = 0
+        criador = User.objects.get(username='john')
+
+        sugestao = SugestaoTurma(codigo_turma=codigo_turma, docente=docente,
+                                 matricula_docente_externo=matricula_docente_externo, componente=cc,
+                                 campus_turma=campus_turma, local=local, ano=ano, periodo=periodo,
+                                 descricao_horario=descricao_horario, capacidade_aluno=capacidade_aluno,
+                                 total_solicitacoes=total_solicitacoes, tipo=tipo, criador=criador)
+
+        self.assertEqual('01', sugestao.codigo_turma, 'Código da Turma')
+        self.assertEqual(9999999, sugestao.docente.siape, 'Matrícula Siape do Docente')
+        self.assertEqual('', sugestao.matricula_docente_externo, 'Matrícula do Docente Externo')
