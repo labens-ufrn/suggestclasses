@@ -72,11 +72,7 @@ class SugestaoTests(TestCase):
         docente = None
         if siape != '' and Docente.objects.filter(siape=siape).exists():
             # Professores Substitutos e Temporários não estão na lista
-            # TODO Adicionar docente como foreign key de SugestaoTurma
             docente = Docente.objects.get(siape=siape)
-            # print(docente)
-
-        # print(ComponenteCurricular.objects.all())
 
         cc = ComponenteCurricular.objects.get(codigo='DCT9999')
         campus_turma = 'CERES - Caicó'
