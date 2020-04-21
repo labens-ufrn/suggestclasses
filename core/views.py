@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.template import loader
 from django.views.generic import DetailView
 from matplotlib.backends.backend_agg import FigureCanvasAgg
@@ -30,7 +30,7 @@ from .dao.departamento_dao import get_departamentos
 from .forms import CadastroUsuarioForm
 from .models import Horario
 from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir, sugestao_editar, \
-    redirecionar, verificar_permissoes
+    redirecionar, sugestao_deletar
 from .visoes.turma_view import turma_grade
 from .visoes.user_view import criar_usuario, autenticar_logar
 
@@ -599,19 +599,6 @@ def sugestao_ped_editar(request, pk):
 def sugestao_ped_deletar(request, pk):
     ped_deduc = get_estrutura_pedagogia()
     return sugestao_deletar(request, pk, estrutura=ped_deduc)
-
-
-@permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
-def sugestao_deletar(request, pk, estrutura, template_name='core/sugestao/confirm_delete.html'):
-    sugestao = get_object_or_404(SugestaoTurma, pk=pk)
-    if not verificar_permissoes(request, sugestao, estrutura):
-        messages.error(request, 'Você não tem permissão de Excluir esta Sugestão de Turma.')
-        return redirecionar(request)
-    if request.method == 'POST':
-        sugestao.delete()
-        messages.success(request, 'Sugestão de Turma excluída com sucesso.')
-        return redirecionar(request)
-    return render(request, template_name, {'object': sugestao})
 
 
 def error_403(request, exception):

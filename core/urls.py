@@ -48,8 +48,6 @@ urlpatterns = [
 
     path('sugestao/', views.sugestao_list, name='sugestao_list'),
     path('sugestao/<int:pk>/', views.SugestaoTurmaDetailView.as_view(), name='sugestao_detalhar'),
-    # path('sugestao/edit/<int:pk>/', views.edit, name='sugestao_edit'),
-    # path('sugestao/delete/<int:pk>/', views.sugestao_deletar, name='sugestao_delete'),
 
     path('sugestao/mat/list', views.sugestao_mat_list, name='sugestao_mat_list'),
     path('sugestao/mat/manter', views.sugestao_mat_manter, name='sugestao_mat_manter'),

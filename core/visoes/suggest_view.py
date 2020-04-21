@@ -80,7 +80,7 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
         if form_sugestao.is_valid():
             sugestao_turma = form_sugestao.save(commit=False)
             carregar_dados(request, sugestao_turma)
-            if not verificar_existencia(request, form_sugestao, sugestao_turma):
+            if not verificar_existencia(form_sugestao, sugestao_turma):
                 sugestao_turma.save()
                 messages.success(request, 'Sugestão de Turma cadastrada com sucesso.')
                 return redirect(sugestao_manter_link)
@@ -108,7 +108,7 @@ def carregar_dados(request, sugestao_turma):
     sugestao_turma.total_solicitacoes = 0
 
 
-def verificar_existencia(request, form_sugestao, sugestao_turma):
+def verificar_existencia(form_sugestao, sugestao_turma):
     sugestoes = SugestaoTurma.objects.filter(
         codigo_turma=sugestao_turma.codigo_turma,
         componente=sugestao_turma.componente,
@@ -151,6 +151,19 @@ def sugestao_editar(request, pk, estrutura, template_name='core/sugestao/editar.
     else:
         messages.error(request, form.errors)
     return render(request, template_name, {'form': form})
+
+
+@permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_deletar(request, pk, estrutura, template_name='core/sugestao/confirm_delete.html'):
+    sugestao = get_object_or_404(SugestaoTurma, pk=pk)
+    if not verificar_permissoes(request, sugestao, estrutura):
+        messages.error(request, 'Você não tem permissão de Excluir esta Sugestão de Turma.')
+        return redirecionar(request)
+    if request.method == 'POST':
+        sugestao.delete()
+        messages.success(request, 'Sugestão de Turma excluída com sucesso.')
+        return redirecionar(request)
+    return render(request, template_name, {'object': sugestao})
 
 
 def redirecionar(request):
