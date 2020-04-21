@@ -24,6 +24,10 @@ jobs:
       - name: Display the path
         run: echo $PATH
         shell: bash
+      - name: Set environment variables
+        run: |
+            export DJANGO_SETTINGS_MODULE=mysite.settings
+            export PYTHONUNBUFFERED=1
       - uses: actions/checkout@v1
       - name: Set up Python 3.7
         uses: actions/setup-python@v1
