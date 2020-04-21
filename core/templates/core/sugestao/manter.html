@@ -72,7 +72,7 @@
               </a>
             </td>
             <td class="align-middle" align="center">
-              <a href="{% url 'sugestao_delete' turma.pk %}?next={{ request.path|urlencode }}">
+              <a href="{% url sugestao_deletar_link turma.pk %}?next={{ request.path|urlencode }}">
                 <button type="button" class="btn btn-danger">
                     <span class="material-icons align-middle">
                       delete

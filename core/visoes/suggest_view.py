@@ -43,7 +43,8 @@ def sugestao_grade_horarios(request, estrutura, sugestao_incluir_link, sugestao_
     return render(request, 'core/sugestao/grade_horarios.html', context)
 
 
-def sugestao_manter(request, estrutura, sugestao_incluir_link, sugestao_grade_link, sugestao_editar_link):
+def sugestao_manter(request, estrutura, sugestao_incluir_link, sugestao_grade_link,
+                    sugestao_editar_link, sugestao_deletar_link):
     """
             Lista todas as salas do centro.
     """
@@ -63,6 +64,7 @@ def sugestao_manter(request, estrutura, sugestao_incluir_link, sugestao_grade_li
         'estrutura': estrutura,
         'sugestao_incluir_link': sugestao_incluir_link,
         'sugestao_editar_link': sugestao_editar_link,
+        'sugestao_deletar_link': sugestao_deletar_link,
         'sugestao_grade_link': sugestao_grade_link,
         'sugestao_list': st_list
     }
@@ -138,7 +140,7 @@ def criar_string(sugestoes):
 @permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_editar(request, pk, estrutura, template_name='core/sugestao/editar.html'):
     sugestao = get_object_or_404(SugestaoTurma, pk=pk)
-    if not verificar_permissoes(request, sugestao):
+    if not verificar_permissoes(request, sugestao, estrutura):
         messages.error(request, 'Você não tem permissão de Editar esta Sugestão de Turma.')
         return redirecionar(request)
     form = SugestaoTurmaForm(request.POST or None, instance=sugestao, estrutura=estrutura)
@@ -159,14 +161,17 @@ def redirecionar(request):
     return HttpResponseRedirect("/core")
 
 
-def verificar_permissoes(request, sugestao):
+def verificar_permissoes(request, sugestao, estrutura):
     # Verificar se o Usuário é o criador da Sugestão de Turma
     usuario = request.user
     departamento = sugestao.componente.departamento
     if is_criador(usuario, sugestao):
         return True
-    # Verificar se o Usuário é o chefe do Departamento da Sugestão de Turma
+    # Verificar se o Usuário é o Chefe do Departamento da Sugestão de Turma
     if is_chefe(usuario, departamento):
+        return True
+    # Verificar se o Usuário é o Coordenador do Curso da Sugestão de Turma
+    if is_coordenador(usuario, estrutura.curso):
         return True
     return False
 
@@ -200,3 +205,27 @@ def is_chefe(usuario, departamento):
     test_chefe2 = departamento.id_unidade == id_unidade_designacao
 
     return grupo_chefes in grupos and test_chefe1 and test_chefe2
+
+
+def is_coordenador(usuario, curso):
+    """
+    Verificar se o Usuário tem a Função de Coordenador de Curso.
+    :param usuario: Usuário autenticado.
+    :param curso: O curso de interesse.
+    :return: True se o usuário for Coordenador do Curso.
+    """
+    grupo_chefes = Group.objects.get(name='Coordenadores')
+    grupos = usuario.groups.all()
+
+    siape = usuario.docente.siape
+    test_coordenador1 = curso.coordenador.siape == siape
+
+    funcoes = get_funcao_by_siape(siape)
+    test_coordenador2 = False
+    for funcao in funcoes:
+        # id_unidade_designacao = funcao.id_unidade_designacao
+        # O id_unidade de curso não existe! Existe no arquivo unidades.csv
+        # curso.id_unidade == id_unidade_designacao
+        test_coordenador2 = test_coordenador2 or 'COORDENADOR DE CURSO' == funcao.atividade
+
+    return grupo_chefes in grupos and test_coordenador1 and test_coordenador2

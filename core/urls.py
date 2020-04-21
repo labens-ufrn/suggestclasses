@@ -49,22 +49,25 @@ urlpatterns = [
     path('sugestao/', views.sugestao_list, name='sugestao_list'),
     path('sugestao/<int:pk>/', views.SugestaoTurmaDetailView.as_view(), name='sugestao_detalhar'),
     # path('sugestao/edit/<int:pk>/', views.edit, name='sugestao_edit'),
-    path('sugestao/delete/<int:pk>/', views.sugestao_deletar, name='sugestao_delete'),
+    # path('sugestao/delete/<int:pk>/', views.sugestao_deletar, name='sugestao_delete'),
 
     path('sugestao/mat/list', views.sugestao_mat_list, name='sugestao_mat_list'),
     path('sugestao/mat/manter', views.sugestao_mat_manter, name='sugestao_mat_manter'),
     path('sugestao/mat/incluir', views.sugestao_mat_incluir, name='sugestao_mat_incluir'),
     path('sugestao/mat/editar/<int:pk>/', views.sugestao_mat_editar, name='sugestao_mat_editar'),
+    path('sugestao/mat/deletar/<int:pk>/', views.sugestao_mat_deletar, name='sugestao_mat_deletar'),
 
     path('sugestao/bsi/list', views.sugestao_bsi_list, name='sugestao_bsi_list'),
     path('sugestao/bsi/manter', views.sugestao_bsi_manter, name='sugestao_bsi_manter'),
     path('sugestao/bsi/incluir', views.sugestao_bsi_incluir, name='sugestao_bsi_incluir'),
     path('sugestao/bsi/editar/<int:pk>/', views.sugestao_bsi_editar, name='sugestao_bsi_editar'),
+    path('sugestao/bsi/deletar/<int:pk>/', views.sugestao_bsi_deletar, name='sugestao_bsi_deletar'),
 
     path('sugestao/ped/list', views.sugestao_ped_list, name='sugestao_ped_list'),
     path('sugestao/ped/manter', views.sugestao_ped_manter, name='sugestao_ped_manter'),
     path('sugestao/ped/incluir', views.sugestao_ped_incluir, name='sugestao_ped_incluir'),
     path('sugestao/ped/editar/<int:pk>/', views.sugestao_ped_editar, name='sugestao_ped_editar'),
+    path('sugestao/ped/deletar/<int:pk>/', views.sugestao_ped_deletar, name='sugestao_ped_deletar'),
 
     path('plot/', views.plot, name='Plot de Gráfico')
 ]

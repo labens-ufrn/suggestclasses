@@ -476,8 +476,10 @@ def sugestao_mat_manter(request):
     mat_dcea = get_estrutura_matematica()
     sugestao_incluir_link = '/core/sugestao/mat/incluir'
     sugestao_editar_link = 'sugestao_mat_editar'
+    sugestao_deletar_link = 'sugestao_mat_deletar'
     sugestao_grade_link = '/core/sugestao/mat/list'
-    return sugestao_manter(request, mat_dcea, sugestao_incluir_link, sugestao_grade_link, sugestao_editar_link)
+    return sugestao_manter(request, mat_dcea, sugestao_incluir_link, sugestao_grade_link,
+                           sugestao_editar_link, sugestao_deletar_link)
 
 
 @permission_required("core.add_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
@@ -491,6 +493,12 @@ def sugestao_mat_incluir(request):
 def sugestao_mat_editar(request, pk):
     mat_dcea = get_estrutura_matematica()
     return sugestao_editar(request, pk, estrutura=mat_dcea)
+
+
+@permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_mat_deletar(request, pk):
+    mat_dcea = get_estrutura_matematica()
+    return sugestao_deletar(request, pk, estrutura=mat_dcea)
 
 
 def sugestao_mat_list(request):
@@ -509,8 +517,10 @@ def sugestao_bsi_manter(request):
     bsi_dct = get_estrutura_sistemas_dct()
     sugestao_incluir_link = '/core/sugestao/bsi/incluir'
     sugestao_editar_link = 'sugestao_bsi_editar'
+    sugestao_deletar_link = 'sugestao_bsi_deletar'
     sugestao_grade_link = '/core/sugestao/bsi/list'
-    return sugestao_manter(request, bsi_dct, sugestao_incluir_link, sugestao_grade_link, sugestao_editar_link)
+    return sugestao_manter(request, bsi_dct, sugestao_incluir_link, sugestao_grade_link,
+                           sugestao_editar_link, sugestao_deletar_link)
 
 
 @permission_required("core.add_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
@@ -524,6 +534,12 @@ def sugestao_bsi_incluir(request):
 def sugestao_bsi_editar(request, pk):
     bsi_dct = get_estrutura_sistemas_dct()
     return sugestao_editar(request, pk, estrutura=bsi_dct)
+
+
+@permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_bsi_deletar(request, pk):
+    bsi_dct = get_estrutura_sistemas_dct()
+    return sugestao_deletar(request, pk, estrutura=bsi_dct)
 
 
 def sugestao_bsi_list(request):
@@ -550,15 +566,17 @@ def sugestao_ped_manter(request):
     ped_deduc = get_estrutura_pedagogia()
     sugestao_incluir_link = '/core/sugestao/ped/incluir'
     sugestao_editar_link = 'sugestao_ped_editar'
+    sugestao_deletar_link = 'sugestao_ped_deletar'
     sugestao_grade_link = '/core/sugestao/ped/list'
-    return sugestao_manter(request, ped_deduc, sugestao_incluir_link, sugestao_grade_link, sugestao_editar_link)
+    return sugestao_manter(request, ped_deduc, sugestao_incluir_link, sugestao_grade_link,
+                           sugestao_editar_link, sugestao_deletar_link)
 
 
 @permission_required("core.add_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_ped_incluir(request):
-    ped = get_estrutura_pedagogia()
+    ped_deduc = get_estrutura_pedagogia()
     sugestao_manter_link = '/core/sugestao/ped/manter'
-    return sugestao_incluir(request, ped, sugestao_manter_link)
+    return sugestao_incluir(request, ped_deduc, sugestao_manter_link)
 
 
 class TurmaDetailView(DetailView):
@@ -573,14 +591,20 @@ class SugestaoTurmaDetailView(DetailView):
 
 @permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_ped_editar(request, pk):
-    ped = get_estrutura_pedagogia()
-    return sugestao_editar(request, pk, estrutura=ped)
+    ped_deduc = get_estrutura_pedagogia()
+    return sugestao_editar(request, pk, estrutura=ped_deduc)
 
 
 @permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
-def sugestao_deletar(request, pk, template_name='core/sugestao/confirm_delete.html'):
+def sugestao_ped_deletar(request, pk):
+    ped_deduc = get_estrutura_pedagogia()
+    return sugestao_deletar(request, pk, estrutura=ped_deduc)
+
+
+@permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_deletar(request, pk, estrutura, template_name='core/sugestao/confirm_delete.html'):
     sugestao = get_object_or_404(SugestaoTurma, pk=pk)
-    if not verificar_permissoes(request, sugestao):
+    if not verificar_permissoes(request, sugestao, estrutura):
         messages.error(request, 'Você não tem permissão de Excluir esta Sugestão de Turma.')
         return redirecionar(request)
     if request.method == 'POST':
