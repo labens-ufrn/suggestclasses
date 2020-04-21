@@ -57,7 +57,6 @@ jobs:
           cp contrib/env-sample .env
           set -o allexport
           source .env
-          set +o allexport
       - name: Test with manage.py test
         run: |
           python manage.py test core --keepdb
