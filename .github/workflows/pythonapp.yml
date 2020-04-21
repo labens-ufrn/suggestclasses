@@ -20,29 +20,26 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      mariadb:
+        image: mariadb:latest
+        env:
+          MYSQL_USER: sc_user
+          MYSQL_PASSWORD: sc_user
+          MYSQL_DATABASE: scdb_dev
+        ports:
+          - 3306
+
     steps:
-      - name: Display the path
-        run: echo $PATH
-        shell: bash
-      - name: Set environment variables
-        run: |
-            export DJANGO_SETTINGS_MODULE=mysite.settings
-            export PYTHONUNBUFFERED=1
-      - uses: actions/checkout@v1
-      - name: Set up Python 3.7
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
         uses: actions/setup-python@v1
         with:
-          python-version: 3.7
-      - name: Shutdown Ubuntu MySQL (SUDO)
-        run: sudo service mysql stop # Shutdown the Default MySQL, "sudo" is necessary, please not remove it
-      - name: Start MariaDB
-        uses: getong/mariadb-action@v1.1
-        with:
-            character set server: 'utf8'
-            collation server: 'utf8_general_ci'
-            mysql database: 'scdb_dev'
-            mysql user: 'sc_user'
-            mysql password: ${{ secrets.DatabasePassword }}
+          python-version: 3.8
+      - name: Copying configurations
+        run: |
+          cp contrib/env-sample .env
+          source .env
       - name: System Update
         run: |
           sudo apt-get install python3.7-dev
@@ -59,10 +56,8 @@ jobs:
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      - name: Run Migrations
+      - name: Test with manage.py test
         run: |
-          python manage.py makemigrations core
-          python manage.py migrate core
           python manage.py test core
       - name: Test with pytest
         run: |
