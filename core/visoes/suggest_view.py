@@ -15,13 +15,13 @@ from core.models import SugestaoTurma
 from mysite.settings import DOMAINS_WHITELIST
 
 logger = logging.getLogger('suggestclasses.logger')
+config = get_config()
 
 
 def sugestao_grade_horarios(request, estrutura, sugestao_incluir_link, sugestao_manter_link, sugestao_list_link):
     semestres = request.GET.getlist('semestres')
     semestres = atualiza_semestres(semestres)
 
-    config = get_config()
     ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
     ano = config.get('PeriodoSeguinte', 'ano')
     periodo = config.get('PeriodoSeguinte', 'periodo')
@@ -51,12 +51,12 @@ def sugestao_manter(request, estrutura, sugestao_incluir_link, sugestao_grade_li
     semestres = ['100']
     semestres = atualiza_semestres(semestres)
 
-    config = get_config()
     ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
     ano = config.get('PeriodoSeguinte', 'ano')
     periodo = config.get('PeriodoSeguinte', 'periodo')
 
     st_list = carrega_sugestao_turmas(estrutura, semestres, ano, periodo)
+    st_list = sorted(st_list, key=lambda sc: sc.componente.nome)
 
     context = {
         'ano_periodo': ano_periodo,
@@ -71,26 +71,18 @@ def sugestao_manter(request, estrutura, sugestao_incluir_link, sugestao_grade_li
 
 
 def sugestao_incluir(request, estrutura, sugestao_manter_link):
-    config = get_config()
     ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
-    ano = config.get('PeriodoSeguinte', 'ano')
-    periodo = config.get('PeriodoSeguinte', 'periodo')
 
     if request.method == "POST":
         form_sugestao = SugestaoTurmaForm(request.POST, estrutura=estrutura)
         if form_sugestao.is_valid():
             sugestao_turma = form_sugestao.save(commit=False)
-            sugestao_turma.tipo = 'REGULAR'
-            sugestao_turma.ano = ano
-            sugestao_turma.periodo = periodo
-            sugestao_turma.campus_turma = sugestao_turma.local.campus
-            sugestao_turma.criador = request.user
-            sugestao_turma.total_solicitacoes = 0
-            sugestao_turma.save()
-            messages.success(request, 'Sugestão de Turma cadastrada com sucesso.')
-            return redirect(sugestao_manter_link)
-        else:
-            messages.error(request, form_sugestao.errors['__all__'])
+            carregar_dados(request, sugestao_turma)
+            if not verificar_existencia(request, form_sugestao, sugestao_turma):
+                sugestao_turma.save()
+                messages.success(request, 'Sugestão de Turma cadastrada com sucesso.')
+                return redirect(sugestao_manter_link)
+        messages.error(request, form_sugestao.errors)
     else:
         form_sugestao = SugestaoTurmaForm(estrutura=estrutura)
 
@@ -100,6 +92,47 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
         'form_sugestao': form_sugestao,
     }
     return render(request, 'core/sugestao/incluir.html', context)
+
+
+def carregar_dados(request, sugestao_turma):
+    ano = config.get('PeriodoSeguinte', 'ano')
+    periodo = config.get('PeriodoSeguinte', 'periodo')
+
+    sugestao_turma.tipo = 'REGULAR'
+    sugestao_turma.ano = ano
+    sugestao_turma.periodo = periodo
+    sugestao_turma.campus_turma = sugestao_turma.local.campus
+    sugestao_turma.criador = request.user
+    sugestao_turma.total_solicitacoes = 0
+
+
+def verificar_existencia(request, form_sugestao, sugestao_turma):
+    sugestoes = SugestaoTurma.objects.filter(
+        codigo_turma=sugestao_turma.codigo_turma,
+        componente=sugestao_turma.componente,
+        ano=sugestao_turma.ano,
+        periodo=sugestao_turma.periodo).values('codigo_turma')
+    if sugestoes.exists():
+        sugestoes = SugestaoTurma.objects.filter(
+            componente=sugestao_turma.componente,
+            ano=sugestao_turma.ano,
+            periodo=sugestao_turma.periodo).values('codigo_turma')
+        codigos_str = criar_string(sugestoes)
+        form_sugestao.add_error('codigo_turma',
+                                'Os seguintes códigos já foram utilizados: ' + codigos_str)
+        return True
+    return False
+
+
+def criar_string(sugestoes):
+    str_result = ''
+    tam = len(sugestoes)
+    for index, s in enumerate(sugestoes, start=1):
+        str_result += s['codigo_turma']
+        if tam > 1 and index < tam:
+            str_result += ', '
+    str_result += '.'
+    return str_result
 
 
 @permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
