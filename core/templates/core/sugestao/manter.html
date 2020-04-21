@@ -32,7 +32,7 @@
           <th>Código</th>
           <th>Componente</th>
           <th>Docente</th>
-          <th>Curso</th>
+          <th>Horário</th>
           <th>Detalhar</th>
           <th>Editar</th>
           <th>Excluir</th>
@@ -50,7 +50,7 @@
               <b style="color: red">DOCENTE NÃO DEFINIDO</b> <br/>
             {% endif %}
             </td>
-            <td class="align-middle" align="center">{{ estrutura.curso.nome }}</td>
+            <td class="align-middle" align="center">{{ turma.descricao_horario }}</td>
             <td class="align-middle" align="center">
               <a href="{% url 'sugestao_detalhar' turma.pk %}">
                 <button type="button" class="btn btn-info">
