@@ -49,9 +49,9 @@ jobs:
           sudo apt-get install default-libmysqlclient-dev
       - name: MariaDB Grant All Privileges
         run: |
-          sudo mysql -e 'GRANT ALL ON scdb_dev.* TO 'sc_user'@'%';'
-          sudo mysql -e 'GRANT ALL ON scdb_test.* TO 'sc_user'@'%';'
-          sudo mysql -e 'FLUSH PRIVILEGES;'
+          sudo mysql -u root -e 'GRANT ALL ON scdb_dev.* TO 'sc_user'@'%';'
+          sudo mysql -u root -e 'GRANT ALL ON scdb_test.* TO 'sc_user'@'%';'
+          sudo mysql -u root -e 'FLUSH PRIVILEGES;'
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
