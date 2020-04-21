@@ -39,7 +39,7 @@ jobs:
       - name: Copying configurations
         run: |
           cp contrib/env-sample .env
-          set -o allexport; source .env; set +o allexport
+          source .env
       - name: System Update
         run: |
           sudo apt-get install python3.7-dev
@@ -58,7 +58,7 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test with manage.py test
         run: |
-          python manage.py test core
+          python manage.py test core --keepdb
       - name: Test with pytest
         run: |
           pip install pytest

@@ -25,13 +25,18 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECRET_KEY = 'cg#p$g+j9tax!#a3cup@1$8obt2_+&k3q+pmu)5%asj6yjpkag'
 # SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+print(SECRET_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+print(DEBUG)
+print(os.environ.get('DJANGO_SETTINGS_MODULE'))
+print(os.environ.get('ALLOWED_HOSTS'))
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 DOMAINS_WHITELIST = ALLOWED_HOSTS
+print(DOMAINS_WHITELIST)
 
 # Application definition
 
