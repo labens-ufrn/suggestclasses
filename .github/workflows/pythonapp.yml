@@ -39,7 +39,6 @@ jobs:
       - name: Copying configurations
         run: |
           cp contrib/env-sample .env
-          source .env
       - name: System Update
         run: |
           sudo apt-get install python3.7-dev
