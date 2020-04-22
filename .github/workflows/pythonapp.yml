@@ -58,7 +58,7 @@ jobs:
       - name: Test with manage.py test
         run: |
           set -o allexport; source .env; set +o allexport
-          netstat -lnp | grep mysql
+          sudo netstat -lnp | grep mysql
           python manage.py test core --keepdb
       - name: Test with pytest
         run: |
