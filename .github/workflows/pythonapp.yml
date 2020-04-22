@@ -58,6 +58,8 @@ jobs:
       - name: Test with manage.py test
         run: |
           set -o allexport; source .env; set +o allexport
+          python manage.py makemigrations core
+          python manage.py migrate core
           python manage.py test core --keepdb
       - name: Test with pytest
         run: |
