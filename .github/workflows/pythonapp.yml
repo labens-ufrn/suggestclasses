@@ -57,6 +57,10 @@ jobs:
           cp contrib/env-sample .env
           set -o allexport
           source .env
+          set +o allexport
+          echo $DJANGO_SECRET_KEY
+          pwd
+          ls -al .env
       - name: Test with manage.py test
         run: |
           python manage.py test core --keepdb
