@@ -121,7 +121,7 @@ def verificar_existencia(form_sugestao, sugestao_turma):
             periodo=sugestao_turma.periodo).values('codigo_turma')
         codigos_str = criar_string(sugestoes)
         form_sugestao.add_error('codigo_turma',
-                                'Os seguintes códigos já foram utilizados: ' + codigos_str)
+                                'Os seguintes códigos de turma já foram utilizados: ' + codigos_str)
         return True
     return False
 
