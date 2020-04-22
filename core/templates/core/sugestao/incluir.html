@@ -12,26 +12,33 @@
     </div>
     <form method="post">
       {% csrf_token %}
-      {% for field in form_sugestao.hidden_fields %}
-        <div class="form-group row">
-          {{ field }}
-          {% for error in field.errors %}
-            <p style="color: red">{{ error }}</p>
-          {% endfor %}
-        </div>
-      {% endfor %}
-      {% for field in form_sugestao.visible_fields %}
-        <div class="form-group row">
-          <label class="col-sm-2 col-form-label">{{ field.label_tag }}</label><br>
-          {{ field }}
-          {% if field.help_text %}
-            <small style="color: grey">{{ field.help_text }}</small>
-          {% endif %}
-          {% for error in field.errors %}
-            <p style="color: red">{{ error }}</p>
-          {% endfor %}
-        </div>
-      {% endfor %}
+      <table>
+        {% for field in form_sugestao.hidden_fields %}
+          <tr>
+            <td class="align-middle">
+            {{ field }}
+            {% for error in field.errors %}
+              <p style="color: red">{{ error }}</p>
+            {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+        {% for field in form_sugestao.visible_fields %}
+          <tr>
+            <th class="align-middle" width="20%">
+              <label>{{ field.label_tag }}</label>
+            </th>
+            <td class="align-middle">{{ field }}
+              {% if field.help_text %}
+                <small style="color: grey">{{ field.help_text }}</small>
+              {% endif %}
+              {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+              {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
       <input type="hidden" name="next" value="{{ request.GET.next }}">
       <div class="form-group">
         <input type="submit" value="Salvar" class="btn btn-primary">
