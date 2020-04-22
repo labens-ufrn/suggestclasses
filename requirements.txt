@@ -4,5 +4,9 @@ mysql-connector-python==8.0.19
 mysqlclient==1.4.6
 requests==2.23.0
 matplotlib==3.2.1
+
 pytest-django==3.9.0
 pytest~=5.4.1
+
+django-debug-toolbar==2.2
+dj-database-url==0.5.0
