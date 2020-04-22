@@ -48,3 +48,6 @@ class SugestaoTurmaForm(ModelForm):
         widgets = {
             'codigo_turma': forms.TextInput(attrs={'placeholder': '01'}),
         }
+        labels = {
+            'codigo_turma': 'Código Turma',
+        }
