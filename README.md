@@ -19,6 +19,10 @@ Os requisitos funcionais detalhados estão na página wiki [Requisitos Funcionai
 
 Na página [Documentação](docs/docs.md) temos os detalhes do projeto e a lista de documentos.
 
+## Create Database
+
+Criar bancos de dados!
+
 ## Migrations
 
 Ao modificar os models (em models.py), execute:
@@ -81,13 +85,15 @@ Create a gitignored file named .env containing:
 Then edit settings.py to remove the actual SECRET_KEY and add this instead:
 
 ```shell script
-    SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+    SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 ```
 
 Then when you want to run the development server locally, use:
 
 ```shell script
+    set -o allexport
     source .env
+    set +o allexport
     python manage.py runserver
 ```
 
@@ -134,3 +140,4 @@ M6 – 11h40 às 12h30 | T6 – 17h40 às 18h30 |
 * https://github.com/hjwp/Test-Driven-Django-Tutorial
 * https://material.io/resources/icons/?style=baseline
 * https://micropyramid.com/blog/django-unit-test-cases-with-forms-and-views/
+* https://stackoverflow.com/questions/19331497/set-environment-variables-from-file-of-key-value-pairs/30969768#30969768
