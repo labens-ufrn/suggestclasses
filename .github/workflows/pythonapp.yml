@@ -55,16 +55,11 @@ jobs:
       - name: Copying configurations
         run: |
           cp contrib/env-sample .env
-          set -o allexport
-          source .env
-          set +o allexport
-          echo $DJANGO_SECRET_KEY
-          pwd
-          ls -al .env
       - name: Test with manage.py test
         run: |
+          set -o allexport; source .env; set +o allexport
           python manage.py test core --keepdb
       - name: Test with pytest
         run: |
-          pip install pytest
+          set -o allexport; source .env; set +o allexport
           pytest
