@@ -36,7 +36,6 @@ print(os.environ.get('ALLOWED_HOSTS'))
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 DOMAINS_WHITELIST = ALLOWED_HOSTS
-print(DOMAINS_WHITELIST)
 
 # Application definition
 
@@ -83,15 +82,14 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-password = os.environ.get('password')
-print(password)
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'scdb_dev',
         'USER': 'sc_user',
         'PASSWORD': 'sc_user',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
         # optional:
         'OPTIONS': {
             'charset': 'utf8',
@@ -105,8 +103,6 @@ DATABASES = {
         },
         'TEST': {
             'NAME': 'scdb_test',
-            'USER': 'sc_user',
-            'PASSWORD': 'sc_user',
         },
     }
 }
