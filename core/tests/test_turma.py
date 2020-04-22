@@ -57,10 +57,10 @@ class TurmaBOTests(TestCase):
         hmm_list = [Horario(dia='3', turno='M', ordem='2'), Horario(dia='3', turno='M', ordem='3'),
                     Horario(dia='3', turno='M', ordem='4'), Horario(dia='3', turno='M', ordem='5'),
                     Horario(dia='3', turno='M', ordem='6')]
-        hmtn = '2M34 5T12 6N56'
+        hmtn = '2M34 5T12 6N34'
         hmtn_list = [Horario(dia='2', turno='M', ordem='3'), Horario(dia='2', turno='M', ordem='4'),
                      Horario(dia='5', turno='T', ordem='1'), Horario(dia='5', turno='T', ordem='2'),
-                     Horario(dia='6', turno='N', ordem='5'), Horario(dia='6', turno='N', ordem='6')]
+                     Horario(dia='6', turno='N', ordem='3'), Horario(dia='6', turno='N', ordem='4')]
 
         self.assertEqual(6, len(converte_desc_horario(hm)), 'Testando quantidade de horários: ' + hm)
         self.assertEqual(hm_list, converte_desc_horario(hm), 'Testando horários: ' + hm)
