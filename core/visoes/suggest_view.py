@@ -35,7 +35,7 @@ def sugestao_grade_horarios(request, estrutura, sugestao_incluir_link, sugestao_
         'tt': tt,
         'estrutura': estrutura,
         'ano_periodo': ano_periodo,
-        'semestres_atual': semestres,
+        'semestres_atual': criar_string(semestres) + '.',
         'sugestao_incluir_link': sugestao_incluir_link,
         'sugestao_manter_link': sugestao_manter_link,
         'sugestao_list_link': sugestao_list_link,
@@ -141,13 +141,13 @@ def verificar_choques(form_sugestao, sugestao_turma, horarios_list):
         if sugestoes:
             for s in sugestoes:
                 if s.local == sugestao_turma.local:
-                    choques_componentes.add(s.componente.codigo)
+                    choques_componentes.add(s.componente.codigo.__str__() + ' - ' + s.componente.nome)
                     choques_horarios.append(horario.dia + horario.turno + horario.ordem)
                     print('Horario: ' + horario.__str__())
                     print('Sugestão Existente: ' + s.__str__())
                     print('Sugestão Existente Local: ' + s.local.__str__())
                 if s.docente == sugestao_turma.docente:
-                    choques_componentes.add(s.componente.codigo)
+                    choques_componentes.add(s.componente.codigo.__str__() + ' - ' + s.componente.nome)
                     choque_docente.append(horario.dia + horario.turno + horario.ordem)
                     print('Horario: ' + horario.__str__())
                     print('Sugestão Existente Docente: ' + s.docente.__str__())
@@ -155,15 +155,15 @@ def verificar_choques(form_sugestao, sugestao_turma, horarios_list):
     if choques_horarios or choque_docente or choques_componentes:
         if choques_componentes:
             form_sugestao.add_error('componente',
-                                    'Choques com os Componentes Curriculares: ' +
+                                    'Choque com os Componentes Curriculares: ' +
                                     criar_string(list(choques_componentes)) + '.')
         if choques_horarios:
-            form_sugestao.add_error('descricao_horario',
-                                    'Turma com choques nos horários: ' +
+            form_sugestao.add_error('local',
+                                    'Sala com choque nos horários: ' +
                                     criar_string(choques_horarios) + '.')
         if choque_docente:
             form_sugestao.add_error('docente',
-                                    'Docente com choques nos horários: ' +
+                                    'Docente com choque nos horários: ' +
                                     criar_string(choque_docente) + '.')
         return True
     return False
@@ -173,7 +173,7 @@ def criar_string(colecao):
     str_result = ''
     tam = len(colecao)
     for index, s in enumerate(colecao, start=1):
-        str_result += s
+        str_result += s.__str__()
         if tam > 1 and index < tam:
             str_result += ', '
     str_result += ''
