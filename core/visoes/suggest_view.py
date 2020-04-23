@@ -1,4 +1,5 @@
 import logging
+from typing import Set
 from urllib.parse import urlparse
 
 from django.contrib import messages
@@ -8,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 
 from core.bo.docente import get_funcao_by_siape
-from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, carrega_turmas_horario
+from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, carrega_turmas_horario, converte_desc_horario
 from core.config.config import get_config
 from core.forms import SugestaoTurmaForm
 from core.models import SugestaoTurma
@@ -80,8 +81,12 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
         if form_sugestao.is_valid():
             sugestao_turma = form_sugestao.save(commit=False)
             carregar_dados(request, sugestao_turma)
-            if not verificar_existencia(form_sugestao, sugestao_turma):
+            horarios_list = converte_desc_horario(sugestao_turma.descricao_horario)
+            if not verificar_existencia(form_sugestao, sugestao_turma) \
+               and not verificar_choques(form_sugestao, sugestao_turma, horarios_list):
                 sugestao_turma.save()
+                for horario in horarios_list:
+                    sugestao_turma.horarios.add(horario)
                 messages.success(request, 'Sugestão de Turma cadastrada com sucesso.')
                 return redirect(sugestao_manter_link)
         messages.error(request, form_sugestao.errors)
@@ -118,22 +123,60 @@ def verificar_existencia(form_sugestao, sugestao_turma):
         sugestoes = SugestaoTurma.objects.filter(
             componente=sugestao_turma.componente,
             ano=sugestao_turma.ano,
-            periodo=sugestao_turma.periodo).values('codigo_turma')
+            periodo=sugestao_turma.periodo).values_list('codigo_turma')
         codigos_str = criar_string(sugestoes)
         form_sugestao.add_error('codigo_turma',
-                                'Os seguintes códigos de turma já foram utilizados: ' + codigos_str)
+                                'Os seguintes códigos de turma já foram utilizados: ' + codigos_str + '.')
         return True
     return False
 
 
-def criar_string(sugestoes):
+def verificar_choques(form_sugestao, sugestao_turma, horarios_list):
+    choques_componentes = set()
+    choques_horarios = []
+    choque_docente = []
+    for horario in horarios_list:
+        sugestoes = horario.sugestoes.all()
+        print(sugestoes)
+        if sugestoes:
+            for s in sugestoes:
+                if s.local == sugestao_turma.local:
+                    choques_componentes.add(s.componente.codigo)
+                    choques_horarios.append(horario.dia + horario.turno + horario.ordem)
+                    print('Horario: ' + horario.__str__())
+                    print('Sugestão Existente: ' + s.__str__())
+                    print('Sugestão Existente Local: ' + s.local.__str__())
+                if s.docente == sugestao_turma.docente:
+                    choques_componentes.add(s.componente.codigo)
+                    choque_docente.append(horario.dia + horario.turno + horario.ordem)
+                    print('Horario: ' + horario.__str__())
+                    print('Sugestão Existente Docente: ' + s.docente.__str__())
+
+    if choques_horarios or choque_docente or choques_componentes:
+        if choques_componentes:
+            form_sugestao.add_error('componente',
+                                    'Choques com os Componentes Curriculares: ' +
+                                    criar_string(list(choques_componentes)) + '.')
+        if choques_horarios:
+            form_sugestao.add_error('descricao_horario',
+                                    'Turma com choques nos horários: ' +
+                                    criar_string(choques_horarios) + '.')
+        if choque_docente:
+            form_sugestao.add_error('docente',
+                                    'Docente com choques nos horários: ' +
+                                    criar_string(choque_docente) + '.')
+        return True
+    return False
+
+
+def criar_string(colecao):
     str_result = ''
-    tam = len(sugestoes)
-    for index, s in enumerate(sugestoes, start=1):
-        str_result += s['codigo_turma']
+    tam = len(colecao)
+    for index, s in enumerate(colecao, start=1):
+        str_result += s
         if tam > 1 and index < tam:
             str_result += ', '
-    str_result += '.'
+    str_result += ''
     return str_result
 
 
@@ -143,14 +186,19 @@ def sugestao_editar(request, pk, estrutura, template_name='core/sugestao/editar.
     if not verificar_permissoes(request, sugestao, estrutura):
         messages.error(request, 'Você não tem permissão de Editar esta Sugestão de Turma.')
         return redirecionar(request)
-    form = SugestaoTurmaForm(request.POST or None, instance=sugestao, estrutura=estrutura)
-    if form.is_valid():
-        form.save()
-        messages.success(request, 'Sugestão de Turma alterada com sucesso.')
-        return redirecionar(request)
+    form_sugestao = SugestaoTurmaForm(request.POST or None, instance=sugestao, estrutura=estrutura)
+    if form_sugestao.is_valid():
+        sugestao_turma = form_sugestao.save(commit=False)
+        horarios_list = converte_desc_horario(sugestao_turma.descricao_horario)
+        if not verificar_choques(form_sugestao, sugestao_turma, horarios_list):
+            sugestao_turma.save()
+            for horario in horarios_list:
+                sugestao_turma.horarios.add(horario)
+            messages.success(request, 'Sugestão de Turma alterada com sucesso.')
+            return redirecionar(request)
     else:
-        messages.error(request, form.errors)
-    return render(request, template_name, {'form': form})
+        messages.error(request, form_sugestao.errors)
+    return render(request, template_name, {'form': form_sugestao})
 
 
 @permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
