@@ -61,7 +61,3 @@ jobs:
           python manage.py makemigrations core
           python manage.py migrate core
           python manage.py test core --keepdb
-      - name: Test with pytest
-        run: |
-          set -o allexport; source .env; set +o allexport
-          pytest
