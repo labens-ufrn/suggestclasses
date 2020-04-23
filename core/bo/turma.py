@@ -1,4 +1,5 @@
 import re
+from django import db
 from core.bo.sevices import get_oc_by_semestre
 from core.config.config import get_config
 from core.models import Turma, Horario, SugestaoTurma
@@ -83,7 +84,7 @@ def converte_horario_simples(horario, turno):
     ordens = horario_split[1]
     for d in dias:
         for o in ordens:
-            horario = Horario(dia=str(d), turno=turno, ordem=str(o))
+            horario = Horario.objects.get(dia=str(d), turno=turno, ordem=str(o))
             horarios_list.append(horario)
     return horarios_list
 
