@@ -2,27 +2,61 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min-4.1.3.css' %}">
-    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script src="https://kit.fontawesome.com/b34b6a3874.js" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min-4.1.3.css' %}">
+  <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script src="https://kit.fontawesome.com/b34b6a3874.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <!-- Navigation -->
-  <header>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-{#    <div class="container">#}
-      <a class="navbar-brand" href="#">Suggest Classes</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-              aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
+
+<div class="d-flex" id="wrapper">
+
+  <!-- Sidebar -->
+  <nav id="sidebar-wrapper" class="sidebar bg-light border-right">
+    <div class="sidebar-heading center" align="center"><b>Menu</b></div>
+    <div class="list-group list-group-flush">
+      <a href="/core/" class="list-group-item list-group-item-action bg-light">Home</a>
+      <a href="/core/dashboard" class="list-group-item list-group-item-action bg-light" hidden>Dashboard</a>
+      <a href="/core/flow/" class="list-group-item list-group-item-action bg-light">Fluxogramas</a>
+      <a href="/core/turma/" class="list-group-item list-group-item-action bg-light">Turmas</a>
+      <a href="/core/sugestao/" class="list-group-item list-group-item-action bg-light">Sugestão de Turmas</a>
+      <a href="#" class="list-group-item list-group-item-action bg-light" hidden>Alunos</a>
+      <a href="/core/docente/list/" class="list-group-item list-group-item-action bg-light">Docentes</a>
+      <a href="/core/sala/list/" class="list-group-item list-group-item-action bg-light">Salas</a>
+      <a href="/core/horarios_list/" class="list-group-item list-group-item-action bg-light" hidden>Horários de Aula</a>
+    </div>
+  </nav>
+
+  <div id="page-content-wrapper">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <div class="collapse navbar-collapse w-100 order-1 order-md-0 dual-collapse2" id="navbarResponsive-left">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <button class="btn btn-primary" id="menu-toggle">Menu</button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="mx-auto order-0">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive-left"
+                aria-controls="navbarResponsive-left" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <span class="navbar-brand mx-auto">
+          SuggestClasses
+        </span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+
+      <div class="collapse navbar-collapse w-100 order-3 dual-collapse2" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
             <a class="nav-link" href="/core/">Home
@@ -33,87 +67,73 @@
             <a class="nav-link" href="/core/sobre">Sobre</a>
           </li>
           {% if user.is_authenticated %}
-				    <li class="nav-item">
-						  <a class="nav-link" href="{% url 'Logout de Usuário' %}">Sair</a>
-				    </li>
-				  {% else %}
-			  	  <li class="nav-item">
-						  <a class="nav-link" href="{% url 'Login de Usuário' %}">Login</a>
-				    </li>
-				  {% endif %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'Logout de Usuário' %}">Sair</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'Login de Usuário' %}">Login</a>
+            </li>
+          {% endif %}
         </ul>
       </div>
-{#    </div>#}
-  </nav>
-  </header>
-{#  <div class="container">#}
-    <div class="d-flex" id="wrapper">
+    </nav>
 
-      <!-- Sidebar -->
-      <nav id="nav_menu" class="sidebar bg-light border-bottom">
-        <div class="sidebar-heading center" align="center"><b>Menu</b></div>
-        <div class="list-group list-group-flush">
-          <a href="/core/" class="list-group-item list-group-item-action bg-light">Home</a>
-          <a href="/core/dashboard" class="list-group-item list-group-item-action bg-light" hidden>Dashboard</a>
-          <a href="/core/flow/" class="list-group-item list-group-item-action bg-light">Fluxogramas</a>
-          <a href="/core/turma/" class="list-group-item list-group-item-action bg-light">Turmas</a>
-          <a href="/core/sugestao/" class="list-group-item list-group-item-action bg-light">Sugestão de Turmas</a>
-          <a href="#" class="list-group-item list-group-item-action bg-light" hidden>Alunos</a>
-          <a href="/core/docente/list/" class="list-group-item list-group-item-action bg-light">Docentes</a>
-          <a href="/core/sala/list/" class="list-group-item list-group-item-action bg-light">Salas</a>
-          <a href="/core/horarios_list/" class="list-group-item list-group-item-action bg-light" hidden>Horários de Aula</a>
-        </div>
-      </nav>
-
-      <div class="content container">
-        {% if user.is_authenticated %}
-					<p class="logged-in-p alert-info">
-            Bem Vindo <b>{{ user.get_full_name }} [{{ user.username }}]
+    <div id="content" class="container-fluid">
+      {% if user.is_authenticated %}
+        <p class="logged-in-p alert-info">
+          Bem Vindo <b>{{ user.get_full_name }} [{{ user.username }}]
           {% if user.docente %}
             - [{{ user.docente.siape }}, {{ user.docente.lotacao }}]
           {% elif user.discente %}
             - [{{ user.discente.matricula }}, {{ user.discente.nome_curso }}]
           {% endif %}
-          </b>
-						<span class="sair"><a href="{% url 'Logout de Usuário' %}">Sair</a></span>
-					</p>
-				{% endif %}
-        {% include 'core/messages.html' %}
-        {% block content %} {% endblock content %}
-      </div>
-
-    </div>
-{#  </div>#}
-
-  <footer class="py-5 bg-dark">
-     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Suggest Classes 2019-2020 <br />
-          LABENS - <a href="http://labens-ufrn.github.io/">http://labens-ufrn.github.io/</a>
+        </b>
+          <span class="sair"><a href="{% url 'Logout de Usuário' %}">Sair</a></span>
         </p>
-      </div>
-      <!-- /.container -->
-  </footer>
+      {% endif %}
+      {% include 'core/messages.html' %}
+      {% block content %} {% endblock content %}
+    </div>
 
+  </div>
+
+</div>
+<div class="py-5 bg-dark">
+  <div class="container">
+      <span class="m-0 text-center text-white">Copyright &copy; Suggest Classes 2019-2020 <br/>
+        LABENS - <a href="http://labens-ufrn.github.io/">http://labens-ufrn.github.io/</a>
+      </span>
+  </div>
+</div>
 <!-- JavaScript (Opcional) -->
-    <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-            crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-            crossorigin="anonymous"></script>
+<!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 {# script to set the time if the message id is having the length greater than 0, #}
 {# then we will remove the message after 2000 milliseconds i.e. 2 seconds. #}
-    <script>
-      setTimeout(function(){
-        if ($('#msg').length > 0) {
-          $('#msg').remove();
-        }
-      }, 12000)
-    </script>
+<script>
+  setTimeout(function () {
+    if ($('#msg').length > 0) {
+      $('#msg').remove();
+    }
+  }, 12000)
+</script>
+
+<!-- Menu Toggle Script -->
+<script>
+  $("#menu-toggle").click(function (e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+  });
+</script>
 </body>
 </html>
