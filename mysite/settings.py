@@ -34,7 +34,7 @@ print(DEBUG)
 print(os.environ.get('DJANGO_SETTINGS_MODULE'))
 print(os.environ.get('ALLOWED_HOSTS'))
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', '82d45d51.ngrok.io']
 DOMAINS_WHITELIST = ALLOWED_HOSTS
 
 # Application definition
