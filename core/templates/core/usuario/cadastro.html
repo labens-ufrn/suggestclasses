@@ -17,8 +17,6 @@
                 {% for error in field.errors %}
                   <p style="color: red">{{ error }}</p>
                 {% endfor %}
-              </td>
-              <td class="align-middle">
                 {% if field.help_text %}
                   <small style="color: grey">{{ field.help_text|safe }}</small>
                 {% endif %}
