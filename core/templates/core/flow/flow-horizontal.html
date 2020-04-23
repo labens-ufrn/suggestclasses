@@ -27,18 +27,18 @@
         </tr>
       </table>
 
-      <table class="table table-striped table-sm table-bordered" style="table-layout: fixed; width: 100%">
+      <table class="table table-striped table-sm table-bordered">
         <thead class="thead-light">
         <tr class="font-weight-bold align-middle" align="center">
-          <th width="8%">Semestre</th>
-          <th width="84%" colspan="{{ max_comp_by_semestre }}">Componentes Curriculares</th>
-          <th width="8%">CH Total</th>
+          <th>Semestre</th>
+          <th colspan="{{ max_comp_by_semestre }}">Componentes Curriculares</th>
+          <th>CH Total</th>
         </tr>
         </thead>
         <tbody style="font-size: 12px">
         {% for semestre in estrutura_all %}
           <tr>
-            <td class="align-middle font-weight-bold" align="center" width="6%">{{ semestre.0 }}</td>
+            <td class="align-middle font-weight-bold" align="center">{{ semestre.0 }}</td>
             {% for oc in semestre.1 %}
               <td align="center" style="font-size: 10px">
                 <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>
@@ -62,7 +62,7 @@
                 <td><span /></td>
               {% endfor %}
             {% endif %}
-            <td class="align-middle" align="center" width="8%">{{ semestre.3.componente__ch_total__sum }}h</td>
+            <td class="align-middle" align="center">{{ semestre.3.componente__ch_total__sum }}h</td>
           </tr>
         {% endfor %}
         </tbody>
