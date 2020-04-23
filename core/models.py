@@ -89,6 +89,9 @@ class Sala(models.Model):
     centro = models.ForeignKey(Centro, on_delete=models.PROTECT)
     campus = models.CharField(max_length=50, blank=True, null=True)
 
+    class Meta:
+        unique_together = ("sigla", "bloco", "centro", "campus")
+
     def __str__(self):
         return self.nome + ' (' + self.capacidade.__str__() + ')' + ' - ' + self.bloco + ' - ' + self.campus
 
@@ -217,6 +220,9 @@ class Horario(models.Model):
         """Override the default Equals behavior"""
         return self.dia == other.dia and self.turno == other.turno and self.ordem == other.ordem
 
+    def __hash__(self):
+        return id(self)
+
     def __str__(self):
         return self.dia + self.turno + self.ordem
 
@@ -267,6 +273,7 @@ class SugestaoTurma(models.Model):
     ano = models.IntegerField()
     periodo = models.IntegerField()
     descricao_horario = models.CharField(max_length=150)
+    horarios = models.ManyToManyField(Horario, related_name='sugestoes')
     total_solicitacoes = models.IntegerField(null=True)
     capacidade_aluno = models.IntegerField()
     tipo = models.CharField(max_length=50, null=True, blank=True)
@@ -298,6 +305,9 @@ class FuncaoGratificada(models.Model):
     unidade_designacao = models.CharField(max_length=200)
     atividade = models.CharField(max_length=100)
     observacoes = models.CharField(max_length=200, null=True)
+
+    class Meta:
+        unique_together = ('siape', 'id_unidade', 'inicio', 'atividade')
 
     def __str__(self):
         return self.nome + ' (' + self.siape.__str__() + ') - ' \
