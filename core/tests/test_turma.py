@@ -1,10 +1,7 @@
-import os
 import django
-
-from core.tests.povoar_testes import criar_dados, remover_dados
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
+from django import db
+from core.tests.povoar_testes import criar_dados, remover_dados
 
 from core.bo.turma import get_turno, converte_desc_horario, get_turmas, get_sugestao_turmas
 from django.test import TestCase
@@ -17,6 +14,7 @@ class TurmaBOTests(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         print('\nTurmaBOTests')
+        print(db.connections.databases)
         criar_dados()
 
     @classmethod

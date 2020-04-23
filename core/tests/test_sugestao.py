@@ -1,4 +1,5 @@
 import django
+django.setup()
 from django.contrib.auth.models import User
 
 from core.bo.sevices import get_estrutura_by_id
@@ -17,7 +18,6 @@ class SugestaoTests(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         print('\nSugestaoTests')
-        django.setup()
         criar_dados()
 
     @classmethod

@@ -1,6 +1,4 @@
-import os
 import django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
 from core.tests.povoar_testes import criar_dados, remover_dados
 

@@ -1,9 +1,6 @@
-import os
 import django
-import pytest
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
+
 from unittest.case import TestCase
 
 from django.contrib.auth.models import User
@@ -14,12 +11,11 @@ from core.models import SugestaoTurma
 from core.tests.povoar_testes import criar_dados, remover_dados
 
 
-@pytest.mark.django_db
 class SugestaoViewTests(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        super().setUpClass()
+        super(SugestaoViewTests, cls).setUpClass()
         print('\nSugestaoViewTests')
         criar_dados()
 

@@ -1,6 +1,4 @@
-import os
 import django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
 from core.bo.curso import get_cursos
 from core.bo.sala import get_salas

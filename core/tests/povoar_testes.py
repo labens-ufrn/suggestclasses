@@ -1,22 +1,22 @@
-import os
-import threading
 import django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
-from datetime import time
+import threading
 
-from django.contrib.auth.models import User, Group, Permission
 from dateutil.parser import parse
+from django.contrib.auth.models import User, Group
+
 from core.models import Centro, Departamento, ComponenteCurricular, Docente, EstruturaCurricular, Curso, \
     OrganizacaoCurricular, Turma, Sala, SugestaoTurma, Discente, FuncaoGratificada, Horario
+from dados.povoar_horarios import povoar_horarios
 
 
 class PovoarDadosTestes(object):
+
     class __OnlyOne:
         def __init__(self):
             # Buscar esses dados em algum arquivo Config.
             self.povoar = True
-            self.remover = False
+            self.remover = True
 
         def __str__(self):
             return self.__hash__().__str__() + ' povoar: ' + self.povoar.__str__() + ' remover: ' + self.remover.__str__()
@@ -47,9 +47,8 @@ def criar_dados():
     print('Criar Dados: ' + dados.__str__())
     if dados.povoar:
         print('...... povoando dados ......')
-        remover_tudo()
         criar_tudo()
-        dados.povoar = False
+        dados.povoar = True
 
 
 def remover_dados():
@@ -94,111 +93,21 @@ def remover_tudo():
     remover_centro()
     remover_grupos()
     remover_usuario()
-    remover_horarios()
 
 
 def criar_horarios():
-    criar_horario_turno('M')
-    criar_horario_turno('T')
-    criar_horario_turno('N')
-
-
-def criar_horario_turno(turno):
-    n = 7
-    if turno == 'N':
-        n = 5
-
-    for d in range(2, 7):
-        for i in range(1, n):
-            Horario.objects.create(dia=d, turno=turno, ordem=i,
-                                   hora_inicio=get_horario_inicio(turno, i),
-                                   hora_final=get_horario_final(turno, i))
-
-
-def get_horario_inicio(turno, ordem):
-    if turno == 'M' and ordem == 1:
-        hora_inicio = time(7, 00, 00)
-    if turno == 'M' and ordem == 2:
-        hora_inicio = time(7, 50, 00)
-    if turno == 'M' and ordem == 3:
-        hora_inicio = time(8, 55, 00)
-    if turno == 'M' and ordem == 4:
-        hora_inicio = time(9, 45, 00)
-    if turno == 'M' and ordem == 5:
-        hora_inicio = time(10, 50, 00)
-    if turno == 'M' and ordem == 6:
-        hora_inicio = time(11, 40, 00)
-    if turno == 'T' and ordem == 1:
-        hora_inicio = time(13, 00, 00)
-    if turno == 'T' and ordem == 2:
-        hora_inicio = time(13, 50, 00)
-    if turno == 'T' and ordem == 3:
-        hora_inicio = time(14, 55, 00)
-    if turno == 'T' and ordem == 4:
-        hora_inicio = time(15, 45, 00)
-    if turno == 'T' and ordem == 5:
-        hora_inicio = time(16, 50, 00)
-    if turno == 'T' and ordem == 6:
-        hora_inicio = time(17, 40, 00)
-    if turno == 'N' and ordem == 1:
-        hora_inicio = time(18, 45, 00)
-    if turno == 'N' and ordem == 2:
-        hora_inicio = time(19, 35, 00)
-    if turno == 'N' and ordem == 3:
-        hora_inicio = time(20, 35, 00)
-    if turno == 'N' and ordem == 4:
-        hora_inicio = time(21, 25, 00)
-    return hora_inicio
-
-
-def get_horario_final(turno, ordem):
-    if turno == 'M' and ordem == 1:
-        hora_final = time(7, 50, 00)
-    if turno == 'M' and ordem == 2:
-        hora_final = time(8, 40, 00)
-    if turno == 'M' and ordem == 3:
-        hora_final = time(9, 45, 00)
-    if turno == 'M' and ordem == 4:
-        hora_final = time(10, 35, 00)
-    if turno == 'M' and ordem == 5:
-        hora_final = time(11, 40, 00)
-    if turno == 'M' and ordem == 6:
-        hora_final = time(12, 30, 00)
-    if turno == 'T' and ordem == 1:
-        hora_final = time(13, 50, 00)
-    if turno == 'T' and ordem == 2:
-        hora_final = time(14, 40, 00)
-    if turno == 'T' and ordem == 3:
-        hora_final = time(15, 45, 00)
-    if turno == 'T' and ordem == 4:
-        hora_final = time(16, 35, 00)
-    if turno == 'T' and ordem == 5:
-        hora_final = time(17, 40, 00)
-    if turno == 'T' and ordem == 6:
-        hora_final = time(18, 30, 00)
-    if turno == 'N' and ordem == 1:
-        hora_final = time(19, 35, 00)
-    if turno == 'N' and ordem == 2:
-        hora_final = time(20, 25, 00)
-    if turno == 'N' and ordem == 3:
-        hora_final = time(21, 25, 00)
-    if turno == 'N' and ordem == 4:
-        hora_final = time(22, 15, 00)
-    return hora_final
-
-
-def remover_horarios():
-    try:
-        Horario.objects.all().delete()
-    except Horario.DoesNotExist:
-        print('.', end="")
+    povoar_horarios()
 
 
 def criar_usuario():
-    User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
-    User.objects.create_user('docente1', 'lennon@thebeatles.com', 'johnpassword')
-    User.objects.create_user('docente2', 'lennon@thebeatles.com', 'johnpassword')
-    User.objects.create_user('docente3', 'lennon@thebeatles.com', 'johnpassword')
+    if not User.objects.filter(username='john'):
+        User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+    if not User.objects.filter(username='docente1'):
+        User.objects.create_user('docente1', 'docente1@thebeatles.com', 'johnpassword')
+    if not User.objects.filter(username='docente2'):
+        User.objects.create_user('docente2', 'docente2@thebeatles.com', 'johnpassword')
+    if not User.objects.filter(username='docente3'):
+        User.objects.create_user('docente3', 'docente3@thebeatles.com', 'johnpassword')
 
 
 def criar_grupos():
@@ -233,20 +142,22 @@ def remover_grupos():
 
 
 def criar_discentes():
-    Discente.objects.create(matricula='20209876543', nome_discente='Zé Silva', sexo='M',
-                            ano_ingresso=2020, periodo_ingresso=1,
-                            forma_ingresso='SiSU', tipo_discente='REGULAR', status='ATIVO',
-                            sigla_nivel_ensino='G', nivel_ensino='GRADUAÇÃO',
-                            id_curso='7191770', nome_curso='SISTEMAS DE INFORMAÇÃO',
-                            modalidade_educacao='PRESENCIAL',
-                            id_unidade=1482, nome_unidade='CENTRO DE  ENSINO SUPERIOR DO SERIDÓ',
-                            id_unidade_gestora=1482, nome_unidade_gestora='CENTRO DE  ENSINO SUPERIOR DO SERIDÓ')
+    if not Discente.objects.filter(matricula='20209876543').exists():
+        Discente.objects.create(matricula='20209876543', nome_discente='Zé Silva', sexo='M',
+                                ano_ingresso=2020, periodo_ingresso=1,
+                                forma_ingresso='SiSU', tipo_discente='REGULAR', status='ATIVO',
+                                sigla_nivel_ensino='G', nivel_ensino='GRADUAÇÃO',
+                                id_curso='7191770', nome_curso='SISTEMAS DE INFORMAÇÃO',
+                                modalidade_educacao='PRESENCIAL',
+                                id_unidade=1482, nome_unidade='CENTRO DE  ENSINO SUPERIOR DO SERIDÓ',
+                                id_unidade_gestora=1482, nome_unidade_gestora='CENTRO DE  ENSINO SUPERIOR DO SERIDÓ')
 
 
 def criar_centro():
-    Centro.objects.create(id_unidade=9999, codigo=9999, nome='Centro de Teste',
-                          sigla='CTESTE', endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
-                          site='https://www.ceres.ufrn.br/')
+    if not Centro.objects.filter(id_unidade=9999).exists():
+        Centro.objects.create(id_unidade=9999, codigo=9999, nome='Centro de Teste',
+                              sigla='CTESTE', endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
+                              site='https://www.ceres.ufrn.br/')
 
 
 def remover_centro():
@@ -275,22 +186,25 @@ def remover_discentes():
 
 def criar_salas():
     centro = Centro.objects.get(id_unidade=9999)
-    Sala.objects.create(nome='Sala A01', sigla='A01', capacidade=25, tamanho=None, bloco='Bloco A',
-                        centro=centro, campus='Campus Caicó')
+    if not Sala.objects.filter(nome='Sala A01', sigla='A01', capacidade=25, tamanho=None, bloco='Bloco A',
+                               centro=centro, campus='Campus Teste').exists():
+        Sala.objects.create(nome='Sala A01', sigla='A01', capacidade=25, tamanho=None, bloco='Bloco A',
+                            centro=centro, campus='Campus Teste')
 
 
 def remover_salas():
     try:
-        Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999).delete()
+        Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999, campus='Campus Teste').delete()
     except Sala.DoesNotExist:
         print('.', end="")
 
 
 def criar_departamentos():
     centro = Centro.objects.get(id_unidade=9999)
-    Departamento.objects.create(id_unidade=9998, codigo=9998, nome='Departamento de Teste', sigla='DTS',
-                                endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
-                                centro=centro)
+    if not Departamento.objects.filter(id_unidade=9998).exists():
+        Departamento.objects.create(id_unidade=9998, codigo=9998, nome='Departamento de Teste', sigla='DTS',
+                                    endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
+                                    centro=centro)
 
 
 def remover_departamentos():
@@ -318,29 +232,33 @@ def criar_docentes():
     usuario3.groups.add(grupo_docentes)
     usuario3.save()
 
-    Docente.objects.create(siape=9999999, nome='Nome Docente Teste 1', sexo='M', formacao='Mestrado',
-                           tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
-                           categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe C - Adjunto',
-                           id_unidade_lotacao=departamento.id_unidade,
-                           lotacao='Departamento de Teste', admissao=parse('2020/03/30'),
-                           usuario=usuario1)
-    Docente.objects.create(siape=9999998, nome='Nome Docente Chefe', sexo='F', formacao='Doutorado',
-                           tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
-                           categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe D - Adjunto',
-                           id_unidade_lotacao=departamento.id_unidade,
-                           lotacao='Departamento de Teste', admissao=parse('2020/04/17'),
-                           usuario=usuario2)
-    Docente.objects.create(siape=9999997, nome='Nome Docente Teste 2', sexo='F', formacao='Doutorado',
-                           tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
-                           categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe D - Adjunto',
-                           id_unidade_lotacao=departamento.id_unidade,
-                           lotacao='Departamento de Teste', admissao=parse('2020/03/30'),
-                           usuario=usuario3)
-    Docente.objects.create(siape=9999996, nome='Nome Docente Teste 4', sexo='F', formacao='Doutorado',
-                           tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
-                           categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe D - Adjunto',
-                           id_unidade_lotacao=departamento.id_unidade,
-                           lotacao='Departamento de Teste', admissao=parse('2020/03/30'))
+    if not Docente.objects.filter(siape=9999999).exists():
+        Docente.objects.create(siape=9999999, nome='Nome Docente Teste 1', sexo='M', formacao='Mestrado',
+                               tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
+                               categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe C - Adjunto',
+                               id_unidade_lotacao=departamento.id_unidade,
+                               lotacao='Departamento de Teste', admissao=parse('2020/03/30'),
+                               usuario=usuario1)
+    if not Docente.objects.filter(siape=9999998).exists():
+        Docente.objects.create(siape=9999998, nome='Nome Docente Chefe', sexo='F', formacao='Doutorado',
+                               tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
+                               categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe D - Adjunto',
+                               id_unidade_lotacao=departamento.id_unidade,
+                               lotacao='Departamento de Teste', admissao=parse('2020/04/17'),
+                               usuario=usuario2)
+    if not Docente.objects.filter(siape=9999997).exists():
+        Docente.objects.create(siape=9999997, nome='Nome Docente Teste 2', sexo='F', formacao='Doutorado',
+                               tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
+                               categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe D - Adjunto',
+                               id_unidade_lotacao=departamento.id_unidade,
+                               lotacao='Departamento de Teste', admissao=parse('2020/03/30'),
+                               usuario=usuario3)
+    if not Docente.objects.filter(siape=9999996).exists():
+        Docente.objects.create(siape=9999996, nome='Nome Docente Teste 4', sexo='F', formacao='Doutorado',
+                               tipo_jornada_trabalho='Dedicação Exclusiva', vinculo='Ativo Permanente',
+                               categoria='PROFESSOR DO MAGISTERIO SUPERIOR', classe_funcional='Classe D - Adjunto',
+                               id_unidade_lotacao=departamento.id_unidade,
+                               lotacao='Departamento de Teste', admissao=parse('2020/03/30'))
 
 
 def remover_docentes():
@@ -358,13 +276,16 @@ def criar_funcao_gratificada():
     docente1 = Docente.objects.get(siape=9999998)
     inicio = parse('2019/11/19')
     fim = parse('2021/11/18')
+    atividade = 'CHEFE DE DEPARTAMENTO'
 
-    FuncaoGratificada.objects.create(siape=9999998, nome=docente1.nome, situacao_servidor=docente1.vinculo,
-                                     id_unidade=docente1.id_unidade_lotacao, lotacao=departamento.nome,
-                                     sigla=departamento.sigla, inicio=inicio, fim=fim,
-                                     id_unidade_designacao=departamento.id_unidade,
-                                     unidade_designacao=departamento.nome, atividade='CHEFE DE DEPARTAMENTO',
-                                     observacoes='')
+    if not FuncaoGratificada.objects.filter(
+            siape=9999998, id_unidade=docente1.id_unidade_lotacao, inicio=inicio, atividade=atividade).exists():
+        FuncaoGratificada.objects.create(siape=9999998, nome=docente1.nome, situacao_servidor=docente1.vinculo,
+                                         id_unidade=docente1.id_unidade_lotacao, lotacao=departamento.nome,
+                                         sigla=departamento.sigla, inicio=inicio, fim=fim,
+                                         id_unidade_designacao=departamento.id_unidade,
+                                         unidade_designacao=departamento.nome, atividade='CHEFE DE DEPARTAMENTO',
+                                         observacoes='')
 
 
 def remover_funcao_gratificada():
@@ -384,12 +305,15 @@ def criar_cursos():
     centro = Centro.objects.get(id_unidade=9999)
     docente1 = Docente.objects.get(siape=9999999)
     docente2 = Docente.objects.get(siape=9999997)
-    Curso.objects.create(codigo=9999, nome='Sistemas de Informação', coordenador=docente1, nivel='Graduação',
-                         grau='Bacharelado', modalidade='Presencial', turno='Matutino e Vespertino',
-                         centro=centro)
-    Curso.objects.create(codigo=9998, nome='Curso Pedagogia', coordenador=docente2, nivel='Graduação',
-                         grau='Licenciatura', modalidade='Presencial', turno='Matutino e Vespertino',
-                         centro=centro)
+
+    if not Curso.objects.filter(codigo=9999).exists():
+        Curso.objects.create(codigo=9999, nome='Curso Teste 1', coordenador=docente1, nivel='Graduação',
+                             grau='Bacharelado', modalidade='Presencial', turno='Matutino e Vespertino',
+                             centro=centro)
+    if not Curso.objects.filter(codigo=9998).exists():
+        Curso.objects.create(codigo=9998, nome='Curso Teste 2', coordenador=docente2, nivel='Graduação',
+                             grau='Licenciatura', modalidade='Presencial', turno='Matutino e Vespertino',
+                             centro=centro)
 
 
 def remover_cursos():
@@ -402,34 +326,38 @@ def remover_cursos():
 
 def criar_componentes():
     departamento = Departamento.objects.get(id_unidade=9998)
-    ComponenteCurricular.objects.create(id_componente=99999, tipo='DISCIPLINA',
-                                        codigo='DCT9999', nivel='G', nome='BANCO DE DADOS',
-                                        ch_teorica=30, ch_pratica=30, ch_estagio=0,
-                                        ch_total=60, ch_docente=60, ch_ead=0,
-                                        cr_max_ead=0, equivalencia='( BSI2201 )',
-                                        requisito='( ( BSI1106 ) OU ( DCT1106 ) )', corequisito='',
-                                        ementa='ementa', modalidade='Presencial', departamento=departamento)
-    ComponenteCurricular.objects.create(id_componente=99998, tipo='DISCIPLINA',
-                                        codigo='DCT9998', nivel='G', nome='ENGENHARIA DE SOFTWARE',
-                                        ch_teorica=30, ch_pratica=30, ch_estagio=0,
-                                        ch_total=60, ch_docente=60, ch_ead=0,
-                                        cr_max_ead=0, equivalencia='( BSI2301 )',
-                                        requisito='( ( BSI1106 ) OU ( DCT1106 ) )', corequisito='',
-                                        ementa='ementa', modalidade='Presencial', departamento=departamento)
-    ComponenteCurricular.objects.create(id_componente=99997, tipo='DISCIPLINA',
-                                        codigo='DCT9997', nivel='G', nome='TESTE DE SOFTWARE',
-                                        ch_teorica=30, ch_pratica=30, ch_estagio=0,
-                                        ch_total=60, ch_docente=60, ch_ead=0,
-                                        cr_max_ead=0, equivalencia='( BSI2201 )',
-                                        requisito='( ( BSI1106 ) OU ( DCT1106 ) )', corequisito='',
-                                        ementa='ementa', modalidade='Presencial', departamento=departamento)
-    ComponenteCurricular.objects.create(id_componente=99996, tipo='DISCIPLINA',
-                                        codigo='DCT9996', nivel='G', nome='PROGRAMAÇÃO WEB',
-                                        ch_teorica=30, ch_pratica=30, ch_estagio=0,
-                                        ch_total=60, ch_docente=60, ch_ead=0,
-                                        cr_max_ead=0, equivalencia='( BSI2201 )',
-                                        requisito='( ( BSI1106 ) OU ( DCT1106 ) )', corequisito='',
-                                        ementa='ementa', modalidade='Presencial', departamento=departamento)
+    if not ComponenteCurricular.objects.filter(id_componente=99999).exists():
+        ComponenteCurricular.objects.create(id_componente=99999, tipo='DISCIPLINA',
+                                            codigo='DCT9999', nivel='G', nome='BANCO DE DADOS',
+                                            ch_teorica=30, ch_pratica=30, ch_estagio=0,
+                                            ch_total=60, ch_docente=60, ch_ead=0,
+                                            cr_max_ead=0, equivalencia='( BSI2201 )',
+                                            requisito='( ( BSI1106 ) OU ( DCT1106 ) )', corequisito='',
+                                            ementa='ementa', modalidade='Presencial', departamento=departamento)
+    if not ComponenteCurricular.objects.filter(id_componente=99998).exists():
+        ComponenteCurricular.objects.create(id_componente=99998, tipo='DISCIPLINA',
+                                            codigo='DCT9998', nivel='G', nome='ENGENHARIA DE SOFTWARE',
+                                            ch_teorica=30, ch_pratica=30, ch_estagio=0,
+                                            ch_total=60, ch_docente=60, ch_ead=0,
+                                            cr_max_ead=0, equivalencia='( BSI2301 )',
+                                            requisito='( ( BSI1106 ) OU ( DCT1106 ) )', corequisito='',
+                                            ementa='ementa', modalidade='Presencial', departamento=departamento)
+    if not ComponenteCurricular.objects.filter(id_componente=99997).exists():
+        ComponenteCurricular.objects.create(id_componente=99997, tipo='DISCIPLINA',
+                                            codigo='DCT9997', nivel='G', nome='TESTE DE SOFTWARE',
+                                            ch_teorica=30, ch_pratica=30, ch_estagio=0,
+                                            ch_total=60, ch_docente=60, ch_ead=0,
+                                            cr_max_ead=0, equivalencia='( BSI2201 )',
+                                            requisito='( ( BSI1106 ) OU ( DCT1106 ) )', corequisito='',
+                                            ementa='ementa', modalidade='Presencial', departamento=departamento)
+    if not ComponenteCurricular.objects.filter(id_componente=99996).exists():
+        ComponenteCurricular.objects.create(id_componente=99996, tipo='DISCIPLINA',
+                                            codigo='DCT9996', nivel='G', nome='PROGRAMAÇÃO WEB',
+                                            ch_teorica=30, ch_pratica=30, ch_estagio=0,
+                                            ch_total=60, ch_docente=60, ch_ead=0,
+                                            cr_max_ead=0, equivalencia='( BSI2201 )',
+                                            requisito='( ( BSI1106 ) OU ( DCT1106 ) )', corequisito='',
+                                            ementa='ementa', modalidade='Presencial', departamento=departamento)
 
 
 def remover_componentes():
@@ -445,31 +373,32 @@ def remover_componentes():
 def criar_estruturas():
     curso1 = Curso.objects.get(codigo=9999)
     curso2 = Curso.objects.get(codigo=9998)
-    EstruturaCurricular.objects.create(id_curriculo=999999999, codigo='01',
-                                       nome='Sistemas de Informação - CAICÓ - MT - BACHARELADO',
-                                       semestre_conclusao_minimo=8, semestre_conclusao_ideal=8,
-                                       semestre_conclusao_maximo=12, meses_conclusao_minimo=None,
-                                       meses_conclusao_ideal=None, meses_conclusao_maximo=None, cr_total_minimo=148,
-                                       ch_total_minima=3000, ch_optativas_minima=300, ch_complementar_minima=180,
-                                       max_eletivos=240, ch_nao_atividade_obrigatoria=2220,
-                                       cr_nao_atividade_obrigatorio=148, ch_atividade_obrigatoria=480,
-                                       cr_minimo_semestre=8, cr_ideal_semestre=24, cr_maximo_semestre=28,
-                                       ch_minima_semestre=120, ch_ideal_semestre=None, ch_maxima_semestre=0,
-                                       periodo_entrada_vigor=1, ano_entrada_vigor=2020,
-                                       observacao='', curso=curso1)
-
-    EstruturaCurricular.objects.create(id_curriculo=999999998, codigo='01',
-                                       nome='Pedagogia - CAICÓ - MT - LICENCIATURA',
-                                       semestre_conclusao_minimo=8, semestre_conclusao_ideal=8,
-                                       semestre_conclusao_maximo=12, meses_conclusao_minimo=None,
-                                       meses_conclusao_ideal=None, meses_conclusao_maximo=None, cr_total_minimo=148,
-                                       ch_total_minima=3000, ch_optativas_minima=300, ch_complementar_minima=180,
-                                       max_eletivos=240, ch_nao_atividade_obrigatoria=2220,
-                                       cr_nao_atividade_obrigatorio=148, ch_atividade_obrigatoria=480,
-                                       cr_minimo_semestre=8, cr_ideal_semestre=24, cr_maximo_semestre=28,
-                                       ch_minima_semestre=120, ch_ideal_semestre=None, ch_maxima_semestre=0,
-                                       periodo_entrada_vigor=1, ano_entrada_vigor=2020,
-                                       observacao='', curso=curso2)
+    if not EstruturaCurricular.objects.filter(id_curriculo=999999999).exists():
+        EstruturaCurricular.objects.create(id_curriculo=999999999, codigo='01',
+                                           nome='Sistemas de Informação - CAICÓ - MT - BACHARELADO',
+                                           semestre_conclusao_minimo=8, semestre_conclusao_ideal=8,
+                                           semestre_conclusao_maximo=12, meses_conclusao_minimo=None,
+                                           meses_conclusao_ideal=None, meses_conclusao_maximo=None, cr_total_minimo=148,
+                                           ch_total_minima=3000, ch_optativas_minima=300, ch_complementar_minima=180,
+                                           max_eletivos=240, ch_nao_atividade_obrigatoria=2220,
+                                           cr_nao_atividade_obrigatorio=148, ch_atividade_obrigatoria=480,
+                                           cr_minimo_semestre=8, cr_ideal_semestre=24, cr_maximo_semestre=28,
+                                           ch_minima_semestre=120, ch_ideal_semestre=None, ch_maxima_semestre=0,
+                                           periodo_entrada_vigor=1, ano_entrada_vigor=2020,
+                                           observacao='', curso=curso1)
+    if not EstruturaCurricular.objects.filter(id_curriculo=999999998).exists():
+        EstruturaCurricular.objects.create(id_curriculo=999999998, codigo='01',
+                                           nome='Pedagogia - CAICÓ - MT - LICENCIATURA',
+                                           semestre_conclusao_minimo=8, semestre_conclusao_ideal=8,
+                                           semestre_conclusao_maximo=12, meses_conclusao_minimo=None,
+                                           meses_conclusao_ideal=None, meses_conclusao_maximo=None, cr_total_minimo=148,
+                                           ch_total_minima=3000, ch_optativas_minima=300, ch_complementar_minima=180,
+                                           max_eletivos=240, ch_nao_atividade_obrigatoria=2220,
+                                           cr_nao_atividade_obrigatorio=148, ch_atividade_obrigatoria=480,
+                                           cr_minimo_semestre=8, cr_ideal_semestre=24, cr_maximo_semestre=28,
+                                           ch_minima_semestre=120, ch_ideal_semestre=None, ch_maxima_semestre=0,
+                                           periodo_entrada_vigor=1, ano_entrada_vigor=2020,
+                                           observacao='', curso=curso2)
 
 
 def remover_estruturas():
@@ -487,22 +416,26 @@ def criar_curriculos():
     componente2 = ComponenteCurricular.objects.get(id_componente=99998)
     componente3 = ComponenteCurricular.objects.get(id_componente=99997)
     componente4 = ComponenteCurricular.objects.get(id_componente=99996)
-    OrganizacaoCurricular.objects.create(id_curriculo_componente=999999, estrutura=estrutura1,
-                                         componente=componente1, semestre=1, tipo_vinculo='OBRIGATÓRIO',
-                                         nivel='GRADUAÇÃO')
-    OrganizacaoCurricular.objects.create(id_curriculo_componente=999998, estrutura=estrutura1,
-                                         componente=componente2, semestre=1, tipo_vinculo='OBRIGATÓRIO',
-                                         nivel='GRADUAÇÃO')
-    OrganizacaoCurricular.objects.create(id_curriculo_componente=999997, estrutura=estrutura1,
-                                         componente=componente3, semestre=2, tipo_vinculo='OBRIGATÓRIO',
-                                         nivel='GRADUAÇÃO')
-
-    OrganizacaoCurricular.objects.create(id_curriculo_componente=999996, estrutura=estrutura2,
-                                         componente=componente2, semestre=1, tipo_vinculo='OBRIGATÓRIO',
-                                         nivel='GRADUAÇÃO')
-    OrganizacaoCurricular.objects.create(id_curriculo_componente=999995, estrutura=estrutura2,
-                                         componente=componente4, semestre=2, tipo_vinculo='OPTATIVO',
-                                         nivel='GRADUAÇÃO')
+    if not OrganizacaoCurricular.objects.filter(id_curriculo_componente=999999).exists():
+        OrganizacaoCurricular.objects.create(id_curriculo_componente=999999, estrutura=estrutura1,
+                                             componente=componente1, semestre=1, tipo_vinculo='OBRIGATÓRIO',
+                                             nivel='GRADUAÇÃO')
+    if not OrganizacaoCurricular.objects.filter(id_curriculo_componente=999998).exists():
+        OrganizacaoCurricular.objects.create(id_curriculo_componente=999998, estrutura=estrutura1,
+                                             componente=componente2, semestre=1, tipo_vinculo='OBRIGATÓRIO',
+                                             nivel='GRADUAÇÃO')
+    if not OrganizacaoCurricular.objects.filter(id_curriculo_componente=999997).exists():
+        OrganizacaoCurricular.objects.create(id_curriculo_componente=999997, estrutura=estrutura1,
+                                             componente=componente3, semestre=2, tipo_vinculo='OBRIGATÓRIO',
+                                             nivel='GRADUAÇÃO')
+    if not OrganizacaoCurricular.objects.filter(id_curriculo_componente=999996).exists():
+        OrganizacaoCurricular.objects.create(id_curriculo_componente=999996, estrutura=estrutura2,
+                                             componente=componente2, semestre=1, tipo_vinculo='OBRIGATÓRIO',
+                                             nivel='GRADUAÇÃO')
+    if not OrganizacaoCurricular.objects.filter(id_curriculo_componente=999995).exists():
+        OrganizacaoCurricular.objects.create(id_curriculo_componente=999995, estrutura=estrutura2,
+                                             componente=componente4, semestre=2, tipo_vinculo='OPTATIVO',
+                                             nivel='GRADUAÇÃO')
 
 
 def remover_curriculos():
@@ -522,43 +455,47 @@ def criar_turmas():
     componente1 = ComponenteCurricular.objects.get(id_componente=99999)
     componente2 = ComponenteCurricular.objects.get(id_componente=99998)
     componente3 = ComponenteCurricular.objects.get(id_componente=99997)
-    sala = Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999)
+    sala = Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999, campus='Campus Teste')
 
-    Turma.objects.create(id_turma=99999999, codigo_turma='01', docente=docente1, matricula_docente_externo=None,
-                         observacao='', componente=componente1, ch_dedicada_periodo=60,
-                         nivel_ensino='GRADUAÇÃO', campus_turma=sala.campus, local=sala, ano=2020,
-                         periodo=1, data_inicio=parse('2020/03/30'), data_fim=parse('2020/07/30'),
-                         descricao_horario='24T12', total_solicitacoes=15, capacidade_aluno=25, tipo='REGULAR',
-                         distancia=False, data_consolidacao=None, agrupadora=False, id_turma_agrupadora=None,
-                         qtd_aulas_lancadas=5, situacao_turma='ABERTA', convenio=None,
-                         modalidade_participantes='Presencial')
+    if not Turma.objects.filter(id_turma=99999999).exists():
+        Turma.objects.create(id_turma=99999999, codigo_turma='01', docente=docente1, matricula_docente_externo=None,
+                             observacao='', componente=componente1, ch_dedicada_periodo=60,
+                             nivel_ensino='GRADUAÇÃO', campus_turma=sala.campus, local=sala, ano=2020,
+                             periodo=1, data_inicio=parse('2020/03/30'), data_fim=parse('2020/07/30'),
+                             descricao_horario='24T12', total_solicitacoes=15, capacidade_aluno=25, tipo='REGULAR',
+                             distancia=False, data_consolidacao=None, agrupadora=False, id_turma_agrupadora=None,
+                             qtd_aulas_lancadas=5, situacao_turma='ABERTA', convenio=None,
+                             modalidade_participantes='Presencial')
 
-    Turma.objects.create(id_turma=99999998, codigo_turma='01', docente=docente2, matricula_docente_externo=None,
-                         observacao='', componente=componente2, ch_dedicada_periodo=60,
-                         nivel_ensino='GRADUAÇÃO', campus_turma=sala.campus, local=sala, ano=2020,
-                         periodo=1, data_inicio=parse('2020/03/30'), data_fim=parse('2020/07/30'),
-                         descricao_horario='24T34', total_solicitacoes=20, capacidade_aluno=25, tipo='REGULAR',
-                         distancia=False, data_consolidacao=None, agrupadora=False, id_turma_agrupadora=None,
-                         qtd_aulas_lancadas=5, situacao_turma='ABERTA', convenio=None,
-                         modalidade_participantes='Presencial')
+    if not Turma.objects.filter(id_turma=99999998).exists():
+        Turma.objects.create(id_turma=99999998, codigo_turma='01', docente=docente2, matricula_docente_externo=None,
+                             observacao='', componente=componente2, ch_dedicada_periodo=60,
+                             nivel_ensino='GRADUAÇÃO', campus_turma=sala.campus, local=sala, ano=2020,
+                             periodo=1, data_inicio=parse('2020/03/30'), data_fim=parse('2020/07/30'),
+                             descricao_horario='24T34', total_solicitacoes=20, capacidade_aluno=25, tipo='REGULAR',
+                             distancia=False, data_consolidacao=None, agrupadora=False, id_turma_agrupadora=None,
+                             qtd_aulas_lancadas=5, situacao_turma='ABERTA', convenio=None,
+                             modalidade_participantes='Presencial')
 
-    Turma.objects.create(id_turma=99999997, codigo_turma='01', docente=docente1, matricula_docente_externo=None,
-                         observacao='', componente=componente3, ch_dedicada_periodo=60,
-                         nivel_ensino='GRADUAÇÃO', campus_turma=sala.campus, local=sala, ano=2020,
-                         periodo=1, data_inicio=parse('2020/03/30'), data_fim=parse('2020/07/30'),
-                         descricao_horario='35T12', total_solicitacoes=15, capacidade_aluno=25, tipo='REGULAR',
-                         distancia=False, data_consolidacao=None, agrupadora=False, id_turma_agrupadora=None,
-                         qtd_aulas_lancadas=5, situacao_turma='ABERTA', convenio=None,
-                         modalidade_participantes='Presencial')
+    if not Turma.objects.filter(id_turma=99999997).exists():
+        Turma.objects.create(id_turma=99999997, codigo_turma='01', docente=docente1, matricula_docente_externo=None,
+                             observacao='', componente=componente3, ch_dedicada_periodo=60,
+                             nivel_ensino='GRADUAÇÃO', campus_turma=sala.campus, local=sala, ano=2020,
+                             periodo=1, data_inicio=parse('2020/03/30'), data_fim=parse('2020/07/30'),
+                             descricao_horario='35T12', total_solicitacoes=15, capacidade_aluno=25, tipo='REGULAR',
+                             distancia=False, data_consolidacao=None, agrupadora=False, id_turma_agrupadora=None,
+                             qtd_aulas_lancadas=5, situacao_turma='ABERTA', convenio=None,
+                             modalidade_participantes='Presencial')
 
-    Turma.objects.create(id_turma=99999996, codigo_turma='02', docente=docente2, matricula_docente_externo=None,
-                         observacao='', componente=componente3, ch_dedicada_periodo=60,
-                         nivel_ensino='GRADUAÇÃO', campus_turma=sala.campus, local=sala, ano=2020,
-                         periodo=1, data_inicio=parse('2020/03/30'), data_fim=parse('2020/07/30'),
-                         descricao_horario='35T34', total_solicitacoes=15, capacidade_aluno=25, tipo='REGULAR',
-                         distancia=False, data_consolidacao=None, agrupadora=False, id_turma_agrupadora=None,
-                         qtd_aulas_lancadas=5, situacao_turma='ABERTA', convenio=None,
-                         modalidade_participantes='Presencial')
+    if not Turma.objects.filter(id_turma=99999996).exists():
+        Turma.objects.create(id_turma=99999996, codigo_turma='02', docente=docente2, matricula_docente_externo=None,
+                             observacao='', componente=componente3, ch_dedicada_periodo=60,
+                             nivel_ensino='GRADUAÇÃO', campus_turma=sala.campus, local=sala, ano=2020,
+                             periodo=1, data_inicio=parse('2020/03/30'), data_fim=parse('2020/07/30'),
+                             descricao_horario='35T34', total_solicitacoes=15, capacidade_aluno=25, tipo='REGULAR',
+                             distancia=False, data_consolidacao=None, agrupadora=False, id_turma_agrupadora=None,
+                             qtd_aulas_lancadas=5, situacao_turma='ABERTA', convenio=None,
+                             modalidade_participantes='Presencial')
 
 
 def remover_turmas():
@@ -578,27 +515,31 @@ def criar_sugestoes_turmas():
     componente1 = ComponenteCurricular.objects.get(id_componente=99999)
     componente2 = ComponenteCurricular.objects.get(id_componente=99998)
     componente3 = ComponenteCurricular.objects.get(id_componente=99997)
-    sala = Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999)
+    sala = Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999, campus='Campus Teste')
 
-    SugestaoTurma.objects.create(codigo_turma='01', docente=docente1, matricula_docente_externo=None,
-                                 componente=componente1, campus_turma=sala.campus, local=sala, ano=2020,
-                                 periodo=2, descricao_horario='24T12', capacidade_aluno=25, tipo='REGULAR',
-                                 total_solicitacoes=0, criador=criador_chefe.usuario)
+    if not SugestaoTurma.objects.filter(codigo_turma='01', componente=componente1, ano=2020, periodo=2).exists():
+        SugestaoTurma.objects.create(codigo_turma='01', docente=docente1, matricula_docente_externo=None,
+                                     componente=componente1, campus_turma=sala.campus, local=sala, ano=2020,
+                                     periodo=2, descricao_horario='24T12', capacidade_aluno=25, tipo='REGULAR',
+                                     total_solicitacoes=0, criador=criador_chefe.usuario)
 
-    SugestaoTurma.objects.create(codigo_turma='01', docente=docente2, matricula_docente_externo=None,
-                                 componente=componente2, campus_turma=sala.campus, local=sala, ano=2020,
-                                 periodo=2, descricao_horario='24T34', capacidade_aluno=25, tipo='REGULAR',
-                                 total_solicitacoes=0, criador=criador_chefe.usuario)
+    if not SugestaoTurma.objects.filter(codigo_turma='01', componente=componente2, ano=2020, periodo=2).exists():
+        SugestaoTurma.objects.create(codigo_turma='01', docente=docente2, matricula_docente_externo=None,
+                                     componente=componente2, campus_turma=sala.campus, local=sala, ano=2020,
+                                     periodo=2, descricao_horario='24T34', capacidade_aluno=25, tipo='REGULAR',
+                                     total_solicitacoes=0, criador=criador_chefe.usuario)
 
-    SugestaoTurma.objects.create(codigo_turma='01', docente=docente1, matricula_docente_externo=None,
-                                 componente=componente3, campus_turma=sala.campus, local=sala, ano=2020,
-                                 periodo=2, descricao_horario='35T12', capacidade_aluno=25, tipo='REGULAR',
-                                 total_solicitacoes=0, criador=criador_chefe.usuario)
+    if not SugestaoTurma.objects.filter(codigo_turma='01', componente=componente3, ano=2020, periodo=2).exists():
+        SugestaoTurma.objects.create(codigo_turma='01', docente=docente1, matricula_docente_externo=None,
+                                     componente=componente3, campus_turma=sala.campus, local=sala, ano=2020,
+                                     periodo=2, descricao_horario='35T12', capacidade_aluno=25, tipo='REGULAR',
+                                     total_solicitacoes=0, criador=criador_chefe.usuario)
 
-    SugestaoTurma.objects.create(codigo_turma='02', docente=docente2, matricula_docente_externo=None,
-                                 componente=componente3, campus_turma=sala.campus, local=sala, ano=2020,
-                                 periodo=2, descricao_horario='35T34', capacidade_aluno=25, tipo='REGULAR',
-                                 total_solicitacoes=0, criador=criador_chefe.usuario)
+    if not SugestaoTurma.objects.filter(codigo_turma='02', componente=componente3, ano=2020, periodo=2).exists():
+        SugestaoTurma.objects.create(codigo_turma='02', docente=docente2, matricula_docente_externo=None,
+                                     componente=componente3, campus_turma=sala.campus, local=sala, ano=2020,
+                                     periodo=2, descricao_horario='35T34', capacidade_aluno=25, tipo='REGULAR',
+                                     total_solicitacoes=0, criador=criador_chefe.usuario)
 
 
 def remover_sugestoes_turmas():

@@ -1,12 +1,8 @@
-import os
 import django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
-from django.contrib.auth.models import User
-from core.tests.povoar_testes import criar_dados, remover_dados
 from django.test import TestCase, Client
 from django.urls import reverse
-from core.models import EstruturaCurricular, ComponenteCurricular, SugestaoTurma, Docente, Departamento, Centro, Sala
+from core.models import EstruturaCurricular
 
 
 class EstruturaCurricularTests(TestCase):

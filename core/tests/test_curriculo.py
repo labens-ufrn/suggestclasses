@@ -1,6 +1,4 @@
-import os
 import django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 django.setup()
 
 from core.bo.curriculo import get_curriculo_by_cc
