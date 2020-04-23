@@ -34,7 +34,7 @@ print(DEBUG)
 print(os.environ.get('DJANGO_SETTINGS_MODULE'))
 print(os.environ.get('ALLOWED_HOSTS'))
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver']
 DOMAINS_WHITELIST = ALLOWED_HOSTS
 
 # Application definition
@@ -59,10 +59,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-if DEBUG:
-    INSTALLED_APPS.append('debug_toolbar')
-    MIDDLEWARE.insert(2, 'debug_toolbar.middleware.DebugToolbarMiddleware')
-    INTERNAL_IPS = ['127.0.0.1']
+# if DEBUG:
+#     INSTALLED_APPS.append('debug_toolbar')
+#     MIDDLEWARE.insert(2, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+#     INTERNAL_IPS = ['127.0.0.1']
 
 ROOT_URLCONF = 'mysite.urls'
 
@@ -108,6 +108,8 @@ DATABASES = {
         },
         'TEST': {
             'NAME': 'scdb_test',
+            'USER': 'sc_user',
+            'PASSWORD': 'sc_user',
         },
     }
 }

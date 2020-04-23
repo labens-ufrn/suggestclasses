@@ -25,7 +25,7 @@ urlpatterns = [
 
 handler403 = 'core.views.error_403'
 
-if settings.DEBUG:
-    import debug_toolbar
-
-    urlpatterns.append(path('__debug__/', include(debug_toolbar.urls)))
+# if settings.DEBUG:
+#     import debug_toolbar
+#
+#     urlpatterns.append(path('__debug__/', include(debug_toolbar.urls)))
