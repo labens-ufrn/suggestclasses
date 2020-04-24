@@ -5,6 +5,13 @@ from core.models import Horario, Centro, Departamento, Curso, ComponenteCurricul
 
 admin.site.register(Centro)
 admin.site.register(Departamento)
+
+
+class SalaAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'sigla', 'bloco', 'centro', 'campus')
+
+
+admin.site.register(Sala, SalaAdmin)
 admin.site.register(ComponenteCurricular)
 admin.site.register(EstruturaCurricular)
 
@@ -29,7 +36,7 @@ class DocenteAdmin(admin.ModelAdmin):
 admin.site.register(Docente, DocenteAdmin)
 admin.site.register(Turma)
 admin.site.register(SugestaoTurma)
-admin.site.register(Sala)
+
 
 
 class FuncaoGratificadaAdmin(admin.ModelAdmin):
