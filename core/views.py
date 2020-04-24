@@ -20,10 +20,9 @@ from core.visoes.flow_view import flow_horizontal, flow_opcionais
 from .bo.curso import get_cursos
 from .bo.discentes import get_discentes, get_discentes_ativos
 from .bo.docente import get_docentes
-from .bo.matematica import get_estrutura_matematica
-from .bo.pedagogia import get_estrutura_pedagogia
 from .bo.sala import get_salas
-from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre, get_estrutura_direito
+from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre, get_estrutura_direito, get_estrutura_matematica, \
+    get_estrutura_pedagogia
 from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares

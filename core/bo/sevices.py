@@ -34,3 +34,15 @@ def get_estrutura_direito():
     id_ec = 130320907
     dir_ec = get_estrutura_by_id(id_ec)
     return dir_ec
+
+
+def get_estrutura_matematica():
+    id_ec = 89214922
+    mat_ec = get_estrutura_by_id(id_ec)
+    return mat_ec
+
+
+def get_estrutura_pedagogia():
+    id_ec = 133495154
+    ped_ec = get_estrutura_by_id(id_ec)
+    return ped_ec
