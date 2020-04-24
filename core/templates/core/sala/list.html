@@ -2,7 +2,7 @@
 
 {% block content %}
 
-  <section class="page-section" id="estuturas" xmlns="http://www.w3.org/1999/html">
+  <section class="page-section" id="salas">
     <div class="container">
 
       <div id="manter" class="center text-center form-group">
@@ -13,7 +13,7 @@
       <div id="buscar_salas" align="center">
         <form method="get">
           <table class="table table-sm table-borderless table-active table-responsive">
-            <thead>
+            <thead class="text-center">
             <tr>
               <th class="align-middle text-center" colspan="4">
                 <h5 class="align-middle">Buscar Salas</h5>
@@ -53,7 +53,12 @@
             <tfoot>
             <tr>
               <td class="align-middle text-right" colspan="4">
-                <button class="btn btn-primary" type="submit">Buscar</button>
+                <button class="btn btn-primary" type="submit">
+                  <span class="material-icons md-18 align-middle">
+                    find_in_page
+                  </span>
+                  Buscar
+                </button>
               </td>
             </tr>
             </tfoot>
@@ -94,7 +99,7 @@
           </tbody>
         </table>
       </div>
-      </div>
+    </div>
   </section>
 {% endblock %}
 
