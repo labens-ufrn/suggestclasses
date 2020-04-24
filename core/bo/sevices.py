@@ -24,3 +24,13 @@ def get_estrutura_by_id(id_estrutura):
     if EstruturaCurricular.objects.filter(id_curriculo=id_estrutura).exists():
         estrutura = EstruturaCurricular.objects.get(id_curriculo=id_estrutura)
     return estrutura
+
+
+def get_estrutura_direito():
+    """
+    Retorna a Estrutura Curricular ativa do Curso de Direito de Caicó.
+    :return: Um objeto da classe EstruturaCurricular.
+    """
+    id_ec = 130320907
+    dir_ec = get_estrutura_by_id(id_ec)
+    return dir_ec

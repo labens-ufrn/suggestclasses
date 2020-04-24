@@ -23,7 +23,7 @@ from .bo.docente import get_docentes
 from .bo.matematica import get_estrutura_matematica
 from .bo.pedagogia import get_estrutura_pedagogia
 from .bo.sala import get_salas
-from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre
+from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre, get_estrutura_direito
 from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
@@ -231,8 +231,10 @@ def flow_list(request):
     bsi_flow_1b = get_estrutura_sistemas_dct()
     ped_flow = get_estrutura_pedagogia()
     mat_flow = get_estrutura_matematica()
+    dir_flow = get_estrutura_direito()
 
     context = {
+        'dir_flow': dir_flow,
         'mat_flow': mat_flow,
         'ped_flow': ped_flow,
         'bsi_flow_1a': bsi_flow_1a,
@@ -315,6 +317,17 @@ def flow_bsi_1b_h(request):
 def flow_bsi_op(request):
     bsi_ec = get_estrutura_sistemas_dct()
     return flow_opcionais(request, bsi_ec)
+
+
+def flow_dir(request):
+    dir_ec = get_estrutura_direito()
+    link_opcionais = '/core/flow/dir/opcionais'
+    return flow_horizontal(request, dir_ec, link_opcionais)
+
+
+def flow_dir_op(request):
+    dir_ec = get_estrutura_direito()
+    return flow_opcionais(request, dir_ec)
 
 
 def flow_mat_h(request):

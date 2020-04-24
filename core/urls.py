@@ -29,6 +29,9 @@ urlpatterns = [
     path('flow/bsi-1b/', views.flow_bsi_1b, name='Fluxograma BSI - 01B'),
     path('flow/bsi-1b-h/', views.flow_bsi_1b_h, name='Fluxograma BSI - 01B - Horizontal'),
 
+    path('flow/dir/', views.flow_dir, name='flow_dir'),
+    path('flow/dir/opcionais', views.flow_dir_op, name='flow_dir_op'),
+
     path('flow/ped/', views.flow_ped, name='Fluxograma Pedagogia'),
     path('flow/ped-h/', views.flow_ped_h, name='flow_ped_h'),
     path('flow/ped/opcionais', views.flow_ped_op, name='Fluxograma Pedagogia - Opcionais'),
