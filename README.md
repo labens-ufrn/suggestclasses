@@ -141,3 +141,6 @@ M6 – 11h40 às 12h30 | T6 – 17h40 às 18h30 |
 * https://material.io/resources/icons/?style=baseline
 * https://micropyramid.com/blog/django-unit-test-cases-with-forms-and-views/
 * https://stackoverflow.com/questions/19331497/set-environment-variables-from-file-of-key-value-pairs/30969768#30969768
+* https://simpleisbetterthancomplex.com/article/2017/08/19/how-to-render-django-form-manually.html
+* https://simpleisbetterthancomplex.com/tutorial/2016/11/28/how-to-filter-querysets-dynamically.html
+* https://bootstrapious.com/p/bootstrap-sidebar
