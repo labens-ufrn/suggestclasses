@@ -43,11 +43,12 @@ urlpatterns = [
     path('usuario/deslogar', views.deslogar_usuario, name='Logout de Usuário'),
     path('usuario/alterar_senha', views.alterar_senha, name='Alterar Senha de Usuário'),
 
-    path('turma/', views.turma_list, name='Lista de Turmas por Curso'),
-    path('turma/mat', views.turma_mat, name='Turmas de Matemática'),
-    path('turma/bsi', views.turma_bsi, name='Turmas de Sistemas de Informação'),
-    path('turma/ped', views.turma_ped, name='Turmas de Pedagogia'),
-    path('turma/<int:pk>/', views.TurmaDetailView.as_view(), name='turma_detalhar'),
+    path('turmas/', views.turmas_list, name='turmas_list'),
+    path('turmas/dir', views.turmas_dir, name='turmas_direito'),
+    path('turmas/mat', views.turmas_mat, name='turmas_matemática'),
+    path('turmas/bsi', views.turmas_bsi, name='turmas_sistemas'),
+    path('turmas/ped', views.turmas_ped, name='turmas_pedagogia'),
+    path('turmas/<int:pk>/', views.TurmaDetailView.as_view(), name='turma_detalhar'),
 
     path('sugestao/', views.sugestao_list, name='sugestao_list'),
     path('sugestao/<int:pk>/', views.SugestaoTurmaDetailView.as_view(), name='sugestao_detalhar'),

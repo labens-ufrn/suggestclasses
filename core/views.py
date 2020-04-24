@@ -32,7 +32,7 @@ from .forms import CadastroUsuarioForm
 from .models import Horario
 from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir, sugestao_editar, \
     redirecionar, sugestao_deletar
-from .visoes.turma_view import turma_grade
+from .visoes.turma_view import turmas_grade
 from .visoes.user_view import criar_usuario, autenticar_logar
 
 logger = logging.getLogger('suggestclasses.logger')
@@ -407,38 +407,46 @@ def alterar_senha(request):
     return render(request, 'core/usuario/alterar_senha.html', {'form_senha': form_senha})
 
 
-def turma_list(request):
+def turmas_list(request):
     """
         Lista todas as Turmas do centro CERES.
     """
+    dir_flow = get_estrutura_direito()
     bsi_flow = get_estrutura_sistemas_dct()
     ped_flow = get_estrutura_pedagogia()
     mat_flow = get_estrutura_matematica()
 
     context = {
+        'dir_flow': dir_flow,
         'mat_flow': mat_flow,
         'ped_flow': ped_flow,
         'bsi_flow': bsi_flow
     }
-    return render(request, 'core/turma/list.html', context)
+    return render(request, 'core/turmas/list.html', context)
 
 
-def turma_mat(request):
+def turmas_dir(request):
+    dir_ddir = get_estrutura_direito()
+    turmas_list_link = '/core/turmas/dir'
+    return turmas_grade(request, dir_ddir, turmas_list_link)
+
+
+def turmas_mat(request):
     mat_dcea = get_estrutura_matematica()
-    turma_list_link = '/core/turma/mat'
-    return turma_grade(request, mat_dcea, turma_list_link)
+    turmas_list_link = '/core/turmas/mat'
+    return turmas_grade(request, mat_dcea, turmas_list_link)
 
 
-def turma_bsi(request):
+def turmas_bsi(request):
     bsi_dct = get_estrutura_sistemas_dct()
-    turma_list_link = '/core/turma/bsi'
-    return turma_grade(request, bsi_dct, turma_list_link)
+    turmas_list_link = '/core/turmas/bsi'
+    return turmas_grade(request, bsi_dct, turmas_list_link)
 
 
-def turma_ped(request):
+def turmas_ped(request):
     ped_deduc = get_estrutura_pedagogia()
-    turma_list_link = '/core/turma/ped'
-    return turma_grade(request, ped_deduc, turma_list_link)
+    turmas_list_link = '/core/turmas/ped'
+    return turmas_grade(request, ped_deduc, turmas_list_link)
 
 
 def sugestao_list(request):
@@ -570,7 +578,7 @@ def sugestao_ped_incluir(request):
 
 class TurmaDetailView(DetailView):
     model = Turma
-    template_name = 'core/turma/detalhar.html'
+    template_name = 'core/turmas/detalhar.html'
 
 
 class SugestaoTurmaDetailView(DetailView):

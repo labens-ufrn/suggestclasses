@@ -20,7 +20,7 @@ class TurmaViewTests(TestCase):
 
     def test_get_flow(self):
         client = Client()
-        url = '/core/turma/bsi'
+        url = '/core/turmas/bsi'
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
