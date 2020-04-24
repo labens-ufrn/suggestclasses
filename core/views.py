@@ -28,7 +28,7 @@ from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
 from .dao.departamento_dao import get_departamentos
-from .filters import SalaFilter
+from .filters import SalaFilter, DocenteFilter
 from .forms import CadastroUsuarioForm
 from .models import Horario
 from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir, sugestao_editar, \
@@ -197,14 +197,14 @@ def curriculo_list(request):
     return render(request, 'core/curriculo/list.html', context)
 
 
-def docente_list(request):
+def docentes_list(request):
     """
             Lista todas os docentes do centro.
     """
-    docentes = Docente.objects.all().order_by('nome')
-
+    docentes = get_docentes()
+    docente_filter = DocenteFilter(request.GET, queryset=docentes)
     context = {
-        'docentes': docentes
+        'filter': docente_filter
     }
 
     return render(request, 'core/docente/list.html', context)

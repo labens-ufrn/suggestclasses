@@ -1,6 +1,6 @@
 import django_filters
 
-from core.models import Sala
+from core.models import Sala, Docente
 
 
 class SalaFilter(django_filters.FilterSet):
@@ -16,3 +16,14 @@ class SalaFilter(django_filters.FilterSet):
     class Meta:
         model = Sala
         fields = ['nome', 'sigla', 'centro', 'campus']
+
+
+class DocenteFilter(django_filters.FilterSet):
+
+    siape = django_filters.CharFilter(lookup_expr='icontains', label='Siape:')
+    nome = django_filters.CharFilter(lookup_expr='icontains', label='Nome:')
+    lotacao = django_filters.CharFilter(lookup_expr='icontains', label='Lotação:')
+
+    class Meta:
+        model = Docente
+        fields = ['siape', 'nome', 'lotacao']

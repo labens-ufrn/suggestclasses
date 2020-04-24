@@ -18,7 +18,7 @@ urlpatterns = [
     path('componentes/<int:pk>/', views.ComponenteDetailView.as_view(), name='componente_detalhar'),
 
     path('curriculo/list/', views.curriculo_list, name='Lista de Estruturas Curriculares'),
-    path('docente/list/', views.docente_list, name='Lista de Docentes'),
+    path('docentes/list/', views.docentes_list, name='docentes_list'),
     path('docente/<int:pk>/', views.DocenteDetailView.as_view(), name='docente_detalhar'),
 
     path('salas/list/', views.search_salas, name='search_salas'),

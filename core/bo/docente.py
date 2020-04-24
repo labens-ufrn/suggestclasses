@@ -6,7 +6,7 @@ def get_docentes():
     """
         Lista todos os docentes efetivos. Retorna apenas docentes do CERES.
     """
-    return Docente.objects.all()
+    return Docente.objects.all().order_by('nome')
 
 
 def get_docente_by_siape(siape):

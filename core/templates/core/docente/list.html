@@ -2,27 +2,84 @@
 
 {% block content %}
 
-  <section class="page-section" id="estuturas">
-    <div class="container">
+  <section class="page-section" id="docentes">
+    <div class="container" style="overflow: auto">
 
       <div id="manter" class="center text-center form-group">
         <h2 class="page-section-heading text-center text-secondary mb-0">Docentes</h2>
         <h5 class="page-section-heading text-center text-secondary mb-0">CERES - Campus Caicó</h5>
       </div>
 
+      <div id="buscar_docentes" class="center" align="center">
+        <form method="get">
+          <table class="table table-sm table-borderless table-active table-responsive">
+            <thead class="text-center">
+            <tr>
+              <th class="align-middle text-center" colspan="4">
+                <h5 class="align-middle">Buscar Docentes</h5>
+              </th>
+            </tr>
+            </thead>
+            <tbody class="text-left">
+            <tr>
+              <td class="font-weight-bold">
+                {{ filter.form.siape.label_tag }}
+              </td>
+              <td>
+                {{ filter.form.siape }}
+              </td>
+              <td class="font-weight-bold">
+                {{ filter.form.nome.label_tag }}
+              </td>
+              <td>
+                {{ filter.form.nome }}
+              </td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold">
+                {{ filter.form.lotacao.label_tag }}
+              </td>
+              <td colspan="3">
+                {{ filter.form.lotacao }}
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <td class="align-middle text-right" colspan="4">
+                <button class="btn btn-primary" type="submit">
+                  <span class="material-icons md-18 align-middle">
+                    find_in_page
+                  </span>
+                  Buscar
+                </button>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+        </form>
+      </div>
+      <br>
+
       <table class="table table-striped table-sm table-bordered">
-        <tr align="center">
-          <th>Siape</th>
-          <th>Nome</th>
-          <th>Lotação</th>
-          <th>SIGAA</th>
-        </tr>
-          {% for docente in docentes %}
+          <thead class="thead-light center text-center">
+          <tr>
+            <th colspan="4">Lista de Docentes</th>
+          </tr>
+          <tr>
+            <th>Siape</th>
+            <th>Nome</th>
+            <th>Lotação</th>
+            <th>SIGAA</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for docente in filter.qs %}
             <tr>
               <td align="center">
-                  {{ docente.siape }}
+                {{ docente.siape }}
               </td>
-              <td align="center" width="43%">{{ docente.nome }}
+              <td align="center">{{ docente.nome }}
                 <a href="{% url 'docente_detalhar' docente.pk %}">
                   <span class="material-icons md-18 align-middle">
                     find_in_page
@@ -38,8 +95,13 @@
                 </a>
               </td>
             </tr>
+          {% empty %}
+            <tr>
+              <td align="center" colspan="4">Lista de salas vazia!</td>
+            </tr>
           {% endfor %}
-      </table>
+          </tbody>
+        </table>
     </div>
   </section>
 {% endblock %}
