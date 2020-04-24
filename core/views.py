@@ -340,31 +340,6 @@ def flow_mat_op(request):
     return flow_opcionais(request, mat_ec)
 
 
-def flow_ped(request):
-    ped_ec = get_estrutura_pedagogia()
-
-    ped_oc_semestres = []
-    ped_ch_semestres = []
-    ped_oc_op = get_oc_by_semestre(ped_ec, 0)
-
-    headers: List[str] = []
-
-    for s in range(1, 9):
-        headers.append(f"{s}º Semestre")
-        ped_oc_semestres.append(get_oc_by_semestre(ped_ec, s))
-        ped_ch_semestres.append(get_ch_by_semestre(ped_ec, s))
-
-    context = {
-        'ped_ec': ped_ec,
-        'headers': headers,
-        'ped_oc_semestres': ped_oc_semestres,
-        'ped_oc_op': ped_oc_op,
-        'ped_ch_semestres': ped_ch_semestres,
-    }
-
-    return render(request, 'core/flow/pedagogia.html', context)
-
-
 def flow_ped_h(request):
     ped_ec = get_estrutura_pedagogia()
     link_opcionais = '/core/flow/ped/opcionais'

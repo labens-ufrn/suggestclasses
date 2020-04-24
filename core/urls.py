@@ -32,7 +32,6 @@ urlpatterns = [
     path('flow/dir/', views.flow_dir, name='flow_dir'),
     path('flow/dir/opcionais', views.flow_dir_op, name='flow_dir_op'),
 
-    path('flow/ped/', views.flow_ped, name='Fluxograma Pedagogia'),
     path('flow/ped-h/', views.flow_ped_h, name='flow_ped_h'),
     path('flow/ped/opcionais', views.flow_ped_op, name='Fluxograma Pedagogia - Opcionais'),
 
