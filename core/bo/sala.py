@@ -5,4 +5,4 @@ def get_salas():
     """
         Lista todos as Salas. Retorna apenas salas do CERES.
     """
-    return Sala.objects.all()
+    return Sala.objects.all().order_by('campus', 'sigla', 'nome')
