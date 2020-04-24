@@ -21,7 +21,9 @@ urlpatterns = [
     path('docente/list/', views.docente_list, name='Lista de Docentes'),
     path('docente/<int:pk>/', views.DocenteDetailView.as_view(), name='docente_detalhar'),
 
-    path('sala/list/', views.sala_list, name='Lista de Salas'),
+    path('sala/list-old/', views.sala_list, name='Lista de Salas'),
+    path('sala/list/', views.search_salas, name='search_salas'),
+
     path('flow/', views.flow_list, name='Lista de Fluxogramas'),
     path('flow/bsi/', views.flow_bsi, name='Fluxograma BSI'),
     path('flow/bsi/opcionais', views.flow_bsi_op, name='Fluxograma BSI - Opcionais'),

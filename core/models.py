@@ -81,13 +81,18 @@ class Sala(models.Model):
     """
         Uma sala tem um número, um nome, capacidade, tamanho, bloco.
     """
+    CAMPUS_CHOICES = (
+        ("1", "Campus Caicó"),
+        ("2", "Campus Currais Novos"),
+    )
+
     nome = models.CharField(max_length=200, blank=True, null=True)
     sigla = models.CharField(max_length=10)
     capacidade = models.IntegerField()
     tamanho = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     bloco = models.CharField(max_length=10)
     centro = models.ForeignKey(Centro, on_delete=models.PROTECT)
-    campus = models.CharField(max_length=50, blank=True, null=True)
+    campus = models.CharField(max_length=50, blank=True, null=True, choices=CAMPUS_CHOICES)
 
     class Meta:
         unique_together = ("sigla", "bloco", "centro", "campus")

@@ -22,11 +22,13 @@ from .bo.discentes import get_discentes, get_discentes_ativos
 from .bo.docente import get_docentes
 from .bo.matematica import get_estrutura_matematica
 from .bo.pedagogia import get_estrutura_pedagogia
+from .bo.sala import get_salas
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre
 from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
 from .dao.departamento_dao import get_departamentos
+from .filters import SalaFilter
 from .forms import CadastroUsuarioForm
 from .models import Horario
 from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir, sugestao_editar, \
@@ -606,6 +608,12 @@ def error_403(request, exception):
                  exc_info=exception)
     messages.error(request, 'Você não tem permissão de acessar: ' + request.path)
     return redirecionar(request)
+
+
+def search_salas(request):
+    salas = get_salas()
+    sala_filter = SalaFilter(request.GET, queryset=salas)
+    return render(request, 'core/sala/list.html', {'filter': sala_filter})
 
 
 def plot(request):
