@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -254,6 +255,9 @@ def is_chefe(usuario, departamento):
     :param departamento: O departamento de interesse.
     :return: True se o usuário for Chefe do Departamento.
     """
+    if not docente_existe(usuario):
+        return False
+
     grupo_chefes = Group.objects.get(name='Chefes')
     grupos = usuario.groups.all()
 
@@ -275,6 +279,9 @@ def is_coordenador(usuario, curso):
     :param curso: O curso de interesse.
     :return: True se o usuário for Coordenador do Curso.
     """
+    if not docente_existe(usuario):
+        return False
+
     grupo_chefes = Group.objects.get(name='Coordenadores')
     grupos = usuario.groups.all()
 
@@ -290,3 +297,16 @@ def is_coordenador(usuario, curso):
         test_coordenador2 = test_coordenador2 or 'COORDENADOR DE CURSO' == funcao.atividade
 
     return grupo_chefes in grupos and test_coordenador1 and test_coordenador2
+
+
+def docente_existe(usuario):
+    """
+    Verifica se na instância de Usuário existe um Docente relacionado.
+    :param usuario: O usuário autenticado.
+    :return: True se existir um Docente relacionado.
+    """
+    try:
+        docente = usuario.docente
+        return docente is not None
+    except ObjectDoesNotExist:
+        return False
