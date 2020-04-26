@@ -195,8 +195,10 @@ def sugestao_editar(request, pk, estrutura, template_name='core/sugestao/editar.
         horarios_list = converte_desc_horario(sugestao_turma.descricao_horario)
         if not verificar_choques(form_sugestao, sugestao_turma, horarios_list):
             sugestao_turma.save()
-            for horario in horarios_list:
-                sugestao_turma.horarios.add(horario)
+            # limpa o conjunto de horários
+            sugestao_turma.horarios.clear()
+            # adiciona os novos horários
+            sugestao_turma.horarios.set(horarios_list)
             messages.success(request, 'Sugestão de Turma alterada com sucesso.')
             return redirecionar(request)
     else:
