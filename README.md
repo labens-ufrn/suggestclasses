@@ -23,6 +23,18 @@ Na página [Documentação](docs/docs.md) temos os detalhes do projeto e a lista
 
 Criar bancos de dados!
 
+```shell script
+sudo apt install python3-dev default-libmysqlclient-dev
+```
+
+Adicionar em ~/.profile as variáveis de ambiente:
+
+```shell script
+MARIA_HOME=/usr/bin/mysql
+PATH=$PATH:$MARIA_HOME/bin
+PYTHONHOME=/usr/bin
+```
+
 ## Migrations
 
 Ao modificar os models (em models.py), execute:
