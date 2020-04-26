@@ -181,13 +181,17 @@ def carrega_horario_turmas_por_turno(turmas, turno):
         n = 5
 
     for i in range(1, n):
-        horario = Horario.objects.filter(turno=turno, ordem=i).order_by('dia')
-        turma_horarios = []
-        for h in horario:
+        horarios = Horario.objects.filter(turno=turno, ordem=i).order_by('dia')
+        turmas_horario = []
+        for h in horarios:
+            turmas_por_horario = None
+            # if isinstance(turmas[0], SugestaoTurmaEstendida):
+            #     turmas_por_horario = get_turmas_por_horario_new(turmas, horario=h)
+            # else:
             turmas_por_horario = get_turmas_por_horario(turmas=turmas, dia=h.dia, turno=turno, ordem=i)
             th = TurmaHorario(h, turmas_por_horario)
-            turma_horarios.append(th)
-        tt.append(turma_horarios)
+            turmas_horario.append(th)
+        tt.append(turmas_horario)
     return tt
 
 
