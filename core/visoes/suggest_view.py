@@ -141,6 +141,8 @@ def verificar_choques(form_sugestao, sugestao_turma, horarios_list):
         print(sugestoes)
         if sugestoes:
             for s in sugestoes:
+                if s.codigo_turma == sugestao_turma.codigo_turma and s.componente == sugestao_turma.componente:
+                    break
                 if s.local == sugestao_turma.local:
                     choques_componentes.add(s.componente.codigo.__str__() + ' - ' + s.componente.nome)
                     choques_horarios.append(horario.dia + horario.turno + horario.ordem)
