@@ -98,7 +98,8 @@ class Sala(models.Model):
         unique_together = ("sigla", "bloco", "centro", "campus")
 
     def __str__(self):
-        return self.nome + ' (' + self.capacidade.__str__() + ')' + ' - ' + self.bloco + ' - ' + self.campus
+        return self.nome + ' (' + self.capacidade.__str__() + ')' + ' - ' + \
+               self.bloco + ' - ' + self.get_campus_display()
 
 
 class ComponenteCurricular(models.Model):
