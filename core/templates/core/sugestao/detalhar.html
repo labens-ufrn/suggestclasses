@@ -47,8 +47,12 @@
           <td>{{ object.criador.get_full_name }}</td>
         </tr>
         <tr>
+          <td class="font-weight-bold" width="18%">Data Criação</td>
+          <td>{{ object.criada_em }}</td>
+        </tr>
+        <tr>
           <td class="font-weight-bold" width="18%">Campus</td>
-          <td>{{ object.local.centro }} - {{ object.local.campus }}</td>
+          <td>{{ object.local.centro }} - {{ object.local.get_campus_display }}</td>
         </tr>
         <tr>
           <td class="font-weight-bold" width="18%">Ementa</td>
