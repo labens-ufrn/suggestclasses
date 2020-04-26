@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 
 from core.bo.docente import get_funcao_by_siape
+from core.bo.sevices import get_organizacao_by_componente
 from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, carrega_turmas_horario, converte_desc_horario
 from core.config.config import get_config
 from core.forms import SugestaoTurmaForm
@@ -81,13 +82,12 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
         form_sugestao = SugestaoTurmaForm(request.POST, estrutura=estrutura)
         if form_sugestao.is_valid():
             sugestao_turma = form_sugestao.save(commit=False)
-            carregar_dados(request, sugestao_turma)
+            carregar_dados(request, sugestao_turma, estrutura)
             horarios_list = converte_desc_horario(sugestao_turma.descricao_horario)
             if not verificar_existencia(form_sugestao, sugestao_turma) \
                and not verificar_choques(form_sugestao, sugestao_turma, horarios_list):
                 sugestao_turma.save()
-                for horario in horarios_list:
-                    sugestao_turma.horarios.add(horario)
+                atualizar_horarios(sugestao_turma, horarios_list)
                 messages.success(request, 'Sugestão de Turma cadastrada com sucesso.')
                 return redirect(sugestao_manter_link)
         messages.error(request, form_sugestao.errors)
@@ -102,7 +102,14 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
     return render(request, 'core/sugestao/incluir.html', context)
 
 
-def carregar_dados(request, sugestao_turma):
+def atualizar_horarios(sugestao, novos_horarios):
+    # limpa o conjunto de horários
+    sugestao.horarios.clear()
+    # adiciona os novos horários
+    sugestao.horarios.set(novos_horarios)
+
+
+def carregar_dados(request, sugestao_turma, estrutura):
     ano = config.get('PeriodoSeguinte', 'ano')
     periodo = config.get('PeriodoSeguinte', 'periodo')
 
@@ -112,6 +119,11 @@ def carregar_dados(request, sugestao_turma):
     sugestao_turma.campus_turma = sugestao_turma.local.campus
     sugestao_turma.criador = request.user
     sugestao_turma.total_solicitacoes = 0
+
+    org_curricular = get_organizacao_by_componente(estrutura, sugestao_turma.componente)
+    sugestao_turma.semestre = org_curricular.first().semestre
+    sugestao_turma.tipo_vinculo = org_curricular.first().tipo_vinculo
+    sugestao_turma.curso = estrutura.curso
 
 
 def verificar_existencia(form_sugestao, sugestao_turma):

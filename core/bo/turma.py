@@ -1,5 +1,5 @@
 import re
-from django import db
+
 from core.bo.sevices import get_oc_by_semestre
 from core.config.config import get_config
 from core.models import Turma, Horario, SugestaoTurma
@@ -21,16 +21,19 @@ def get_turmas(estrutura, semestre, ano, periodo):
 
 
 def get_sugestao_turmas(estrutura, semestre, ano, periodo):
+    # TODO Remover isso pois as informações de tipo_vinculo, semestre e curso serão informadas na inclusão
     org_curricular = get_oc_by_semestre(estrutura, semestre)
 
-    turmas = []
+    sugestoes_turmas = []
     for oc in org_curricular:
-        turma = SugestaoTurma.objects.filter(componente=oc.componente, ano=ano, periodo=periodo)
-        for t in turma:
-            turma_estendida = SugestaoTurmaEstendida(t, oc.tipo_vinculo, oc.semestre, estrutura.curso)
-            turmas.append(turma_estendida)
+        turmas_componente = SugestaoTurma.objects.filter(componente=oc.componente, ano=ano, periodo=periodo)
+        for t in turmas_componente:
+            # turma.tipo_vinculo = oc.tipo_vinculo
+            # turma.semestre = oc.semestre
+            # turma.curso = estrutura.curso
+            sugestoes_turmas.append(t)
 
-    return turmas
+    return sugestoes_turmas
 
 
 def get_turmas_por_horario(turmas, dia, turno, ordem):
@@ -227,17 +230,22 @@ class TurmaEstendida(Turma):
         self.curso = curso
 
 
-class SugestaoTurmaEstendida(SugestaoTurma):
-
-    def __init__(self, turma, tipo_vinculo, semestre, curso):
-        super(SugestaoTurmaEstendida, self)\
-            .__init__(codigo_turma=turma.codigo_turma, docente=turma.docente,
-                      matricula_docente_externo=turma.matricula_docente_externo,
-                      componente=turma.componente, campus_turma=turma.campus_turma, local=turma.local,
-                      ano=turma.ano, periodo=turma.periodo, descricao_horario=turma.descricao_horario,
-                      total_solicitacoes=turma.total_solicitacoes,
-                      capacidade_aluno=turma.capacidade_aluno, tipo=turma.tipo, criador=turma.criador)
-        self.pk = turma.pk
-        self.tipo_vinculo = tipo_vinculo
-        self.semestre = semestre
-        self.curso = curso
+# class SugestaoTurmaEstendida(SugestaoTurma):
+#
+#     def __init__(self, turma, tipo_vinculo, semestre, curso):
+#         super(SugestaoTurmaEstendida, self)\
+#             .__init__(codigo_turma=turma.codigo_turma, docente=turma.docente,
+#                       matricula_docente_externo=turma.matricula_docente_externo,
+#                       componente=turma.componente, campus_turma=turma.campus_turma, local=turma.local,
+#                       ano=turma.ano, periodo=turma.periodo, descricao_horario=turma.descricao_horario,
+#                       total_solicitacoes=turma.total_solicitacoes,
+#                       capacidade_aluno=turma.capacidade_aluno, tipo=turma.tipo, criador=turma.criador)
+#         self.pk = turma.pk
+#         print(self.horarios.all())
+#         self.horarios.clear()
+#         print(self.horarios.all())
+#         horario_list = turma.horarios.all()
+#         self.horarios.set(horario_list)
+#         self.tipo_vinculo = tipo_vinculo
+#         self.semestre = semestre
+#         self.curso = curso
