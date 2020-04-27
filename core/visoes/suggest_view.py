@@ -150,22 +150,16 @@ def verificar_choques(form_sugestao, sugestao_turma, horarios_list):
     choque_docente = []
     for horario in horarios_list:
         sugestoes = horario.sugestoes.all()
-        print(sugestoes)
         if sugestoes:
             for s in sugestoes:
                 if s.codigo_turma == sugestao_turma.codigo_turma and s.componente == sugestao_turma.componente:
                     break
                 if s.local == sugestao_turma.local:
-                    choques_componentes.add(s.componente.codigo.__str__() + ' - ' + s.componente.nome)
+                    choques_componentes.add(str(s.componente.codigo) + ' - ' + s.componente.nome)
                     choques_horarios.append(horario.dia + horario.turno + horario.ordem)
-                    print('Horario: ' + horario.__str__())
-                    print('Sugestão Existente: ' + s.__str__())
-                    print('Sugestão Existente Local: ' + s.local.__str__())
                 if s.docente == sugestao_turma.docente:
-                    choques_componentes.add(s.componente.codigo.__str__() + ' - ' + s.componente.nome)
+                    choques_componentes.add(str(s.componente.codigo) + ' - ' + s.componente.nome)
                     choque_docente.append(horario.dia + horario.turno + horario.ordem)
-                    print('Horario: ' + horario.__str__())
-                    print('Sugestão Existente Docente: ' + s.docente.__str__())
 
     if choques_horarios or choque_docente or choques_componentes:
         if choques_componentes:
@@ -207,10 +201,9 @@ def sugestao_editar(request, pk, estrutura, template_name='core/sugestao/editar.
         horarios_list = converte_desc_horario(sugestao_turma.descricao_horario)
         if not verificar_choques(form_sugestao, sugestao_turma, horarios_list):
             sugestao_turma.save()
-            # limpa o conjunto de horários
-            sugestao_turma.horarios.clear()
-            # adiciona os novos horários
-            sugestao_turma.horarios.set(horarios_list)
+            sugestao_turma.horarios.clear()  # limpa o conjunto de horários
+            sugestao_turma.horarios.set(horarios_list)  # adiciona os novos horários
+
             messages.success(request, 'Sugestão de Turma alterada com sucesso.')
             return redirecionar(request)
     else:
