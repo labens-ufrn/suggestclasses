@@ -53,6 +53,12 @@ urlpatterns = [
     path('sugestao/', views.sugestao_list, name='sugestao_list'),
     path('sugestao/<int:pk>/', views.SugestaoTurmaDetailView.as_view(), name='sugestao_detalhar'),
 
+    path('sugestao/dir/list', views.sugestao_dir_list, name='sugestao_dir_list'),
+    path('sugestao/dir/manter', views.sugestao_dir_manter, name='sugestao_dir_manter'),
+    path('sugestao/dir/incluir', views.sugestao_dir_incluir, name='sugestao_dir_incluir'),
+    path('sugestao/dir/editar/<int:pk>/', views.sugestao_dir_editar, name='sugestao_dir_editar'),
+    path('sugestao/dir/deletar/<int:pk>/', views.sugestao_dir_deletar, name='sugestao_dir_deletar'),
+
     path('sugestao/mat/list', views.sugestao_mat_list, name='sugestao_mat_list'),
     path('sugestao/mat/manter', views.sugestao_mat_manter, name='sugestao_mat_manter'),
     path('sugestao/mat/incluir', views.sugestao_mat_incluir, name='sugestao_mat_incluir'),

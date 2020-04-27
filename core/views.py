@@ -453,16 +453,59 @@ def sugestao_list(request):
     """
         Tela para Listar os Curso com possibilidade de cadastrar Sugestões de Turmas.
     """
+    dir_flow = get_estrutura_direito()
     bsi_flow = get_estrutura_sistemas_dct()
     ped_flow = get_estrutura_pedagogia()
     mat_flow = get_estrutura_matematica()
 
     context = {
+        'dir_flow': dir_flow,
         'mat_flow': mat_flow,
         'ped_flow': ped_flow,
         'bsi_flow': bsi_flow
     }
     return render(request, 'core/sugestao/list.html', context)
+
+
+def sugestao_dir_list(request):
+    dir_ddir = get_estrutura_direito()
+    sugestao_incluir_link = '/core/sugestao/dir/incluir'
+    sugestao_manter_link = '/core/sugestao/dir/manter'
+    sugestao_list_link = '/core/sugestao/dir/list'
+    return sugestao_grade_horarios(request, dir_ddir, sugestao_incluir_link, sugestao_manter_link, sugestao_list_link)
+
+
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_dir_manter(request):
+    """
+        Tela de Manter Sugestão de Turmas do Curso de Direito.
+    """
+    dir_ddir = get_estrutura_direito()
+    sugestao_incluir_link = '/core/sugestao/dir/incluir'
+    sugestao_editar_link = 'sugestao_dir_editar'
+    sugestao_deletar_link = 'sugestao_dir_deletar'
+    sugestao_grade_link = '/core/sugestao/dir/list'
+    return sugestao_manter(request, dir_ddir, sugestao_incluir_link, sugestao_grade_link,
+                           sugestao_editar_link, sugestao_deletar_link)
+
+
+@permission_required("core.add_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_dir_incluir(request):
+    dir_ddir = get_estrutura_direito()
+    sugestao_manter_link = '/core/sugestao/dir/manter'
+    return sugestao_incluir(request, dir_ddir, sugestao_manter_link)
+
+
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_dir_editar(request, pk):
+    dir_ddir = get_estrutura_direito()
+    return sugestao_editar(request, pk, estrutura=dir_ddir)
+
+
+@permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_dir_deletar(request, pk):
+    dir_ddir = get_estrutura_direito()
+    return sugestao_deletar(request, pk, estrutura=dir_ddir)
 
 
 @permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
