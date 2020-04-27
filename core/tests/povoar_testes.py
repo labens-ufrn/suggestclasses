@@ -512,6 +512,7 @@ def criar_sugestoes_turmas():
     docente1 = Docente.objects.get(siape=9999999)
     docente2 = Docente.objects.get(siape=9999997)
     criador_chefe = Docente.objects.get(siape=9999998)
+    curso = Curso.objects.get(codigo=9999)
     componente1 = ComponenteCurricular.objects.get(id_componente=99999)
     componente2 = ComponenteCurricular.objects.get(id_componente=99998)
     componente3 = ComponenteCurricular.objects.get(id_componente=99997)
@@ -521,25 +522,33 @@ def criar_sugestoes_turmas():
         SugestaoTurma.objects.create(codigo_turma='01', docente=docente1, matricula_docente_externo=None,
                                      componente=componente1, campus_turma=sala.campus, local=sala, ano=2020,
                                      periodo=2, descricao_horario='24T12', capacidade_aluno=25, tipo='REGULAR',
-                                     total_solicitacoes=0, criador=criador_chefe.usuario)
+                                     total_solicitacoes=0, criador=criador_chefe.usuario,
+                                     tipo_vinculo='OBRIGATÓRIO',
+                                     semestre=1, curso=curso)
 
     if not SugestaoTurma.objects.filter(codigo_turma='01', componente=componente2, ano=2020, periodo=2).exists():
         SugestaoTurma.objects.create(codigo_turma='01', docente=docente2, matricula_docente_externo=None,
                                      componente=componente2, campus_turma=sala.campus, local=sala, ano=2020,
                                      periodo=2, descricao_horario='24T34', capacidade_aluno=25, tipo='REGULAR',
-                                     total_solicitacoes=0, criador=criador_chefe.usuario)
+                                     total_solicitacoes=0, criador=criador_chefe.usuario,
+                                     tipo_vinculo='OBRIGATÓRIO',
+                                     semestre=1, curso=curso)
 
     if not SugestaoTurma.objects.filter(codigo_turma='01', componente=componente3, ano=2020, periodo=2).exists():
         SugestaoTurma.objects.create(codigo_turma='01', docente=docente1, matricula_docente_externo=None,
                                      componente=componente3, campus_turma=sala.campus, local=sala, ano=2020,
                                      periodo=2, descricao_horario='35T12', capacidade_aluno=25, tipo='REGULAR',
-                                     total_solicitacoes=0, criador=criador_chefe.usuario)
+                                     total_solicitacoes=0, criador=criador_chefe.usuario,
+                                     tipo_vinculo='OPTATIVO',
+                                     semestre=1, curso=curso)
 
     if not SugestaoTurma.objects.filter(codigo_turma='02', componente=componente3, ano=2020, periodo=2).exists():
         SugestaoTurma.objects.create(codigo_turma='02', docente=docente2, matricula_docente_externo=None,
                                      componente=componente3, campus_turma=sala.campus, local=sala, ano=2020,
                                      periodo=2, descricao_horario='35T34', capacidade_aluno=25, tipo='REGULAR',
-                                     total_solicitacoes=0, criador=criador_chefe.usuario)
+                                     total_solicitacoes=0, criador=criador_chefe.usuario,
+                                     tipo_vinculo='OPTATIVO',
+                                     semestre=1, curso=curso)
 
 
 def remover_sugestoes_turmas():

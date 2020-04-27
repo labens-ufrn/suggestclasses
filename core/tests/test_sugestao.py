@@ -3,7 +3,7 @@ django.setup()
 from django.contrib.auth.models import User
 
 from core.bo.sevices import get_estrutura_by_id
-from core.bo.turma import get_sugestao_turmas, SugestaoTurmaEstendida, carrega_turmas_horario, carrega_sugestao_turmas, \
+from core.bo.turma import get_sugestao_turmas, carrega_turmas_horario, carrega_sugestao_turmas, \
     converte_desc_horario
 from core.models import SugestaoTurma, Curso, Docente, ComponenteCurricular, Sala
 
@@ -27,19 +27,16 @@ class SugestaoTests(TestCase):
 
     def test_get_sugestao(self):
         estrutura = get_estrutura_by_id(999999999)
-        curso = Curso.objects.get(codigo=9999)
         sugestao1 = SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99999)
-        sugestao_estendida1 = SugestaoTurmaEstendida(sugestao1, tipo_vinculo='OBRIGATÓRIO',
-                                                     semestre=1, curso=curso)
+
         sugestao2 = SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99998)
-        sugestao_estendida2 = SugestaoTurmaEstendida(sugestao2, tipo_vinculo='OBRIGATÓRIO',
-                                                     semestre=1, curso=curso)
+
         sugestoes = get_sugestao_turmas(estrutura, semestre=1, ano=2020, periodo=2)
 
         self.assertIsNotNone(sugestoes, 'Sugestões não é None.')
         self.assertTrue(len(sugestoes) > 0, 'Testando qtd sugestões.')
-        self.assertTrue(sugestao_estendida1 in sugestoes, 'Sugestão 1 pertente as sugestões!')
-        self.assertTrue(sugestao_estendida2 in sugestoes, 'Sugestão 2 pertente as sugestões!')
+        self.assertTrue(sugestao1 in sugestoes, 'Sugestão 1 pertente as sugestões!')
+        self.assertTrue(sugestao2 in sugestoes, 'Sugestão 2 pertente as sugestões!')
 
     def test_criador_sugestao(self):
         criador_chefe = Docente.objects.get(siape=9999998)
