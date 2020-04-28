@@ -15,7 +15,8 @@ from django.template import loader
 from django.views.generic import DetailView
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 
-from core.models import Curso, ComponenteCurricular, EstruturaCurricular, SugestaoTurma, Sala, Docente, Turma
+from core.models import Curso, ComponenteCurricular, EstruturaCurricular, SugestaoTurma, Sala, Docente, Turma, \
+    SolicitacaoTurma
 from core.visoes.flow_view import flow_horizontal, flow_opcionais
 from .bo.curso import get_cursos
 from .bo.discentes import get_discentes, get_discentes_ativos
@@ -31,7 +32,7 @@ from .filters import SalaFilter, DocenteFilter
 from .forms import CadastroUsuarioForm
 from .models import Horario
 from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir, sugestao_editar, \
-    redirecionar, sugestao_deletar
+    redirecionar, sugestao_deletar, atualizar_solicitacao
 from .visoes.turma_view import turmas_grade
 from .visoes.user_view import criar_usuario, autenticar_logar
 
@@ -425,6 +426,11 @@ def turmas_list(request):
     return render(request, 'core/turmas/list.html', context)
 
 
+class TurmaDetailView(DetailView):
+    model = Turma
+    template_name = 'core/turmas/detalhar.html'
+
+
 def turmas_dir(request):
     dir_ddir = get_estrutura_direito()
     turmas_list_link = '/core/turmas/dir'
@@ -617,16 +623,6 @@ def sugestao_ped_incluir(request):
     ped_deduc = get_estrutura_pedagogia()
     sugestao_manter_link = '/core/sugestao/ped/manter'
     return sugestao_incluir(request, ped_deduc, sugestao_manter_link)
-
-
-class TurmaDetailView(DetailView):
-    model = Turma
-    template_name = 'core/turmas/detalhar.html'
-
-
-class SugestaoTurmaDetailView(DetailView):
-    model = SugestaoTurma
-    template_name = 'core/sugestao/detalhar.html'
 
 
 @permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
