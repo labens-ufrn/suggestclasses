@@ -287,7 +287,7 @@ class SugestaoTurma(models.Model):
     tipo_vinculo = models.CharField(max_length=50, null=True, blank=True)
     curso = models.ForeignKey(Curso, on_delete=models.PROTECT, null=True, blank=True)
     criador = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    criada_em = models.DateField(auto_now_add=True)
+    criada_em = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('codigo_turma', 'componente', 'ano', 'periodo')
