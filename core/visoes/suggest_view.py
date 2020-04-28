@@ -11,10 +11,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from core.bo.docente import get_funcao_by_siape
 from core.bo.sevices import get_organizacao_by_componente
+from core.bo.sugestao import solicitacao_incluir
 from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, carrega_turmas_horario, converte_desc_horario
 from core.config.config import get_config
 from core.forms import SugestaoTurmaForm
-from core.models import SugestaoTurma
+from core.models import SugestaoTurma, SolicitacaoTurma
 from mysite.settings import DOMAINS_WHITELIST
 
 logger = logging.getLogger('suggestclasses.logger')
@@ -317,5 +318,36 @@ def docente_existe(usuario):
     try:
         docente = usuario.docente
         return docente is not None
+    except ObjectDoesNotExist:
+        return False
+
+
+def atualizar_solicitacao(request, pk):
+    usuario = request.user
+    if not discente_existe(usuario):
+        messages.error(request, 'Não há um discente relacionado ao usuário.')
+        return redirecionar(request)
+
+    resultado, created = solicitacao_incluir(usuario, pk)
+
+    if created:
+        messages.success(request, 'Solicitação de Interesse na Turma ' +
+                         str(resultado.turma) + ' cadastrada com sucesso.')
+    else:
+        messages.error(request, 'Já existe Solicitação de Interesse na Turma ' +
+                       str(resultado.turma) + '.')
+
+    return redirecionar(request)
+
+
+def discente_existe(usuario):
+    """
+    Verifica se na instância de Usuário existe um Discente relacionado.
+    :param usuario: O usuário autenticado.
+    :return: True se existir um Docente relacionado.
+    """
+    try:
+        discente = usuario.discente
+        return discente is not None
     except ObjectDoesNotExist:
         return False

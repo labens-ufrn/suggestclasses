@@ -135,10 +135,10 @@
                       <span class="align-middle" style="color: dodgerblue">
                         <b>{{ turma.capacidade_aluno }}</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
 
-                    <a href="">
+                    <a href="{% url 'sugestao_solicitar' turma.pk %}?next={{ request.path|urlencode }}">
                       <span class="material-icons md-18 align-middle">star</span>
                       <span class="align-middle">
-                        <b>{{ turma.total_solicitacoes }}</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <b>{{ turma.solicitacaoturma_set.count }}</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     </a>
                     <a href="{% url 'sugestao_detalhar' turma.pk %}">
                       <span class="material-icons md-18 align-middle">

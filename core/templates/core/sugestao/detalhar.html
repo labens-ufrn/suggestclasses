@@ -42,7 +42,13 @@
         </tr>
         <tr>
           <td class="font-weight-bold" width="18%">Solicitações</td>
-          <td>{{ object.total_solicitacoes }}</td>
+          <td>{{ object.solicitacaoturma_set.count }}
+            <a href="{% url 'solicitacao_turma_listar' object.pk %}">
+              <span class="material-icons md-18 align-middle">
+                find_in_page
+              </span>
+            </a>
+          </td>
         </tr>
         <tr>
           <td class="font-weight-bold" width="18%">Local</td>

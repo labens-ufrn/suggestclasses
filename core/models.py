@@ -354,3 +354,13 @@ class Discente(models.Model):
     def __str__(self):
         return self.nome_discente + ' (' + self.matricula.__str__() + ') - ' \
                + self.nome_curso + ' (' + self.nome_unidade + ')'
+
+
+class SolicitacaoTurma(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.PROTECT)
+    solicitador = models.ForeignKey(Discente, on_delete=models.PROTECT)
+    turma = models.ForeignKey(SugestaoTurma, on_delete=models.PROTECT)
+    criada_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('solicitador', 'turma')

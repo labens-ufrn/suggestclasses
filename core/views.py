@@ -473,6 +473,28 @@ def sugestao_list(request):
     return render(request, 'core/sugestao/list.html', context)
 
 
+class SugestaoTurmaDetailView(DetailView):
+    model = SugestaoTurma
+    template_name = 'core/sugestao/detalhar.html'
+
+
+def sugestao_solicitar(request, pk):
+    return atualizar_solicitacao(request, pk)
+
+
+def solicitacao_turma_listar(request, pk):
+
+    turma = SugestaoTurma.objects.get(pk=pk)
+    solicitacoes = SolicitacaoTurma.objects.filter(turma=turma).order_by('criada_em', 'solicitador__nome_curso')
+
+    context = {
+        'turma': turma,
+        'solicitacoes': solicitacoes,
+    }
+
+    return render(request, 'core/sugestao/solicitacao_listar.html', context)
+
+
 def sugestao_dir_list(request):
     dir_ddir = get_estrutura_direito()
     sugestao_incluir_link = '/core/sugestao/dir/incluir'

@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+  <section class="page-section" id="solicitacao_turma">
+    <div class="container">
+
+      <div id="manter" class="center text-center form-group">
+        <h2 class="page-section-heading text-center text-secondary mb-0">Solicitações da Turma</h2>
+        <h5 class="page-section-heading text-center text-secondary mb-0">{{ turma }}</h5>
+      </div>
+
+      <div>
+        <table class="table table-striped table-sm table-bordered">
+          <thead class="thead-light">
+          <tr align="center">
+            <th colspan="5">Lista de Solicitações</th>
+          </tr>
+          <tr align="center">
+            <th>Matricula</th>
+            <th>Nome</th>
+            <th>Curso</th>
+            <th>Usuário</th>
+            <th>Data</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for solicitacao in solicitacoes %}
+            <tr>
+              <td align="center">{{ solicitacao.solicitador.matricula }}</td>
+              <td align="center">{{ solicitacao.solicitador.nome_discente }}</td>
+              <td align="center">{{ solicitacao.solicitador.nome_curso }}</td>
+              <td align="center">{{ solicitacao.usuario }}</td>
+              <td align="center">{{ solicitacao.criada_em }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td align="center" colspan="6">Lista de salas vazia!</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
