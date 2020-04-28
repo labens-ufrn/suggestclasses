@@ -52,6 +52,8 @@ urlpatterns = [
 
     path('sugestao/', views.sugestao_list, name='sugestao_list'),
     path('sugestao/<int:pk>/', views.SugestaoTurmaDetailView.as_view(), name='sugestao_detalhar'),
+    path('solicitacao/<int:pk>/', views.sugestao_solicitar, name='sugestao_solicitar'),
+    path('solicitacao/listar/<int:pk>/', views.solicitacao_turma_listar, name='solicitacao_turma_listar'),
 
     path('sugestao/dir/list', views.sugestao_dir_list, name='sugestao_dir_list'),
     path('sugestao/dir/manter', views.sugestao_dir_manter, name='sugestao_dir_manter'),

@@ -24,7 +24,13 @@
         </tr>
         <tr>
           <td class="font-weight-bold" width="18%">Docente</td>
-          <td>{{ object.docente }}</td>
+          <td>{{ object.docente }}
+            <a href="{% url 'docente_detalhar' object.docente.pk %}">
+              <span class="material-icons md-18 align-middle">
+                find_in_page
+              </span>
+            </a>
+          </td>
         </tr>
         <tr>
           <td class="font-weight-bold" width="18%">Horário</td>
