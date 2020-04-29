@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+{% block title %} Suggest Classes - Login de Usuário {% endblock %}
+{% block content %}
+
+  <div class="container">
+
+    <h2 class="page-section-heading text-center text-secondary mb-0">Login de Usuário</h2>
+    <br />
+
+    {% if form_login.errors %}
+        <p style="color: red">Your username and password didn't match. Please try again.</p>
+    {% endif %}
+
+    {% if next %}
+      {% if user.is_authenticated %}
+        <p>Your account doesn't have access to this page. To proceed,
+          please login with an account that has access.</p>
+      {% else %}
+        <p>Please login to see this page.</p>
+      {% endif %}
+    {% endif %}
+
+    <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      <table class="table-sm table-responsive-sm">
+        <tr>
+          <td>
+            {% for error in form_login.username.errors %}
+              <p style="color: red">{{ error }}</p>
+            {% endfor %}
+            {{ form.username.label_tag }}
+          </td>
+          <td>{{ form.username }}
+            {% if form_login.username.help_text %}
+              <p><small style="color: grey">{{ form_login.username.help_text }}</small></p>
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td></td><td></td>
+        </tr>
+        <tr>
+          <td>
+            {% for error in form_login.password.errors %}
+              <p style="color: red">{{ error }}</p>
+            {% endfor %}
+            {{ form.password.label_tag }}
+          </td>
+          <td>{{ form.password }}
+            {% if form_login.password.help_text %}
+              <p><small style="color: grey">{{ form_login.password.help_text }}</small></p>
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td></td><td></td>
+        </tr>
+      </table>
+      <div class="form-group">
+        <input type="submit" value="Enviar" class="btn btn-primary" />
+        <input type="hidden" name="next" value="{{ next }}" />
+      </div>
+    </form>
+
+    <p><a href="{% url 'Cadastro de Usuário' %}">Novo no Site? Cadastre-se aqui!</a></p>
+    {# Assumes you setup the password_reset view in your URLconf #}
+    <p><a href="{% url 'password_reset' %}">Esqueceu a senha? Clique aqui!</a></p>
+  </div>
+{% endblock %}
