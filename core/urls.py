@@ -6,6 +6,11 @@ from mysite.settings import STATIC_URL, MEDIA_URL, MEDIA_ROOT, DEBUG
 from . import views
 
 urlpatterns = [
+    path('usuario/cadastrar', views.cadastrar_usuario, name='Cadastro de Usuário'),
+    path('usuario/logar', views.logar_usuario, name='Login de Usuário'),
+    path('usuario/deslogar', views.deslogar_usuario, name='Logout de Usuário'),
+    path('usuario/alterar_senha', views.alterar_senha, name='Alterar Senha de Usuário'),
+
     path('', views.index, name='index'),
     path('sobre', views.sobre, name='sobre'),
     path('dashboard/', views.dashboard, name='dashboard'),
@@ -37,11 +42,6 @@ urlpatterns = [
 
     path('flow/mat-h/', views.flow_mat_h, name='flow_mat_h'),
     path('flow/mat/opcionais', views.flow_mat_op, name='flow_mat_op'),
-
-    path('usuario/cadastrar', views.cadastrar_usuario, name='Cadastro de Usuário'),
-    path('usuario/logar', views.logar_usuario, name='Login de Usuário'),
-    path('usuario/deslogar', views.deslogar_usuario, name='Logout de Usuário'),
-    path('usuario/alterar_senha', views.alterar_senha, name='Alterar Senha de Usuário'),
 
     path('turmas/', views.turmas_list, name='turmas_list'),
     path('turmas/dir', views.turmas_dir, name='turmas_direito'),
