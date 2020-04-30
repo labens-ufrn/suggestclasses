@@ -1,0 +1,70 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+  <section class="page-section" id="horarios">
+    <div class="container">
+
+      <h2 class="page-section-heading text-center text-secondary mb-0">Dados do Usuário</h2>
+      <table class="table table-striped table-sm table-bordered">
+        <tr>
+          <td class="font-weight-bold" width="20%">Username</td>
+          <td>{{ usuario.username }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold" width="20%">Nome</td>
+          <td>{{ usuario.get_full_name }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold" width="20%">Email</td>
+          <td>{{ usuario.email }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold" width="20%">Grupos</td>
+          <td>{{ grupos }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold" width="20%">Data de Cadastro</td>
+          <td>{{ usuario.date_joined }}</td>
+        </tr>
+      </table>
+
+      <h2 class="page-section-heading text-center text-secondary mb-0">Perfil Discente</h2>
+
+      <table class="table table-striped table-sm table-bordered">
+        <tr>
+          <td class="font-weight-bold" width="20%">Matricula</td>
+          <td>{{ perfil.matricula }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold" width="20%">Nome</td>
+          <td>{{ perfil.nome_discente }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold" width="20%">Dados do Ingresso</td>
+          <td>{{ perfil.ano_ingresso }}.{{ perfil.periodo_ingresso }} - {{ perfil.forma_ingresso }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold" width="20%">Tipo Discente</td>
+          <td> {{ perfil.tipo_discente }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold" width="20%">Status</td>
+          <td>{{ perfil.status }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold" width="20%">Curso</td>
+          <td>{{ perfil.nome_curso }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold" width="20%">Unidade</td>
+          <td>{{ perfil.nome_unidade }}</td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold" width="20%">Unidade Gestora</td>
+          <td>{{ perfil.nome_unidade_gestora }}</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+{% endblock %}

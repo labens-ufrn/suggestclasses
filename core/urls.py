@@ -6,6 +6,8 @@ from mysite.settings import STATIC_URL, MEDIA_URL, MEDIA_ROOT, DEBUG
 from . import views
 
 urlpatterns = [
+    path('profile/<username>/', views.profile, name='profile'),
+
     path('usuario/cadastrar', views.cadastrar_usuario, name='Cadastro de Usuário'),
     path('usuario/logar', views.logar_usuario, name='Login de Usuário'),
     path('usuario/deslogar', views.deslogar_usuario, name='Logout de Usuário'),

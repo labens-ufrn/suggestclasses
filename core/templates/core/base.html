@@ -64,6 +64,11 @@
             </a>
           </li>
           <li class="nav-item">
+            {% if user.is_authenticated %}
+              <a class="nav-link" href="/core/profile/{{ user.username }}?next={{ request.path|urlencode }}">Perfil</a>
+            {% endif %}
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="/core/sobre">Sobre</a>
           </li>
           {% if user.is_authenticated %}
@@ -91,6 +96,8 @@
         </b>
           <span class="sair"><a href="{% url 'Logout de Usuário' %}">Sair</a></span>
         </p>
+      {% else %}
+        <p></p>
       {% endif %}
       {% include 'core/messages.html' %}
       {% block content %} {% endblock content %}

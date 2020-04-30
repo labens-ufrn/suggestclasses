@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, logout, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -32,7 +33,7 @@ from .filters import SalaFilter, DocenteFilter
 from .forms import CadastroUsuarioForm
 from .models import Horario
 from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir, sugestao_editar, \
-    redirecionar, sugestao_deletar, atualizar_solicitacao
+    redirecionar, sugestao_deletar, atualizar_solicitacao, discente_existe, docente_existe, criar_string
 from .visoes.turma_view import turmas_grade
 from .visoes.user_view import criar_usuario, autenticar_logar
 
@@ -670,6 +671,36 @@ def search_salas(request):
     salas = get_salas()
     sala_filter = SalaFilter(request.GET, queryset=salas)
     return render(request, 'core/sala/list.html', {'filter': sala_filter})
+
+
+@login_required(login_url='/accounts/login')
+def profile(request, username):
+    usuario = User.objects.get(username=username)
+
+    if request.user != usuario:
+        messages.error(request, 'Você não tem permissão de visualizar esse Perfil.')
+        return redirecionar(request)
+
+    if discente_existe(usuario):
+        perfil = usuario.discente
+        perfil_link = 'core/usuario/profile_discente.html'
+        grupos = criar_string(usuario.groups.all())
+    elif docente_existe(usuario):
+        perfil = usuario.docente
+        perfil_link = 'core/usuario/profile_docente.html'
+        grupos = criar_string(usuario.groups.all())
+    else:
+        perfil = None
+        perfil_link = 'core/usuario/profile.html'
+        grupos = criar_string(usuario.groups.all())
+
+    context = {
+        'usuario': usuario,
+        'grupos': grupos,
+        'perfil': perfil,
+    }
+
+    return render(request, perfil_link, context)
 
 
 def plot(request):
