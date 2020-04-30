@@ -26,9 +26,9 @@ jobs:
         env:
           MYSQL_USER: sc_user
           MYSQL_PASSWORD: sc_user
-          MYSQL_DATABASE: scdb_dev
+          MYSQL_DATABASE: scdb_dev, scdb_test
         ports:
-          - 3306
+          - 3306:3306
 
     steps:
       - uses: actions/checkout@v2
