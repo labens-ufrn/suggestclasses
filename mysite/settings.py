@@ -30,15 +30,33 @@ print(SECRET_KEY)
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
-print(DEBUG)
 print(os.environ.get('DJANGO_SETTINGS_MODULE'))
-print(os.environ.get('ALLOWED_HOSTS'))
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', '82d45d51.ngrok.io']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', 'ce743d9a.ngrok.io']
 DOMAINS_WHITELIST = ALLOWED_HOSTS
 
-# Application definition
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGIN_REDIRECT_URL = '/core'
+LOGIN_URL = '/accounts/login'
+LOGOUT_REDIRECT_URL = '/core'
 
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = ''
+EMAIL_PORT = 587
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = True
+
+DEFAULT_FROM_EMAIL = 'SuggestClasses Admin <noreply@labens-ufrn.com>'
+EMAIL_SUBJECT_PREFIX = '[SuggestClasses] '
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+
+# Application definition
 INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'django.contrib.admin',
@@ -227,3 +245,4 @@ LOGGING = {
         },
     },
 }
+
