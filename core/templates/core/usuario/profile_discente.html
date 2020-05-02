@@ -5,66 +5,178 @@
   <section class="page-section" id="horarios">
     <div class="container">
 
-      <h2 class="page-section-heading text-center text-secondary mb-0">Dados do Usuário</h2>
-      <table class="table table-striped table-sm table-bordered">
-        <tr>
-          <td class="font-weight-bold" width="20%">Username</td>
-          <td>{{ usuario.username }}</td>
-        </tr>
-        <tr>
-          <td class="font-weight-bold" width="20%">Nome</td>
-          <td>{{ usuario.get_full_name }}</td>
-        </tr>
-        <tr>
-          <td class="font-weight-bold" width="20%">Email</td>
-          <td>{{ usuario.email }}</td>
-        </tr>
-        <tr>
-          <td class="font-weight-bold" width="20%">Grupos</td>
-          <td>{{ grupos }}</td>
-        </tr>
-        <tr>
-          <td class="font-weight-bold" width="20%">Data de Cadastro</td>
-          <td>{{ usuario.date_joined }}</td>
-        </tr>
-      </table>
+      <ul class="nav nav-tabs nav-justified">
+        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#usuario">Usuário</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#discente">Discente</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#horario">Horário</a></li>
+      </ul>
 
-      <h2 class="page-section-heading text-center text-secondary mb-0">Perfil Discente</h2>
+      <div class="tab-content">
+        <div id="usuario" class="tab-pane container active">
 
-      <table class="table table-striped table-sm table-bordered">
-        <tr>
-          <td class="font-weight-bold" width="20%">Matricula</td>
-          <td>{{ perfil.matricula }}</td>
-        </tr>
-        <tr>
-          <td class="font-weight-bold" width="20%">Nome</td>
-          <td>{{ perfil.nome_discente }}</td>
-        </tr>
-        <tr>
-          <td class="font-weight-bold" width="20%">Dados do Ingresso</td>
-          <td>{{ perfil.ano_ingresso }}.{{ perfil.periodo_ingresso }} - {{ perfil.forma_ingresso }}</td>
-        </tr>
-        <tr>
-          <td class="font-weight-bold" width="20%">Tipo Discente</td>
-          <td> {{ perfil.tipo_discente }}</td>
-        </tr>
-        <tr>
-          <td class="font-weight-bold" width="20%">Status</td>
-          <td>{{ perfil.status }}</td>
-        </tr>
-        <tr>
-          <td class="font-weight-bold" width="20%">Curso</td>
-          <td>{{ perfil.nome_curso }}</td>
-        </tr>
-        <tr>
-          <td class="font-weight-bold" width="20%">Unidade</td>
-          <td>{{ perfil.nome_unidade }}</td>
-        </tr>
-        <tr>
-          <td class="font-weight-bold" width="20%">Unidade Gestora</td>
-          <td>{{ perfil.nome_unidade_gestora }}</td>
-        </tr>
-      </table>
+          <h2 class="page-section-heading text-center text-secondary mb-0">Dados do Usuário</h2>
+          <table class="table table-striped table-sm table-bordered">
+            <tr>
+              <td class="font-weight-bold" width="20%">Username</td>
+              <td>{{ usuario.username }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold" width="20%">Nome</td>
+              <td>{{ usuario.get_full_name }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold" width="20%">Email</td>
+              <td>{{ usuario.email }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold" width="20%">Grupos</td>
+              <td>{{ grupos }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold" width="20%">Data de Cadastro</td>
+              <td>{{ usuario.date_joined }}</td>
+            </tr>
+          </table>
+        </div>
+        <div id="discente" class="tab-pane container fade">
+          <h2 class="page-section-heading text-center text-secondary mb-0">Perfil Discente</h2>
+
+          <table class="table table-striped table-sm table-bordered">
+            <tr>
+              <td class="font-weight-bold" width="20%">Matricula</td>
+              <td>{{ perfil.matricula }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold" width="20%">Nome</td>
+              <td>{{ perfil.nome_discente }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold" width="20%">Dados do Ingresso</td>
+              <td>{{ perfil.ano_ingresso }}.{{ perfil.periodo_ingresso }} - {{ perfil.forma_ingresso }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold" width="20%">Tipo Discente</td>
+              <td> {{ perfil.tipo_discente }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold" width="20%">Status</td>
+              <td>{{ perfil.status }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold" width="20%">Curso</td>
+              <td>{{ perfil.nome_curso }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold" width="20%">Unidade</td>
+              <td>{{ perfil.nome_unidade }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold" width="20%">Unidade Gestora</td>
+              <td>{{ perfil.nome_unidade_gestora }}</td>
+            </tr>
+          </table>
+        </div>
+        <div id="horario" class="tab-pane container fade">
+          <table class="table table-striped table-sm table-bordered">
+            <thead class="thead-light">
+            <tr align="center">
+              <th colspan="6">Sugestões de Turmas do Período {{ ano_periodo }} - Semestres: {{ semestres_atual }}
+                <div class="align-middle" style="font-size: 12px">
+                  <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>
+                  <span class="align-middle">Obrigatória&nbsp;&nbsp;</span>
+                  <span class="material-icons md-18 align-middle" style="color: green">bookmark</span>
+                  <span class="align-middle">Optativa&nbsp;&nbsp;</span>
+                  <span class="material-icons md-18 align-middle" style="color: dodgerblue">school</span>
+                  <span class="align-middle">Vagas&nbsp;&nbsp;</span>
+                  <span class="material-icons md-18 align-middle" style="color: dodgerblue">star</span>
+                  <span class="align-middle">Interessados&nbsp;&nbsp;</span>
+                  <span class="material-icons md-18 align-middle" style="color: dodgerblue">find_in_page</span>
+                  <span class="align-middle">Detalhar&nbsp;&nbsp;</span>
+                </div>
+              </th>
+            </tr>
+            <tr align="center">
+              <th scope="col">#</th>
+              <th scope="col">Segunda</th>
+              <th scope="col">Terça</th>
+              <th scope="col">Quarta</th>
+              <th scope="col">Quinta</th>
+              <th scope="col">Sexta</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for semana in horarios %}
+              <tr>
+                <th class="align-middle" scope="row" width="10%" style="font-size: 12px;text-align: center;">
+                  {{ semana.0.horario.ordem }}º: {{ semana.0.horario.hora_inicio }} - {{ semana.0.horario.hora_final }}
+                </th>
+                {% for th in semana %}
+                  <td align="center" width="18%">
+                    {% for turma in th.turmas %}
+                      <div class="sugestao-turma border">
+                        {% if turma.semestre != 0 %}
+                          <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>
+                          <span class="align-middle" style="color: darkslateblue">
+                        &nbsp;{{ turma.componente.codigo }} - T{{ turma.codigo_turma }}&nbsp;
+                      </span>
+                          <span class="material-icons md-18 align-middle" style="color: darkslateblue">
+                          filter_{{ turma.semestre }}
+                      </span>
+                        {% else %}
+                          <span class="material-icons md-18 align-middle" style="color: green">bookmark</span>
+                          <span class="align-middle" style="color: green">
+                        &nbsp;{{ turma.componente.codigo }} - T{{ turma.codigo_turma }}&nbsp;
+                      </span>
+                          <span class="material-icons md-18 align-middle" style="color: green">
+                        check_circle_outline
+                      </span>
+                        {% endif %}
+                        <br/>
+                        <b>{{ turma.componente.nome }}</b>
+                        <br/>
+                        {% if turma.docente is not None %}
+                          {% if turma.docente.nome == 'SUBSTITUTO' %}
+                            <span style="color: orangered">
+                          {% else %}
+                            <span style="color: darkblue">
+                          {% endif %}
+                        {{ turma.docente.primeiro_nome }} ({{ turma.docente.siape }})
+                        </span> <br/>
+                        {% elif turma.matricula_docente_externo is not None and turma.matricula_docente_externo != '' %}
+                          <i style="color: darkorange">VOLUNTÁRIO/EXTERNO ({{ turma.matricula_docente_externo }})</i>
+                          <br/>
+                        {% else %}
+                          <b style="color: red">DOCENTE NÃO DEFINIDO</b> <br/>
+                        {% endif %}
+                        <i>{{ turma.local }}</i> <br/>
+                        <span class="material-icons md-18 align-middle" style="color: dodgerblue">school</span>
+                        <span class="align-middle" style="color: dodgerblue">
+                        <b>{{ turma.capacidade_aluno }}</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+
+                        <a href="{% url 'sugestao_solicitar' turma.pk %}?next={{ request.path|urlencode }}">
+                      <span class="material-icons md-18 align-middle">star</span>
+                      <span class="align-middle">
+                        <b>{{ turma.solicitacaoturma_set.count }}</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    </a>
+                        <a href="{% url 'sugestao_detalhar' turma.pk %}">
+                      <span class="material-icons md-18 align-middle">
+                        find_in_page
+                      </span>
+                    </a>
+                      </div>
+                    {% endfor %}
+                  </td>
+                {% endfor %}
+              </tr>
+            {% empty %}
+              <tr>
+                <td class="align-middle text-center" colspan="6">Não há Sugestões de Turmas cadastradas!</td>
+              </tr>
+            {% endfor %}
+            <tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </section>
 {% endblock %}

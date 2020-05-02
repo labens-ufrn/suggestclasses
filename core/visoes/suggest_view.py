@@ -12,10 +12,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from core.bo.docente import get_funcao_by_siape
 from core.bo.sevices import get_organizacao_by_componente
 from core.bo.sugestao import solicitacao_incluir
-from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, carrega_turmas_horario, converte_desc_horario
+from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, carrega_turmas_horario, converte_desc_horario, \
+    TurmaHorario
 from core.config.config import get_config
 from core.forms import SugestaoTurmaForm
-from core.models import SugestaoTurma, SolicitacaoTurma
+from core.models import SugestaoTurma, SolicitacaoTurma, Horario
 from mysite.settings import DOMAINS_WHITELIST
 
 logger = logging.getLogger('suggestclasses.logger')
@@ -351,3 +352,61 @@ def discente_existe(usuario):
         return discente is not None
     except ObjectDoesNotExist:
         return False
+
+
+def discente_grade_horarios(request, discente):
+
+    ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
+    ano = config.get('PeriodoSeguinte', 'ano')
+    periodo = config.get('PeriodoSeguinte', 'periodo')
+
+    turmas = SolicitacaoTurma.objects.filter(solicitador=discente, turma__ano=ano,
+                                             turma__periodo=periodo).select_related('turma')
+
+    turmas_por_horario = carrega_turmas_por_horario(turmas)
+
+    return turmas_por_horario
+
+
+def carrega_turmas_por_horario(turmas):
+    """
+    Carrega uma lista com 16 posições representando os 16 períodos de 50 min de aulas em todos os turnos.
+    Cada posição contém outra lista de 5 posições representando os dias da semana.
+    :param turmas: Uma lista de Turmas ou Sugestões de Turma.
+    :return: Uma lista bidimensional representando a grade de horários com a lista de turmas
+    em cada horário.
+    """
+    tt = []
+    tt.extend(carrega_horario_turmas_por_turno(turmas, 'M'))
+    tt.extend(carrega_horario_turmas_por_turno(turmas, 'T'))
+    tt.extend(carrega_horario_turmas_por_turno(turmas, 'N'))
+    return tt
+
+
+def carrega_horario_turmas_por_turno(turmas, turno):
+    """
+    Carrega uma lista com 16 posições representando os 16 períodos de 50 min de aulas para um turno.
+    Cada posição contém outra lista de 5 posições representando os dias da semana.
+    :param turmas: Uma lista de Turmas ou Sugestões de Turma.
+    :param turno: Turno selecionado entre as opções M, T e N.
+    :return: Uma lista bidimensional representando a grade de horários com a lista de turmas
+    em cada horário.
+    """
+    tt = []
+    n = 7
+    if turno == 'N':
+        n = 5
+
+    for i in range(1, n):
+        horarios = Horario.objects.filter(turno=turno, ordem=i).order_by('dia')
+        turmas_horario = []
+        for h in horarios:
+            turmas_por_horario = []
+            for t in turmas:
+                horarios_solicitacao = list(t.turma.horarios.all())
+                if horarios_solicitacao.__contains__(h):
+                    turmas_por_horario.append(t.turma)
+            th = TurmaHorario(h, turmas_por_horario)
+            turmas_horario.append(th)
+        tt.append(turmas_horario)
+    return tt
