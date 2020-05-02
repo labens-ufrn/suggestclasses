@@ -198,6 +198,28 @@ def carrega_horario_turmas_por_turno(turmas, turno):
     return tt
 
 
+def get_turmas_por_horario_new(turmas, horario):
+    turmas_por_horario = []
+
+    for t in turmas:
+        print(t.horarios.all())
+        if t.descricao_horario != '':
+            horarios = list(t.horarios.all())
+            teste1 = t.horarios.all().__contains__(horario)
+            if horarios.__contains__(horario):
+                print('Teste 1')
+            teste2 = horario.turmas.__contains__(t)
+            print('Teste 1: ' + teste1.__str__())
+            print('Teste 2: ' + teste2.__str__())
+            turmas_por_horario.append(t)
+        elif t.descricao_horario == '':
+            print('Turma sem Horário: ' + t.componente.nome)
+        else:
+            print('Turma com Horário Inválido: ' + t.componente.nome)
+
+    return turmas_por_horario
+
+
 class TurmaHorario(object):
 
     def __init__(self, horario, turmas):
