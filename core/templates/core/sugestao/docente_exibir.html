@@ -1,0 +1,13 @@
+{% if turma.docente is not None %}
+  {% if turma.docente.nome == 'SUBSTITUTO' %}
+    <span style="color: orangered">
+  {% else %}
+    <span style="color: darkblue">
+  {% endif %}
+    {{ turma.docente.primeiro_nome }} ({{ turma.docente.siape }})
+  </span>
+{% elif turma.matricula_docente_externo is not None and turma.matricula_docente_externo != '' %}
+  <i style="color: darkorange">VOLUNTÁRIO/EXTERNO ({{ turma.matricula_docente_externo }})</i>
+{% else %}
+  <b style="color: red">DOCENTE NÃO DEFINIDO</b>
+{% endif %}
