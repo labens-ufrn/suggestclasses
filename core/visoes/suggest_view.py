@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from core.bo.docente import get_funcao_by_siape
 from core.bo.sevices import get_organizacao_by_componente
-from core.bo.sugestao import solicitacao_incluir
+from core.bo.sugestao import solicitacao_incluir, solicitacao_verificar_choques
 from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, carrega_turmas_horario, converte_desc_horario, \
     TurmaHorario
 from core.config.config import get_config
@@ -327,6 +327,16 @@ def atualizar_solicitacao(request, pk):
     usuario = request.user
     if not discente_existe(usuario):
         messages.error(request, 'Não há um discente relacionado ao usuário.')
+        return redirecionar(request)
+
+    turma = SugestaoTurma.objects.get(pk=pk)
+
+    choques_componentes, choques_horarios, houve_choques = \
+        solicitacao_verificar_choques(turma, usuario.discente)
+
+    if houve_choques:
+        messages.error(request, 'A turma ' + str(turma) + ' tem choque com: ' + criar_string(list(choques_componentes)) +
+                       ', nos horários: ' + criar_string(list(choques_horarios)) + '.')
         return redirecionar(request)
 
     resultado, created = solicitacao_incluir(usuario, pk)
