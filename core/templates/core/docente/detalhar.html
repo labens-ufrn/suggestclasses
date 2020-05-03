@@ -5,15 +5,15 @@
   <section class="page-section" id="horarios">
     <div class="container">
 
-      <h2 class="page-section-heading text-center text-secondary mb-0">Detalhar Sugestões de Turmas</h2>
+      <h2 class="page-section-heading text-center text-secondary mb-0">Detalhar Docente</h2>
       <br />
       <table class="table table-striped table-sm table-bordered">
         <tr>
-          <td class="font-weight-bold" width="18%">Siape</td>
+          <td class="font-weight-bold" width="20%">Siape</td>
           <td>{{ object.siape }}</td>
         </tr>
         <tr>
-          <td class="font-weight-bold" width="18%">Nome</td>
+          <td class="font-weight-bold" width="20%">Nome</td>
           <td>{{ object.nome }}
             <a href="https://sigaa.ufrn.br/sigaa/public/docente/portal.jsf?siape={{ object.siape }}">
               <span class="material-icons md-18 align-middle">
@@ -23,36 +23,42 @@
           </td>
         </tr>
         <tr>
-          <td class="font-weight-bold" width="18%">Formação</td>
+          <td class="font-weight-bold" width="20%">Formação</td>
           <td>{{ object.formacao }}</td>
         </tr>
         <tr>
-          <td class="font-weight-bold" width="18%">Tipo Jornada Trabalho</td>
+          <td class="font-weight-bold" width="20%">Tipo Jornada Trabalho</td>
           <td>{{ object.tipo_jornada_trabalho }}</td>
         </tr>
         <tr>
-          <td class="font-weight-bold" width="18%">Vínculo</td>
+          <td class="font-weight-bold" width="20%">Vínculo</td>
           <td>{{ object.vinculo }}</td>
         </tr>
         <tr>
-          <td class="font-weight-bold" width="18%">Categoria</td>
+          <td class="font-weight-bold" width="20%">Categoria</td>
           <td>{{ object.categoria }}</td>
         </tr>
         <tr>
-          <td class="font-weight-bold" width="18%">Classe Funcional</td>
+          <td class="font-weight-bold" width="20%">Classe Funcional</td>
           <td>{{ object.classe_funcional }}</td>
         </tr>
         <tr>
-          <td class="font-weight-bold" width="18%">Lotação</td>
+          <td class="font-weight-bold" width="20%">Lotação</td>
           <td>{{ object.lotacao }}</td>
         </tr>
         <tr>
-          <td class="font-weight-bold" width="18%">Admissão</td>
+          <td class="font-weight-bold" width="20%">Admissão</td>
           <td>{{ object.admissao }}</td>
         </tr>
         <tr>
-          <td class="font-weight-bold" width="18%">Usuário</td>
-          <td>{{ object.usuario }}</td>
+          <td class="font-weight-bold" width="20%">Usuário</td>
+          <td>
+            {% if object.usuario %}
+              {{ object.usuario }}
+            {% else %}
+              <b style="color: red">Usuário não definido!</b>
+            {% endif %}
+          </td>
         </tr>
       </table>
     </div>
