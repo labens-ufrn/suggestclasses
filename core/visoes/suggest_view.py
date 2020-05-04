@@ -414,7 +414,7 @@ def carrega_horario_turmas_por_turno(turmas, turno):
             turmas_por_horario = []
             for t in turmas:
                 horarios_solicitacao = list(t.turma.horarios.all())
-                if horarios_solicitacao.__contains__(h):
+                if h in horarios_solicitacao:
                     turmas_por_horario.append(t.turma)
             th = TurmaHorario(h, turmas_por_horario)
             turmas_horario.append(th)
