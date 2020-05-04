@@ -18,6 +18,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 from core.models import Curso, ComponenteCurricular, EstruturaCurricular, SugestaoTurma, Sala, Docente, Turma, \
     SolicitacaoTurma
+from core.config.config import get_config
 from core.visoes.flow_view import flow_horizontal, flow_opcionais
 from .bo.curso import get_cursos
 from .bo.discentes import get_discentes, get_discentes_ativos
@@ -34,11 +35,12 @@ from .forms import CadastroUsuarioForm
 from .models import Horario
 from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir, sugestao_editar, \
     redirecionar, sugestao_deletar, atualizar_solicitacao, discente_existe, docente_existe, criar_string, \
-    discente_grade_horarios
+    discente_grade_horarios, solicitacao_discente_deletar, get_solicitacoes
 from .visoes.turma_view import turmas_grade
 from .visoes.user_view import criar_usuario, autenticar_logar
 
 logger = logging.getLogger('suggestclasses.logger')
+config = get_config()
 
 
 def index(request):
@@ -497,6 +499,11 @@ def solicitacao_turma_listar(request, pk):
     return render(request, 'core/sugestao/solicitacao_listar.html', context)
 
 
+@permission_required("core.delete_solicitacaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def solicitacao_deletar(request, pk):
+    return solicitacao_discente_deletar(request, pk)
+
+
 def sugestao_dir_list(request):
     dir_ddir = get_estrutura_direito()
     sugestao_incluir_link = '/core/sugestao/dir/incluir'
@@ -676,17 +683,24 @@ def search_salas(request):
 
 @login_required(login_url='/accounts/login')
 def profile(request, username):
+    ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
+    ano = config.get('PeriodoSeguinte', 'ano')
+    periodo = config.get('PeriodoSeguinte', 'periodo')
     usuario = User.objects.get(username=username)
 
     if request.user != usuario:
         messages.error(request, 'Você não tem permissão de visualizar esse Perfil.')
         return redirecionar(request)
 
+    horarios = None
+    solicitacao_list = None
+
     if discente_existe(usuario):
         perfil = usuario.discente
         perfil_link = 'core/usuario/profile_discente.html'
         grupos = criar_string(usuario.groups.all())
-        horarios = discente_grade_horarios(request, perfil)
+        horarios = discente_grade_horarios(perfil, ano, periodo)
+        solicitacao_list = get_solicitacoes(perfil, ano, periodo)
     elif docente_existe(usuario):
         perfil = usuario.docente
         perfil_link = 'core/usuario/profile_docente.html'
@@ -701,6 +715,9 @@ def profile(request, username):
         'grupos': grupos,
         'perfil': perfil,
         'horarios': horarios,
+        'ano_periodo': ano_periodo,
+        'solicitacao_deletar_link': 'solicitacao_deletar',
+        'solicitacao_list': solicitacao_list,
     }
 
     return render(request, perfil_link, context)
