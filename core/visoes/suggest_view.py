@@ -226,6 +226,19 @@ def sugestao_deletar(request, pk, estrutura, template_name='core/sugestao/confir
     return render(request, template_name, {'object': sugestao})
 
 
+@permission_required("core.delete_solicitacaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def solicitacao_discente_deletar(request, pk, template_name='core/sugestao/solicitacao_confirm_delete.html'):
+    solicitacao = get_object_or_404(SolicitacaoTurma, pk=pk)
+    if not tem_permissao(request, solicitacao):
+        messages.error(request, 'Você não tem permissão de Excluir esta Solicitacao de Turma.')
+        return redirecionar(request)
+    if request.method == 'POST':
+        solicitacao.delete()
+        messages.success(request, 'Solicitação de Turma excluída com sucesso.')
+        return redirecionar(request)
+    return render(request, template_name, {'object': solicitacao})
+
+
 def redirecionar(request):
     url = request.GET.get("next", "/")
     parsed_uri = urlparse(url)
@@ -245,6 +258,14 @@ def verificar_permissoes(request, sugestao, estrutura):
         return True
     # Verificar se o Usuário é o Coordenador do Curso da Sugestão de Turma
     if is_coordenador(usuario, estrutura.curso):
+        return True
+    return False
+
+
+def tem_permissao(request, solicitacao):
+    # Verificar se o Usuário é o criador da Solicitação de Turma
+    usuario = request.user
+    if usuario == solicitacao.usuario:
         return True
     return False
 
@@ -364,18 +385,15 @@ def discente_existe(usuario):
         return False
 
 
-def discente_grade_horarios(request, discente):
-
-    ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
-    ano = config.get('PeriodoSeguinte', 'ano')
-    periodo = config.get('PeriodoSeguinte', 'periodo')
-
-    turmas = SolicitacaoTurma.objects.filter(solicitador=discente, turma__ano=ano,
-                                             turma__periodo=periodo).select_related('turma')
-
-    turmas_por_horario = carrega_turmas_por_horario(turmas)
-
+def discente_grade_horarios(discente, ano, periodo):
+    solicitacoes = get_solicitacoes(discente, ano, periodo)
+    turmas_por_horario = carrega_turmas_por_horario(solicitacoes)
     return turmas_por_horario
+
+
+def get_solicitacoes(discente, ano, periodo):
+    solicitacoes = SolicitacaoTurma.objects.filter(solicitador=discente, turma__ano=ano, turma__periodo=periodo)
+    return solicitacoes
 
 
 def carrega_turmas_por_horario(turmas):
