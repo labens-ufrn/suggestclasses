@@ -21,31 +21,28 @@ def get_turmas(estrutura, semestre, ano, periodo):
 
 
 def get_sugestao_turmas(estrutura, semestre, ano, periodo):
-    # TODO Remover isso pois as informações de tipo_vinculo, semestre e curso serão informadas na inclusão
-    org_curricular = get_oc_by_semestre(estrutura, semestre)
-
-    sugestoes_turmas = []
-    for oc in org_curricular:
-        turmas_componente = SugestaoTurma.objects.filter(componente=oc.componente, ano=ano, periodo=periodo)
-        for t in turmas_componente:
-            # turma.tipo_vinculo = oc.tipo_vinculo
-            # turma.semestre = oc.semestre
-            # turma.curso = estrutura.curso
-            sugestoes_turmas.append(t)
+    """
+    Retorna a lista de Sugestões de Turmas de um semestre de um Curso no ano-período definido.
+    :param estrutura: A Estrutura Curricular do Curso. # TODO Mudar para passar apenas o curso.
+    :param semestre: O semestre que as turmas são ofertadas (1, 2, 3, 4, 5, 6, 7, 8, 0).
+    :param ano: Ano do calendário acadêmico.
+    :param periodo: Periodo do calendário acadêmico: 1º ou 2º.
+    :return: Uma lista de @SugestaoTurma para o curso naquele semestre.
+    """
+    sugestoes_turmas = list(
+        SugestaoTurma.objects.filter(curso=estrutura.curso, semestre=semestre, ano=ano, periodo=periodo))
 
     return sugestoes_turmas
 
 
 def get_turmas_por_horario(turmas, dia, turno, ordem):
     turmas_horario = []
-    horario = Horario(dia=str(dia), turno=turno, ordem=str(ordem))
+    horario = Horario.objects.get(dia=dia, turno=turno, ordem=ordem)
     for t in turmas:
-        desc_horario = t.descricao_horario
-        if desc_horario == '':
+        horarios_turma = list(t.horarios.all())
+        if not horarios_turma:
             print('Turma sem Horário: ' + t.componente.nome)
-        horarios = converte_desc_horario(descricao_horario=desc_horario)
-
-        if desc_horario != '' and horarios.__contains__(horario):
+        if horario in horarios_turma:
             turmas_horario.append(t)
     return turmas_horario
 
