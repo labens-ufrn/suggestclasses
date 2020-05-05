@@ -191,25 +191,50 @@ def carrega_horario_turmas_por_turno(turmas, turno):
     return tt
 
 
-def get_turmas_por_horario_new(turmas, horario):
-    turmas_por_horario = []
+def carrega_sugestao_horario(curso, ano, periodo):
+    """
+    Carrega uma lista com 16 posições representando os 16 períodos de 50 min de aulas em todos os turnos.
+    Cada posição contém outra lista de 5 posições representando os dias da semana.
+    :param turmas: Uma lista de Turmas ou Sugestões de Turma.
+    :return: Uma lista bidimensional representando a grade de horários com a lista de turmas
+    em cada horário.
+    """
+    tt = []
+    tt.extend(carrega_horario_sugestao_por_turno(curso, 'M', ano, periodo))
+    tt.extend(carrega_horario_sugestao_por_turno(curso, 'T', ano, periodo))
+    tt.extend(carrega_horario_sugestao_por_turno(curso, 'N', ano, periodo))
+    return tt
 
-    for t in turmas:
-        print(t.horarios.all())
-        if t.descricao_horario != '':
-            horarios = list(t.horarios.all())
-            teste1 = t.horarios.all().__contains__(horario)
-            if horarios.__contains__(horario):
-                print('Teste 1')
-            teste2 = horario.turmas.__contains__(t)
-            print('Teste 1: ' + teste1.__str__())
-            print('Teste 2: ' + teste2.__str__())
-            turmas_por_horario.append(t)
-        elif t.descricao_horario == '':
-            print('Turma sem Horário: ' + t.componente.nome)
-        else:
-            print('Turma com Horário Inválido: ' + t.componente.nome)
 
+def carrega_horario_sugestao_por_turno(curso, turno, ano, periodo):
+    """
+    Carrega uma lista com 16 posições representando os 16 horários de aula de 50 min de aulas para um turno.
+    Cada posição contém outra lista de 5 posições representando os dias da semana.
+    :param curso: Curso de interesse para carregar turmas.
+    :param ano: Ano do calendário acadêmico das turmas.
+    :param periodo: Período do calendário acadêmico das turmas.
+    :param turno: Turno selecionado entre as opções M, T e N.
+    :return: Uma lista bidimensional representando a grade de horários com a lista de turmas
+    em cada horário.
+    """
+    tt = []
+    n = 7
+    if turno == 'N':
+        n = 5
+
+    for i in range(1, n):
+        horarios = Horario.objects.filter(turno=turno, ordem=i).order_by('dia')
+        turmas_horario = []
+        for h in horarios:
+            turmas_por_horario = get_sugestoes_por_horario(h, curso, ano, periodo)
+            th = TurmaHorario(h, turmas_por_horario)
+            turmas_horario.append(th)
+        tt.append(turmas_horario)
+    return tt
+
+
+def get_sugestoes_por_horario(horario, curso, ano, periodo):
+    turmas_por_horario = list(horario.sugestoes.all().filter(curso=curso, ano=ano, periodo=periodo))
     return turmas_por_horario
 
 

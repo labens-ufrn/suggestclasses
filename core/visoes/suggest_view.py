@@ -13,7 +13,7 @@ from core.bo.docente import get_funcao_by_siape
 from core.bo.sevices import get_organizacao_by_componente
 from core.bo.sugestao import solicitacao_incluir, solicitacao_verificar_choques
 from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, carrega_turmas_horario, converte_desc_horario, \
-    TurmaHorario
+    TurmaHorario, carrega_sugestao_horario
 from core.config.config import get_config
 from core.forms import SugestaoTurmaForm
 from core.models import SugestaoTurma, SolicitacaoTurma, Horario
@@ -33,7 +33,7 @@ def sugestao_grade_horarios(request, estrutura, sugestao_incluir_link, sugestao_
 
     turmas = carrega_sugestao_turmas(estrutura, semestres, ano, periodo)
 
-    tt = carrega_turmas_horario(turmas)
+    tt = carrega_sugestao_horario(estrutura.curso, ano, periodo)
 
     context = {
         'tt': tt,
