@@ -27,9 +27,9 @@ jobs:
           - 3306
         env:
           MYSQL_USER: sc_user
-          MYSQL_PASSWORD: sc_user
+          MYSQL_PASSWORD: sc_user_pass
           MYSQL_DATABASE: scdb_dev, scdb_test
-          MYSQL_ROOT_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: sc_admin_pass
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
     steps:
@@ -45,7 +45,8 @@ jobs:
       - name: Verify MySQL connection from host
         run: |
           sudo apt-get install -y mysql-client
-          mysql --host 127.0.0.1 --port 3306 -uroot -ppassword -e "SHOW DATABASES"
+          mysql --host 127.0.0.1 --port 3306 -usc_user -psc_user_pass -e "SHOW DATABASES"
+          mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "SHOW DATABASES"
 
       - name: Set up Python 3.8
         uses: actions/setup-python@v1
