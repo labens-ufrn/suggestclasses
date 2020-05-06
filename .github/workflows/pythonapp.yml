@@ -24,7 +24,7 @@ jobs:
       mariadb:
         image: mariadb:latest
         ports:
-          - 3306
+          - 32768:3306
         env:
           MYSQL_USER: sc_user
           MYSQL_PASSWORD: sc_user_pass
@@ -45,8 +45,8 @@ jobs:
       - name: Verify MySQL connection from host
         run: |
           sudo apt-get install -y mysql-client
-          mysql --host 127.0.0.1 --port 3306 -usc_user -psc_user_pass -e "SHOW DATABASES"
-          mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "SHOW DATABASES"
+          mysql --host 127.0.0.1 --port 32768 -usc_user -psc_user_pass -e "SHOW DATABASES"
+          mysql --host 127.0.0.1 --port 32768 -uroot -psc_admin_pass -e "SHOW DATABASES"
 
       - name: Set up Python 3.8
         uses: actions/setup-python@v1
