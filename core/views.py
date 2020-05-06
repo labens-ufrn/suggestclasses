@@ -706,6 +706,7 @@ def profile(request, username):
         perfil = usuario.docente
         perfil_link = 'core/usuario/profile_docente.html'
         grupos = criar_string(usuario.groups.all())
+        horarios = docente_grade_horarios(perfil, ano, periodo, semestres)
     else:
         perfil = None
         perfil_link = 'core/usuario/profile.html'
