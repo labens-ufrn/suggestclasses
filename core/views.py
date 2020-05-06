@@ -35,7 +35,7 @@ from .forms import CadastroUsuarioForm
 from .models import Horario
 from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir, sugestao_editar, \
     redirecionar, sugestao_deletar, atualizar_solicitacao, discente_existe, docente_existe, criar_string, \
-    discente_grade_horarios, solicitacao_discente_deletar, get_solicitacoes
+    discente_grade_horarios, solicitacao_discente_deletar, get_solicitacoes, docente_grade_horarios
 from .visoes.turma_view import turmas_grade
 from .visoes.user_view import criar_usuario, autenticar_logar
 
@@ -693,13 +693,14 @@ def profile(request, username):
         return redirecionar(request)
 
     horarios = None
+    semestres = [1, 2, 3, 4, 5, 6, 7, 8, 0]
     solicitacao_list = None
 
     if discente_existe(usuario):
         perfil = usuario.discente
         perfil_link = 'core/usuario/profile_discente.html'
         grupos = criar_string(usuario.groups.all())
-        horarios = discente_grade_horarios(perfil, ano, periodo)
+        horarios = discente_grade_horarios(perfil, ano, periodo, semestres)
         solicitacao_list = get_solicitacoes(perfil, ano, periodo)
     elif docente_existe(usuario):
         perfil = usuario.docente

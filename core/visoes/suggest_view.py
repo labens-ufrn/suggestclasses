@@ -389,6 +389,11 @@ def discente_grade_horarios(discente, ano, periodo):
     return turmas_por_horario
 
 
+def docente_grade_horarios(docente, ano, periodo, semestres):
+    turmas_por_horario = carrega_sugestao_horario(ano=ano, periodo=periodo, docente=docente, semestres=semestres)
+    return turmas_por_horario
+
+
 def get_solicitacoes(discente, ano, periodo):
     solicitacoes = SolicitacaoTurma.objects.filter(solicitador=discente, turma__ano=ano, turma__periodo=periodo)
     return solicitacoes
