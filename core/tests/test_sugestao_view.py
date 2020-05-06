@@ -30,12 +30,6 @@ class SugestaoViewTests(TestCase):
 
         self.assertEqual(200, response.status_code)
 
-    def test_sugestao_mat_list(self):
-        client = Client()
-        response = client.get(reverse('sugestao_mat_list'))
-
-        self.assertEqual(200, response.status_code)
-
     def test_sugestao_detalhar(self):
         client = Client()
         sugestao = SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99999)

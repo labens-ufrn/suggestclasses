@@ -540,7 +540,7 @@ def criar_sugestoes_turmas():
                                      periodo=2, descricao_horario='35T12', capacidade_aluno=25, tipo='REGULAR',
                                      total_solicitacoes=0, criador=criador_chefe.usuario,
                                      tipo_vinculo='OPTATIVO',
-                                     semestre=1, curso=curso)
+                                     semestre=2, curso=curso)
 
     if not SugestaoTurma.objects.filter(codigo_turma='02', componente=componente3, ano=2020, periodo=2).exists():
         SugestaoTurma.objects.create(codigo_turma='02', docente=docente2, matricula_docente_externo=None,
@@ -548,7 +548,7 @@ def criar_sugestoes_turmas():
                                      periodo=2, descricao_horario='35T34', capacidade_aluno=25, tipo='REGULAR',
                                      total_solicitacoes=0, criador=criador_chefe.usuario,
                                      tipo_vinculo='OPTATIVO',
-                                     semestre=1, curso=curso)
+                                     semestre=2, curso=curso)
 
 
 def remover_sugestoes_turmas():
