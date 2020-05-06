@@ -700,7 +700,7 @@ def profile(request, username):
         perfil = usuario.discente
         perfil_link = 'core/usuario/profile_discente.html'
         grupos = criar_string(usuario.groups.all())
-        horarios = discente_grade_horarios(perfil, ano, periodo, semestres)
+        horarios = discente_grade_horarios(perfil, ano, periodo)
         solicitacao_list = get_solicitacoes(perfil, ano, periodo)
     elif docente_existe(usuario):
         perfil = usuario.docente
