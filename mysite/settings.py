@@ -126,6 +126,7 @@ DATABASES = {
             # 'SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
         },
         'TEST': {
+            'ENGINE': 'django.db.backends.sqlite3',
             'NAME': 'scdb_test',
             'USER': 'sc_user',
             'PASSWORD': 'sc_user',
