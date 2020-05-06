@@ -112,7 +112,7 @@ DATABASES = {
         'NAME': 'scdb_dev',
         'USER': 'sc_user',
         'PASSWORD': 'sc_user_pass',
-        'HOST': '127.0.0.1',
+        'HOST': 'mariadb',
         'PORT': '32768',
         # optional:
         'OPTIONS': {
