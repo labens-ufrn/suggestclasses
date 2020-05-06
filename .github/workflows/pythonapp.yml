@@ -74,6 +74,7 @@ jobs:
       - name: Test with manage.py test
         run: |
           set -o allexport; source .env; set +o allexport
+          mysql --host 127.0.0.1 --port 32768 -uroot -psc_admin_pass -e "SELECT User, Host FROM mysql.user WHERE Host <> 'localhost'"
           python manage.py makemigrations core
           python manage.py migrate core
           python manage.py test core --keepdb
