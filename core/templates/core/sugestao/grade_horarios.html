@@ -89,11 +89,11 @@
         <tbody>
         {% for semana in tt %}
           <tr>
-            <th class="align-middle" scope="row" width="10%" style="font-size: 12px;text-align: center;">
+            <th class="align-middle" scope="row" width="12.5%" style="font-size: 12px;text-align: center;">
               {{ semana.0.horario.ordem }}º: {{ semana.0.horario.hora_inicio }} - {{ semana.0.horario.hora_final }}
             </th>
             {% for th in semana %}
-              <td align="center" width="18%">
+              <td class="align-middle text-center" width="17.5%">
                 {% for turma in th.turmas %}
                   <div class="sugestao-turma border">
                     {% if turma.semestre != 0 %}
@@ -117,8 +117,8 @@
                     <b>{{ turma.componente.nome }}</b>
                     <br/>
                     {% include 'core/sugestao/docente_exibir.html' %}
-                    <br />
-                    <i>{{ turma.local }}</i> <br/>
+                    <br/>
+                    <i>{{ turma.local.nome }} - {{ turma.local.get_campus_display }}</i> <br/>
                       <span class="material-icons md-18 align-middle" style="color: dodgerblue">school</span>
                       <span class="align-middle" style="color: dodgerblue">
                         <b>{{ turma.capacidade_aluno }}</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
