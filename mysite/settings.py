@@ -113,7 +113,7 @@ DATABASES = {
         'USER': 'sc_user',
         'PASSWORD': 'sc_user_pass',
         'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'PORT': '32768',
         # optional:
         'OPTIONS': {
             'charset': 'utf8',
