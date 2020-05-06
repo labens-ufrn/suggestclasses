@@ -32,7 +32,7 @@ print(SECRET_KEY)
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 print(os.environ.get('DJANGO_SETTINGS_MODULE'))
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', 'ce743d9a.ngrok.io']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver']
 DOMAINS_WHITELIST = ALLOWED_HOSTS
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
@@ -111,7 +111,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'scdb_dev',
         'USER': 'sc_user',
-        'PASSWORD': 'sc_user',
+        'PASSWORD': 'sc_user_pass',
         'HOST': '127.0.0.1',
         'PORT': '3306',
         # optional:
@@ -126,10 +126,9 @@ DATABASES = {
             # 'SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
         },
         'TEST': {
-            'ENGINE': 'django.db.backends.sqlite3',
             'NAME': 'scdb_test',
             'USER': 'sc_user',
-            'PASSWORD': 'sc_user',
+            'PASSWORD': 'sc_user_pass',
         },
     }
 }
