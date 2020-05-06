@@ -23,15 +23,30 @@ jobs:
     services:
       mariadb:
         image: mariadb:latest
+        ports:
+          - 3306
         env:
           MYSQL_USER: sc_user
           MYSQL_PASSWORD: sc_user
           MYSQL_DATABASE: scdb_dev, scdb_test
-        ports:
-          - 3306:3306
+          MYSQL_ROOT_PASSWORD: password
+        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
     steps:
       - uses: actions/checkout@v2
+      - name: Verify MariaDB connection
+        env:
+          PORT: ${{ job.services.mariadb.ports[3306] }}
+        run: |
+          while ! mysqladmin ping -h"127.0.0.1" -P"$PORT" --silent; do
+            sleep 1
+          done
+
+      - name: Verify MySQL connection from host
+        run: |
+          sudo apt-get install -y mysql-client
+          mysql --host 127.0.0.1 --port 3306 -uroot -ppassword -e "SHOW DATABASES"
+
       - name: Set up Python 3.8
         uses: actions/setup-python@v1
         with:
