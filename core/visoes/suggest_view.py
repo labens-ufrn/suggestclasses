@@ -31,9 +31,7 @@ def sugestao_grade_horarios(request, estrutura, sugestao_incluir_link, sugestao_
     ano = config.get('PeriodoSeguinte', 'ano')
     periodo = config.get('PeriodoSeguinte', 'periodo')
 
-    turmas = carrega_sugestao_turmas(estrutura, semestres, ano, periodo)
-
-    tt = carrega_sugestao_horario(estrutura.curso, ano, periodo)
+    tt = carrega_sugestao_horario(ano, periodo, curso=estrutura.curso, semestres=semestres)
 
     context = {
         'tt': tt,

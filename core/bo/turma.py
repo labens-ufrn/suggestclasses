@@ -191,29 +191,35 @@ def carrega_horario_turmas_por_turno(turmas, turno):
     return tt
 
 
-def carrega_sugestao_horario(curso, ano, periodo):
+def carrega_sugestao_horario(ano, periodo, curso=None, docente=None, semestres=None):
     """
     Carrega uma lista com 16 posições representando os 16 períodos de 50 min de aulas em todos os turnos.
     Cada posição contém outra lista de 5 posições representando os dias da semana.
-    :param turmas: Uma lista de Turmas ou Sugestões de Turma.
+    :param curso: Curso de interesse para carregar turmas.
+    :param docente: Docente de interesse para carregar turmas.
+    :param ano: Ano do calendário acadêmico das turmas.
+    :param periodo: Período do calendário acadêmico das turmas.
+    :param semestres: Lista de semestres das turmas na Estrutura Curricular
     :return: Uma lista bidimensional representando a grade de horários com a lista de turmas
     em cada horário.
     """
     tt = []
-    tt.extend(carrega_horario_sugestao_por_turno(curso, 'M', ano, periodo))
-    tt.extend(carrega_horario_sugestao_por_turno(curso, 'T', ano, periodo))
-    tt.extend(carrega_horario_sugestao_por_turno(curso, 'N', ano, periodo))
+    tt.extend(carrega_horario_sugestao_por_turno('M', ano, periodo, curso, docente, semestres))
+    tt.extend(carrega_horario_sugestao_por_turno('T', ano, periodo, curso, docente, semestres))
+    tt.extend(carrega_horario_sugestao_por_turno('N', ano, periodo, curso, docente, semestres))
     return tt
 
 
-def carrega_horario_sugestao_por_turno(curso, turno, ano, periodo):
+def carrega_horario_sugestao_por_turno(turno, ano, periodo, curso=None, docente=None, semestres=None):
     """
     Carrega uma lista com 16 posições representando os 16 horários de aula de 50 min de aulas para um turno.
     Cada posição contém outra lista de 5 posições representando os dias da semana.
-    :param curso: Curso de interesse para carregar turmas.
     :param ano: Ano do calendário acadêmico das turmas.
     :param periodo: Período do calendário acadêmico das turmas.
     :param turno: Turno selecionado entre as opções M, T e N.
+    :param curso: Curso de interesse para carregar turmas.
+    :param docente: Docente de interesse para carregar turmas.
+    :param semestres: Lista de semestres das turmas na Estrutura Curricular
     :return: Uma lista bidimensional representando a grade de horários com a lista de turmas
     em cada horário.
     """
@@ -226,15 +232,28 @@ def carrega_horario_sugestao_por_turno(curso, turno, ano, periodo):
         horarios = Horario.objects.filter(turno=turno, ordem=i).order_by('dia')
         turmas_horario = []
         for h in horarios:
-            turmas_por_horario = get_sugestoes_por_horario(h, curso, ano, periodo)
+            turmas_por_horario = \
+                get_sugestoes_por_horario(horario=h, ano=ano, periodo=periodo,
+                                          curso=curso, docente=docente, semestres=semestres)
             th = TurmaHorario(h, turmas_por_horario)
             turmas_horario.append(th)
         tt.append(turmas_horario)
     return tt
 
 
-def get_sugestoes_por_horario(horario, curso, ano, periodo):
-    turmas_por_horario = list(horario.sugestoes.all().filter(curso=curso, ano=ano, periodo=periodo))
+def get_sugestoes_por_horario(horario, ano, periodo, curso=None, docente=None, semestres=None):
+    if not curso and not docente:
+        turmas_por_horario = list(horario.sugestoes.all().filter(
+            ano=ano, periodo=periodo, semestre__in=semestres))
+    elif curso and not docente:
+        turmas_por_horario = list(horario.sugestoes.all().filter(
+            curso=curso, ano=ano, periodo=periodo, semestre__in=semestres))
+    elif not curso and docente:
+        turmas_por_horario = list(horario.sugestoes.all().filter(
+            docente=docente, ano=ano, periodo=periodo, semestre__in=semestres))
+    else:
+        turmas_por_horario = list(horario.sugestoes.all().filter(
+            curso=curso, docente=docente, ano=ano, periodo=periodo, semestre__in=semestres))
     return turmas_por_horario
 
 
