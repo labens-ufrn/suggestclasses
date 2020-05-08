@@ -111,9 +111,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'scdb_dev',
         'USER': 'sc_user',
-        'PASSWORD': 'sc_user_pass',
-        'HOST': 'localhost',
-        'PORT': '32768',
+        'PASSWORD': 'sc_user',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
         # optional:
         'OPTIONS': {
             'charset': 'utf8',
