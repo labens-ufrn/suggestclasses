@@ -19,13 +19,29 @@ Os requisitos funcionais detalhados estão na página wiki [Requisitos Funcionai
 
 Na página [Documentação](docs/docs.md) temos os detalhes do projeto e a lista de documentos.
 
-## Create Database
+## Pré-requisitos
 
-Criar bancos de dados!
+### Criação do Banco de Dados (dev e test) e Usuário
+
+Utilzamos o SGBD MariaDB/MySql.
+
+```sql
+    CREATE DATABASE scdb_dev character set UTF8 collate utf8_bin;
+    CREATE DATABASE scdb_test character set UTF8 collate utf8_bin;
+
+    CREATE USER 'sc_user'@'localhost' IDENTIFIED BY 'password';
+
+    GRANT ALL ON scdb_dev.* TO 'sc_user'@'localhost';
+    GRANT ALL ON scdb_test.* TO 'sc_user'@'localhost';
+```
+
+### Dependências para usar o MariaDB e MySQL
 
 ```shell script
 sudo apt install python3-dev default-libmysqlclient-dev
 ```
+
+### Virtualenv e variáveis de ambiente
 
 Adicionar em ~/.profile as variáveis de ambiente:
 
@@ -33,6 +49,21 @@ Adicionar em ~/.profile as variáveis de ambiente:
 MARIA_HOME=/usr/bin/mysql
 PATH=$PATH:$MARIA_HOME/bin
 PYTHONHOME=/usr/bin
+```
+
+Criação do Ambiente Virtual com virtualenv na pasta ~/dev/python:
+
+```shell script
+virtualenv --python='/usr/bin/python3.8' envP38
+```
+
+Para ativar: ```source ~/dev/python/envP38/bin/activate```.
+Para desativar: ```deactivate```.
+
+### Instalação das Dependência do Projeto
+
+```shell script
+pip install -r requirements.txt
 ```
 
 ## Migrations
@@ -111,9 +142,7 @@ Then when you want to run the development server locally, use:
 
 When you finally deploy to Heroku, go to your app Settings tab and add DJANGO_SECRET_KEY to the Config Vars.
 
-
-
-# Outras Configurações
+## Outras Configurações
 
 * Arquivo _.editorconfig_ de estilo de codificação adicionado.
 
