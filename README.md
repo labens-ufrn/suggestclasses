@@ -87,6 +87,16 @@ $ python manage.py makemigrations core
 $ python manage.py migrate
 ```
 
+## Povoamento
+
+O sistema é baseado nos dados abertos da UFRN, desta forma é necessário povoar o banco de dados
+com informações de Horários, Centro, Salas, Departamentos, Componentes, etc.
+A ordem é importante e deve ser seguida conforme descrito abaixo.
+
+### Criar base de horários da UFRN
+
+Deve-se rodar o script ```povoar_horarios.py``` na pasta **dados**.
+
 ## Testes
 
 Rodar os testes mantendo o banco de testes:
