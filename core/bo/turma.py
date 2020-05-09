@@ -15,6 +15,9 @@ def get_turmas(estrutura, semestre, ano, periodo):
 
         for t in turmas:
             turma_estendida = TurmaEstendida(t, oc.tipo_vinculo, oc.semestre, estrutura.curso)
+            turma_estendida.save()
+            turma_estendida.horarios.set(t.horarios.all())
+            hs = turma_estendida.horarios.all()
             turmas_result.append(turma_estendida)
 
     return turmas_result

@@ -249,6 +249,7 @@ class Turma(models.Model):
     data_inicio = models.DateField()
     data_fim = models.DateField()
     descricao_horario = models.CharField(max_length=150)
+    horarios = models.ManyToManyField(Horario, related_name='turmas')
     total_solicitacoes = models.IntegerField(null=True)
     capacidade_aluno = models.IntegerField()
     tipo = models.CharField(max_length=50)
