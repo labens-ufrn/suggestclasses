@@ -23,9 +23,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'cg#p$g+j9tax!#a3cup@1$8obt2_+&k3q+pmu)5%asj6yjpkag'
-# SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
-#SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 SECRET_KEY = config('SECRET_KEY')
 print(SECRET_KEY)
 
@@ -33,7 +30,6 @@ print(SECRET_KEY)
 # DEBUG = True
 # DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 DEBUG = config('DEBUG', default=False, cast=bool)
-print(os.environ.get('DJANGO_SETTINGS_MODULE'))
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver']
 DOMAINS_WHITELIST = ALLOWED_HOSTS
@@ -116,7 +112,7 @@ DATABASES = {
         'USER': 'sc_user',
         'PASSWORD': 'sc_user',
         'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'PORT': config('MARIADB_PORT'),
         # optional:
         'OPTIONS': {
             'charset': 'utf8',
