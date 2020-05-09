@@ -41,7 +41,7 @@ Utilzamos o SGBD MariaDB/MySql.
 sudo apt install python3-dev default-libmysqlclient-dev
 ```
 
-### Virtualenv e variáveis de ambiente
+## Virtualenv e variáveis de ambiente
 
 Adicionar em ~/.profile as variáveis de ambiente:
 
@@ -65,6 +65,18 @@ Para desativar: ```deactivate```.
 ```shell script
 pip install -r requirements.txt
 ```
+
+## Ocultando a instância de configuração
+
+* Crie um arquivo .env na raiz do projeto e insira as seguintes variáveis.
+* SECRET_KEY=Sua$eCretKeyAqui (Pegue a secret key no arquivo settings.py)
+* DEBUG=True
+
+## Settings.py
+
+* from decouple import config
+* SECRET_KEY = config('SECRET_KEY')
+* DEBUG = config('DEBUG', default=False, cast=bool)
 
 ## Migrations
 
