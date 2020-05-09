@@ -48,7 +48,7 @@
       <br/>
       <table class="table table-striped table-sm table-bordered">
         <thead class="thead-light">
-        <tr align="center">
+        <tr class="text-center">
           <th colspan="6">Turmas do Período {{ periodo_selecionado }} - Semestres: {{ semestres_selecionado }} <br/>
             <div class="align-middle" style="font-size: 12px">
               <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>Obrigatória
@@ -56,7 +56,7 @@
             </div>
           </th>
         </tr>
-        <tr align="center">
+        <tr class="text-center">
           <th scope="col">#</th>
           <th scope="col">Segunda</th>
           <th scope="col">Terça</th>
@@ -68,11 +68,11 @@
         <tbody>
         {% for semana in turmas_por_horario %}
           <tr>
-            <th class="align-middle" scope="row" width="10%" style="font-size: 12px;text-align: center;">
+            <th class="align-middle" scope="row" width="12.5%" style="font-size: 12px;text-align: center;">
               {{ semana.0.horario.ordem }}º: {{ semana.0.horario.hora_inicio }} - {{ semana.0.horario.hora_final }}
             </th>
             {% for th in semana %}
-              <td align="center" width="18%">
+              <td class="text-center" width="17.5%">
                 {% for turma in th.turmas %}
                   <div class="sugestao-turma border">
                     {% if turma.semestre != 0 %}
