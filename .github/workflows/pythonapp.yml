@@ -24,7 +24,7 @@ jobs:
       mariadb:
         image: mariadb:latest
         ports:
-          - 3306:3306
+          - 3306
         env:
           MYSQL_USER: sc_user
           MYSQL_PASSWORD: sc_user
@@ -44,7 +44,7 @@ jobs:
 
       - name: Verify MySQL connection from host
         run: |
-          mysql --host 127.0.0.1 --port 3306 -usc_user -psc_user_pass -e "SHOW DATABASES"
+          mysql --host 127.0.0.1 --port 32768 -usc_user -psc_user_pass -e "SHOW DATABASES"
           mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "SHOW DATABASES"
           mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "SELECT User, Host FROM mysql.user WHERE Host <> 'localhost'"
 
