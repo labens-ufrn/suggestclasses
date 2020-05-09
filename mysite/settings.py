@@ -15,6 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import sys
 from django.contrib.messages import constants as messages
+from decouple import config
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,12 +25,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'cg#p$g+j9tax!#a3cup@1$8obt2_+&k3q+pmu)5%asj6yjpkag'
 # SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+#SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
 print(SECRET_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
-DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+# DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+DEBUG = config('DEBUG', default=False, cast=bool)
 print(os.environ.get('DJANGO_SETTINGS_MODULE'))
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver']
