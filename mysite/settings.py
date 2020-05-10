@@ -127,7 +127,7 @@ DATABASES = {
         'TEST': {
             'NAME': 'scdb_test',
             'USER': 'sc_user',
-            'PASSWORD': 'sc_user_pass',
+            'PASSWORD': 'sc_user',
         },
     }
 }
