@@ -29,10 +29,10 @@ Utilzamos o SGBD MariaDB/MySql.
     CREATE DATABASE scdb_dev character set UTF8 collate utf8_bin;
     CREATE DATABASE scdb_test character set UTF8 collate utf8_bin;
 
-    CREATE USER 'sc_user'@'localhost' IDENTIFIED BY 'password';
+    CREATE USER 'sc_user'@'%' IDENTIFIED BY 'password';
 
-    GRANT ALL ON scdb_dev.* TO 'sc_user'@'localhost';
-    GRANT ALL ON scdb_test.* TO 'sc_user'@'localhost';
+    GRANT ALL ON scdb_dev.* TO 'sc_user'@'%';
+    GRANT ALL ON scdb_test.* TO 'sc_user'@'%';
 ```
 
 ### Dependências para usar o MariaDB e MySQL
@@ -51,13 +51,13 @@ PATH=$PATH:$MARIA_HOME/bin
 PYTHONHOME=/usr/bin
 ```
 
-Criação do Ambiente Virtual com virtualenv na pasta ~/dev/python:
+Criação do Ambiente Virtual com virtualenv:
 
 ```shell script
-virtualenv --python='/usr/bin/python3.8' envP38
+virtualenv -p python3 venv
 ```
 
-Para ativar: ```source ~/dev/python/envP38/bin/activate```.
+Para ativar: ```source venv/bin/activate```.
 Para desativar: ```deactivate```.
 
 ### Instalação das Dependência do Projeto
@@ -71,12 +71,7 @@ pip install -r requirements.txt
 * Crie um arquivo .env na raiz do projeto e insira as seguintes variáveis.
 * SECRET_KEY=Sua$eCretKeyAqui (Pegue a secret key no arquivo settings.py)
 * DEBUG=True
-
-## Settings.py
-
-* from decouple import config
-* SECRET_KEY = config('SECRET_KEY')
-* DEBUG = config('DEBUG', default=False, cast=bool)
+* MARIADB_PORT=32768
 
 ## Migrations
 
@@ -138,31 +133,39 @@ sonar-scanner \
   -Dsonar.login=02254c57898053f6e25acfb70756ef6f840d4d35
 ```
 
-## Arquivo .env com a SECRET_KEY
+## Rodando Mariadb em container Docker
 
-Here's one way to do it that is compatible with deployment on Heroku:
-Create a gitignored file named .env containing:
+* Criando o container do mariadb
 
-```shell script
-    export DJANGO_SECRET_KEY='replace-this-with-the-secret-key'
-```
+    ```shell script
+    docker pull mariadb
+    docker run --name mariadb -e MYSQL_ROOT_PASSWORD=root -p 32768:3306 -d mariadb
+    ```
 
-Then edit settings.py to remove the actual SECRET_KEY and add this instead:
+* Verificando se o container está rodando
 
-```shell script
-    SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
-```
+    ```shell script
+    docker ps
+    ```
 
-Then when you want to run the development server locally, use:
+* Verificando todos os containers (ativos e inativos)
 
-```shell script
-    set -o allexport
-    source .env
-    set +o allexport
-    python manage.py runserver
-```
+    ```shell script
+    docker ps -a
+    ```
 
-When you finally deploy to Heroku, go to your app Settings tab and add DJANGO_SECRET_KEY to the Config Vars.
+* Pausando container do mariadb
+
+    ```shell script
+    docker stop mariadb
+    ```
+
+* Iniciando o container do mariadb e logando
+
+    ```shell script
+    docker start mariabd
+    docker exec -it mariadb mariadb -p
+    ```
 
 ## Outras Configurações
 
