@@ -28,7 +28,7 @@ jobs:
         env:
           MYSQL_USER: sc_user
           MYSQL_PASSWORD: sc_user
-          MYSQL_DATABASE: scdb_dev, scdb_test
+          MYSQL_DATABASE: scdb_dev
           MYSQL_ROOT_PASSWORD: sc_admin_pass
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
