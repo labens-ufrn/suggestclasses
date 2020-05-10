@@ -111,7 +111,13 @@ def criar_usuario():
 
 
 def criar_grupos():
+    new_group, created = Group.objects.get_or_create(name='Docentes')
+    new_group, created = Group.objects.get_or_create(name='Discentes')
+    new_group, created = Group.objects.get_or_create(name='Chefes')
+    new_group, created = Group.objects.get_or_create(name='Coordenadores')
+
     new_group, created = Group.objects.get_or_create(name='ChefesTeste')
+    new_group, created = Group.objects.get_or_create(name='DocentesTeste')
 
     # Code to add permission to group ???
     # ct = ContentType.objects.get_for_model(SugestaoTurma)
@@ -122,7 +128,7 @@ def criar_grupos():
     #                                        content_type=ct)
     # new_group.permissions.add(permission)
 
-    new_group, created = Group.objects.get_or_create(name='DocentesTeste')
+    # new_group, created = Group.objects.get_or_create(name='Docentes')
     # Code to add permission to group ???
     # ct = ContentType.objects.get_for_model(SugestaoTurma)
 
