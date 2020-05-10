@@ -48,6 +48,7 @@ jobs:
           mysql --host 127.0.0.1 --port 32768 -uroot -psc_admin_pass -e "SELECT User, Host FROM mysql.user"
           mysql --host 127.0.0.1 --port 32768 -uroot -psc_admin_pass -e "SHOW grants for 'sc_user'"
           mysql --host 127.0.0.1 --port 32768 -uroot -psc_admin_pass -e "CREATE USER 'sc_user'@'localhost' IDENTIFIED BY 'sc_user'"
+          mysql --host 127.0.0.1 --port 32768 -uroot -psc_admin_pass -e "flush privileges"
           mysql --host 127.0.0.1 --port 32768 -uroot -psc_admin_pass -e "SELECT User, Host FROM mysql.user"
           mysql --host 127.0.0.1 --port 32768 -uroot -psc_admin_pass -e "GRANT ALL ON scdb_test.* TO 'sc_user'@'localhost'"
           mysql --host 127.0.0.1 --port 32768 -uroot -psc_admin_pass -e "GRANT ALL ON scdb_dev.* TO 'sc_user'@'localhost'"
@@ -78,6 +79,7 @@ jobs:
       - name: Test with manage.py test
         run: |
           mysql --host 127.0.0.1 --port 32768 -usc_user -psc_user -e "SHOW DATABASES"
+          mysql --host 127.0.0.1 --port 32768 -uroot -psc_admin_pass -e "SELECT User, Host FROM mysql.user"
           python manage.py makemigrations core
           python manage.py migrate core
           python manage.py test core --keepdb
