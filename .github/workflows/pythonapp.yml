@@ -80,6 +80,7 @@ jobs:
         run: |
           mysql --host 127.0.0.1 --port 32768 -usc_user -psc_user -e "SHOW DATABASES"
           mysql --host 127.0.0.1 --port 32768 -uroot -psc_admin_pass -e "SELECT User, Host FROM mysql.user"
+          mysql --host 127.0.0.1 --port 32768 -uroot -psc_admin_pass -e "SHOW GRANTS FOR 'username'@'localhost'";
           python manage.py makemigrations core
           python manage.py migrate core
           python manage.py test core --keepdb
