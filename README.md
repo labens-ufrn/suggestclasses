@@ -73,6 +73,19 @@ pip install -r requirements.txt
 * DEBUG=True
 * MARIADB_PORT=32768
 
+Copie o exemplo da pasta contrib:
+
+```cp contrib/env-sample .env```
+
+Edite o arquivo path.env para informar as variáveis:
+
+```shell script
+export DJANGO_SETTINGS_MODULE=mysite.settings
+export PYTHONPATH=${PYTHONPATH}:/home/taciano/dev/workspace/suggestclasses
+ ```
+
+Após editar os valores execute o comando ```source path.env``` para carregar as variáveis.
+
 ## Migrations
 
 Ao modificar os models (em models.py), execute:
@@ -86,11 +99,25 @@ $ python manage.py migrate
 
 O sistema é baseado nos dados abertos da UFRN, desta forma é necessário povoar o banco de dados
 com informações de Horários, Centro, Salas, Departamentos, Componentes, etc.
+
+Lembre-se de deixar todas as variáveis de ambiente definidas.
+Execute o comando ```source path.env``` para carregar as variáveis.
+
 A ordem é importante e deve ser seguida conforme descrito abaixo.
 
 ### Criar base de horários da UFRN
 
-Deve-se rodar o script ```povoar_horarios.py``` na pasta **dados**.
+Deve-se rodar, na raiz do projeto, o script ```povoar_horarios.py``` na pasta **dados**.
+
+```python dados/povoar_horarios.py```
+
+Depois execute os seguintes comandos.
+
+```shell script
+python dados/baixar_dados.py
+python dados/povoar.py
+python dados/povoar_organizacao_curricular.py
+```
 
 ## Testes
 
