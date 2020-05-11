@@ -109,8 +109,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'scdb_dev',
-        'USER': 'root',
-        'PASSWORD': 'sc_admin_pass',
+        'USER': 'sc_user',
+        'PASSWORD': 'sc_user',
         'HOST': '127.0.0.1',
         'PORT': config('MARIADB_PORT'),
         # optional:
