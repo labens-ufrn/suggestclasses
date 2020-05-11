@@ -10,7 +10,7 @@ from dados.povoar_funcoes_gratificadas import carregar_funcoes_gratificadas
 from dados.povoar_turma import carregar_turma
 from dados.povoar_discentes import carregar_discentes
 from core.models import Curso, Centro, Departamento, ComponenteCurricular, EstruturaCurricular, \
-    OrganizacaoCurricular, Docente
+    OrganizacaoCurricular, Docente, Sala
 from core.bo.docente import get_docente_by_nome
 
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')
@@ -26,6 +26,7 @@ def main():
 
     downloads_dados()
     centros()  # Adicionamos apenas o CERES.
+    criar_salas()
     departamentos()
     criar_docentes()
     cursos()
@@ -39,6 +40,7 @@ def main():
 
 def centros():
     # Cadastrando o Centro CERES
+    print("\nCriando centro CERES ...!")
     centro = Centro(id_unidade=1482, codigo=1800, nome='Centro de Ensino Superior do Seridó',
                     sigla='CERES', endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
                     site='https://www.ceres.ufrn.br/')
@@ -48,8 +50,43 @@ def centros():
         print('.', end="")
 
 
+def criar_salas():
+    # Buscando o Centro CERES
+    print("\nCriando Salas para o CERES ...!")
+
+    with open('salas-ceres.csv') as csvfile:
+        salas = csv.reader(csvfile, delimiter=';')
+        next(salas)  # skip header
+
+        for row in salas:
+
+            nome = row[0]
+            sigla = row[1]
+            capacidade = row[2]
+            tamanho = row[3] if row[3] != '0.0' else None
+            bloco = row[4]
+            centro_id = row[5]
+            campus_id = row[6]
+
+            ceres = Centro.objects.get(pk=centro_id)
+            # campus = Sala.CAMPUS_CHOICES[campus_id-1]
+            ss = Sala.objects.filter(nome=nome, sigla=sigla, capacidade=capacidade,
+                                     tamanho=None, bloco=bloco,
+                                     centro=ceres, campus=campus_id)
+            if not Sala.objects.filter(nome=nome, sigla=sigla, capacidade=capacidade,
+                                       tamanho=tamanho, bloco=bloco,
+                                       centro=ceres, campus=campus_id).exists():
+                Sala.objects.create(nome=nome, sigla=sigla, capacidade=capacidade,
+                                    tamanho=tamanho, bloco=bloco,
+                                    centro=ceres, campus=campus_id)
+                print('+', end="")
+            else:
+                print('.', end="")
+
+
 def departamentos():
     # Buscando o Centro CERES
+    print("\nCriando Departamentos para o CERES ...!")
     ceres = Centro.objects.get(id_unidade=1482)
 
     with open('unidades.csv') as csvfile:
@@ -79,7 +116,7 @@ def departamentos():
 
 
 def cursos():
-    print("Criando cursos para o CERES ...!")
+    print("\nCriando cursos para o CERES ...!")
     # Buscando o Centro CERES
     ceres = Centro.objects.get(id_unidade=1482)
 
@@ -113,7 +150,7 @@ def cursos():
 
 
 def componentes():
-    print("Criando Componentes para os Departamentos do CERES ...!")
+    print("\nCriando Componentes para os Departamentos do CERES ...!")
 
     with open('componentes-curriculares-presenciais.csv') as csvfile:
         componentes_ceres = csv.reader(csvfile, delimiter=';')
@@ -170,7 +207,7 @@ def componentes():
 
 
 def estruturas():
-    print("Criando Estruturas Curriculares para os Cursos do CERES ...!")
+    print("\nCriando Estruturas Curriculares para os Cursos do CERES ...!")
 
     with open('estruturas-curriculares.csv') as csvfile:
         estruturas_ceres = csv.reader(csvfile, delimiter=';')
@@ -243,7 +280,7 @@ def estruturas():
 
 
 def organizacao():
-    print("Criando Organizações Curriculares para os Cursos do CERES ...!")
+    print("\nCriando Organizações Curriculares para os Cursos do CERES ...!")
 
     with open('curriculo-componente-graduacao.csv') as csvfile:
         ccg = csv.reader(csvfile, delimiter=';')
@@ -279,7 +316,7 @@ def organizacao():
 
 
 def criar_docentes():
-    print("Criando Docentes do CERES ...!")
+    print("\nCriando Docentes do CERES ...!")
 
     with open('docentes.csv') as csvfile:
         docentes = csv.reader(csvfile, delimiter=';')
@@ -315,7 +352,7 @@ def criar_docentes():
 
 
 def criar_turmas():
-    print("Criando Turmas 2019.1, 2019.2 e 2020.1 para os Cursos do CERES ...!")
+    print("\nCriando Turmas 2019.1, 2019.2 e 2020.1 para os Cursos do CERES ...!")
 
     criar_turmas_semestre('turmas-2019.1.csv')
     criar_turmas_semestre('turmas-2019.2.csv')
@@ -323,7 +360,7 @@ def criar_turmas():
 
 
 def criar_turmas_semestre(turmas_csv):
-    print("Criando Turmas: " + turmas_csv + " para os Cursos do CERES ...!")
+    print("\nCriando Turmas: " + turmas_csv + " para os Cursos do CERES ...!")
 
     with open(turmas_csv) as csvfile:
         turmas = csv.reader(csvfile, delimiter=';')
@@ -336,7 +373,7 @@ def criar_turmas_semestre(turmas_csv):
 
 def criar_funcoes_gratificadas():
     funcoes_gratificadas_csv = 'funcoes-gratificadas.csv'
-    print("Criando Funções Gratificadas: " + funcoes_gratificadas_csv + " para os Docentes do CERES ...!")
+    print("\nCriando Funções Gratificadas: " + funcoes_gratificadas_csv + " para os Docentes do CERES ...!")
 
     with open(funcoes_gratificadas_csv) as csvfile:
         funcoes_gratificadas = csv.reader(csvfile, delimiter=';')
@@ -348,7 +385,7 @@ def criar_funcoes_gratificadas():
 
 
 def criar_discentes():
-    print("Criando Discentes por Ano de Ingresso para os Cursos do CERES ...!")
+    print("\nCriando Discentes por Ano de Ingresso para os Cursos do CERES ...!")
 
     criar_discentes_anual('discentes-2010.csv')
     criar_discentes_anual('discentes-2011.csv')
@@ -364,7 +401,7 @@ def criar_discentes():
 
 
 def criar_discentes_anual(discentes_csv):
-    print("Criando Discentes Ingressantes: " + discentes_csv + " para os Cursos do CERES ...!")
+    print("\nCriando Discentes Ingressantes: " + discentes_csv + " para os Cursos do CERES ...!")
 
     with open(discentes_csv) as csvfile:
         discentes = csv.reader(csvfile, delimiter=';')
