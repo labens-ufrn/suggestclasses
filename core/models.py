@@ -92,7 +92,7 @@ class Sala(models.Model):
     tamanho = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     bloco = models.CharField(max_length=10)
     centro = models.ForeignKey(Centro, on_delete=models.PROTECT)
-    campus = models.CharField(max_length=50, blank=True, null=True, choices=CAMPUS_CHOICES)
+    campus = models.CharField(max_length=1, blank=True, null=True, choices=CAMPUS_CHOICES)
 
     class Meta:
         unique_together = ("sigla", "bloco", "centro", "campus")
