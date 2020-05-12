@@ -331,7 +331,7 @@ class Discente(models.Model):
     """
     matricula = models.CharField(max_length=15, unique=True)
     nome_discente = models.CharField(max_length=200, null=False)
-    sexo = models.CharField(max_length=1)
+    sexo = models.CharField(max_length=1, blank=True)
     ano_ingresso = models.IntegerField()
     periodo_ingresso = models.IntegerField()
     forma_ingresso = models.CharField(max_length=100)
