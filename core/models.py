@@ -315,7 +315,7 @@ class FuncaoGratificada(models.Model):
     id_unidade_designacao = models.IntegerField()
     unidade_designacao = models.CharField(max_length=200)
     atividade = models.CharField(max_length=100)
-    observacoes = models.CharField(max_length=200, null=True)
+    observacoes = models.CharField(max_length=500, null=True)
 
     class Meta:
         unique_together = ('siape', 'id_unidade', 'inicio', 'atividade')
