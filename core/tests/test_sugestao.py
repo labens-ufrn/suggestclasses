@@ -73,7 +73,7 @@ class SugestaoTests(TestCase):
 
         cc = ComponenteCurricular.objects.get(codigo='DCT9999')
         campus_turma = 'CERES - Caicó'
-        local = Sala.objects.get(nome='Sala A01')
+        local = Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999, campus=1)
         ano = 2020
         periodo = 1
         descricao_horario = '56M12'
