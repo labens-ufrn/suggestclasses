@@ -192,15 +192,16 @@ def remover_discentes():
 
 def criar_salas():
     centro = Centro.objects.get(id_unidade=9999)
+    campus_id = 1
     if not Sala.objects.filter(nome='Sala A01', sigla='A01', capacidade=25, tamanho=None, bloco='Bloco A',
-                               centro=centro, campus='Campus Teste').exists():
+                               centro=centro, campus=campus_id).exists():
         Sala.objects.create(nome='Sala A01', sigla='A01', capacidade=25, tamanho=None, bloco='Bloco A',
-                            centro=centro, campus='Campus Teste')
+                            centro=centro, campus=campus_id)
 
 
 def remover_salas():
     try:
-        Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999, campus='Campus Teste').delete()
+        Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999, campus=1).delete()
     except Sala.DoesNotExist:
         print('.', end="")
 
@@ -461,7 +462,8 @@ def criar_turmas():
     componente1 = ComponenteCurricular.objects.get(id_componente=99999)
     componente2 = ComponenteCurricular.objects.get(id_componente=99998)
     componente3 = ComponenteCurricular.objects.get(id_componente=99997)
-    sala = Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999, campus='Campus Teste')
+    campus_id = 1
+    sala = Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999, campus=campus_id)
 
     if not Turma.objects.filter(id_turma=99999999).exists():
         Turma.objects.create(id_turma=99999999, codigo_turma='01', docente=docente1, matricula_docente_externo=None,
@@ -522,7 +524,8 @@ def criar_sugestoes_turmas():
     componente1 = ComponenteCurricular.objects.get(id_componente=99999)
     componente2 = ComponenteCurricular.objects.get(id_componente=99998)
     componente3 = ComponenteCurricular.objects.get(id_componente=99997)
-    sala = Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999, campus='Campus Teste')
+    campus_id = 1
+    sala = Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999, campus=campus_id)
 
     if not SugestaoTurma.objects.filter(codigo_turma='01', componente=componente1, ano=2020, periodo=2).exists():
         SugestaoTurma.objects.create(codigo_turma='01', docente=docente1, matricula_docente_externo=None,
