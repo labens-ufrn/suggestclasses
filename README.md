@@ -81,7 +81,7 @@ Edite o arquivo path.env para informar as variáveis:
 
 ```shell script
 export DJANGO_SETTINGS_MODULE=mysite.settings
-export PYTHONPATH=${PYTHONPATH}:/home/taciano/dev/workspace/suggestclasses
+export PYTHONPATH=${PYTHONPATH}:/home/<seu_diretorio>/suggestclasses
  ```
 
 Após editar os valores execute o comando ```source path.env``` para carregar as variáveis.
