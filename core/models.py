@@ -27,7 +27,7 @@ class Departamento(models.Model):
     nome = models.CharField(max_length=200, unique=True)
     sigla = models.CharField(max_length=15, unique=True)
     endereco = models.CharField(max_length=250, blank=True, null=True)
-    site = models.CharField(max_length=250)
+    site = models.CharField(max_length=250, blank=True, null=True)
     centro = models.ForeignKey(Centro, on_delete=models.PROTECT)
 
     def __str__(self):
@@ -331,7 +331,7 @@ class Discente(models.Model):
     """
     matricula = models.CharField(max_length=15, unique=True)
     nome_discente = models.CharField(max_length=200, null=False)
-    sexo = models.CharField(max_length=1)
+    sexo = models.CharField(max_length=1, blank=True)
     ano_ingresso = models.IntegerField()
     periodo_ingresso = models.IntegerField()
     forma_ingresso = models.CharField(max_length=100)
