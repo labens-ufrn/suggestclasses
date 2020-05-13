@@ -27,7 +27,7 @@ class Departamento(models.Model):
     nome = models.CharField(max_length=200, unique=True)
     sigla = models.CharField(max_length=15, unique=True)
     endereco = models.CharField(max_length=250, blank=True, null=True)
-    site = models.CharField(max_length=250)
+    site = models.CharField(max_length=250, blank=True, null=True)
     centro = models.ForeignKey(Centro, on_delete=models.PROTECT)
 
     def __str__(self):
