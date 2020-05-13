@@ -27,8 +27,7 @@ def carregar_discentes(row):
         if not Discente.objects.filter(matricula=matricula).exists():
             print("Adicionando Discente " + matricula + " - " + nome_discente + "- " + nome_curso)
             if sexo == "M" or sexo == "F":
-                sexo = sexo.split()
-                sexo = sexo[0]
+                sexo = sexo
             else:
                 sexo = ""
             discente = Discente(matricula=matricula, nome_discente=nome_discente, sexo=sexo,
