@@ -24,12 +24,12 @@
       {% csrf_token %}
       <table class="table-sm table-responsive-sm">
         <tr>
-          <td>
+          <th>
             {% for error in form_login.username.errors %}
               <p style="color: red">{{ error }}</p>
             {% endfor %}
             {{ form.username.label_tag }}
-          </td>
+          </th>
           <td>{{ form.username }}
             {% if form_login.username.help_text %}
               <p><small style="color: grey">{{ form_login.username.help_text }}</small></p>
@@ -40,12 +40,12 @@
           <td></td><td></td>
         </tr>
         <tr>
-          <td>
+          <th>
             {% for error in form_login.password.errors %}
               <p style="color: red">{{ error }}</p>
             {% endfor %}
             {{ form.password.label_tag }}
-          </td>
+          </th>
           <td>{{ form.password }}
             {% if form_login.password.help_text %}
               <p><small style="color: grey">{{ form_login.password.help_text }}</small></p>
