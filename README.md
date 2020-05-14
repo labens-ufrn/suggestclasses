@@ -73,15 +73,17 @@ pip install -r requirements.txt
 * DEBUG=True
 * MARIADB_PORT=32768
 
-Copie o exemplo da pasta contrib:
+Copie os exemplos da pasta contrib:
 
 ```cp contrib/env-sample .env```
+
+```cp contrib/path.env-sample path.env```
 
 Edite o arquivo path.env para informar as variáveis:
 
 ```shell script
 export DJANGO_SETTINGS_MODULE=mysite.settings
-export PYTHONPATH=${PYTHONPATH}:/home/taciano/dev/workspace/suggestclasses
+export PYTHONPATH=${PYTHONPATH}:/home/<seu_diretorio>/suggestclasses
  ```
 
 Após editar os valores execute o comando ```source path.env``` para carregar as variáveis.
