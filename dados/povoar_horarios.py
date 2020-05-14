@@ -7,7 +7,7 @@ from core.models import Horario
 
 def main():
     print("Povoar Horários da UFRN!")
-    print(db.connections.databases)
+    # print(db.connections.databases)
     povoar_horarios()
 
 

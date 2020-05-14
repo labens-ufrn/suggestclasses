@@ -45,6 +45,7 @@ class Docente(models.Model):
     classe_funcional = models.CharField(max_length=50)
     id_unidade_lotacao = models.IntegerField()
     lotacao = models.CharField(max_length=150)
+    departamento = models.ForeignKey(Departamento, on_delete=models.PROTECT, null=True)
     admissao = models.DateField()
     usuario = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -57,7 +58,8 @@ class Docente(models.Model):
         return split_nome[0]
 
     def __str__(self):
-        return self.siape.__str__() + ' - ' + self.nome + ' - ' + self.lotacao
+        return self.nome + ' (' + str(self.siape) + ') - ' + self.departamento.sigla\
+               + '/' + self.departamento.centro.sigla
 
 
 class Curso(models.Model):
