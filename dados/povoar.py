@@ -107,7 +107,22 @@ def departamentos():
             if id_unidade_responsavel == '1482' and (tipo_unidade_organizacional == 'DEPARTAMENTO'
                                                      or tipo_unidade_organizacional == 'ASSESSORIA'):
                 if not Departamento.objects.filter(id_unidade=id_dep).exists():
-                    d = Departamento(id_unidade=id_dep, codigo=codigo_dep, nome=nome_dep, sigla=sigla_dep,
+                    
+                    acentos = {
+                        'EDUCACAO': 'EDUCAÇÃO',
+                        'COMPUTACAO': 'COMPUTAÇÃO',
+                        'CIENCIAS': 'CIÊNCIAS',
+                        'CIENCIA': 'CIÊNCIA',
+                        'HISTORIA': 'HISTÓRIA',
+                        }
+
+                    nomes = nome_dep.split()
+                    for i, nome in enumerate(nomes):
+                        if nome in acentos:
+                            nomes[i] = acentos[nome]
+                    new_nome_dep = ' '.join(nomes)
+
+                    d = Departamento(id_unidade=id_dep, codigo=codigo_dep, nome=new_nome_dep, sigla=sigla_dep,
                                      endereco=municipio,
                                      centro=ceres)
                     d.save()
