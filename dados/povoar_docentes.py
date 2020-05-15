@@ -48,9 +48,8 @@ def carregar_docente(row):
         if Departamento.objects.filter(id_unidade=id_unidade_lotacao).exists():
             depto = Departamento.objects.get(id_unidade=id_unidade_lotacao)
         else:
-            print(siape)
-            print(nome)
-            print(lotacao)
+            print('Docente não vinculado a Departamento: ')
+            print(str(siape) + ' - ' + nome + ' - ' + lotacao)
 
         if not Docente.objects.filter(siape=siape).exists():
             print("Adicionando Docente: " + siape + " - " + nome)
