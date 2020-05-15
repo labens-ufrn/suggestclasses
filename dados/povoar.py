@@ -167,11 +167,6 @@ def componentes():
                 tipo_componente = row[1]
                 codigo_componente = row[2]
 
-                if codigo_componente == 'DED0437' or codigo_componente == 'DED0438' or \
-                   codigo_componente == 'DED0439' or codigo_componente == 'DED0440':
-                    print(codigo_componente)
-                    print(depto.nome)
-
                 nivel_componente = row[3]
                 nome_componente = row[4]
 
