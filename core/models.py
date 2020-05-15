@@ -57,9 +57,16 @@ class Docente(models.Model):
         split_nome = self.nome.split(' ')
         return split_nome[0]
 
+    def siglas_str(self):
+        siglas = ''
+        if self.departamento:
+            siglas = ' - ' + self.departamento.sigla
+            if self.departamento.centro:
+                siglas = siglas + '/' + self.departamento.centro.sigla
+        return siglas
+
     def __str__(self):
-        return self.nome + ' (' + str(self.siape) + ') - ' + self.departamento.sigla\
-               + '/' + self.departamento.centro.sigla
+        return self.nome + ' (' + str(self.siape) + ')' + self.siglas_str()
 
 
 class Curso(models.Model):
