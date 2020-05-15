@@ -5,7 +5,7 @@ django.setup()
 from core.bo.curriculo import get_curriculo_by_cc
 from core.bo.docente import get_docente_by_siape
 from core.bo.turma import converte_desc_horario
-from core.models import ComponenteCurricular, Docente, Turma
+from core.models import ComponenteCurricular, Docente, Turma, Departamento
 from dateutil.parser import parse
 from mysite.settings import BASE_DIR
 
@@ -84,6 +84,7 @@ def carregar_turma(row):
 
         if Turma.objects.filter(id_turma=id_turma).exists():
             turma = Turma.objects.get(id_turma=id_turma)
+            # TODO Teremos aqui o tratamento de turmas com mais de um docente
             print(str(docente) + ' ' + ch_dedicada_periodo)
             # adicionar_vinculo_docente(turma, docente, carga_horaria, horarios_docente)
             print('-', end="")
@@ -113,12 +114,18 @@ def carregar_docente_substituto(siape, componente):
     # Carregamento de Docente com Contrato de Professor Substituto
     if docente is None and siape is not None and siape != '':
         print("Adicionando Docente: " + siape + " - Substituto")
+        depto = None
+        id_unidade_lotacao = componente.departamento.id_unidade
+        if Departamento.objects.filter(id_unidade=id_unidade_lotacao).exists():
+            depto = Departamento.objects.get(id_unidade=id_unidade_lotacao)
+
         docente = Docente(siape=siape, nome='SUBSTITUTO', sexo='X', formacao='Graduado/Mestre',
                           tipo_jornada_trabalho='Temporária',
                           vinculo='Contrato', categoria='PROFESSOR DO MAGISTERIO SUPERIOR',
                           classe_funcional='',
-                          id_unidade_lotacao=componente.departamento.id_unidade,
-                          lotacao=componente.departamento.nome, admissao=parse('2020/02/01'))
+                          id_unidade_lotacao=id_unidade_lotacao,
+                          lotacao=componente.departamento.nome, admissao=parse('2020/02/01'),
+                          departamento=depto)
         docente.save()
     return docente
 
