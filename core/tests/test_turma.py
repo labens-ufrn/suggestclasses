@@ -95,9 +95,10 @@ class TurmaBOTests(TestCase):
         semestre = 1
         turmas = get_sugestao_turmas(estrutura, semestre, 2020, 2)
 
-        self.assertEqual(2, len(turmas), 'Testando Quantidade de Sugestões de Turma - 1º Semestre')
+        self.assertEqual(3, len(turmas), 'Testando Quantidade de Sugestões de Turma - 1º Semestre')
         self.assertEqual('DCT9999', turmas[0].componente.codigo, 'Testando Código do Componente de Turma')
-        self.assertEqual('DCT9998', turmas[1].componente.codigo, 'Testando Código do Componente de Turma')
+        self.assertEqual('DCT9999', turmas[1].componente.codigo, 'Testando Código do Componente de Turma')
+        self.assertEqual('DCT9998', turmas[2].componente.codigo, 'Testando Código do Componente de Turma')
 
         semestre = 2
         turmas = get_sugestao_turmas(estrutura, semestre, 2020, 2)

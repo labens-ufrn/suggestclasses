@@ -347,18 +347,18 @@ def atualizar_solicitacao(request, pk):
     if not discente_existe(usuario):
         messages.error(request, 'Não há um discente relacionado ao usuário.')
         return redirecionar(request)
-
+    discente = usuario.discente
     turma = SugestaoTurma.objects.get(pk=pk)
 
     choques_componentes, choques_horarios, houve_choques = \
-        solicitacao_verificar_choques(turma, usuario.discente)
+        solicitacao_verificar_choques(discente, turma)
 
     if houve_choques:
         messages.error(request, 'A turma ' + str(turma) + ' tem choque com: ' + criar_string(list(choques_componentes)) +
                        ', nos horários: ' + criar_string(list(choques_horarios)) + '.')
         return redirecionar(request)
 
-    resultado, created = solicitacao_incluir(usuario, pk)
+    resultado, created = solicitacao_incluir(discente, turma)
 
     if created:
         messages.success(request, 'Solicitação de Interesse na Turma ' +
