@@ -6,6 +6,7 @@ from core.bo.sevices import get_oc_by_semestre, get_ch_by_semestre
 def flow_horizontal(request, estrutura, link_opcionais):
     """
     Função que monta o contexto para a telas que Exibe a Estrutura Curricular na Horizontal.
+    :param link_opcionais: Link para os componentes opcionais da Estrutura Curricular.
     :param request: Uma Requisição HTTP.
     :param estrutura: Um objeto do tipo @EstruturaCurricular.
     :return: Um Response HTTP.
