@@ -16,7 +16,7 @@ from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, carrega_t
     TurmaHorario, carrega_sugestao_horario
 from core.config.config import get_config
 from core.forms import SugestaoTurmaForm
-from core.models import SugestaoTurma, SolicitacaoTurma, Horario
+from core.models import SugestaoTurma, SolicitacaoTurma, Horario, Docente
 from mysite.settings import DOMAINS_WHITELIST
 
 logger = logging.getLogger('suggestclasses.logger')
@@ -80,6 +80,7 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
 
     if request.method == "POST":
         form_sugestao = SugestaoTurmaForm(request.POST, estrutura=estrutura)
+        vinculos_docente = request.POST.get('vinculos_docente')
         if form_sugestao.is_valid():
             sugestao_turma = form_sugestao.save(commit=False)
             carregar_dados(request, sugestao_turma, estrutura)
@@ -441,3 +442,20 @@ def carrega_horario_turmas_por_turno(turmas, turno):
             turmas_horario.append(th)
         tt.append(turmas_horario)
     return tt
+
+
+def load_docentes(request):
+    departamento_id = request.GET.get('departamento')
+    docentes = Docente.objects.filter(departamento_id=departamento_id).order_by('nome')
+    return render(request, 'core/sugestao/docentes_list_option.html', {'docentes': docentes})
+
+
+def check_vinculo_docente(request):
+    docente_id = request.GET.get('docente')
+    horarios = request.GET.get('horarios')
+    carga_horaria = request.GET.get('carga_horaria')
+
+    # TODO Fazer checagem de choque de horários do docente
+    docente = Docente.objects.get(pk=docente_id)
+    vinculo = {'docente': docente, 'horarios': horarios, 'carga_horaria': carga_horaria}
+    return render(request, 'core/sugestao/vinculo_docente_list.html', {'vinculo': vinculo})

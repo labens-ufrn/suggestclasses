@@ -4,6 +4,7 @@ from django.urls import path
 
 from mysite.settings import STATIC_URL, MEDIA_URL, MEDIA_ROOT, DEBUG
 from . import views
+from .visoes import suggest_view
 
 urlpatterns = [
     path('profile/<username>/', views.profile, name='profile'),
@@ -54,6 +55,9 @@ urlpatterns = [
 
     path('sugestao/', views.sugestao_list, name='sugestao_list'),
     path('sugestao/<int:pk>/', views.SugestaoTurmaDetailView.as_view(), name='sugestao_detalhar'),
+    path('ajax/load-docentes/', suggest_view.load_docentes, name='ajax_load_docentes'),
+    path('ajax/check_vinculo_docente/', suggest_view.check_vinculo_docente, name='ajax_check_vinculo_docente'),
+
     path('solicitacao/<int:pk>/', views.sugestao_solicitar, name='sugestao_solicitar'),
     path('solicitacao/listar/<int:pk>/', views.solicitacao_turma_listar, name='solicitacao_turma_listar'),
     path('solicitacao/deletar/<int:pk>/', views.solicitacao_deletar, name='solicitacao_deletar'),

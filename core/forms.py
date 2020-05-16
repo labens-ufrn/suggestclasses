@@ -5,7 +5,7 @@ from django.forms import Form, ModelForm
 
 from core.bo.sevices import get_cc_by_estrutura
 from core.bo.sistemas import get_estrutura_sistemas_dct
-from core.models import SugestaoTurma, Docente, ComponenteCurricular, EstruturaCurricular
+from core.models import SugestaoTurma, Docente, ComponenteCurricular, EstruturaCurricular, Departamento
 
 
 class CadastroUsuarioForm(UserCreationForm):
@@ -24,27 +24,51 @@ class CadastroUsuarioForm(UserCreationForm):
 
 
 class SugestaoTurmaForm(ModelForm):
-    docente = forms.ModelChoiceField(queryset=Docente.objects.all().order_by('nome', 'siape'), label='Docente',
-                                     required=False)
-
     componente = forms.ModelChoiceField(queryset=ComponenteCurricular.objects.all().order_by('nome', 'codigo'),
                                         label='Componente Curricular')
 
-    descricao_horario = forms.CharField(label='Descrição do Horário',
+    descricao_horario = forms.CharField(label='Horário da Turma',
                                         widget=forms.TextInput(attrs={'placeholder': 'Ex: 24M34'}))
 
     capacidade_aluno = forms.CharField(label='Vagas', max_length=3,
                                        help_text='Obrigatório. As vagas deve ser menor que a capacidade da sala.')
 
+    departamento = forms.ModelChoiceField(queryset=Departamento.objects.all().order_by('nome'),
+                                          label='Departamento', required=False)
+
+    docente = forms.ModelChoiceField(queryset=Docente.objects.all().order_by('nome', 'siape'), label='Docente',
+                                     required=False)
+
+    horario_docente = forms.CharField(label='Horário Docente',
+                                      widget=forms.TextInput(attrs={'placeholder': 'Ex: 24M34'}),
+                                      help_text='Obrigatório. Horário do docente na turma')
+
+    ch_docente = forms.CharField(label='CH Docente',
+                                 widget=forms.TextInput(attrs={'placeholder': 'Ex: 60'}),
+                                 help_text='Obrigatório. Carga horária do docente em horas.')
+
+    vinculos_docente = forms.CharField(label='Vínculos Docentes', widget=forms.HiddenInput)
+
     def __init__(self, *args, **kwargs):
         estrutura = kwargs.pop('estrutura')
         super(SugestaoTurmaForm, self).__init__(*args, **kwargs)
         self.fields['componente'].queryset = get_cc_by_estrutura(estrutura)
+        self.fields['docente'].queryset = Docente.objects.none()
+
+        if 'departamento' in self.data:
+            try:
+                departamento_id = int(self.data.get('departamento'))
+                self.fields['docente'].queryset = \
+                    Docente.objects.filter(departamento_id=departamento_id).order_by('nome')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty Docente queryset
+        elif self.instance.pk:
+            self.fields['docente'].queryset = self.instance.departamento.docente_set.order_by('nome')
 
     class Meta:
         model = SugestaoTurma
-        fields = ['codigo_turma', 'componente', 'docente', 'descricao_horario',
-                  'local', 'capacidade_aluno']
+        fields = ['codigo_turma', 'componente', 'descricao_horario', 'local', 'capacidade_aluno', 'departamento',
+                  'docente', 'horario_docente', 'ch_docente']
         widgets = {
             'codigo_turma': forms.TextInput(attrs={'placeholder': '01'}),
         }

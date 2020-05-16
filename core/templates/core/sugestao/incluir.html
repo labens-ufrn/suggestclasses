@@ -3,31 +3,32 @@
 {% block content %}
 
   <div class="container">
-
     <div id="manter" class="center text-center form-group">
-        <h2 class="page-section-heading text-center text-secondary mb-0">
-          Cadastro de Sugestão de Turma - <b>{{ estrutura.curso.nome }}</b></h2>
-        <h5 class="page-section-heading text-center text-secondary mb-0">
-           Período: {{ ano_periodo }}</h5>
+      <h2 class="page-section-heading text-center text-secondary mb-0">
+        Cadastro de Sugestão de Turma - <b>{{ estrutura.curso.nome }}</b></h2>
+      <h5 class="page-section-heading text-center text-secondary mb-0">
+        Período: {{ ano_periodo }}</h5>
     </div>
-    <form method="post">
+    <form method="post" id="SugestaoForm" data-docentes-url="{% url 'ajax_load_docentes' %}"
+          check-vinculo-docente-url="{% url 'ajax_check_vinculo_docente' %}"
+          novalidate>
       {% csrf_token %}
-      <table>
+      <table class="table-sm table-responsive-sm" border="1">
         {% for field in form_sugestao.hidden_fields %}
           <tr>
-            <td class="align-middle">
-            {{ field }}
-            {% for error in field.errors %}
-              <p style="color: red">{{ error }}</p>
-            {% endfor %}
+            <td class="align-middle" colspan="3">
+              {{ field }}
+              {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+              {% endfor %}
             </td>
           </tr>
         {% endfor %}
         {% for field in form_sugestao.visible_fields %}
           <tr>
-            <th class="align-middle" width="20%">
+            <td class="align-middle">
               <label>{{ field.label_tag }}</label>
-            </th>
+            </td>
             <td class="align-middle">{{ field }}
               {% if field.help_text %}
                 <small style="color: grey">{{ field.help_text }}</small>
@@ -36,8 +37,29 @@
                 <p style="color: red">{{ error }}</p>
               {% endfor %}
             </td>
+            <td></td>
           </tr>
         {% endfor %}
+        <tr>
+          <td colspan="2">
+            <table class="table-sm text-center" border="2" style="width: auto">
+              <thead>
+              <tr>
+                <th colspan="4">Vínculos Docentes</th>
+              </tr>
+              <tr>
+                <th>Professor</th>
+                <th>Horário</th>
+                <th>Carga Horária</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody id='table_vinculos'>
+              </tbody>
+            </table>
+          </td>
+          <td><input id="add_vinculo" type="button" value="Add" class="btn btn-primary"></td>
+        </tr>
       </table>
       <input type="hidden" name="next" value="{{ request.GET.next }}">
       <div class="form-group">
@@ -45,4 +67,57 @@
       </div>
     </form>
   </div>
-{% endblock %}
+{% endblock content %}
+{% block myscripts %}        'lista_vinculos': lista_vinculos,
+<script>
+    $("#id_departamento").change(function () {
+      const url = $("#SugestaoForm").attr("data-docentes-url");  // get the url of the `load_cities` view
+      const deptoId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'departamento': deptoId       // add the country id to the GET parameters
+        },
+        success: function (data) {
+          $("#id_docente").html(data);
+        }
+      });
+    });
+
+    const lista = [];
+
+    $("#add_vinculo").click(function () {
+      const url = $("#SugestaoForm").attr("check-vinculo-docente-url")
+      const docenteId = $("#id_docente").val()
+      const desc_horarios = $("#id_horario_docente").val()
+      const cargaHoraria = $("#id_ch_docente").val()
+
+      console.log(docenteId)
+      console.log(desc_horarios)
+      console.log(cargaHoraria)
+
+      const vinculo = {
+        docente: docenteId,
+        horarios: desc_horarios,
+        carga_horaria: cargaHoraria
+      };
+
+      $.ajax({
+        url: url,
+        data: vinculo,
+        success: function (data) {
+          const listaHTML = $("#table_vinculos")
+          listaHTML.html(listaHTML.html() + data)
+          lista.push(vinculo);
+
+          $("#id_vinculos_docente").val(lista)
+
+          console.log(listaHTML)
+          console.log(vinculo)
+          console.log(lista)
+        }
+      });
+    });
+  </script>
+{% endblock myscripts %}
