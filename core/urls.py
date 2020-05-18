@@ -45,11 +45,15 @@ urlpatterns = [
     path('flow/mat-h/', views.flow_mat_h, name='flow_mat_h'),
     path('flow/mat/opcionais', views.flow_mat_op, name='flow_mat_op'),
 
+    path('flow/adm/', views.flow_adm, name='flow_adm'),
+    path('flow/adm/opcionais', views.flow_adm_op, name='flow_adm_op'),
+
     path('turmas/', views.turmas_list, name='turmas_list'),
     path('turmas/dir', views.turmas_dir, name='turmas_direito'),
     path('turmas/mat', views.turmas_mat, name='turmas_matemática'),
     path('turmas/bsi', views.turmas_bsi, name='turmas_sistemas'),
     path('turmas/ped', views.turmas_ped, name='turmas_pedagogia'),
+    path('turmas/adm', views.turmas_adm, name='turmas_administracao'),
     path('turmas/<int:pk>/', views.TurmaDetailView.as_view(), name='turma_detalhar'),
 
     path('sugestao/', views.sugestao_list, name='sugestao_list'),
@@ -57,6 +61,12 @@ urlpatterns = [
     path('solicitacao/<int:pk>/', views.sugestao_solicitar, name='sugestao_solicitar'),
     path('solicitacao/listar/<int:pk>/', views.solicitacao_turma_listar, name='solicitacao_turma_listar'),
     path('solicitacao/deletar/<int:pk>/', views.solicitacao_deletar, name='solicitacao_deletar'),
+
+    path('sugestao/adm/list', views.sugestao_adm_list, name='sugestao_adm_list'),
+    path('sugestao/adm/manter', views.sugestao_adm_manter, name='sugestao_adm_manter'),
+    path('sugestao/adm/incluir', views.sugestao_adm_incluir, name='sugestao_adm_incluir'),
+    path('sugestao/adm/editar/<int:pk>/', views.sugestao_adm_editar, name='sugestao_adm_editar'),
+    path('sugestao/adm/deletar/<int:pk>/', views.sugestao_adm_deletar, name='sugestao_adm_deletar'),
 
     path('sugestao/dir/list', views.sugestao_dir_list, name='sugestao_dir_list'),
     path('sugestao/dir/manter', views.sugestao_dir_manter, name='sugestao_dir_manter'),

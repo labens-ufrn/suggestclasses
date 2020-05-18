@@ -25,7 +25,7 @@ from .bo.discentes import get_discentes, get_discentes_ativos
 from .bo.docente import get_docentes
 from .bo.sala import get_salas
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre, get_estrutura_direito, get_estrutura_matematica, \
-    get_estrutura_pedagogia
+    get_estrutura_pedagogia, get_estrutura_administracao
 from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
@@ -237,13 +237,15 @@ def flow_list(request):
     ped_flow = get_estrutura_pedagogia()
     mat_flow = get_estrutura_matematica()
     dir_flow = get_estrutura_direito()
+    adm_flow = get_estrutura_administracao()
 
     context = {
         'dir_flow': dir_flow,
         'mat_flow': mat_flow,
         'ped_flow': ped_flow,
         'bsi_flow_1a': bsi_flow_1a,
-        'bsi_flow_1b': bsi_flow_1b
+        'bsi_flow_1b': bsi_flow_1b,
+        'adm_flow': adm_flow,
     }
 
     return render(request, 'core/flow/list.html', context)
@@ -357,6 +359,17 @@ def flow_ped_op(request):
     return flow_opcionais(request, ped_ec)
 
 
+def flow_adm(request):
+    adm_ec = get_estrutura_administracao()
+    link_opcionais = '/core/flow/adm/opcionais'
+    return flow_horizontal(request, adm_ec, link_opcionais)
+
+
+def flow_adm_op(request):
+    adm_ec = get_estrutura_administracao()
+    return flow_opcionais(request, adm_ec)
+
+
 def cadastrar_usuario(request):
     if request.method == "POST":
         form_usuario = CadastroUsuarioForm(request.POST)
@@ -421,12 +434,14 @@ def turmas_list(request):
     bsi_flow = get_estrutura_sistemas_dct()
     ped_flow = get_estrutura_pedagogia()
     mat_flow = get_estrutura_matematica()
+    adm_flow = get_estrutura_administracao()
 
     context = {
         'dir_flow': dir_flow,
         'mat_flow': mat_flow,
         'ped_flow': ped_flow,
-        'bsi_flow': bsi_flow
+        'bsi_flow': bsi_flow,
+        'adm_flow': adm_flow,
     }
     return render(request, 'core/turmas/list.html', context)
 
@@ -460,6 +475,12 @@ def turmas_ped(request):
     return turmas_grade(request, ped_deduc, turmas_list_link)
 
 
+def turmas_adm(request):
+    adm_csh = get_estrutura_administracao()
+    turmas_list_link = '/core/turmas/adm'
+    return turmas_grade(request, adm_csh, turmas_list_link)
+
+
 def sugestao_list(request):
     """
         Tela para Listar os Curso com possibilidade de cadastrar Sugestões de Turmas.
@@ -468,12 +489,14 @@ def sugestao_list(request):
     bsi_flow = get_estrutura_sistemas_dct()
     ped_flow = get_estrutura_pedagogia()
     mat_flow = get_estrutura_matematica()
+    adm_flow = get_estrutura_administracao()
 
     context = {
         'dir_flow': dir_flow,
         'mat_flow': mat_flow,
         'ped_flow': ped_flow,
-        'bsi_flow': bsi_flow
+        'bsi_flow': bsi_flow,
+        'adm_flow': adm_flow,
     }
     return render(request, 'core/sugestao/list.html', context)
 
@@ -505,6 +528,47 @@ def solicitacao_turma_listar(request, pk):
 @permission_required("core.delete_solicitacaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def solicitacao_deletar(request, pk):
     return solicitacao_discente_deletar(request, pk)
+
+
+def sugestao_adm_list(request):
+    adm_csh = get_estrutura_administracao()
+    sugestao_incluir_link = '/core/sugestao/adm/incluir'
+    sugestao_manter_link = '/core/sugestao/adm/manter'
+    sugestao_list_link = '/core/sugestao/adm/list'
+    return sugestao_grade_horarios(request, adm_csh, sugestao_incluir_link, sugestao_manter_link, sugestao_list_link)
+
+
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_adm_manter(request):
+    """
+        Tela de Manter Sugestão de Turmas do Curso de Administração - Currais Novos.
+    """
+    adm_csh = get_estrutura_administracao()
+    sugestao_incluir_link = '/core/sugestao/adm/incluir'
+    sugestao_editar_link = 'sugestao_adm_editar'
+    sugestao_deletar_link = 'sugestao_adm_deletar'
+    sugestao_grade_link = '/core/sugestao/adm/list'
+    return sugestao_manter(request, adm_csh, sugestao_incluir_link, sugestao_grade_link,
+                           sugestao_editar_link, sugestao_deletar_link)
+
+
+@permission_required("core.add_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_adm_incluir(request):
+    adm_csh = get_estrutura_administracao()
+    sugestao_manter_link = '/core/sugestao/adm/manter'
+    return sugestao_incluir(request, adm_csh, sugestao_manter_link)
+
+
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_adm_editar(request, pk):
+    adm_csh = get_estrutura_administracao()
+    return sugestao_editar(request, pk, estrutura=adm_csh)
+
+
+@permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_adm_deletar(request, pk):
+    adm_csh = get_estrutura_administracao()
+    return sugestao_deletar(request, pk, estrutura=adm_csh)
 
 
 def sugestao_dir_list(request):
