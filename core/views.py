@@ -25,7 +25,7 @@ from .bo.discentes import get_discentes, get_discentes_ativos
 from .bo.docente import get_docentes
 from .bo.sala import get_salas
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre, get_estrutura_direito, get_estrutura_matematica, \
-    get_estrutura_pedagogia
+    get_estrutura_pedagogia, get_estrutura_administracao
 from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
@@ -237,13 +237,15 @@ def flow_list(request):
     ped_flow = get_estrutura_pedagogia()
     mat_flow = get_estrutura_matematica()
     dir_flow = get_estrutura_direito()
+    adm_flow = get_estrutura_administracao()
 
     context = {
         'dir_flow': dir_flow,
         'mat_flow': mat_flow,
         'ped_flow': ped_flow,
         'bsi_flow_1a': bsi_flow_1a,
-        'bsi_flow_1b': bsi_flow_1b
+        'bsi_flow_1b': bsi_flow_1b,
+        'adm_flow': adm_flow,
     }
 
     return render(request, 'core/flow/list.html', context)
@@ -355,6 +357,17 @@ def flow_ped_h(request):
 def flow_ped_op(request):
     ped_ec = get_estrutura_pedagogia()
     return flow_opcionais(request, ped_ec)
+
+
+def flow_adm(request):
+    adm_ec = get_estrutura_administracao()
+    link_opcionais = '/core/flow/adm/opcionais'
+    return flow_horizontal(request, adm_ec, link_opcionais)
+
+
+def flow_adm_op(request):
+    adm_ec = get_estrutura_administracao()
+    return flow_opcionais(request, adm_ec)
 
 
 def cadastrar_usuario(request):
