@@ -489,12 +489,14 @@ def sugestao_list(request):
     bsi_flow = get_estrutura_sistemas_dct()
     ped_flow = get_estrutura_pedagogia()
     mat_flow = get_estrutura_matematica()
+    adm_flow = get_estrutura_administracao()
 
     context = {
         'dir_flow': dir_flow,
         'mat_flow': mat_flow,
         'ped_flow': ped_flow,
-        'bsi_flow': bsi_flow
+        'bsi_flow': bsi_flow,
+        'adm_flow': adm_flow,
     }
     return render(request, 'core/sugestao/list.html', context)
 
@@ -526,6 +528,47 @@ def solicitacao_turma_listar(request, pk):
 @permission_required("core.delete_solicitacaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def solicitacao_deletar(request, pk):
     return solicitacao_discente_deletar(request, pk)
+
+
+def sugestao_adm_list(request):
+    adm_csh = get_estrutura_administracao()
+    sugestao_incluir_link = '/core/sugestao/adm/incluir'
+    sugestao_manter_link = '/core/sugestao/adm/manter'
+    sugestao_list_link = '/core/sugestao/adm/list'
+    return sugestao_grade_horarios(request, adm_csh, sugestao_incluir_link, sugestao_manter_link, sugestao_list_link)
+
+
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_adm_manter(request):
+    """
+        Tela de Manter Sugestão de Turmas do Curso de Administração - Currais Novos.
+    """
+    adm_csh = get_estrutura_administracao()
+    sugestao_incluir_link = '/core/sugestao/adm/incluir'
+    sugestao_editar_link = 'sugestao_adm_editar'
+    sugestao_deletar_link = 'sugestao_adm_deletar'
+    sugestao_grade_link = '/core/sugestao/adm/list'
+    return sugestao_manter(request, adm_csh, sugestao_incluir_link, sugestao_grade_link,
+                           sugestao_editar_link, sugestao_deletar_link)
+
+
+@permission_required("core.add_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_adm_incluir(request):
+    adm_csh = get_estrutura_administracao()
+    sugestao_manter_link = '/core/sugestao/adm/manter'
+    return sugestao_incluir(request, adm_csh, sugestao_manter_link)
+
+
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_adm_editar(request, pk):
+    adm_csh = get_estrutura_administracao()
+    return sugestao_editar(request, pk, estrutura=adm_csh)
+
+
+@permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_adm_deletar(request, pk):
+    adm_csh = get_estrutura_administracao()
+    return sugestao_deletar(request, pk, estrutura=adm_csh)
 
 
 def sugestao_dir_list(request):
