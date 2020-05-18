@@ -78,6 +78,7 @@ def sobre(request):
     return render(request, 'core/sobre.html', context)
 
 
+@login_required(login_url='/accounts/login')
 def dashboard(request):
     """
         View index para o Dashboard.
@@ -482,10 +483,12 @@ class SugestaoTurmaDetailView(DetailView):
     template_name = 'core/sugestao/detalhar.html'
 
 
+@permission_required("core.add_solicitacaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_solicitar(request, pk):
     return atualizar_solicitacao(request, pk)
 
 
+@login_required(login_url='/accounts/login')
 def solicitacao_turma_listar(request, pk):
 
     turma = SugestaoTurma.objects.get(pk=pk)
