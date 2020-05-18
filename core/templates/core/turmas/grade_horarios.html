@@ -69,11 +69,11 @@
         <tbody>
         {% for semana in turmas_por_horario %}
           <tr>
-            <th class="align-middle" scope="row" width="12.5%" style="font-size: 12px;text-align: center;">
+            <th class="align-middle" scope="row" width="12.4%" style="font-size: 12px;text-align: center;">
               {{ semana.0.horario.ordem }}º: {{ semana.0.horario.hora_inicio }} - {{ semana.0.horario.hora_final }}
             </th>
             {% for th in semana %}
-              <td class="text-center" width="17.5%">
+              <td class="text-center" width="14.6%">
                 {% for turma in th.turmas %}
                   <div class="sugestao-turma border">
                     {% if turma.semestre != 0 %}
