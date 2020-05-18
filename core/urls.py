@@ -53,6 +53,7 @@ urlpatterns = [
     path('turmas/mat', views.turmas_mat, name='turmas_matemática'),
     path('turmas/bsi', views.turmas_bsi, name='turmas_sistemas'),
     path('turmas/ped', views.turmas_ped, name='turmas_pedagogia'),
+    path('turmas/adm', views.turmas_adm, name='turmas_administracao'),
     path('turmas/<int:pk>/', views.TurmaDetailView.as_view(), name='turma_detalhar'),
 
     path('sugestao/', views.sugestao_list, name='sugestao_list'),

@@ -434,12 +434,14 @@ def turmas_list(request):
     bsi_flow = get_estrutura_sistemas_dct()
     ped_flow = get_estrutura_pedagogia()
     mat_flow = get_estrutura_matematica()
+    adm_flow = get_estrutura_administracao()
 
     context = {
         'dir_flow': dir_flow,
         'mat_flow': mat_flow,
         'ped_flow': ped_flow,
-        'bsi_flow': bsi_flow
+        'bsi_flow': bsi_flow,
+        'adm_flow': adm_flow,
     }
     return render(request, 'core/turmas/list.html', context)
 
@@ -471,6 +473,12 @@ def turmas_ped(request):
     ped_deduc = get_estrutura_pedagogia()
     turmas_list_link = '/core/turmas/ped'
     return turmas_grade(request, ped_deduc, turmas_list_link)
+
+
+def turmas_adm(request):
+    adm_csh = get_estrutura_administracao()
+    turmas_list_link = '/core/turmas/adm'
+    return turmas_grade(request, adm_csh, turmas_list_link)
 
 
 def sugestao_list(request):
