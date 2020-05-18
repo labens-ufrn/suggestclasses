@@ -96,6 +96,12 @@ urlpatterns = [
     path('sugestao/ped/editar/<int:pk>/', views.sugestao_ped_editar, name='sugestao_ped_editar'),
     path('sugestao/ped/deletar/<int:pk>/', views.sugestao_ped_deletar, name='sugestao_ped_deletar'),
 
+    path('sugestao/tur/list', views.sugestao_tur_list, name='sugestao_tur_list'),
+    path('sugestao/tur/manter', views.sugestao_tur_manter, name='sugestao_tur_manter'),
+    path('sugestao/tur/incluir', views.sugestao_tur_incluir, name='sugestao_tur_incluir'),
+    path('sugestao/tur/editar/<int:pk>/', views.sugestao_tur_editar, name='sugestao_tur_editar'),
+    path('sugestao/tur/deletar/<int:pk>/', views.sugestao_tur_deletar, name='sugestao_tur_deletar'),
+
     path('plot/', views.plot, name='Plot de Gráfico')
 ]
 
