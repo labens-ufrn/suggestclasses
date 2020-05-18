@@ -25,7 +25,7 @@ from .bo.discentes import get_discentes, get_discentes_ativos
 from .bo.docente import get_docentes
 from .bo.sala import get_salas
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre, get_estrutura_direito, get_estrutura_matematica, \
-    get_estrutura_pedagogia, get_estrutura_administracao
+    get_estrutura_pedagogia, get_estrutura_administracao, get_estrutura_turismo
 from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
@@ -238,6 +238,7 @@ def flow_list(request):
     mat_flow = get_estrutura_matematica()
     dir_flow = get_estrutura_direito()
     adm_flow = get_estrutura_administracao()
+    tur_flow = get_estrutura_turismo()
 
     context = {
         'dir_flow': dir_flow,
@@ -246,6 +247,7 @@ def flow_list(request):
         'bsi_flow_1a': bsi_flow_1a,
         'bsi_flow_1b': bsi_flow_1b,
         'adm_flow': adm_flow,
+        'tur_flow': tur_flow,
     }
 
     return render(request, 'core/flow/list.html', context)
@@ -370,6 +372,17 @@ def flow_adm_op(request):
     return flow_opcionais(request, adm_ec)
 
 
+def flow_tur(request):
+    tur_ec = get_estrutura_turismo()
+    link_opcionais = '/core/flow/tur/opcionais'
+    return flow_horizontal(request, tur_ec, link_opcionais)
+
+
+def flow_tur_op(request):
+    tur_ec = get_estrutura_turismo()
+    return flow_opcionais(request, tur_ec)
+
+
 def cadastrar_usuario(request):
     if request.method == "POST":
         form_usuario = CadastroUsuarioForm(request.POST)
@@ -435,6 +448,7 @@ def turmas_list(request):
     ped_flow = get_estrutura_pedagogia()
     mat_flow = get_estrutura_matematica()
     adm_flow = get_estrutura_administracao()
+    tur_flow = get_estrutura_turismo()
 
     context = {
         'dir_flow': dir_flow,
@@ -442,6 +456,7 @@ def turmas_list(request):
         'ped_flow': ped_flow,
         'bsi_flow': bsi_flow,
         'adm_flow': adm_flow,
+        'tur_flow': tur_flow,
     }
     return render(request, 'core/turmas/list.html', context)
 
@@ -481,6 +496,12 @@ def turmas_adm(request):
     return turmas_grade(request, adm_csh, turmas_list_link)
 
 
+def turmas_tur(request):
+    tur_csh = get_estrutura_turismo()
+    turmas_list_link = '/core/turmas/tur'
+    return turmas_grade(request, tur_csh, turmas_list_link)
+
+
 def sugestao_list(request):
     """
         Tela para Listar os Curso com possibilidade de cadastrar Sugestões de Turmas.
@@ -490,6 +511,7 @@ def sugestao_list(request):
     ped_flow = get_estrutura_pedagogia()
     mat_flow = get_estrutura_matematica()
     adm_flow = get_estrutura_administracao()
+    tur_flow = get_estrutura_turismo()
 
     context = {
         'dir_flow': dir_flow,
@@ -497,6 +519,7 @@ def sugestao_list(request):
         'ped_flow': ped_flow,
         'bsi_flow': bsi_flow,
         'adm_flow': adm_flow,
+        'tur_flow': tur_flow,
     }
     return render(request, 'core/sugestao/list.html', context)
 
@@ -733,6 +756,47 @@ def sugestao_ped_editar(request, pk):
 def sugestao_ped_deletar(request, pk):
     ped_deduc = get_estrutura_pedagogia()
     return sugestao_deletar(request, pk, estrutura=ped_deduc)
+
+
+def sugestao_tur_list(request):
+    tur_csh = get_estrutura_turismo()
+    sugestao_incluir_link = '/core/sugestao/tur/incluir'
+    sugestao_manter_link = '/core/sugestao/tur/manter'
+    sugestao_list_link = '/core/sugestao/tur/list'
+    return sugestao_grade_horarios(request, tur_csh, sugestao_incluir_link, sugestao_manter_link, sugestao_list_link)
+
+
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_tur_manter(request):
+    """
+        Tela de Manter Sugestão de Turmas do Curso de Turismo - Currais Novos.
+    """
+    tur_csh = get_estrutura_turismo()
+    sugestao_incluir_link = '/core/sugestao/tur/incluir'
+    sugestao_editar_link = 'sugestao_tur_editar'
+    sugestao_deletar_link = 'sugestao_tur_deletar'
+    sugestao_grade_link = '/core/sugestao/tur/list'
+    return sugestao_manter(request, tur_csh, sugestao_incluir_link, sugestao_grade_link,
+                           sugestao_editar_link, sugestao_deletar_link)
+
+
+@permission_required("core.add_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_tur_incluir(request):
+    tur_csh = get_estrutura_turismo()
+    sugestao_manter_link = '/core/sugestao/tur/manter'
+    return sugestao_incluir(request, tur_csh, sugestao_manter_link)
+
+
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_tur_editar(request, pk):
+    tur_csh = get_estrutura_turismo()
+    return sugestao_editar(request, pk, estrutura=tur_csh)
+
+
+@permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_tur_deletar(request, pk):
+    tur_csh = get_estrutura_turismo()
+    return sugestao_deletar(request, pk, estrutura=tur_csh)
 
 
 def error_403(request, exception):
