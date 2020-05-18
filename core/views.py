@@ -448,6 +448,7 @@ def turmas_list(request):
     ped_flow = get_estrutura_pedagogia()
     mat_flow = get_estrutura_matematica()
     adm_flow = get_estrutura_administracao()
+    tur_flow = get_estrutura_turismo()
 
     context = {
         'dir_flow': dir_flow,
@@ -455,6 +456,7 @@ def turmas_list(request):
         'ped_flow': ped_flow,
         'bsi_flow': bsi_flow,
         'adm_flow': adm_flow,
+        'tur_flow': tur_flow,
     }
     return render(request, 'core/turmas/list.html', context)
 
@@ -492,6 +494,12 @@ def turmas_adm(request):
     adm_csh = get_estrutura_administracao()
     turmas_list_link = '/core/turmas/adm'
     return turmas_grade(request, adm_csh, turmas_list_link)
+
+
+def turmas_tur(request):
+    tur_csh = get_estrutura_turismo()
+    turmas_list_link = '/core/turmas/tur'
+    return turmas_grade(request, tur_csh, turmas_list_link)
 
 
 def sugestao_list(request):
