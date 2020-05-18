@@ -62,6 +62,12 @@ urlpatterns = [
     path('solicitacao/listar/<int:pk>/', views.solicitacao_turma_listar, name='solicitacao_turma_listar'),
     path('solicitacao/deletar/<int:pk>/', views.solicitacao_deletar, name='solicitacao_deletar'),
 
+    path('sugestao/adm/list', views.sugestao_adm_list, name='sugestao_adm_list'),
+    path('sugestao/adm/manter', views.sugestao_adm_manter, name='sugestao_adm_manter'),
+    path('sugestao/adm/incluir', views.sugestao_adm_incluir, name='sugestao_adm_incluir'),
+    path('sugestao/adm/editar/<int:pk>/', views.sugestao_adm_editar, name='sugestao_adm_editar'),
+    path('sugestao/adm/deletar/<int:pk>/', views.sugestao_adm_deletar, name='sugestao_adm_deletar'),
+
     path('sugestao/dir/list', views.sugestao_dir_list, name='sugestao_dir_list'),
     path('sugestao/dir/manter', views.sugestao_dir_manter, name='sugestao_dir_manter'),
     path('sugestao/dir/incluir', views.sugestao_dir_incluir, name='sugestao_dir_incluir'),
