@@ -50,3 +50,23 @@ def get_estrutura_pedagogia():
     id_ec = 133495154
     ped_ec = get_estrutura_by_id(id_ec)
     return ped_ec
+
+
+def get_estrutura_administracao():
+    """
+    Retorna a Estrutura Curricular ativa do Curso de Administração - Currais Novos.
+    :return: Um objeto da classe EstruturaCurricular.
+    """
+    id_ec = 121631446
+    adm_ec = get_estrutura_by_id(id_ec)
+    return adm_ec
+
+
+def get_estrutura_turismo():
+    """
+    Retorna a Estrutura Curricular ativa do Curso de Turismo - Currais Novos.
+    :return: Um objeto da classe EstruturaCurricular.
+    """
+    id_ec = 119546991
+    turismo_ec = get_estrutura_by_id(id_ec)
+    return turismo_ec

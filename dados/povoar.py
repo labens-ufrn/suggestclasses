@@ -3,14 +3,14 @@ import os
 import django
 django.setup()
 
+from dados.povoar_docentes import carregar_docente
 from dados.baixar_dados import downloads_dados
 from mysite.settings import BASE_DIR
-from dateutil.parser import parse
 from dados.povoar_funcoes_gratificadas import carregar_funcoes_gratificadas
 from dados.povoar_turma import carregar_turma
 from dados.povoar_discentes import carregar_discentes
 from core.models import Curso, Centro, Departamento, ComponenteCurricular, EstruturaCurricular, \
-    OrganizacaoCurricular, Docente, Sala
+    OrganizacaoCurricular, Sala
 from core.bo.docente import get_docente_by_nome
 
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')
@@ -107,7 +107,22 @@ def departamentos():
             if id_unidade_responsavel == '1482' and (tipo_unidade_organizacional == 'DEPARTAMENTO'
                                                      or tipo_unidade_organizacional == 'ASSESSORIA'):
                 if not Departamento.objects.filter(id_unidade=id_dep).exists():
-                    d = Departamento(id_unidade=id_dep, codigo=codigo_dep, nome=nome_dep, sigla=sigla_dep,
+                    
+                    acentos = {
+                        'EDUCACAO': 'EDUCAÇÃO',
+                        'COMPUTACAO': 'COMPUTAÇÃO',
+                        'CIENCIAS': 'CIÊNCIAS',
+                        'CIENCIA': 'CIÊNCIA',
+                        'HISTORIA': 'HISTÓRIA',
+                        }
+
+                    nomes = nome_dep.split()
+                    for i, nome in enumerate(nomes):
+                        if nome in acentos:
+                            nomes[i] = acentos[nome]
+                    new_nome_dep = ' '.join(nomes)
+
+                    d = Departamento(id_unidade=id_dep, codigo=codigo_dep, nome=new_nome_dep, sigla=sigla_dep,
                                      endereco=municipio,
                                      centro=ceres)
                     d.save()
@@ -166,6 +181,7 @@ def componentes():
                 id_componente = row[0]
                 tipo_componente = row[1]
                 codigo_componente = row[2]
+
                 nivel_componente = row[3]
                 nome_componente = row[4]
 
@@ -323,31 +339,7 @@ def criar_docentes():
         next(docentes)  # skip header
 
         for row in docentes:
-            siape = row[0]
-            nome = row[1]
-            sexo = row[2]
-            formacao = row[3]
-            tipo_jornada_trabalho = row[4]
-            vinculo = row[5]
-            categoria = row[6]
-            classe_funcional = row[7]
-            id_unidade_lotacao = row[8]
-            lotacao = row[9]
-            admissao_str = row[10]
-            # https://stackabuse.com/converting-strings-to-datetime-in-python/
-            admissao = parse(admissao_str)
-
-            if id_unidade_lotacao == '1482' or Departamento.objects.filter(id_unidade=id_unidade_lotacao).exists():
-
-                if not Docente.objects.filter(siape=siape).exists():
-                    print("Adicionando Docente: " + siape + " - " + nome)
-                    professor = Docente(siape=siape, nome=nome, sexo=sexo, formacao=formacao,
-                                        tipo_jornada_trabalho=tipo_jornada_trabalho,
-                                        vinculo=vinculo, categoria=categoria, classe_funcional=classe_funcional,
-                                        id_unidade_lotacao=id_unidade_lotacao, lotacao=lotacao, admissao=admissao)
-                    professor.save()
-                else:
-                    print('.', end="")
+            carregar_docente(row)
         print()
 
 

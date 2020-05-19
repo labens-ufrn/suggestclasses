@@ -107,19 +107,30 @@ Execute o comando ```source path.env``` para carregar as variáveis.
 
 A ordem é importante e deve ser seguida conforme descrito abaixo.
 
+### Criar Grupos e Permissões
+
+Deve-se rodar, na raiz do projeto, o script ```povoar_grupos.py``` na pasta **dados**.
+
+```python dados/povoar_grupos.py```
+
 ### Criar base de horários da UFRN
 
 Deve-se rodar, na raiz do projeto, o script ```povoar_horarios.py``` na pasta **dados**.
 
 ```python dados/povoar_horarios.py```
 
-Depois execute os seguintes comandos.
+
+### Criar o restante da base de Dados
+
+Os scripts seguintes farão o povoamento do restante da base.
 
 ```shell script
 python dados/baixar_dados.py
 python dados/povoar.py
 python dados/povoar_organizacao_curricular.py
 ```
+
+Para atualizar a base, devem-ser deletados os csv's antigos e executar novamente os scripts.
 
 ## Testes
 
