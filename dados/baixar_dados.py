@@ -1,9 +1,9 @@
 #!/usr/bin/python
 import os
-import urllib.request
+import requests
 import django
 django.setup()
-
+from tqdm import tqdm
 from mysite.settings import BASE_DIR
 
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')
@@ -15,6 +15,17 @@ def main():
     os.chdir(DADOS_PATH)
     downloads_dados()
 
+def progress(url, file_name):
+    bloco_size = 1024
+    r = requests.get(url, stream=True)
+    total_size = int(r.headers.get("Content-Length", 0))
+    progress = tqdm(r.iter_content(bloco_size=bloco_size),
+                    total=total_size/bloco_size,
+                    unit='KB')
+    with open(file_name, 'wb') as f:
+        for data in progress:
+            f.write(data)
+    print("Download completo!")
 
 def downloads_dados():
     """Download de arquivos CSV de http://dados.ufrn.br"""
@@ -34,12 +45,13 @@ def downloads_dados():
 def download_departamentos():
     print("Download do CSV dos Departamentos do CERES/UFRN ...!")
     file_name = 'unidades.csv'
+    url = 'http://dados.ufrn.br/dataset/da6451a5-1a59-4630-bdc2-97f6be4a59c2/resource/3f2e4e32-ef1a-4396-8037' \
+          '-cbc22a89d97f/download/unidades.csv'
     if os.path.exists(file_name):
         print("Arquivo unidades.csv já existe!")
     else:
-        url = 'http://dados.ufrn.br/dataset/da6451a5-1a59-4630-bdc2-97f6be4a59c2/resource/3f2e4e32-ef1a-4396-8037' \
-          '-cbc22a89d97f/download/unidades.csv'
-        urllib.request.urlretrieve(url, file_name)
+
+        progress(url, file_name)
         print('.................')
 
 
@@ -50,8 +62,8 @@ def download_cursos():
         print("Arquivo cursos-ufrn.csv já existe!")
     else:
         url = 'http://dados.ufrn.br/dataset/08b0dc59-faa9-4281-bd1e-2a39f532489e/resource/949be3d1-e85b-4d0f-9f60' \
-          '-1d9a7484bb06/download/cursos-ufrn.csv'
-        urllib.request.urlretrieve(url, file_name)
+              '-1d9a7484bb06/download/cursos-ufrn.csv'
+        progress(url, file_name)
         print('.................')
 
 
@@ -62,88 +74,95 @@ def download_componentes():
         print("Arquivo componentes-curriculares-presenciais.csv já existe!")
     else:
         url = 'http://dados.ufrn.br/dataset/3fea67e8-6916-4ed0-aaa6-9a8ca06a9bdc/resource/9a3521d2-4bc5-4fda-93f0' \
-          '-f701c8a20727/download/componentes-curriculares-presenciais.csv'
-        urllib.request.urlretrieve(url, file_name)
+              '-f701c8a20727/download/componentes-curriculares-presenciais.csv'
+        progress(url, file_name)
         print('.................')
 
 
 def download_estruturas():
     print("Download do CSV das Estruturas Curriculares do CERES/UFRN ...!")
     file_name = 'estruturas-curriculares.csv'
+    url = 'http://dados.ufrn.br/dataset/e7c24910-75c1-451b-9097-e4352488dd69/resource/94cc35b0-6560-44f3-8c67' \
+          '-98cff965f23c/download/estruturas-curriculares.csv'
     if os.path.exists(file_name):
         print("Arquivo estruturas-curriculares.csv já existe!")
     else:
-        url = 'http://dados.ufrn.br/dataset/e7c24910-75c1-451b-9097-e4352488dd69/resource/94cc35b0-6560-44f3-8c67' \
-              '-98cff965f23c/download/estruturas-curriculares.csv'
-        urllib.request.urlretrieve(url, file_name)
+
+        progress(url, file_name)
         print('.................')
 
 
 def download_curriculos():
     print("Download do CSV dos Organização Curricular do CERES/UFRN ...!")
     file_name = 'curriculo-componente-graduacao.csv'
+    url = 'http://dados.ufrn.br/dataset/82aca3f1-f7ee-425e-bf1e-b6a1d6811bf4/resource/3f25d054-c5d2-4bf2-8cd4' \
+        '-8e0a2e4f63ce/download/curriculo-componente-graduacao.csv '
     if os.path.exists(file_name):
         print("Arquivo curriculo-componente-graduacao.csv já existe!")
     else:
-        url = 'http://dados.ufrn.br/dataset/82aca3f1-f7ee-425e-bf1e-b6a1d6811bf4/resource/3f25d054-c5d2-4bf2-8cd4' \
-          '-8e0a2e4f63ce/download/curriculo-componente-graduacao.csv '
-        urllib.request.urlretrieve(url, file_name)
+
+        progress(url, file_name)
         print('.................')
 
 
 def download_turmas():
     print("Download do CSV das Turmas 2019.1 do CERES/UFRN ...!")
     file_name = "turmas-2019.1.csv"
+    url = 'http://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/1e42cd66-69d6-48d5-a346' \
+        '-d46766fd2c9c/download/turmas-2019.1.csv'
     if os.path.exists(file_name):
         print("Arquivo turmas-2019.1.csv já existe!")
     else:
-        url = 'http://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/1e42cd66-69d6-48d5-a346' \
-          '-d46766fd2c9c/download/turmas-2019.1.csv'
-        urllib.request.urlretrieve(url, file_name)
+
+        progress(url, file_name)
         print('.................')
 
     print("Download do CSV das Turmas 2019.2 do CERES/UFRN ...!")
     file_name = "turmas-2019.2.csv"
+    url = 'http://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/d9c2863e-d1b2-4afd-b7dd' \
+        '-09517d5ed17d/download/turmas-2019.2.csv'
     if os.path.exists(file_name):
         print("Arquivo turmas-2019.2.csv já existe!")
     else:
-        url = 'http://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/d9c2863e-d1b2-4afd-b7dd' \
-          '-09517d5ed17d/download/turmas-2019.2.csv'
-        urllib.request.urlretrieve(url, file_name)
+
+        progress(url, file_name)
         print('.................')
 
     print("Download do CSV das Turmas 2020.1 do CERES/UFRN ...!")
     file_name = "turmas-2020.1.csv"
+    url = 'http://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/3a9fe77e-478d-4b18-b7bc' \
+        '-a4df57cbdf46/download/turmas-2020.1.csv'
     if os.path.exists(file_name):
         print("Arquivo turmas-2020.1.csv já existe!")
     else:
-        url = 'http://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/3a9fe77e-478d-4b18-b7bc' \
-              '-a4df57cbdf46/download/turmas-2020.1.csv'
-        urllib.request.urlretrieve(url, file_name)
+
+        progress(url, file_name)
         print('.................')
 
 
 def download_docentes():
     print("Download do CSV dos Docentes do CERES/UFRN ...!")
     file_name = "docentes.csv"
+    url = 'http://dados.ufrn.br/dataset/8bf1a468-48ff-4f4d-95ee-b17b7a3a5592/resource/ff0a457e-76fa-4aca-ad99' \
+        '-48aebd7db070/download/docentes.csv'
     if os.path.exists(file_name):
         print("Arquivo docentes.csv já existe!")
     else:
-        url = 'http://dados.ufrn.br/dataset/8bf1a468-48ff-4f4d-95ee-b17b7a3a5592/resource/ff0a457e-76fa-4aca-ad99' \
-              '-48aebd7db070/download/docentes.csv'
-        urllib.request.urlretrieve(url, file_name)
+
+        progress(url, file_name)
         print('.................')
 
 
 def download_funcoes():
     print("Download do CSV das Funções Gratificadas do CERES/UFRN ...!")
     file_name = "funcoes-gratificadas.csv"
+    url = 'http://dados.ufrn.br/dataset/b8c62810-0ec4-4412-ad3b-52105dc8b391/resource/f9ac99fa-011e-4403-8b2a' \
+        '-c8d75888cbcf/download/funcoes-gratificadas.csv'
     if os.path.exists(file_name):
         print("Arquivo funcoes-gratificadas.csv já existe!")
     else:
-        url = 'http://dados.ufrn.br/dataset/b8c62810-0ec4-4412-ad3b-52105dc8b391/resource/f9ac99fa-011e-4403-8b2a' \
-              '-c8d75888cbcf/download/funcoes-gratificadas.csv'
-        urllib.request.urlretrieve(url, file_name)
+
+        progress(url, file_name)
         print('.................')
 
 
@@ -194,7 +213,7 @@ def download_discentes_semestre(url, discentes_csv):
     if os.path.exists(file_name):
         print('Arquivo ' + discentes_csv + ' já existe!')
     else:
-        urllib.request.urlretrieve(url, file_name)
+        progress(url, file_name)
         print('........' + discentes_csv + '.........')
 
 
