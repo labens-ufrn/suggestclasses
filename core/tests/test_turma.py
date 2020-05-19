@@ -14,7 +14,6 @@ class TurmaBOTests(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         print('\nTurmaBOTests')
-        print(db.connections.databases)
         criar_dados()
 
     @classmethod

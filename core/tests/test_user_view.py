@@ -58,7 +58,6 @@ class UserViewTests(TestCase):
     def test_add_user_view_post(self):
         # Apagar o usuário caso ele já exista!
         if User.objects.filter(username='johnteste').exists():
-            print('Apagar Usuário')
             User.objects.get(username='johnteste').delete()
         user_count = User.objects.count()
         client = Client()
