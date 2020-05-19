@@ -19,7 +19,7 @@ def progress(url, file_name):
     bloco_size = 1024
     r = requests.get(url, stream=True)
     total_size = int(r.headers.get("Content-Length", 0))
-    progress = tqdm(r.iter_content(bloco_size=bloco_size),
+    progress = tqdm(r.iter_content(chunk_size=bloco_size),
                     total=total_size/bloco_size,
                     unit='KB')
     with open(file_name, 'wb') as f:
