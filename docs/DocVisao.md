@@ -1,6 +1,6 @@
 # Documento de Visão
 
-Documento construído a partido do **Modelo BSI - Doc 001 - Documento de Visão** que pode ser encontrado no 
+Documento construído a partido do **Modelo BSI - Doc 001 - Documento de Visão** que pode ser encontrado no
 link: https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBNFyLa6A/edit?usp=sharing
 
 ## Lista de Requisitos Funcionais
@@ -9,7 +9,7 @@ link: https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBNF
   * um componente curricular é de um tipo de componente;
   * um componente curricular tem:
     * código, nome, ementa, departamento, carga horária e modalidade;
-    * equivalências e requisitos com outros componentes; 
+    * equivalências e requisitos com outros componentes;
     * data de criação.
 * Manter cadastro de Turmas;
   * uma turma tem: código, professor, sala e horários (horário da turma);
@@ -18,7 +18,7 @@ link: https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBNF
   * uma turma tem uma ou mais salas;
   * uma turma tem vários horários de aulas;
 * Manter o cadastro de Horários de Aula;
-  * um horário tem: 
+  * um horário tem:
     * um dia de semana, um turno, uma ordem (ordenação/identificador);
     * uma hora de início, uma hora de final;
 * Manter o cadastro de Sugestões de Horário de Turma;
@@ -52,5 +52,13 @@ link: https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBNF
  * semestre
  * tipo_vinculo
  * nível
- 
+
  ## Modelo Conceitual
+
+Abaixo apresentamos o modelo ER inicial.
+
+ ![Modelo ER](https://github.com/labens-ufrn/suggestclasses/blob/master/docs/modelos/Modelo%20ER%20-%20SuggestClasses.png)
+
+Também criamos alguns modelos usando [YUML](http://yuml.me):
+
+![UML Reserva de Horário](https://github.com/labens-ufrn/suggestclasses/blob/master/docs/modelos/Modelo%20UML%20-%20Reserva%20de%20Horários.png)

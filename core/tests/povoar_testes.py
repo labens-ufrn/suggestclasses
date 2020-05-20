@@ -44,9 +44,8 @@ class PovoarDadosTestes(object):
 
 def criar_dados():
     dados = PovoarDadosTestes.load()
-    print('Criar Dados: ' + dados.__str__())
     if dados.povoar:
-        print('...... povoando dados ......')
+        print('> povoando dados')
         criar_tudo()
         dados.povoar = True
 
@@ -55,7 +54,7 @@ def remover_dados():
     dados = PovoarDadosTestes.load()
     if dados.remover:
         print()
-        print('...... removendo dados ......')
+        print('> removendo dados')
         remover_tudo()
         dados.povoar = True
 
