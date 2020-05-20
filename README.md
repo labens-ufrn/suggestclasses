@@ -22,13 +22,16 @@ Na página [Documentação](docs/docs.md) temos os detalhes do projeto e a lista
 ## Pré-requisitos
 
 Banco de Dados
-    MariaDB - https://mariadb.org/ ou MySQL - https://www.mysql.com/
+    
+   MariaDB - https://mariadb.org/ ou MySQL - https://www.mysql.com/
 
-Linguagen
-    Python - https://www.python.org/
+Linguagem
+    
+   Python - https://www.python.org/
 
 ferramenta
-    Docker - https://www.docker.com/
+    
+   Docker - https://www.docker.com/
 
 ### Criação do Banco de Dados (dev e test) e Usuário
 
