@@ -78,7 +78,8 @@ def carregar_turma(row):
             print(descricao_horario)
 
         cc = ComponenteCurricular.objects.get(id_componente=id_componente_curricular)
-        docente = carregar_docente_substituto(siape=siape, componente=cc)
+        docente = carregar_docente(siape=siape, matricula_docente_externo=matricula_docente_externo,
+                                   componente=cc)
 
         curriculo = get_curriculo_by_cc(id_componente_curricular)
 
@@ -108,25 +109,45 @@ def carregar_turma(row):
             print('.', end="")
 
 
-def carregar_docente_substituto(siape, componente):
-    docente = get_docente_by_siape(siape)
+def carregar_docente(siape, matricula_docente_externo, componente):
+    docente = None
+    criar = False
+    if siape is not None and siape != '':
+        docente = get_docente_by_siape(siape)
+        criar = True
+    elif matricula_docente_externo is not None and matricula_docente_externo != '':
+        docente = get_docente_by_siape(matricula_docente_externo)
+        criar = True
 
-    # Carregamento de Docente com Contrato de Professor Substituto
-    if docente is None and siape is not None and siape != '':
-        print("Adicionando Docente: " + siape + " - Substituto")
+    if docente is None and not criar:
+        print(componente)
+
+    # Carregamento de Docente com Contrato de Professor Substituto ou Voluntário/Externo
+    if docente is None and criar:
+        if siape is not None and siape != '':
+            print("Adicionando Docente: " + siape + " - Substituto")
+            nome = 'SUBSTITUTO'
+            vinculo = 'Contrato'
+        elif matricula_docente_externo is not None and matricula_docente_externo != '':
+            print("Adicionando Docente: " + matricula_docente_externo + " - Externo")
+            siape = matricula_docente_externo
+            nome = 'VOLUNTÁRIO/EXTERNO'
+            vinculo = 'Voluntário'
+
         depto = None
         id_unidade_lotacao = componente.departamento.id_unidade
         if Departamento.objects.filter(id_unidade=id_unidade_lotacao).exists():
             depto = Departamento.objects.get(id_unidade=id_unidade_lotacao)
 
-        docente = Docente(siape=siape, nome='SUBSTITUTO', sexo='X', formacao='Graduado/Mestre',
+        docente = Docente(siape=siape, nome=nome, formacao='Graduado/Mestre',
                           tipo_jornada_trabalho='Temporária',
-                          vinculo='Contrato', categoria='PROFESSOR DO MAGISTERIO SUPERIOR',
+                          vinculo=vinculo, categoria='PROFESSOR DO MAGISTERIO SUPERIOR',
                           classe_funcional='',
                           id_unidade_lotacao=id_unidade_lotacao,
-                          lotacao=componente.departamento.nome, admissao=parse('2020/02/01'),
+                          lotacao=componente.departamento.nome,
                           departamento=depto)
         docente.save()
+        print('Criando Docente: ' + str(docente))
     return docente
 
 
