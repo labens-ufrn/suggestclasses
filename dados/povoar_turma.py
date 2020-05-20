@@ -5,7 +5,7 @@ django.setup()
 from core.bo.curriculo import get_curriculo_by_cc
 from core.bo.docente import get_docente_by_siape
 from core.bo.turma import converte_desc_horario
-from core.models import ComponenteCurricular, Docente, Turma, Departamento
+from core.models import ComponenteCurricular, Docente, Turma, Departamento, VinculoDocente
 from dateutil.parser import parse
 from mysite.settings import BASE_DIR
 
@@ -82,13 +82,12 @@ def carregar_turma(row):
                                    componente=cc)
 
         curriculo = get_curriculo_by_cc(id_componente_curricular)
+        horarios_list = converte_desc_horario(descricao_horario)
 
         if Turma.objects.filter(id_turma=id_turma).exists():
             turma = Turma.objects.get(id_turma=id_turma)
-            # TODO Teremos aqui o tratamento de turmas com mais de um docente
-            print(str(docente) + ' ' + ch_dedicada_periodo)
-            # adicionar_vinculo_docente(turma, docente, carga_horaria, horarios_docente)
-            print('-', end="")
+            adicionar_vinculo_docente(turma, docente, ch_dedicada_periodo, horarios_list)
+            print('+', end="")
         else:
             print("Adicionando Turma " + id_turma + " - " + codigo_turma + "- " + cc.codigo + " - " +
                   cc.nome + " - " + descricao_horario)
@@ -104,8 +103,8 @@ def carregar_turma(row):
                           situacao_turma=situacao_turma, convenio=convenio,
                           modalidade_participantes=modalidade_participantes)
             turma.save()
-            horarios_list = converte_desc_horario(descricao_horario)
             turma.horarios.set(horarios_list)
+            adicionar_vinculo_docente(turma, docente, ch_dedicada_periodo, horarios_list)
             print('.', end="")
 
 
@@ -149,6 +148,14 @@ def carregar_docente(siape, matricula_docente_externo, componente):
         docente.save()
         print('Criando Docente: ' + str(docente))
     return docente
+
+
+def adicionar_vinculo_docente(turma, docente, carga_horaria, horarios_docente):
+    if not VinculoDocente.objects.filter(turma=turma, docente=docente).exists() and docente is not None:
+        vinculo = VinculoDocente(docente=docente, turma=turma, carga_horaria=carga_horaria)
+        vinculo.save()
+        vinculo.horarios.set(horarios_docente)
+        print('Add Vínculo Docente: ' + str(docente) + ' - ' + str(turma.componente) + ' - ' + carga_horaria)
 
 
 if __name__ == "__main__":
