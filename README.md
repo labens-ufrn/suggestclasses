@@ -50,7 +50,7 @@ Utilzamos o SGBD MariaDB/MySql.
 ### Dependências para usar o MariaDB e MySQL
 Windows
 
-No site https://www.lfd.uci.edu/~gohlke/pythonlibs/ busca o Mysqlclient compatível com a sua versão Python instalada
+No site https://www.lfd.uci.edu/~gohlke/pythonlibs/ busca o Mysqlclient compatível com a sua versão Python instalada.
 
 Instalação com o PIP:
 
