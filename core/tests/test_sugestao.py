@@ -1,5 +1,5 @@
 import django
-
+django.setup()
 from core.bo.sugestao import solicitacao_incluir, solicitacao_existe, solicitacao_verificar_choques
 from core.views import solicitacao_deletar
 
