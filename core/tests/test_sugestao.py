@@ -1,11 +1,9 @@
 import django
-
-from core.bo.sugestao import solicitacao_incluir, solicitacao_existe, solicitacao_verificar_choques
-from core.views import solicitacao_deletar
-
 django.setup()
 from django.contrib.auth.models import User
 
+from core.bo.sugestao import solicitacao_incluir, solicitacao_existe, solicitacao_verificar_choques
+from core.views import solicitacao_deletar
 from core.bo.sevices import get_estrutura_by_id
 from core.bo.turma import get_sugestao_turmas, carrega_turmas_horario, carrega_sugestao_turmas, \
     converte_desc_horario
