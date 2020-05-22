@@ -1,5 +1,5 @@
 import logging
-from typing import Set
+import json
 from urllib.parse import urlparse
 
 from django.contrib import messages
@@ -81,6 +81,8 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
     if request.method == "POST":
         form_sugestao = SugestaoTurmaForm(request.POST, estrutura=estrutura)
         vinculos_docente = request.POST.get('vinculos_docente')
+        print(vinculos_docente)
+        vds = json.loads(vinculos_docente)
         if form_sugestao.is_valid():
             sugestao_turma = form_sugestao.save(commit=False)
             carregar_dados(request, sugestao_turma, estrutura)

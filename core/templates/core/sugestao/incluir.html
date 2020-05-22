@@ -68,7 +68,7 @@
     </form>
   </div>
 {% endblock content %}
-{% block myscripts %}        'lista_vinculos': lista_vinculos,
+{% block myscripts %}
 <script>
     $("#id_departamento").change(function () {
       const url = $("#SugestaoForm").attr("data-docentes-url");  // get the url of the `load_cities` view
@@ -111,11 +111,14 @@
           listaHTML.html(listaHTML.html() + data)
           lista.push(vinculo);
 
-          $("#id_vinculos_docente").val(lista)
+          let vinculos_json = '{ "vinculos" : ' + JSON.stringify(lista) + '}';
+
+          $("#id_vinculos_docente").val(vinculos_json)
 
           console.log(listaHTML)
           console.log(vinculo)
-          console.log(lista)
+          console.log(vinculos_json)
+          console.log(JSON.stringify(lista))
         }
       });
     });
