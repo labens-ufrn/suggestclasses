@@ -466,9 +466,15 @@ def check_vinculo_docente(request):
     carga_horaria = request.GET.get('vinculo[carga_horaria]')
 
     docente = Docente.objects.get(pk=docente_id)
-    vinculo = {'docente': docente, 'horarios': horarios, 'carga_horaria': carga_horaria}
-    vinculos.append(vinculo)
-    print(vinculo)
+    horarios_list = converte_desc_horario(horarios)
+    choques_docente, houve_choque = existe_choques_docente(docente, horarios_list)
+    if not houve_choque:
+        vinculo = {'docente': docente, 'horarios': horarios, 'carga_horaria': carga_horaria}
+        vinculos.append(vinculo)
+        print(vinculo)
+    else:
+        messages.error(request, 'Docente ' + docente.nome + ' com choque nos horários: ' +
+                       criar_string(choques_docente) + '.')
     return render(request, 'core/sugestao/vinculo_docente_list.html', {'vinculos': vinculos})
 
 
@@ -491,3 +497,18 @@ def carregar_vinculos(vinculos_docente):
             vinculos.append(vinculo)
             print(vinculo)
     return vinculos
+
+
+def existe_choques_docente(docente, horarios_list):
+    choque_docente = []
+    ano = config.get('PeriodoSeguinte', 'ano')
+    periodo = config.get('PeriodoSeguinte', 'periodo')
+
+    for horario in horarios_list:
+        docente_sugestoes = list(horario.sugestoes.all().filter(docente=docente, ano=ano, periodo=periodo))
+        if docente_sugestoes:
+            choque_docente.append(horario.dia + horario.turno + horario.ordem)
+
+    if choque_docente:
+        return choque_docente, True
+    return None, False
