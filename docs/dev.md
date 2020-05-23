@@ -19,3 +19,7 @@ Resposta do Stackoverflow [Aqui!](https://stackoverflow.com/questions/1452967/dj
 This is nothing to do with Django, but depends on the collation of your database tables.
 The collation is what determines how to sort and compare characters, and you need to choose one that compares accented
 and non-accented characters as equal. If you're using MySQL, a good collation would be utf8_general_ci.
+
+## Django Secret Key Generator
+
+* https://djecrety.ir/
