@@ -57,6 +57,7 @@ urlpatterns = [
     path('sugestao/<int:pk>/', views.SugestaoTurmaDetailView.as_view(), name='sugestao_detalhar'),
     path('ajax/load-docentes/', suggest_view.load_docentes, name='ajax_load_docentes'),
     path('ajax/check_vinculo_docente/', suggest_view.check_vinculo_docente, name='ajax_check_vinculo_docente'),
+    path('ajax/load-vinculos/', suggest_view.load_vinculos, name='ajax_load_vinculos'),
 
     path('solicitacao/<int:pk>/', views.sugestao_solicitar, name='sugestao_solicitar'),
     path('solicitacao/listar/<int:pk>/', views.solicitacao_turma_listar, name='solicitacao_turma_listar'),

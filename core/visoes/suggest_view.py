@@ -78,11 +78,13 @@ def sugestao_manter(request, estrutura, sugestao_incluir_link, sugestao_grade_li
 def sugestao_incluir(request, estrutura, sugestao_manter_link):
     ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
 
+    vinculos = []
+
     if request.method == "POST":
         form_sugestao = SugestaoTurmaForm(request.POST, estrutura=estrutura)
         vinculos_docente = request.POST.get('vinculos_docente')
-        print(vinculos_docente)
-        vds = json.loads(vinculos_docente)
+        vinculos = carregar_vinculos(vinculos_docente)
+
         if form_sugestao.is_valid():
             sugestao_turma = form_sugestao.save(commit=False)
             carregar_dados(request, sugestao_turma, estrutura)
@@ -101,6 +103,7 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
         'ano_periodo': ano_periodo,
         'estrutura': estrutura,
         'form_sugestao': form_sugestao,
+        'vinculos': vinculos,
     }
     return render(request, 'core/sugestao/incluir.html', context)
 
@@ -453,11 +456,38 @@ def load_docentes(request):
 
 
 def check_vinculo_docente(request):
-    docente_id = request.GET.get('docente')
-    horarios = request.GET.get('horarios')
-    carga_horaria = request.GET.get('carga_horaria')
+    vinculos_docente = request.GET.get('vinculos_docente')
+    vinculos = carregar_vinculos(vinculos_docente)
 
     # TODO Fazer checagem de choque de horários do docente
+    # %20 is space, %5B is '[' and %5D is ']'
+    docente_id = request.GET.get('vinculo[docente]')
+    horarios = request.GET.get('vinculo[horarios]')
+    carga_horaria = request.GET.get('vinculo[carga_horaria]')
+
     docente = Docente.objects.get(pk=docente_id)
     vinculo = {'docente': docente, 'horarios': horarios, 'carga_horaria': carga_horaria}
-    return render(request, 'core/sugestao/vinculo_docente_list.html', {'vinculo': vinculo})
+    vinculos.append(vinculo)
+    print(vinculo)
+    return render(request, 'core/sugestao/vinculo_docente_list.html', {'vinculos': vinculos})
+
+
+def load_vinculos(request):
+    vinculos_docente = request.GET.get('vinculos_docente')
+    vinculos = carregar_vinculos(vinculos_docente)
+    return render(request, 'core/sugestao/vinculo_docente_list.html', {'vinculos': vinculos})
+
+
+def carregar_vinculos(vinculos_docente):
+    vinculos = []
+    if vinculos_docente != '':
+        vds = json.loads(vinculos_docente)
+        for v in vds['vinculos']:
+            docente_id = v["docente"]
+            horarios = v['horarios']
+            carga_horaria = v['carga_horaria']
+            docente = Docente.objects.get(pk=docente_id)
+            vinculo = {'docente': docente, 'horarios': horarios, 'carga_horaria': carga_horaria}
+            vinculos.append(vinculo)
+            print(vinculo)
+    return vinculos
