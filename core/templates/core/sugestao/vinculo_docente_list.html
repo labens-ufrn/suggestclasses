@@ -1,4 +1,14 @@
-{% include 'core/messages.html' %}
+{% if messages %}
+  <tr>
+    <td colspan="4">
+    {% for message in messages %}
+        <div class="alert {{ message.tags }} m-2" id="msg" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+  </td>
+  </tr>
+{% endif %}
 
 {% for v in vinculos %}
   <tr>
@@ -15,3 +25,11 @@
       <th colspan="4">Não há vínculos docentes</th>
     </tr>
 {% endfor %}
+
+<script>
+  setTimeout(function () {
+    if ($('#msg').length > 0) {
+      $('#msg').remove();
+    }
+  }, 12000)
+</script>
