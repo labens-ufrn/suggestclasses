@@ -119,16 +119,19 @@
         success: function (data) {
           const listaHTML = $("#table_vinculos")
           listaHTML.html(data)
-          lista.push(new_vinculo);
+
+          const existe_docente = lista.some((item) => item.docente === docenteId)
+          if (!existe_docente) {
+            lista.push(new_vinculo);
+          }
 
           let vinculos_json = JSON.stringify({vinculos:lista})
 
           $("#id_vinculos_docente").val(vinculos_json)
 
-          console.log(listaHTML)
+          console.log(data)
           console.log(new_vinculo)
           console.log(vinculos_json)
-          console.log(JSON.stringify(lista))
         }
       });
     });
