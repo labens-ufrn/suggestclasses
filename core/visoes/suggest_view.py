@@ -466,15 +466,22 @@ def check_vinculo_docente(request):
     carga_horaria = request.GET.get('vinculo[carga_horaria]')
 
     docente = Docente.objects.get(pk=docente_id)
-    horarios_list = converte_desc_horario(horarios)
-    choques_docente, houve_choque = existe_choques_docente(docente, horarios_list)
-    if not houve_choque:
-        vinculo = {'docente': docente, 'horarios': horarios, 'carga_horaria': carga_horaria}
-        vinculos.append(vinculo)
-        print(vinculo)
-    else:
-        messages.error(request, 'Docente ' + docente.nome + ' com choque nos horários: ' +
-                       criar_string(choques_docente) + '.')
+    existe_docente = False
+    for v in vinculos:
+        if docente == v['docente']:
+            existe_docente = True
+            break
+
+    if not existe_docente:
+        horarios_list = converte_desc_horario(horarios)
+        choques_docente, houve_choque = existe_choques_docente(docente, horarios_list)
+        if not houve_choque:
+            vinculo = {'docente': docente, 'horarios': horarios, 'carga_horaria': carga_horaria}
+            vinculos.append(vinculo)
+            print(vinculo)
+        else:
+            messages.error(request, 'Docente ' + docente.nome + ' com choque nos horários: ' +
+                           criar_string(choques_docente) + '.')
     return render(request, 'core/sugestao/vinculo_docente_list.html', {'vinculos': vinculos})
 
 
