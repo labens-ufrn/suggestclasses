@@ -25,7 +25,8 @@ from .bo.discentes import get_discentes, get_discentes_ativos
 from .bo.docente import get_docentes
 from .bo.sala import get_salas
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre, get_estrutura_direito, get_estrutura_matematica, \
-    get_estrutura_pedagogia, get_estrutura_administracao, get_estrutura_turismo
+    get_estrutura_pedagogia, get_estrutura_administracao, get_estrutura_turismo, get_estrutura_letras_portugues, \
+    get_estrutura_letras_espanhol, get_estrutura_letras_ingles
 from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
@@ -239,6 +240,9 @@ def flow_list(request):
     dir_flow = get_estrutura_direito()
     adm_flow = get_estrutura_administracao()
     tur_flow = get_estrutura_turismo()
+    let_por_flow = get_estrutura_letras_portugues()
+    let_esp_flow = get_estrutura_letras_espanhol()
+    let_ing_flow = get_estrutura_letras_ingles()
 
     context = {
         'dir_flow': dir_flow,
@@ -248,73 +252,12 @@ def flow_list(request):
         'bsi_flow_1b': bsi_flow_1b,
         'adm_flow': adm_flow,
         'tur_flow': tur_flow,
+        'let_por_flow': let_por_flow,
+        'let_esp_flow': let_esp_flow,
+        'let_ing_flow': let_ing_flow,
     }
 
     return render(request, 'core/flow/list.html', context)
-
-
-def flow_bsi(request):
-    bsi_ec = get_estrutura_sistemas()
-
-    bsi_oc_semestres = []
-    bsi_ch_semestres = []
-    bsi_oc_op = get_oc_by_semestre(bsi_ec, 0)
-
-    headers: List[str] = []
-
-    for s in range(1, 9):
-        headers.append(f"{s}º Semestre")
-        bsi_oc_semestres.append(get_oc_by_semestre(bsi_ec, s))
-        bsi_ch_semestres.append(get_ch_by_semestre(bsi_ec, s))
-
-    context = {
-        'bsi_ec': bsi_ec,
-        'headers': headers,
-        'bsi_oc_semestres': bsi_oc_semestres,
-        'bsi_oc_op': bsi_oc_op,
-        'bsi_ch_semestres': bsi_ch_semestres,
-    }
-
-    return render(request, 'core/flow/bsi.html', context)
-
-
-def flow_bsi_1b(request):
-    bsi_ec = get_estrutura_sistemas_dct()
-
-    bsi_oc_semestres = []
-    bsi_ch_semestres = []
-    bsi_oc_op = get_oc_by_semestre(bsi_ec, 0)
-
-    headers: List[str] = []
-    bsi_tam = []
-    bsi_oc_max = 0
-    for s in range(1, 9):
-        oc = get_oc_by_semestre(bsi_ec, s)
-        ch = get_ch_by_semestre(bsi_ec, s)
-
-        headers.append(f"{s}º Semestre")
-        tam = len(oc)
-        bsi_tam.append(tam)
-        bsi_oc_semestres.append(oc)
-        bsi_ch_semestres.append(ch)
-
-        if tam >= bsi_oc_max:
-            bsi_oc_max = tam
-
-    for i in range(0, len(bsi_tam)):
-        bsi_tam[i] = bsi_oc_max - bsi_tam[i]
-
-    context = {
-        'bsi_ec': bsi_ec,
-        'headers': headers,
-        'bsi_oc_semestres': bsi_oc_semestres,
-        'bsi_oc_op': bsi_oc_op,
-        'bsi_tam': bsi_tam,
-        'bsi_oc_max': bsi_oc_max,
-        'bsi_ch_semestres': bsi_ch_semestres,
-    }
-
-    return render(request, 'core/flow/bsi-1b.html', context)
 
 
 def flow_bsi_1b_h(request):
@@ -337,6 +280,39 @@ def flow_dir(request):
 def flow_dir_op(request):
     dir_ec = get_estrutura_direito()
     return flow_opcionais(request, dir_ec)
+
+
+def flow_let_por(request):
+    let_por_ec = get_estrutura_letras_portugues()
+    link_opcionais = '/core/flow/let-por/opcionais'
+    return flow_horizontal(request, let_por_ec, link_opcionais)
+
+
+def flow_let_por_op(request):
+    let_por_ec = get_estrutura_letras_portugues()
+    return flow_opcionais(request, let_por_ec)
+
+
+def flow_let_esp(request):
+    let_esp_ec = get_estrutura_letras_espanhol()
+    link_opcionais = '/core/flow/let-esp/opcionais'
+    return flow_horizontal(request, let_esp_ec, link_opcionais)
+
+
+def flow_let_esp_op(request):
+    let_esp_ec = get_estrutura_letras_espanhol()
+    return flow_opcionais(request, let_esp_ec)
+
+
+def flow_let_ing(request):
+    let_ing_ec = get_estrutura_letras_ingles()
+    link_opcionais = '/core/flow/let-ing/opcionais'
+    return flow_horizontal(request, let_ing_ec, link_opcionais)
+
+
+def flow_let_ing_op(request):
+    let_ing_ec = get_estrutura_letras_ingles()
+    return flow_opcionais(request, let_ing_ec)
 
 
 def flow_mat_h(request):
@@ -449,6 +425,9 @@ def turmas_list(request):
     mat_flow = get_estrutura_matematica()
     adm_flow = get_estrutura_administracao()
     tur_flow = get_estrutura_turismo()
+    let_por_flow = get_estrutura_letras_portugues()
+    let_esp_flow = get_estrutura_letras_espanhol()
+    let_ing_flow = get_estrutura_letras_ingles()
 
     context = {
         'dir_flow': dir_flow,
@@ -457,6 +436,9 @@ def turmas_list(request):
         'bsi_flow': bsi_flow,
         'adm_flow': adm_flow,
         'tur_flow': tur_flow,
+        'let_por_flow': let_por_flow,
+        'let_esp_flow': let_esp_flow,
+        'let_ing_flow': let_ing_flow,
     }
     return render(request, 'core/turmas/list.html', context)
 
@@ -470,6 +452,24 @@ def turmas_dir(request):
     dir_ddir = get_estrutura_direito()
     turmas_list_link = '/core/turmas/dir'
     return turmas_grade(request, dir_ddir, turmas_list_link)
+
+
+def turmas_let_esp(request):
+    let_esp_ec = get_estrutura_letras_espanhol()
+    turmas_list_link = '/core/turmas/let-esp'
+    return turmas_grade(request, let_esp_ec, turmas_list_link)
+
+
+def turmas_let_por(request):
+    let_por_ec = get_estrutura_letras_portugues()
+    turmas_list_link = '/core/turmas/let-por'
+    return turmas_grade(request, let_por_ec, turmas_list_link)
+
+
+def turmas_let_ing(request):
+    let_ing_ec = get_estrutura_letras_ingles()
+    turmas_list_link = '/core/turmas/let-ing'
+    return turmas_grade(request, let_ing_ec, turmas_list_link)
 
 
 def turmas_mat(request):
@@ -512,6 +512,9 @@ def sugestao_list(request):
     mat_flow = get_estrutura_matematica()
     adm_flow = get_estrutura_administracao()
     tur_flow = get_estrutura_turismo()
+    let_por_flow = get_estrutura_letras_portugues()
+    let_esp_flow = get_estrutura_letras_espanhol()
+    let_ing_flow = get_estrutura_letras_ingles()
 
     context = {
         'dir_flow': dir_flow,
@@ -520,6 +523,9 @@ def sugestao_list(request):
         'bsi_flow': bsi_flow,
         'adm_flow': adm_flow,
         'tur_flow': tur_flow,
+        'let_por_flow': let_por_flow,
+        'let_esp_flow': let_esp_flow,
+        'let_ing_flow': let_ing_flow,
     }
     return render(request, 'core/sugestao/list.html', context)
 

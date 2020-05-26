@@ -4,6 +4,7 @@ from django.urls import path
 
 from mysite.settings import STATIC_URL, MEDIA_URL, MEDIA_ROOT, DEBUG
 from . import views
+from .visoes import sugestao_letras_view
 
 urlpatterns = [
     path('profile/<username>/', views.profile, name='profile'),
@@ -31,9 +32,7 @@ urlpatterns = [
     path('salas/list/', views.search_salas, name='search_salas'),
 
     path('flow/', views.flow_list, name='Lista de Fluxogramas'),
-    path('flow/bsi/', views.flow_bsi, name='Fluxograma BSI'),
     path('flow/bsi/opcionais', views.flow_bsi_op, name='Fluxograma BSI - Opcionais'),
-    path('flow/bsi-1b/', views.flow_bsi_1b, name='Fluxograma BSI - 01B'),
     path('flow/bsi-1b-h/', views.flow_bsi_1b_h, name='Fluxograma BSI - 01B - Horizontal'),
 
     path('flow/dir/', views.flow_dir, name='flow_dir'),
@@ -41,6 +40,15 @@ urlpatterns = [
 
     path('flow/ped-h/', views.flow_ped_h, name='flow_ped_h'),
     path('flow/ped/opcionais', views.flow_ped_op, name='Fluxograma Pedagogia - Opcionais'),
+
+    path('flow/let-esp/', views.flow_let_esp, name='flow_let_esp'),
+    path('flow/let-esp/opcionais', views.flow_let_esp_op, name='flow_let_esp_op'),
+
+    path('flow/let-por/', views.flow_let_por, name='flow_let_por'),
+    path('flow/let-por/opcionais', views.flow_let_por_op, name='flow_let_por_op'),
+
+    path('flow/let-ing/', views.flow_let_ing, name='flow_let_ing'),
+    path('flow/let-ing/opcionais', views.flow_let_ing_op, name='flow_let_ing_op'),
 
     path('flow/mat-h/', views.flow_mat_h, name='flow_mat_h'),
     path('flow/mat/opcionais', views.flow_mat_op, name='flow_mat_op'),
@@ -58,6 +66,9 @@ urlpatterns = [
     path('turmas/ped', views.turmas_ped, name='turmas_pedagogia'),
     path('turmas/adm', views.turmas_adm, name='turmas_administracao'),
     path('turmas/tur', views.turmas_tur, name='turmas_turismo'),
+    path('turmas/let-esp', views.turmas_let_esp, name='turmas_letras_esp'),
+    path('turmas/let-por', views.turmas_let_por, name='turmas_letras_por'),
+    path('turmas/let-ing', views.turmas_let_ing, name='turmas_letras_ing'),
     path('turmas/<int:pk>/', views.TurmaDetailView.as_view(), name='turma_detalhar'),
 
     path('sugestao/', views.sugestao_list, name='sugestao_list'),
@@ -77,6 +88,30 @@ urlpatterns = [
     path('sugestao/dir/incluir', views.sugestao_dir_incluir, name='sugestao_dir_incluir'),
     path('sugestao/dir/editar/<int:pk>/', views.sugestao_dir_editar, name='sugestao_dir_editar'),
     path('sugestao/dir/deletar/<int:pk>/', views.sugestao_dir_deletar, name='sugestao_dir_deletar'),
+
+    path('sugestao/let-esp/list', sugestao_letras_view.sugestao_let_esp_list, name='sugestao_let_esp_list'),
+    path('sugestao/let-esp/manter', sugestao_letras_view.sugestao_let_esp_manter, name='sugestao_let_esp_manter'),
+    path('sugestao/let-esp/incluir', sugestao_letras_view.sugestao_let_esp_incluir, name='sugestao_let_esp_incluir'),
+    path('sugestao/let-esp/editar/<int:pk>/', sugestao_letras_view.sugestao_let_esp_editar,
+         name='sugestao_let_esp_editar'),
+    path('sugestao/let-esp/deletar/<int:pk>/', sugestao_letras_view.sugestao_let_esp_deletar,
+         name='sugestao_let_esp_deletar'),
+
+    path('sugestao/let-por/list', sugestao_letras_view.sugestao_let_por_list, name='sugestao_let_por_list'),
+    path('sugestao/let-por/manter', sugestao_letras_view.sugestao_let_por_manter, name='sugestao_let_por_manter'),
+    path('sugestao/let-por/incluir', sugestao_letras_view.sugestao_let_por_incluir, name='sugestao_let_por_incluir'),
+    path('sugestao/let-por/editar/<int:pk>/', sugestao_letras_view.sugestao_let_por_editar,
+         name='sugestao_let_por_editar'),
+    path('sugestao/let-por/deletar/<int:pk>/', sugestao_letras_view.sugestao_let_por_deletar,
+         name='sugestao_let_por_deletar'),
+
+    path('sugestao/let-ing/list', sugestao_letras_view.sugestao_let_ing_list, name='sugestao_let_ing_list'),
+    path('sugestao/let-ing/manter', sugestao_letras_view.sugestao_let_ing_manter, name='sugestao_let_ing_manter'),
+    path('sugestao/let-ing/incluir', sugestao_letras_view.sugestao_let_ing_incluir, name='sugestao_let_ing_incluir'),
+    path('sugestao/let-ing/editar/<int:pk>/', sugestao_letras_view.sugestao_let_ing_editar,
+         name='sugestao_let_ing_editar'),
+    path('sugestao/let-ing/deletar/<int:pk>/', sugestao_letras_view.sugestao_let_ing_deletar,
+         name='sugestao_let_ing_deletar'),
 
     path('sugestao/mat/list', views.sugestao_mat_list, name='sugestao_mat_list'),
     path('sugestao/mat/manter', views.sugestao_mat_manter, name='sugestao_mat_manter'),
