@@ -1,5 +1,7 @@
 import logging
 import json
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 from urllib.parse import urlparse
 
 from django.contrib import messages
@@ -360,7 +362,8 @@ def atualizar_solicitacao(request, pk):
         solicitacao_verificar_choques(turma, usuario.discente)
 
     if houve_choques:
-        messages.error(request, 'A turma ' + str(turma) + ' tem choque com: ' + criar_string(list(choques_componentes)) +
+        messages.error(request,
+                       'A turma ' + str(turma) + ' tem choque com: ' + criar_string(list(choques_componentes)) +
                        ', nos horários: ' + criar_string(list(choques_horarios)) + '.')
         return redirecionar(request)
 
@@ -467,6 +470,7 @@ def check_vinculo_docente(request):
 
     docente = Docente.objects.get(pk=docente_id)
     existe_docente = False
+    houve_choque = False
     for v in vinculos:
         if docente == v['docente']:
             existe_docente = True
@@ -482,7 +486,18 @@ def check_vinculo_docente(request):
         else:
             messages.error(request, 'Docente ' + docente.nome + ' com choque nos horários: ' +
                            criar_string(choques_docente) + '.')
-    return render(request, 'core/sugestao/vinculo_docente_list.html', {'vinculos': vinculos})
+    else:
+        messages.error(request, 'Docente ' + docente.nome + ' já adicionado à Turma.')
+
+    data = dict()
+    data['existe_docente'] = existe_docente
+    data['houve_choque'] = houve_choque
+    context = {'vinculos': vinculos}
+    data['html_vinculos'] = render_to_string('core/sugestao/vinculo_docente_list.html',
+                                             context,
+                                             request=request
+                                             )
+    return JsonResponse(data)
 
 
 def load_vinculos(request):

@@ -87,7 +87,6 @@
       });
     });
 
-    console.log($("#id_vinculos_docente").val())
     vinculos_json = $("#id_vinculos_docente").val()? JSON.parse($("#id_vinculos_docente").val()) : null
     let lista = vinculos_json? vinculos_json.vinculos : []
 
@@ -98,40 +97,31 @@
       const cargaHoraria = $("#id_ch_docente").val()
       const vinculos_docente = $("#id_vinculos_docente").val()
 
-      console.log(docenteId)
-      console.log(desc_horarios)
-      console.log(cargaHoraria)
-
       const new_vinculo = {
         docente: docenteId,
         horarios: desc_horarios,
-        carga_horaria: cargaHoraria
+        carga_horaria: cargaHoraria,
       };
 
-      const data = {
+      const data_input = {
         vinculo: new_vinculo,
         vinculos_docente: vinculos_docente,
       }
 
       $.ajax({
         url: url,
-        data: data,
+        data: data_input,
+        dataType: 'json',
         success: function (data) {
-          const listaHTML = $("#table_vinculos")
-          listaHTML.html(data)
+          let listaHTML = $("#table_vinculos")
+          listaHTML.html(data.html_vinculos)
 
-          const existe_docente = lista.some((item) => item.docente === docenteId)
-          if (!existe_docente) {
+          if (!data.existe_docente && !data.houve_choque) {
             lista.push(new_vinculo);
           }
 
           let vinculos_json = JSON.stringify({vinculos:lista})
-
           $("#id_vinculos_docente").val(vinculos_json)
-
-          console.log(data)
-          console.log(new_vinculo)
-          console.log(vinculos_json)
         }
       });
     });
@@ -146,13 +136,13 @@
       let vinculos_json = JSON.stringify({vinculos:lista})
       $("#id_vinculos_docente").val(vinculos_json)
 
-      const data = {
+      const data_input = {
         vinculos_docente: vinculos_json,
       }
 
       $.ajax({
         url: "{% url 'ajax_load_vinculos' %}",
-        data: data,
+        data: data_input,
         success: function (data) {
           const listaHTML = $("#table_vinculos")
           listaHTML.html(data)
