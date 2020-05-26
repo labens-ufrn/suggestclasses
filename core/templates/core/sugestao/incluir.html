@@ -149,5 +149,21 @@
         }
       });
     }
+
+    $(window).on('load',function(){
+      let vinculos_json = JSON.stringify({vinculos:lista})
+      const data_input = {
+        vinculos_docente: vinculos_json,
+      }
+
+      $.ajax({
+        url: "{% url 'ajax_load_vinculos' %}",
+        data: data_input,
+        success: function (data) {
+          const listaHTML = $("#table_vinculos")
+          listaHTML.html(data)
+        }
+      });
+    });
   </script>
 {% endblock myscripts %}
