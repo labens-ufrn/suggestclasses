@@ -5,7 +5,8 @@
   <div class="container">
     <h2 class="page-section-heading text-center text-secondary mb-0">Editar de Sugestão de Turma</h2>
     <br/>
-    <form method="post" novalidate>
+    <form id="SugestaoForm" method="post" data-docentes-url="{% url 'ajax_load_docentes' %}"
+          check-vinculo-docente-url="{% url 'ajax_check_vinculo_docente' %}" novalidate>
       {% csrf_token %}
       {% for hidden_field in form.hidden_fields %}
         {{ hidden_field }}
@@ -28,4 +29,22 @@
       <button type="submit" class="btn btn-primary">Salvar</button>
     </form>
   </div>
-{% endblock %}
+{% endblock content %}
+{% block myscripts %}
+<script>
+    $("#id_departamento").change(function () {
+      const url = $("#SugestaoForm").attr("data-docentes-url");  // get the url of the `load_cities` view
+      const deptoId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'departamento': deptoId       // add the country id to the GET parameters
+        },
+        success: function (data) {
+          $("#id_docente").html(data);
+        }
+      });
+    });
+  </script>
+{% endblock myscripts %}

@@ -41,13 +41,15 @@ class SugestaoTurmaForm(ModelForm):
 
     horario_docente = forms.CharField(label='Horário Docente',
                                       widget=forms.TextInput(attrs={'placeholder': 'Ex: 24M34'}),
-                                      help_text='Obrigatório. Horário do docente na turma')
+                                      help_text='Obrigatório. Horário do docente na turma',
+                                      required=False)
 
     ch_docente = forms.CharField(label='CH Docente',
                                  widget=forms.TextInput(attrs={'placeholder': 'Ex: 60'}),
-                                 help_text='Obrigatório. Carga horária do docente em horas.')
+                                 help_text='Obrigatório. Carga horária do docente em horas.',
+                                 required=False)
 
-    vinculos_docente = forms.CharField(label='Vínculos Docentes', widget=forms.HiddenInput)
+    vinculos_docente = forms.CharField(label='Vínculos Docentes', widget=forms.HiddenInput, required=False)
 
     def __init__(self, *args, **kwargs):
         estrutura = kwargs.pop('estrutura')
@@ -63,12 +65,14 @@ class SugestaoTurmaForm(ModelForm):
             except (ValueError, TypeError):
                 pass  # invalid input from the client; ignore and fallback to empty Docente queryset
         elif self.instance.pk:
-            self.fields['docente'].queryset = self.instance.departamento.docente_set.order_by('nome')
+            # TODO aqui seria o carregamento de Vínculos Docentes??
+            print('forms.py - linha 67')
+            # self.fields['docente'].queryset = self.instance.departamento.docente_set.order_by('nome')
+            self.fields['docente'].queryset = Docente.objects.none()
 
     class Meta:
         model = SugestaoTurma
-        fields = ['codigo_turma', 'componente', 'descricao_horario', 'local', 'capacidade_aluno', 'departamento',
-                  'docente', 'horario_docente', 'ch_docente']
+        fields = ['codigo_turma', 'componente', 'descricao_horario', 'local', 'capacidade_aluno']
         widgets = {
             'codigo_turma': forms.TextInput(attrs={'placeholder': '01'}),
         }
