@@ -14,12 +14,17 @@ def get_turmas(estrutura, semestre, ano, periodo):
         turmas = Turma.objects.filter(componente=oc.componente, ano=ano, periodo=periodo)
 
         for t in turmas:
-            turma_estendida = TurmaEstendida(t, oc.tipo_vinculo, oc.semestre, estrutura.curso)
-            turma_estendida.save()
-            turma_estendida.horarios.set(t.horarios.all())
+            turma_estendida = criar_turma_estendida(t, oc.tipo_vinculo, oc.semestre, estrutura.curso)
             turmas_result.append(turma_estendida)
 
     return turmas_result
+
+
+def criar_turma_estendida(turma, tipo_vinculo, semestre, curso):
+    turma_estendida = TurmaEstendida(turma, tipo_vinculo, semestre, curso)
+    turma_estendida.save()
+    turma_estendida.horarios.set(turma.horarios.all())
+    return turma_estendida
 
 
 def get_sugestao_turmas(estrutura, semestre, ano, periodo):
