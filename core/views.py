@@ -22,7 +22,7 @@ from core.config.config import get_config
 from core.visoes.flow_view import flow_horizontal, flow_opcionais
 from .bo.curso import get_cursos
 from .bo.discentes import get_discentes, get_discentes_ativos
-from .bo.docente import get_docentes
+from .bo.docente import get_docentes, carrega_turmas_por_horario
 from .bo.sala import get_salas
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre, get_estrutura_direito, get_estrutura_matematica, \
     get_estrutura_pedagogia, get_estrutura_administracao, get_estrutura_turismo
@@ -814,15 +814,20 @@ def search_salas(request):
 
 @login_required(login_url='/accounts/login')
 def profile(request, username):
-    ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
-    ano = config.get('PeriodoSeguinte', 'ano')
-    periodo = config.get('PeriodoSeguinte', 'periodo')
+    ano_periodo_atual = config.get('PeriodoAtual', 'ano_periodo')
+    ano_atual = config.get('PeriodoAtual', 'ano')
+    periodo_atual = config.get('PeriodoAtual', 'periodo')
+
+    ano_periodo_seguinte = config.get('PeriodoSeguinte', 'ano_periodo')
+    ano_seguinte = config.get('PeriodoSeguinte', 'ano')
+    periodo_seguinte = config.get('PeriodoSeguinte', 'periodo')
     usuario = User.objects.get(username=username)
 
     if request.user != usuario:
         messages.error(request, 'Você não tem permissão de visualizar esse Perfil.')
         return redirecionar(request)
 
+    horarios_atual = None
     horarios = None
     semestres = [1, 2, 3, 4, 5, 6, 7, 8, 0]
     solicitacao_list = None
@@ -831,13 +836,14 @@ def profile(request, username):
         perfil = usuario.discente
         perfil_link = 'core/usuario/profile_discente.html'
         grupos = criar_string(usuario.groups.all())
-        horarios = discente_grade_horarios(perfil, ano, periodo)
-        solicitacao_list = get_solicitacoes(perfil, ano, periodo)
+        horarios = discente_grade_horarios(perfil, ano_seguinte, periodo_seguinte)
+        solicitacao_list = get_solicitacoes(perfil, ano_seguinte, periodo_seguinte)
     elif docente_existe(usuario):
         perfil = usuario.docente
         perfil_link = 'core/usuario/profile_docente.html'
         grupos = criar_string(usuario.groups.all())
-        horarios = docente_grade_horarios(perfil, ano, periodo, semestres)
+        horarios_atual = carrega_turmas_por_horario(perfil, ano_atual, periodo_atual)
+        horarios = docente_grade_horarios(perfil, ano_seguinte, periodo_seguinte, semestres)
     else:
         perfil = None
         perfil_link = 'core/usuario/profile.html'
@@ -847,8 +853,10 @@ def profile(request, username):
         'usuario': usuario,
         'grupos': grupos,
         'perfil': perfil,
+        'horarios_atual': horarios_atual,
         'horarios': horarios,
-        'ano_periodo': ano_periodo,
+        'ano_periodo_atual': ano_periodo_atual,
+        'ano_periodo': ano_periodo_seguinte,
         'solicitacao_deletar_link': 'solicitacao_deletar',
         'solicitacao_list': solicitacao_list,
     }
