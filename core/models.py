@@ -278,6 +278,13 @@ class Turma(models.Model):
         return self.id_turma.__str__() + ' - ' + self.codigo_turma + ' - ' + self.componente.__str__() + ' - ' \
                + self.docente.__str__() + ' - ' + self.descricao_horario
 
+    def get_curriculos(self, curso=None):
+        if curso:
+            return OrganizacaoCurricular.objects.filter(
+                componente=self.componente,
+                estrutura__curso=curso)
+        return OrganizacaoCurricular.objects.filter(componente=self.componente)
+
 
 class SugestaoTurma(models.Model):
     codigo_turma = models.CharField(max_length=50)
