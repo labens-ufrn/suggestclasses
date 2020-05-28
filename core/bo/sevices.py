@@ -30,6 +30,14 @@ def get_estrutura_by_id(id_estrutura):
     return estrutura
 
 
+def get_estrutura_by_curso(curso):
+    estruturas = curso.estruturacurricular_set.all()
+    estrutura = estruturas[0]
+    if curso.nome == 'SISTEMAS DE INFORMAÇÃO':
+        estrutura = estruturas[1]
+    return estrutura
+
+
 def get_estrutura_direito():
     """
     Retorna a Estrutura Curricular ativa do Curso de Direito de Caicó.
