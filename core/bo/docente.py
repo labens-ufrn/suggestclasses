@@ -1,5 +1,4 @@
-from core.bo.curriculo import get_curriculo_by_cc
-from core.bo.turma import TurmaHorario, criar_turma_estendida
+from core.bo.turma import TurmaHorario
 from core.models import Docente, FuncaoGratificada, Horario
 from datetime import date
 
@@ -80,4 +79,3 @@ def carrega_turmas_por_horario(docente, ano, periodo):
                 turmas_horario.append(th)
             turmas_por_horario.append(turmas_horario)
     return turmas_por_horario
-
