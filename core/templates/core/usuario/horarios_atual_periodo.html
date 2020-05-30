@@ -1,3 +1,4 @@
+{% load sc_extras %}
 <table class="table table-striped table-sm table-bordered">
   <thead class="thead-light">
   <tr align="center">
@@ -36,13 +37,14 @@
         <td class="align-middle text-center" width="14.6%">
           {% for turma in th.turmas %}
             <div class="sugestao-turma border">
-              {% if turma.semestre != 0 %}
+              {% get_curriculo turma estrutura as curriculo %}
+              {% if curriculo.tipo_vinculo != 'OPTATIVO' %}
                 <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>
                 <span class="align-middle" style="color: darkslateblue">
               &nbsp;{{ turma.componente.codigo }} - T{{ turma.codigo_turma }}&nbsp;
             </span>
                 <span class="material-icons md-18 align-middle" style="color: darkslateblue">
-                filter_{{ turma.semestre }}
+                filter_{{ curriculo.semestre }}
             </span>
               {% else %}
                 <span class="material-icons md-18 align-middle" style="color: green">bookmark</span>
