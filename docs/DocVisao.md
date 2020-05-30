@@ -61,4 +61,4 @@ Abaixo apresentamos o modelo ER inicial.
 
 Também criamos alguns modelos usando [YUML](http://yuml.me):
 
-![UML Reserva de Horário](https://github.com/labens-ufrn/suggestclasses/blob/master/docs/modelos/Modelo%20UML%20-%20Reserva%20de%20Horários.png)
+Os Modelos UML pode ser encontrado na página [Modelos UML](modelos/ModelosUML.md).
