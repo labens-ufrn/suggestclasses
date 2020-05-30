@@ -21,8 +21,7 @@ Criado com https://yuml.me/
 
 ## Diagrama de Classe - Reserva de Salas
 
-![UML Reserva de Salas](modelos/reservas.png)
-![UML Reserva de Horário](https://github.com/labens-ufrn/suggestclasses/blob/master/docs/modelos/reservas.png)
+![UML Reserva de Salas](reservas.png)
 
 Código YUML:
 
