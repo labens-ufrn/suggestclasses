@@ -7,24 +7,11 @@ from core.models import Turma, Horario, SugestaoTurma
 
 def get_turmas(estrutura, semestre, ano, periodo):
     org_curricular = get_oc_by_semestre(estrutura, semestre)
-
     turmas_result = []
     for oc in org_curricular:
-        # Classe Turma Estendida para guardar informações de Organização Curricular ( tipo_vinculo, semestre, curso)
         turmas = Turma.objects.filter(componente=oc.componente, ano=ano, periodo=periodo)
-
-        for t in turmas:
-            turma_estendida = criar_turma_estendida(t, oc.tipo_vinculo, oc.semestre, estrutura.curso)
-            turmas_result.append(turma_estendida)
-
+        turmas_result.extend(turmas)
     return turmas_result
-
-
-def criar_turma_estendida(turma, tipo_vinculo, semestre, curso):
-    turma_estendida = TurmaEstendida(turma, tipo_vinculo, semestre, curso)
-    turma_estendida.save()
-    turma_estendida.horarios.set(turma.horarios.all())
-    return turma_estendida
 
 
 def get_sugestao_turmas(estrutura, semestre, ano, periodo):
@@ -273,24 +260,3 @@ class TurmaHorario(object):
 
     def __str__(self):
         return self.horario.__str__() + self.turmas.__str__()
-
-
-class TurmaEstendida(Turma):
-
-    def __init__(self, turma, tipo_vinculo, semestre, curso):
-        super(TurmaEstendida, self)\
-            .__init__(id_turma=turma.id_turma, codigo_turma=turma.codigo_turma, docente=turma.docente,
-                      matricula_docente_externo=turma.matricula_docente_externo, observacao=turma.observacao,
-                      componente=turma.componente, ch_dedicada_periodo=turma.ch_dedicada_periodo,
-                      nivel_ensino=turma.nivel_ensino, campus_turma=turma.campus_turma, local=turma.local,
-                      ano=turma.ano, periodo=turma.periodo, data_inicio=turma.data_inicio, data_fim=turma.data_fim,
-                      descricao_horario=turma.descricao_horario, total_solicitacoes=turma.total_solicitacoes,
-                      capacidade_aluno=turma.capacidade_aluno, tipo=turma.tipo, distancia=turma.distancia,
-                      data_consolidacao=turma.data_consolidacao, agrupadora=turma.agrupadora,
-                      id_turma_agrupadora=turma.id_turma_agrupadora, qtd_aulas_lancadas=turma.qtd_aulas_lancadas,
-                      situacao_turma=turma.situacao_turma, convenio=turma.convenio,
-                      modalidade_participantes=turma.modalidade_participantes)
-        self.pk = turma.pk
-        self.tipo_vinculo = tipo_vinculo
-        self.semestre = semestre
-        self.curso = curso

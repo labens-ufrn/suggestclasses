@@ -75,18 +75,9 @@ def carrega_turmas_por_horario(docente, ano, periodo):
                     get_vinculos_docente(docente=docente, horario=h, ano=ano, periodo=periodo)
                 th = TurmaHorario(h, [])
                 for v in vinculos_por_horario:
-                    turma = carrega_turma_estendida(v.turma)
+                    turma = v.turma
                     th = TurmaHorario(h, [turma])
                 turmas_horario.append(th)
             turmas_por_horario.append(turmas_horario)
     return turmas_por_horario
 
-
-def carrega_turma_estendida(turma):
-    id_componente_curricular = turma.componente.id_componente
-    curriculos = get_curriculo_by_cc(id_componente_curricular)
-    tipo_vinculo = curriculos[0].tipo_vinculo
-    semestre = curriculos[0].semestre
-    curso = curriculos[0].estrutura.curso
-    turma_estendida = criar_turma_estendida(turma, tipo_vinculo, semestre, curso)
-    return turma_estendida
