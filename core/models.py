@@ -96,10 +96,10 @@ class Sala(models.Model):
     )
 
     nome = models.CharField(max_length=200, blank=True, null=True)
-    sigla = models.CharField(max_length=10)
+    sigla = models.CharField(max_length=25)
     capacidade = models.IntegerField()
     tamanho = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    bloco = models.CharField(max_length=10)
+    bloco = models.CharField(max_length=25)
     centro = models.ForeignKey(Centro, on_delete=models.PROTECT)
     campus = models.CharField(max_length=1, blank=True, null=True, choices=CAMPUS_CHOICES)
 
