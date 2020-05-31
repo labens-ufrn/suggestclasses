@@ -26,7 +26,7 @@ from .bo.docente import get_docentes, carrega_turmas_por_horario
 from .bo.sala import get_salas
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre, get_estrutura_direito, get_estrutura_matematica, \
     get_estrutura_pedagogia, get_estrutura_administracao, get_estrutura_turismo, get_estrutura_letras_portugues, \
-    get_estrutura_letras_espanhol, get_estrutura_letras_ingles
+    get_estrutura_letras_espanhol, get_estrutura_letras_ingles, get_estrutura_contabeis
 from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
@@ -247,6 +247,17 @@ def flow_bsi_1b_h(request):
 def flow_bsi_op(request):
     bsi_ec = get_estrutura_sistemas_dct()
     return flow_opcionais(request, bsi_ec)
+
+
+def flow_cont(request):
+    contaveis_ec = get_estrutura_contabeis()
+    link_opcionais = '/core/flow/cont/opcionais'
+    return flow_horizontal(request, contaveis_ec, link_opcionais)
+
+
+def flow_cont_op(request):
+    contaveis_ec = get_estrutura_contabeis()
+    return flow_opcionais(request, contaveis_ec)
 
 
 def flow_dir(request):
