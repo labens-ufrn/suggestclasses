@@ -2,15 +2,15 @@ import csv
 import os
 import django
 django.setup()
-
 from dados.povoar_docentes import carregar_docente
 from dados.baixar_dados import downloads_dados
 from mysite.settings import BASE_DIR
 from dados.povoar_funcoes_gratificadas import carregar_funcoes_gratificadas
 from dados.povoar_turma import carregar_turma
 from dados.povoar_discentes import carregar_discentes
+from dados.povoar_salas import carregar_sala
 from core.models import Curso, Centro, Departamento, ComponenteCurricular, EstruturaCurricular, \
-    OrganizacaoCurricular, Sala
+    OrganizacaoCurricular
 from core.bo.docente import get_docente_by_nome
 
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')
@@ -59,29 +59,8 @@ def criar_salas():
         next(salas)  # skip header
 
         for row in salas:
-
-            nome = row[0]
-            sigla = row[1]
-            capacidade = row[2]
-            tamanho = row[3] if row[3] != '0.0' else None
-            bloco = row[4]
-            centro_id = row[5]
-            campus_id = row[6]
-
-            ceres = Centro.objects.get(pk=centro_id)
-            # campus = Sala.CAMPUS_CHOICES[campus_id-1]
-            ss = Sala.objects.filter(nome=nome, sigla=sigla, capacidade=capacidade,
-                                     tamanho=None, bloco=bloco,
-                                     centro=ceres, campus=campus_id)
-            if not Sala.objects.filter(nome=nome, sigla=sigla, capacidade=capacidade,
-                                       tamanho=tamanho, bloco=bloco,
-                                       centro=ceres, campus=campus_id).exists():
-                Sala.objects.create(nome=nome, sigla=sigla, capacidade=capacidade,
-                                    tamanho=tamanho, bloco=bloco,
-                                    centro=ceres, campus=campus_id)
-                print('+', end="")
-            else:
-                print('.', end="")
+            carregar_sala(row)
+        print()
 
 
 def departamentos():
@@ -107,7 +86,7 @@ def departamentos():
             if id_unidade_responsavel == '1482' and (tipo_unidade_organizacional == 'DEPARTAMENTO'
                                                      or tipo_unidade_organizacional == 'ASSESSORIA'):
                 if not Departamento.objects.filter(id_unidade=id_dep).exists():
-                    
+
                     acentos = {
                         'EDUCACAO': 'EDUCAÇÃO',
                         'COMPUTACAO': 'COMPUTAÇÃO',
