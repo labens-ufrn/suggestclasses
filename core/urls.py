@@ -79,7 +79,7 @@ urlpatterns = [
     path('ajax/load-vinculos/', suggest_view.load_vinculos, name='ajax_load_vinculos'),
 
     path('solicitacao/<int:pk>/', views.sugestao_solicitar, name='sugestao_solicitar'),
-    path('solicitacao/listar/<int:pk>/', views.solicitacao_turma_listar, name='soão da Sugestão de Turma.licitacao_turma_listar'),
+    path('solicitacao/listar/<int:pk>/', views.solicitacao_turma_listar, name='solicitacao_turma_listar'),
     path('solicitacao/deletar/<int:pk>/', views.solicitacao_deletar, name='solicitacao_deletar'),
 
     path('sugestao/adm/list', views.sugestao_adm_list, name='sugestao_adm_list'),
