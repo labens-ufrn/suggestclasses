@@ -19,7 +19,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 from core.models import Curso, ComponenteCurricular, EstruturaCurricular, SugestaoTurma, Sala, Docente, Turma, \
     SolicitacaoTurma
 from core.config.config import get_config
-from core.visoes.flow_view import flow_horizontal, flow_opcionais
+from core.visoes.flow_view import flow_horizontal, flow_opcionais, carrega_context_flow_list
 from .bo.curso import get_cursos
 from .bo.discentes import get_discentes, get_discentes_ativos
 from .bo.docente import get_docentes, carrega_turmas_por_horario
@@ -231,31 +231,9 @@ def sala_list(request):
 
 def flow_list(request):
     """
-        Lista todas as Estruturas Curriculares do centro CERES.
+    Lista todas as Estruturas Curriculares do centro CERES.
     """
-    bsi_flow_1a = get_estrutura_sistemas()
-    bsi_flow_1b = get_estrutura_sistemas_dct()
-    ped_flow = get_estrutura_pedagogia()
-    mat_flow = get_estrutura_matematica()
-    dir_flow = get_estrutura_direito()
-    adm_flow = get_estrutura_administracao()
-    tur_flow = get_estrutura_turismo()
-    let_por_flow = get_estrutura_letras_portugues()
-    let_esp_flow = get_estrutura_letras_espanhol()
-    let_ing_flow = get_estrutura_letras_ingles()
-
-    context = {
-        'dir_flow': dir_flow,
-        'mat_flow': mat_flow,
-        'ped_flow': ped_flow,
-        'bsi_flow_1a': bsi_flow_1a,
-        'bsi_flow_1b': bsi_flow_1b,
-        'adm_flow': adm_flow,
-        'tur_flow': tur_flow,
-        'let_por_flow': let_por_flow,
-        'let_esp_flow': let_esp_flow,
-        'let_ing_flow': let_ing_flow,
-    }
+    context = carrega_context_flow_list()
 
     return render(request, 'core/flow/list.html', context)
 
