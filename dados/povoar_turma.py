@@ -1,21 +1,28 @@
 import os
 import csv
 import django
+from dateutil.parser import parse
 django.setup()
-from core.bo.curriculo import get_curriculo_by_cc
 from core.bo.docente import get_docente_by_siape
 from core.bo.turma import converte_desc_horario
 from core.models import ComponenteCurricular, Docente, Turma, Departamento, VinculoDocente
-from dateutil.parser import parse
 from mysite.settings import BASE_DIR
 
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')
+
+locais_set = set()
 
 
 def main():
     print("Povoar Turmas da UFRN!")
     os.chdir(DADOS_PATH)
     criar_turmas()
+
+    locais = open("locais.txt", "a")
+    for local in locais_set:
+        # \n is placed to indicate EOL (End of Line)
+        locais.write(local + '\n')
+    locais.close()
 
 
 def criar_turmas():
@@ -81,7 +88,10 @@ def carregar_turma(row):
         docente = carregar_docente(siape=siape, matricula_docente_externo=matricula_docente_externo,
                                    componente=cc)
 
-        curriculo = get_curriculo_by_cc(id_componente_curricular)
+        local_str = local + ', ' + campus_turma
+        print('Local: ' + local_str)
+        locais_set.add(local_str)
+
         horarios_list = converte_desc_horario(descricao_horario)
 
         if Turma.objects.filter(id_turma=id_turma).exists():
@@ -122,6 +132,8 @@ def carregar_docente(siape, matricula_docente_externo, componente):
         print(componente)
 
     # Carregamento de Docente com Contrato de Professor Substituto ou Voluntário/Externo
+    vinculo = None
+    nome = None
     if docente is None and criar:
         if siape is not None and siape != '':
             print("Adicionando Docente: " + siape + " - Substituto")
@@ -133,10 +145,10 @@ def carregar_docente(siape, matricula_docente_externo, componente):
             nome = 'VOLUNTÁRIO/EXTERNO'
             vinculo = 'Voluntário'
 
-        depto = None
+        departamento = None
         id_unidade_lotacao = componente.departamento.id_unidade
         if Departamento.objects.filter(id_unidade=id_unidade_lotacao).exists():
-            depto = Departamento.objects.get(id_unidade=id_unidade_lotacao)
+            departamento = Departamento.objects.get(id_unidade=id_unidade_lotacao)
 
         docente = Docente(siape=siape, nome=nome, formacao='Graduado/Mestre',
                           tipo_jornada_trabalho='Temporária',
@@ -144,7 +156,7 @@ def carregar_docente(siape, matricula_docente_externo, componente):
                           classe_funcional='',
                           id_unidade_lotacao=id_unidade_lotacao,
                           lotacao=componente.departamento.nome,
-                          departamento=depto)
+                          departamento=departamento)
         docente.save()
         print('Criando Docente: ' + str(docente))
     return docente
