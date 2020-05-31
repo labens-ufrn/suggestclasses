@@ -1,5 +1,7 @@
 import logging
-from typing import Set
+import json
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 from urllib.parse import urlparse
 
 from django.contrib import messages
@@ -16,7 +18,7 @@ from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, carrega_t
     TurmaHorario, carrega_sugestao_horario
 from core.config.config import get_config
 from core.forms import SugestaoTurmaForm
-from core.models import SugestaoTurma, SolicitacaoTurma, Horario
+from core.models import SugestaoTurma, SolicitacaoTurma, Horario, Docente
 from mysite.settings import DOMAINS_WHITELIST
 
 logger = logging.getLogger('suggestclasses.logger')
@@ -78,8 +80,13 @@ def sugestao_manter(request, estrutura, sugestao_incluir_link, sugestao_grade_li
 def sugestao_incluir(request, estrutura, sugestao_manter_link):
     ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
 
+    vinculos = []
+
     if request.method == "POST":
         form_sugestao = SugestaoTurmaForm(request.POST, estrutura=estrutura)
+        vinculos_docente = request.POST.get('vinculos_docente')
+        vinculos = carregar_vinculos(vinculos_docente)
+
         if form_sugestao.is_valid():
             sugestao_turma = form_sugestao.save(commit=False)
             carregar_dados(request, sugestao_turma, estrutura)
@@ -98,6 +105,7 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
         'ano_periodo': ano_periodo,
         'estrutura': estrutura,
         'form_sugestao': form_sugestao,
+        'vinculos': vinculos,
     }
     return render(request, 'core/sugestao/incluir.html', context)
 
@@ -354,7 +362,8 @@ def atualizar_solicitacao(request, pk):
         solicitacao_verificar_choques(discente, turma)
 
     if houve_choques:
-        messages.error(request, 'A turma ' + str(turma) + ' tem choque com: ' + criar_string(list(choques_componentes)) +
+        messages.error(request,
+                       'A turma ' + str(turma) + ' tem choque com: ' + criar_string(list(choques_componentes)) +
                        ', nos horários: ' + criar_string(list(choques_horarios)) + '.')
         return redirecionar(request)
 
@@ -441,3 +450,87 @@ def carrega_horario_turmas_por_turno(turmas, turno):
             turmas_horario.append(th)
         tt.append(turmas_horario)
     return tt
+
+
+def load_docentes(request):
+    departamento_id = request.GET.get('departamento')
+    docentes = Docente.objects.filter(departamento_id=departamento_id).order_by('nome')
+    return render(request, 'core/sugestao/docentes_list_option.html', {'docentes': docentes})
+
+
+def check_vinculo_docente(request):
+    vinculos_docente = request.GET.get('vinculos_docente')
+    vinculos = carregar_vinculos(vinculos_docente)
+
+    # TODO Fazer checagem de choque de horários do docente
+    # %20 is space, %5B is '[' and %5D is ']'
+    docente_id = request.GET.get('vinculo[docente]')
+    horarios = request.GET.get('vinculo[horarios]')
+    carga_horaria = request.GET.get('vinculo[carga_horaria]')
+
+    docente = Docente.objects.get(pk=docente_id)
+    existe_docente = False
+    houve_choque = False
+    for v in vinculos:
+        if docente == v['docente']:
+            existe_docente = True
+            break
+
+    if not existe_docente:
+        horarios_list = converte_desc_horario(horarios)
+        choques_docente, houve_choque = existe_choques_docente(docente, horarios_list)
+        if not houve_choque:
+            vinculo = {'docente': docente, 'horarios': horarios, 'carga_horaria': carga_horaria}
+            vinculos.append(vinculo)
+            print(vinculo)
+        else:
+            messages.error(request, 'Docente ' + docente.nome + ' com choque nos horários: ' +
+                           criar_string(choques_docente) + '.')
+    else:
+        messages.error(request, 'Docente ' + docente.nome + ' já adicionado à Turma.')
+
+    data = dict()
+    data['existe_docente'] = existe_docente
+    data['houve_choque'] = houve_choque
+    context = {'vinculos': vinculos}
+    data['html_vinculos'] = render_to_string('core/sugestao/vinculo_docente_list.html',
+                                             context,
+                                             request=request
+                                             )
+    return JsonResponse(data)
+
+
+def load_vinculos(request):
+    vinculos_docente = request.GET.get('vinculos_docente')
+    vinculos = carregar_vinculos(vinculos_docente)
+    return render(request, 'core/sugestao/vinculo_docente_list.html', {'vinculos': vinculos})
+
+
+def carregar_vinculos(vinculos_docente):
+    vinculos = []
+    if vinculos_docente != '':
+        vds = json.loads(vinculos_docente)
+        for v in vds['vinculos']:
+            docente_id = v["docente"]
+            horarios = v['horarios']
+            carga_horaria = v['carga_horaria']
+            docente = Docente.objects.get(pk=docente_id)
+            vinculo = {'docente': docente, 'horarios': horarios, 'carga_horaria': carga_horaria}
+            vinculos.append(vinculo)
+            print(vinculo)
+    return vinculos
+
+
+def existe_choques_docente(docente, horarios_list):
+    choque_docente = []
+    ano = config.get('PeriodoSeguinte', 'ano')
+    periodo = config.get('PeriodoSeguinte', 'periodo')
+
+    for horario in horarios_list:
+        docente_sugestoes = list(horario.sugestoes.all().filter(docente=docente, ano=ano, periodo=periodo))
+        if docente_sugestoes:
+            choque_docente.append(horario.dia + horario.turno + horario.ordem)
+
+    if choque_docente:
+        return choque_docente, True
+    return None, False
