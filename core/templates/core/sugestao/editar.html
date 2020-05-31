@@ -24,7 +24,46 @@
           {% endfor %}
         </div>
       {% endfor %}
-
+      <table class="table table-sm table-responsive-sm">
+        {% for field in form_sugestao.visible_fields %}
+          <tr>
+            <th class="align-middle">
+              <label>{{ field.label_tag }}</label>
+            </th>
+            <td class="align-middle">{{ field }}
+              {% if field.help_text %}
+                <small style="color: grey">{{ field.help_text }}</small>
+              {% endif %}
+              {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+              {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+        <tr>
+          <td colspan="2"><input id="add_vinculo" type="button" value="Adicionar Docente" class="btn btn-primary"></td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table class="table table-sm text-center" style="width: 100%">
+              <thead>
+              <tr>
+                <th colspan="4">Vínculos Docentes</th>
+              </tr>
+              <tr>
+                <th>Professor</th>
+                <th>Horário</th>
+                <th>Carga Horária</th>
+                <th>Ações</th>
+              </tr>
+              </thead>
+              <tbody id='table_vinculos'>
+                {% include 'core/sugestao/vinculo_docente_list.html' %}
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </table>
       <input type="hidden" name="next" value="{{ request.GET.next }}">
       <button type="submit" class="btn btn-primary">Salvar</button>
     </form>
@@ -43,6 +82,86 @@
         },
         success: function (data) {
           $("#id_docente").html(data);
+        }
+      });
+    });
+
+    let val_vinculos = $("#id_vinculos_docente").val()
+    vinculos_json = val_vinculos? JSON.parse(val_vinculos) : null
+    let lista = vinculos_json? vinculos_json.vinculos : []
+
+    $("#add_vinculo").click(function () {
+      const url = $("#SugestaoForm").attr("check-vinculo-docente-url")
+      const docenteId = $("#id_docente").val()
+      const desc_horarios = $("#id_horario_docente").val()
+      const cargaHoraria = $("#id_ch_docente").val()
+      const vinculos_docente = $("#id_vinculos_docente").val()
+
+      const new_vinculo = {
+        docente: docenteId,
+        horarios: desc_horarios,
+        carga_horaria: cargaHoraria,
+      };
+
+      const data_input = {
+        vinculo: new_vinculo,
+        vinculos_docente: vinculos_docente,
+      }
+
+      $.ajax({
+        url: url,
+        data: data_input,
+        dataType: 'json',
+        success: function (data) {
+          let listaHTML = $("#table_vinculos")
+          listaHTML.html(data.html_vinculos)
+
+          if (!data.existe_docente && !data.houve_choque) {
+            lista.push(new_vinculo);
+          }
+
+          let vinculos_json = JSON.stringify({vinculos:lista})
+          $("#id_vinculos_docente").val(vinculos_json)
+        }
+      });
+    });
+
+    function remover_vinculo(docenteId) {
+      console.log('Removendo ...')
+      console.log(docenteId)
+      console.log(lista)
+      lista = lista.filter((item) => item.docente !== docenteId);
+      console.log(lista)
+
+      let vinculos_json = JSON.stringify({vinculos:lista})
+      $("#id_vinculos_docente").val(vinculos_json)
+
+      const data_input = {
+        vinculos_docente: vinculos_json,
+      }
+
+      $.ajax({
+        url: "{% url 'ajax_load_vinculos' %}",
+        data: data_input,
+        success: function (data) {
+          const listaHTML = $("#table_vinculos")
+          listaHTML.html(data)
+        }
+      });
+    }
+
+    $(window).on('load',function(){
+      let vinculos_json = JSON.stringify({vinculos:lista})
+      const data_input = {
+        vinculos_docente: vinculos_json,
+      }
+
+      $.ajax({
+        url: "{% url 'ajax_load_vinculos' %}",
+        data: data_input,
+        success: function (data) {
+          const listaHTML = $("#table_vinculos")
+          listaHTML.html(data)
         }
       });
     });

@@ -5,7 +5,7 @@ from django.forms import Form, ModelForm
 
 from core.bo.sevices import get_cc_by_estrutura
 from core.bo.sistemas import get_estrutura_sistemas_dct
-from core.models import SugestaoTurma, Docente, ComponenteCurricular, EstruturaCurricular, Departamento
+from core.models import SugestaoTurma, Docente, ComponenteCurricular, EstruturaCurricular, Departamento, Sala
 
 
 class CadastroUsuarioForm(UserCreationForm):
@@ -32,6 +32,9 @@ class SugestaoTurmaForm(ModelForm):
 
     capacidade_aluno = forms.CharField(label='Vagas', max_length=3,
                                        help_text='Obrigatório. As vagas deve ser menor que a capacidade da sala.')
+
+    local = forms.ModelChoiceField(queryset=Sala.objects.all().order_by('campus', 'nome'),
+                                   label='Local', required=False)
 
     departamento = forms.ModelChoiceField(queryset=Departamento.objects.all().order_by('nome'),
                                           label='Departamento', required=False)

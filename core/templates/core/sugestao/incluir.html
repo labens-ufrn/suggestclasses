@@ -13,22 +13,20 @@
           check-vinculo-docente-url="{% url 'ajax_check_vinculo_docente' %}"
           novalidate>
       {% csrf_token %}
-      <table class="table-sm table-responsive-sm" border="1">
-        {% for field in form_sugestao.hidden_fields %}
-          <tr>
-            <td class="align-middle" colspan="2">
-              {{ field }}
-              {% for error in field.errors %}
-                <p style="color: red">{{ error }}</p>
-              {% endfor %}
-            </td>
-          </tr>
-        {% endfor %}
+      {% for field in form_sugestao.hidden_fields %}
+        <div>
+          {{ field }}
+          {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
+      <table class="table table-sm table-responsive-sm">
         {% for field in form_sugestao.visible_fields %}
           <tr>
-            <td class="align-middle">
+            <th class="align-middle">
               <label>{{ field.label_tag }}</label>
-            </td>
+            </th>
             <td class="align-middle">{{ field }}
               {% if field.help_text %}
                 <small style="color: grey">{{ field.help_text }}</small>
@@ -44,7 +42,7 @@
         </tr>
         <tr>
           <td colspan="2">
-            <table class="table-sm text-center" border="2" style="width: 100%">
+            <table class="table table-sm text-center" style="width: 100%">
               <thead>
               <tr>
                 <th colspan="4">Vínculos Docentes</th>
@@ -87,7 +85,8 @@
       });
     });
 
-    vinculos_json = $("#id_vinculos_docente").val()? JSON.parse($("#id_vinculos_docente").val()) : null
+    let val_vinculos = $("#id_vinculos_docente").val()
+    vinculos_json = val_vinculos? JSON.parse(val_vinculos) : null
     let lista = vinculos_json? vinculos_json.vinculos : []
 
     $("#add_vinculo").click(function () {
@@ -130,7 +129,7 @@
       console.log('Removendo ...')
       console.log(docenteId)
       console.log(lista)
-      lista = lista.filter((item) => item.docente != docenteId);
+      lista = lista.filter((item) => item.docente !== docenteId);
       console.log(lista)
 
       let vinculos_json = JSON.stringify({vinculos:lista})
