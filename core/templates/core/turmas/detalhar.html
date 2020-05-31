@@ -9,11 +9,11 @@
       <br />
       <table class="table table-striped table-sm table-bordered">
         <tr>
-          <td class="font-weight-bold" width="18%">Turma</td>
+          <td class="font-weight-bold" style="width:20%">Turma</td>
           <td>{{ object.codigo_turma }}</td>
         </tr>
         <tr>
-          <td class="font-weight-bold" width="18%">Componente Curricular</td>
+          <td class="font-weight-bold" style="width:20%">Componente Curricular</td>
           <td>{{ object.componente }}
             <a href="{% url 'componente_detalhar' object.componente.pk %}">
               <span class="material-icons md-18 align-middle">
@@ -23,23 +23,29 @@
           </td>
         </tr>
         <tr>
-          <td class="font-weight-bold" width="18%">Docente</td>
-          <td>{{ object.docente }}</td>
+          <td class="font-weight-bold" style="width:20%">Carga Horária</td>
+          <td>{{ object.componente.ch_total }}h</td>
         </tr>
         <tr>
-          <td class="font-weight-bold" width="18%">Horário</td>
+          <td class="font-weight-bold" style="width:20%">Vínculos Docente</td>
+          <td>
+            {% include 'core/turmas/detalhar_vinculos_docente.html' with turma=object %}
+          </td>
+        </tr>
+        <tr>
+          <td class="font-weight-bold" style="width:20%">Horário</td>
           <td>{{ object.descricao_horario }}</td>
         </tr>
         <tr>
-          <td class="font-weight-bold" width="18%">Local</td>
+          <td class="font-weight-bold" style="width:20%">Local</td>
           <td>{{ object.local }}</td>
         </tr>
         <tr>
-          <td class="font-weight-bold" width="18%">Campus</td>
+          <td class="font-weight-bold" style="width:20%">Campus</td>
           <td>{{ object.local.centro }} - {{ object.local.campus }}</td>
         </tr>
         <tr>
-          <td class="font-weight-bold" width="18%">Ementa</td>
+          <td class="font-weight-bold" style="width:20%">Ementa</td>
           <td class="text-justify flex-wrap">{{ object.componente.ementa }}</td>
         </tr>
       </table>

@@ -30,6 +30,14 @@ def get_estrutura_by_id(id_estrutura):
     return estrutura
 
 
+def get_estrutura_by_curso(curso):
+    estruturas = curso.estruturacurricular_set.all()
+    estrutura = estruturas[0]
+    if curso.nome == 'SISTEMAS DE INFORMAÇÃO':
+        estrutura = estruturas[1]
+    return estrutura
+
+
 def get_estrutura_direito():
     """
     Retorna a Estrutura Curricular ativa do Curso de Direito de Caicó.
@@ -50,3 +58,53 @@ def get_estrutura_pedagogia():
     id_ec = 133495154
     ped_ec = get_estrutura_by_id(id_ec)
     return ped_ec
+
+
+def get_estrutura_administracao():
+    """
+    Retorna a Estrutura Curricular ativa do Curso de Administração - Currais Novos.
+    :return: Um objeto da classe EstruturaCurricular.
+    """
+    id_ec = 121631446
+    adm_ec = get_estrutura_by_id(id_ec)
+    return adm_ec
+
+
+def get_estrutura_turismo():
+    """
+    Retorna a Estrutura Curricular ativa do Curso de Turismo - Currais Novos.
+    :return: Um objeto da classe EstruturaCurricular.
+    """
+    id_ec = 119546991
+    turismo_ec = get_estrutura_by_id(id_ec)
+    return turismo_ec
+
+
+def get_estrutura_letras_portugues():
+    """
+    Retorna a Estrutura Curricular ativa do Curso de Letras - Língua Portuguesa - Currais Novos.
+    :return: Um objeto da classe EstruturaCurricular.
+    """
+    id_ec = 512507270
+    turismo_ec = get_estrutura_by_id(id_ec)
+    return turismo_ec
+
+
+def get_estrutura_letras_ingles():
+    """
+    Retorna a Estrutura Curricular ativa do Curso de Letras - Português e Inglês - Currais Novos.
+    :return: Um objeto da classe EstruturaCurricular.
+    """
+    id_ec = 133298488
+    turismo_ec = get_estrutura_by_id(id_ec)
+    return turismo_ec
+
+
+def get_estrutura_letras_espanhol():
+    """
+    Retorna a Estrutura Curricular ativa do Curso de Letras - Língua Espanhola - Currais Novos.
+    :return: Um objeto da classe EstruturaCurricular.
+    """
+    id_ec = 133506143
+    turismo_ec = get_estrutura_by_id(id_ec)
+    return turismo_ec

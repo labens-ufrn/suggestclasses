@@ -1,4 +1,5 @@
-from core.models import Docente, FuncaoGratificada
+from core.bo.turma import TurmaHorario
+from core.models import Docente, FuncaoGratificada, Horario
 from datetime import date
 
 
@@ -49,3 +50,32 @@ def get_funcao_by_siape(siape):
             for fg in fgs:
                 funcoes.append(fg)
     return funcoes
+
+
+def get_vinculos_docente(docente, horario, ano, periodo):
+    turmas_por_horario = horario.vinculos.all().filter(
+        docente=docente, turma__ano=ano, turma__periodo=periodo)
+    return turmas_por_horario
+
+
+def carrega_turmas_por_horario(docente, ano, periodo):
+    turmas_por_horario = []
+    n = 7
+    turnos = ['M', 'T', 'N']
+    for turno in turnos:
+        if turno == 'N':
+            n = 5
+
+        for i in range(1, n):
+            horarios = Horario.objects.filter(turno=turno, ordem=i).order_by('dia')
+            turmas_horario = []
+            for h in horarios:
+                vinculos_por_horario = \
+                    get_vinculos_docente(docente=docente, horario=h, ano=ano, periodo=periodo)
+                th = TurmaHorario(h, [])
+                for v in vinculos_por_horario:
+                    turma = v.turma
+                    th = TurmaHorario(h, [turma])
+                turmas_horario.append(th)
+            turmas_por_horario.append(turmas_horario)
+    return turmas_por_horario

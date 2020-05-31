@@ -22,10 +22,11 @@ from core.config.config import get_config
 from core.visoes.flow_view import flow_horizontal, flow_opcionais
 from .bo.curso import get_cursos
 from .bo.discentes import get_discentes, get_discentes_ativos
-from .bo.docente import get_docentes
+from .bo.docente import get_docentes, carrega_turmas_por_horario
 from .bo.sala import get_salas
 from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre, get_estrutura_direito, get_estrutura_matematica, \
-    get_estrutura_pedagogia
+    get_estrutura_pedagogia, get_estrutura_administracao, get_estrutura_turismo, get_estrutura_letras_portugues, \
+    get_estrutura_letras_espanhol, get_estrutura_letras_ingles
 from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
@@ -78,6 +79,7 @@ def sobre(request):
     return render(request, 'core/sobre.html', context)
 
 
+@login_required(login_url='/accounts/login')
 def dashboard(request):
     """
         View index para o Dashboard.
@@ -236,80 +238,26 @@ def flow_list(request):
     ped_flow = get_estrutura_pedagogia()
     mat_flow = get_estrutura_matematica()
     dir_flow = get_estrutura_direito()
+    adm_flow = get_estrutura_administracao()
+    tur_flow = get_estrutura_turismo()
+    let_por_flow = get_estrutura_letras_portugues()
+    let_esp_flow = get_estrutura_letras_espanhol()
+    let_ing_flow = get_estrutura_letras_ingles()
 
     context = {
         'dir_flow': dir_flow,
         'mat_flow': mat_flow,
         'ped_flow': ped_flow,
         'bsi_flow_1a': bsi_flow_1a,
-        'bsi_flow_1b': bsi_flow_1b
+        'bsi_flow_1b': bsi_flow_1b,
+        'adm_flow': adm_flow,
+        'tur_flow': tur_flow,
+        'let_por_flow': let_por_flow,
+        'let_esp_flow': let_esp_flow,
+        'let_ing_flow': let_ing_flow,
     }
 
     return render(request, 'core/flow/list.html', context)
-
-
-def flow_bsi(request):
-    bsi_ec = get_estrutura_sistemas()
-
-    bsi_oc_semestres = []
-    bsi_ch_semestres = []
-    bsi_oc_op = get_oc_by_semestre(bsi_ec, 0)
-
-    headers: List[str] = []
-
-    for s in range(1, 9):
-        headers.append(f"{s}º Semestre")
-        bsi_oc_semestres.append(get_oc_by_semestre(bsi_ec, s))
-        bsi_ch_semestres.append(get_ch_by_semestre(bsi_ec, s))
-
-    context = {
-        'bsi_ec': bsi_ec,
-        'headers': headers,
-        'bsi_oc_semestres': bsi_oc_semestres,
-        'bsi_oc_op': bsi_oc_op,
-        'bsi_ch_semestres': bsi_ch_semestres,
-    }
-
-    return render(request, 'core/flow/bsi.html', context)
-
-
-def flow_bsi_1b(request):
-    bsi_ec = get_estrutura_sistemas_dct()
-
-    bsi_oc_semestres = []
-    bsi_ch_semestres = []
-    bsi_oc_op = get_oc_by_semestre(bsi_ec, 0)
-
-    headers: List[str] = []
-    bsi_tam = []
-    bsi_oc_max = 0
-    for s in range(1, 9):
-        oc = get_oc_by_semestre(bsi_ec, s)
-        ch = get_ch_by_semestre(bsi_ec, s)
-
-        headers.append(f"{s}º Semestre")
-        tam = len(oc)
-        bsi_tam.append(tam)
-        bsi_oc_semestres.append(oc)
-        bsi_ch_semestres.append(ch)
-
-        if tam >= bsi_oc_max:
-            bsi_oc_max = tam
-
-    for i in range(0, len(bsi_tam)):
-        bsi_tam[i] = bsi_oc_max - bsi_tam[i]
-
-    context = {
-        'bsi_ec': bsi_ec,
-        'headers': headers,
-        'bsi_oc_semestres': bsi_oc_semestres,
-        'bsi_oc_op': bsi_oc_op,
-        'bsi_tam': bsi_tam,
-        'bsi_oc_max': bsi_oc_max,
-        'bsi_ch_semestres': bsi_ch_semestres,
-    }
-
-    return render(request, 'core/flow/bsi-1b.html', context)
 
 
 def flow_bsi_1b_h(request):
@@ -334,6 +282,39 @@ def flow_dir_op(request):
     return flow_opcionais(request, dir_ec)
 
 
+def flow_let_por(request):
+    let_por_ec = get_estrutura_letras_portugues()
+    link_opcionais = '/core/flow/let-por/opcionais'
+    return flow_horizontal(request, let_por_ec, link_opcionais)
+
+
+def flow_let_por_op(request):
+    let_por_ec = get_estrutura_letras_portugues()
+    return flow_opcionais(request, let_por_ec)
+
+
+def flow_let_esp(request):
+    let_esp_ec = get_estrutura_letras_espanhol()
+    link_opcionais = '/core/flow/let-esp/opcionais'
+    return flow_horizontal(request, let_esp_ec, link_opcionais)
+
+
+def flow_let_esp_op(request):
+    let_esp_ec = get_estrutura_letras_espanhol()
+    return flow_opcionais(request, let_esp_ec)
+
+
+def flow_let_ing(request):
+    let_ing_ec = get_estrutura_letras_ingles()
+    link_opcionais = '/core/flow/let-ing/opcionais'
+    return flow_horizontal(request, let_ing_ec, link_opcionais)
+
+
+def flow_let_ing_op(request):
+    let_ing_ec = get_estrutura_letras_ingles()
+    return flow_opcionais(request, let_ing_ec)
+
+
 def flow_mat_h(request):
     mat_ec = get_estrutura_matematica()
     link_opcionais = '/core/flow/mat/opcionais'
@@ -354,6 +335,28 @@ def flow_ped_h(request):
 def flow_ped_op(request):
     ped_ec = get_estrutura_pedagogia()
     return flow_opcionais(request, ped_ec)
+
+
+def flow_adm(request):
+    adm_ec = get_estrutura_administracao()
+    link_opcionais = '/core/flow/adm/opcionais'
+    return flow_horizontal(request, adm_ec, link_opcionais)
+
+
+def flow_adm_op(request):
+    adm_ec = get_estrutura_administracao()
+    return flow_opcionais(request, adm_ec)
+
+
+def flow_tur(request):
+    tur_ec = get_estrutura_turismo()
+    link_opcionais = '/core/flow/tur/opcionais'
+    return flow_horizontal(request, tur_ec, link_opcionais)
+
+
+def flow_tur_op(request):
+    tur_ec = get_estrutura_turismo()
+    return flow_opcionais(request, tur_ec)
 
 
 def cadastrar_usuario(request):
@@ -420,12 +423,22 @@ def turmas_list(request):
     bsi_flow = get_estrutura_sistemas_dct()
     ped_flow = get_estrutura_pedagogia()
     mat_flow = get_estrutura_matematica()
+    adm_flow = get_estrutura_administracao()
+    tur_flow = get_estrutura_turismo()
+    let_por_flow = get_estrutura_letras_portugues()
+    let_esp_flow = get_estrutura_letras_espanhol()
+    let_ing_flow = get_estrutura_letras_ingles()
 
     context = {
         'dir_flow': dir_flow,
         'mat_flow': mat_flow,
         'ped_flow': ped_flow,
-        'bsi_flow': bsi_flow
+        'bsi_flow': bsi_flow,
+        'adm_flow': adm_flow,
+        'tur_flow': tur_flow,
+        'let_por_flow': let_por_flow,
+        'let_esp_flow': let_esp_flow,
+        'let_ing_flow': let_ing_flow,
     }
     return render(request, 'core/turmas/list.html', context)
 
@@ -439,6 +452,24 @@ def turmas_dir(request):
     dir_ddir = get_estrutura_direito()
     turmas_list_link = '/core/turmas/dir'
     return turmas_grade(request, dir_ddir, turmas_list_link)
+
+
+def turmas_let_esp(request):
+    let_esp_ec = get_estrutura_letras_espanhol()
+    turmas_list_link = '/core/turmas/let-esp'
+    return turmas_grade(request, let_esp_ec, turmas_list_link)
+
+
+def turmas_let_por(request):
+    let_por_ec = get_estrutura_letras_portugues()
+    turmas_list_link = '/core/turmas/let-por'
+    return turmas_grade(request, let_por_ec, turmas_list_link)
+
+
+def turmas_let_ing(request):
+    let_ing_ec = get_estrutura_letras_ingles()
+    turmas_list_link = '/core/turmas/let-ing'
+    return turmas_grade(request, let_ing_ec, turmas_list_link)
 
 
 def turmas_mat(request):
@@ -459,6 +490,18 @@ def turmas_ped(request):
     return turmas_grade(request, ped_deduc, turmas_list_link)
 
 
+def turmas_adm(request):
+    adm_csh = get_estrutura_administracao()
+    turmas_list_link = '/core/turmas/adm'
+    return turmas_grade(request, adm_csh, turmas_list_link)
+
+
+def turmas_tur(request):
+    tur_csh = get_estrutura_turismo()
+    turmas_list_link = '/core/turmas/tur'
+    return turmas_grade(request, tur_csh, turmas_list_link)
+
+
 def sugestao_list(request):
     """
         Tela para Listar os Curso com possibilidade de cadastrar Sugestões de Turmas.
@@ -467,12 +510,22 @@ def sugestao_list(request):
     bsi_flow = get_estrutura_sistemas_dct()
     ped_flow = get_estrutura_pedagogia()
     mat_flow = get_estrutura_matematica()
+    adm_flow = get_estrutura_administracao()
+    tur_flow = get_estrutura_turismo()
+    let_por_flow = get_estrutura_letras_portugues()
+    let_esp_flow = get_estrutura_letras_espanhol()
+    let_ing_flow = get_estrutura_letras_ingles()
 
     context = {
         'dir_flow': dir_flow,
         'mat_flow': mat_flow,
         'ped_flow': ped_flow,
-        'bsi_flow': bsi_flow
+        'bsi_flow': bsi_flow,
+        'adm_flow': adm_flow,
+        'tur_flow': tur_flow,
+        'let_por_flow': let_por_flow,
+        'let_esp_flow': let_esp_flow,
+        'let_ing_flow': let_ing_flow,
     }
     return render(request, 'core/sugestao/list.html', context)
 
@@ -482,10 +535,12 @@ class SugestaoTurmaDetailView(DetailView):
     template_name = 'core/sugestao/detalhar.html'
 
 
+@permission_required("core.add_solicitacaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def sugestao_solicitar(request, pk):
     return atualizar_solicitacao(request, pk)
 
 
+@login_required(login_url='/accounts/login')
 def solicitacao_turma_listar(request, pk):
 
     turma = SugestaoTurma.objects.get(pk=pk)
@@ -502,6 +557,47 @@ def solicitacao_turma_listar(request, pk):
 @permission_required("core.delete_solicitacaoturma", login_url='/core/usuario/logar', raise_exception=True)
 def solicitacao_deletar(request, pk):
     return solicitacao_discente_deletar(request, pk)
+
+
+def sugestao_adm_list(request):
+    adm_csh = get_estrutura_administracao()
+    sugestao_incluir_link = '/core/sugestao/adm/incluir'
+    sugestao_manter_link = '/core/sugestao/adm/manter'
+    sugestao_list_link = '/core/sugestao/adm/list'
+    return sugestao_grade_horarios(request, adm_csh, sugestao_incluir_link, sugestao_manter_link, sugestao_list_link)
+
+
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_adm_manter(request):
+    """
+        Tela de Manter Sugestão de Turmas do Curso de Administração - Currais Novos.
+    """
+    adm_csh = get_estrutura_administracao()
+    sugestao_incluir_link = '/core/sugestao/adm/incluir'
+    sugestao_editar_link = 'sugestao_adm_editar'
+    sugestao_deletar_link = 'sugestao_adm_deletar'
+    sugestao_grade_link = '/core/sugestao/adm/list'
+    return sugestao_manter(request, adm_csh, sugestao_incluir_link, sugestao_grade_link,
+                           sugestao_editar_link, sugestao_deletar_link)
+
+
+@permission_required("core.add_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_adm_incluir(request):
+    adm_csh = get_estrutura_administracao()
+    sugestao_manter_link = '/core/sugestao/adm/manter'
+    return sugestao_incluir(request, adm_csh, sugestao_manter_link)
+
+
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_adm_editar(request, pk):
+    adm_csh = get_estrutura_administracao()
+    return sugestao_editar(request, pk, estrutura=adm_csh)
+
+
+@permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_adm_deletar(request, pk):
+    adm_csh = get_estrutura_administracao()
+    return sugestao_deletar(request, pk, estrutura=adm_csh)
 
 
 def sugestao_dir_list(request):
@@ -668,6 +764,47 @@ def sugestao_ped_deletar(request, pk):
     return sugestao_deletar(request, pk, estrutura=ped_deduc)
 
 
+def sugestao_tur_list(request):
+    tur_csh = get_estrutura_turismo()
+    sugestao_incluir_link = '/core/sugestao/tur/incluir'
+    sugestao_manter_link = '/core/sugestao/tur/manter'
+    sugestao_list_link = '/core/sugestao/tur/list'
+    return sugestao_grade_horarios(request, tur_csh, sugestao_incluir_link, sugestao_manter_link, sugestao_list_link)
+
+
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_tur_manter(request):
+    """
+        Tela de Manter Sugestão de Turmas do Curso de Turismo - Currais Novos.
+    """
+    tur_csh = get_estrutura_turismo()
+    sugestao_incluir_link = '/core/sugestao/tur/incluir'
+    sugestao_editar_link = 'sugestao_tur_editar'
+    sugestao_deletar_link = 'sugestao_tur_deletar'
+    sugestao_grade_link = '/core/sugestao/tur/list'
+    return sugestao_manter(request, tur_csh, sugestao_incluir_link, sugestao_grade_link,
+                           sugestao_editar_link, sugestao_deletar_link)
+
+
+@permission_required("core.add_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_tur_incluir(request):
+    tur_csh = get_estrutura_turismo()
+    sugestao_manter_link = '/core/sugestao/tur/manter'
+    return sugestao_incluir(request, tur_csh, sugestao_manter_link)
+
+
+@permission_required("core.change_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_tur_editar(request, pk):
+    tur_csh = get_estrutura_turismo()
+    return sugestao_editar(request, pk, estrutura=tur_csh)
+
+
+@permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
+def sugestao_tur_deletar(request, pk):
+    tur_csh = get_estrutura_turismo()
+    return sugestao_deletar(request, pk, estrutura=tur_csh)
+
+
 def error_403(request, exception):
     logger.error('Você não tem permissão de acessar "' + request.path + '" 403 ',
                  exc_info=exception)
@@ -683,15 +820,20 @@ def search_salas(request):
 
 @login_required(login_url='/accounts/login')
 def profile(request, username):
-    ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
-    ano = config.get('PeriodoSeguinte', 'ano')
-    periodo = config.get('PeriodoSeguinte', 'periodo')
+    ano_periodo_atual = config.get('PeriodoAtual', 'ano_periodo')
+    ano_atual = config.get('PeriodoAtual', 'ano')
+    periodo_atual = config.get('PeriodoAtual', 'periodo')
+
+    ano_periodo_seguinte = config.get('PeriodoSeguinte', 'ano_periodo')
+    ano_seguinte = config.get('PeriodoSeguinte', 'ano')
+    periodo_seguinte = config.get('PeriodoSeguinte', 'periodo')
     usuario = User.objects.get(username=username)
 
     if request.user != usuario:
         messages.error(request, 'Você não tem permissão de visualizar esse Perfil.')
         return redirecionar(request)
 
+    horarios_atual = None
     horarios = None
     semestres = [1, 2, 3, 4, 5, 6, 7, 8, 0]
     solicitacao_list = None
@@ -700,13 +842,14 @@ def profile(request, username):
         perfil = usuario.discente
         perfil_link = 'core/usuario/profile_discente.html'
         grupos = criar_string(usuario.groups.all())
-        horarios = discente_grade_horarios(perfil, ano, periodo)
-        solicitacao_list = get_solicitacoes(perfil, ano, periodo)
+        horarios = discente_grade_horarios(perfil, ano_seguinte, periodo_seguinte)
+        solicitacao_list = get_solicitacoes(perfil, ano_seguinte, periodo_seguinte)
     elif docente_existe(usuario):
         perfil = usuario.docente
         perfil_link = 'core/usuario/profile_docente.html'
         grupos = criar_string(usuario.groups.all())
-        horarios = docente_grade_horarios(perfil, ano, periodo, semestres)
+        horarios_atual = carrega_turmas_por_horario(perfil, ano_atual, periodo_atual)
+        horarios = docente_grade_horarios(perfil, ano_seguinte, periodo_seguinte, semestres)
     else:
         perfil = None
         perfil_link = 'core/usuario/profile.html'
@@ -716,8 +859,10 @@ def profile(request, username):
         'usuario': usuario,
         'grupos': grupos,
         'perfil': perfil,
+        'horarios_atual': horarios_atual,
         'horarios': horarios,
-        'ano_periodo': ano_periodo,
+        'ano_periodo_atual': ano_periodo_atual,
+        'ano_periodo': ano_periodo_seguinte,
         'solicitacao_deletar_link': 'solicitacao_deletar',
         'solicitacao_list': solicitacao_list,
     }

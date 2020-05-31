@@ -37,7 +37,7 @@ class Departamento(models.Model):
 class Docente(models.Model):
     siape = models.IntegerField(unique=True)
     nome = models.CharField(max_length=200)
-    sexo = models.CharField(max_length=10)
+    sexo = models.CharField(max_length=1, blank=True, null=True)
     formacao = models.CharField(max_length=50)
     tipo_jornada_trabalho = models.CharField(max_length=50)
     vinculo = models.CharField(max_length=50)
@@ -46,7 +46,7 @@ class Docente(models.Model):
     id_unidade_lotacao = models.IntegerField()
     lotacao = models.CharField(max_length=150)
     departamento = models.ForeignKey(Departamento, on_delete=models.PROTECT, null=True)
-    admissao = models.DateField()
+    admissao = models.DateField(blank=True, null=True)
     usuario = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -96,10 +96,10 @@ class Sala(models.Model):
     )
 
     nome = models.CharField(max_length=200, blank=True, null=True)
-    sigla = models.CharField(max_length=10)
+    sigla = models.CharField(max_length=25)
     capacidade = models.IntegerField()
     tamanho = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    bloco = models.CharField(max_length=10)
+    bloco = models.CharField(max_length=25)
     centro = models.ForeignKey(Centro, on_delete=models.PROTECT)
     campus = models.CharField(max_length=1, blank=True, null=True, choices=CAMPUS_CHOICES)
 
@@ -278,6 +278,13 @@ class Turma(models.Model):
         return self.id_turma.__str__() + ' - ' + self.codigo_turma + ' - ' + self.componente.__str__() + ' - ' \
                + self.docente.__str__() + ' - ' + self.descricao_horario
 
+    def get_curriculos(self, estrutura=None):
+        if estrutura:
+            return OrganizacaoCurricular.objects.get(
+                componente=self.componente,
+                estrutura=estrutura)
+        return OrganizacaoCurricular.objects.filter(componente=self.componente)
+
 
 class SugestaoTurma(models.Model):
     codigo_turma = models.CharField(max_length=50)
@@ -374,3 +381,14 @@ class SolicitacaoTurma(models.Model):
 
     class Meta:
         unique_together = ('solicitador', 'turma')
+
+
+class VinculoDocente(models.Model):
+    docente = models.ForeignKey(Docente, on_delete=models.PROTECT)
+    turma = models.ForeignKey(Turma, on_delete=models.PROTECT)
+    carga_horaria = models.IntegerField()
+    horarios = models.ManyToManyField(Horario, related_name='vinculos')
+    criada_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('docente', 'turma')

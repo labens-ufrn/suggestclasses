@@ -4,7 +4,7 @@ import threading
 
 from dateutil.parser import parse
 from django.contrib.auth.models import User, Group
-
+from core.bo.turma import converte_desc_horario
 from core.models import Centro, Departamento, ComponenteCurricular, Docente, EstruturaCurricular, Curso, \
     OrganizacaoCurricular, Turma, Sala, SugestaoTurma, Discente, FuncaoGratificada, Horario
 from dados.povoar_horarios import povoar_horarios
@@ -44,9 +44,8 @@ class PovoarDadosTestes(object):
 
 def criar_dados():
     dados = PovoarDadosTestes.load()
-    print('Criar Dados: ' + dados.__str__())
     if dados.povoar:
-        print('...... povoando dados ......')
+        print('> povoando dados')
         criar_tudo()
         dados.povoar = True
 
@@ -55,7 +54,7 @@ def remover_dados():
     dados = PovoarDadosTestes.load()
     if dados.remover:
         print()
-        print('...... removendo dados ......')
+        print('> removendo dados')
         remover_tudo()
         dados.povoar = True
 
@@ -108,6 +107,8 @@ def criar_usuario():
         User.objects.create_user('docente2', 'docente2@thebeatles.com', 'johnpassword')
     if not User.objects.filter(username='docente3'):
         User.objects.create_user('docente3', 'docente3@thebeatles.com', 'johnpassword')
+    if not User.objects.filter(username='discente1'):
+        User.objects.create_user('discente1', 'discente1@thebeatles.com', 'johnpassword')
 
 
 def criar_grupos():
@@ -118,6 +119,7 @@ def criar_grupos():
 
     new_group, created = Group.objects.get_or_create(name='ChefesTeste')
     new_group, created = Group.objects.get_or_create(name='DocentesTeste')
+    new_group, created = Group.objects.get_or_create(name='DiscentesTeste')
 
     # Code to add permission to group ???
     # ct = ContentType.objects.get_for_model(SugestaoTurma)
@@ -148,6 +150,12 @@ def remover_grupos():
 
 
 def criar_discentes():
+    grupo_discentes = Group.objects.get(name='DiscentesTeste')
+
+    usuario_discente = User.objects.get(username='discente1')
+    usuario_discente.groups.add(grupo_discentes)
+    usuario_discente.save()
+
     if not Discente.objects.filter(matricula='20209876543').exists():
         Discente.objects.create(matricula='20209876543', nome_discente='Zé Silva', sexo='M',
                                 ano_ingresso=2020, periodo_ingresso=1,
@@ -156,7 +164,8 @@ def criar_discentes():
                                 id_curso='7191770', nome_curso='SISTEMAS DE INFORMAÇÃO',
                                 modalidade_educacao='PRESENCIAL',
                                 id_unidade=1482, nome_unidade='CENTRO DE  ENSINO SUPERIOR DO SERIDÓ',
-                                id_unidade_gestora=1482, nome_unidade_gestora='CENTRO DE  ENSINO SUPERIOR DO SERIDÓ')
+                                id_unidade_gestora=1482, nome_unidade_gestora='CENTRO DE  ENSINO SUPERIOR DO SERIDÓ',
+                                usuario=usuario_discente)
 
 
 def criar_centro():
@@ -179,6 +188,7 @@ def remover_usuario():
         User.objects.get(username='docente1').delete()
         User.objects.get(username='docente2').delete()
         User.objects.get(username='docente3').delete()
+        User.objects.get(username='discente1').delete()
     except User.DoesNotExist:
         print('.', end="")
 
@@ -528,41 +538,60 @@ def criar_sugestoes_turmas():
     sala = Sala.objects.get(sigla='A01', bloco='Bloco A', centro__id_unidade=9999, campus=campus_id)
 
     if not SugestaoTurma.objects.filter(codigo_turma='01', componente=componente1, ano=2020, periodo=2).exists():
-        SugestaoTurma.objects.create(codigo_turma='01', docente=docente1, matricula_docente_externo=None,
-                                     componente=componente1, campus_turma=sala.campus, local=sala, ano=2020,
-                                     periodo=2, descricao_horario='24T12', capacidade_aluno=25, tipo='REGULAR',
-                                     total_solicitacoes=0, criador=criador_chefe.usuario,
-                                     tipo_vinculo='OBRIGATÓRIO',
-                                     semestre=1, curso=curso)
+        sugestao = SugestaoTurma.objects.create(
+            codigo_turma='01', docente=docente1, matricula_docente_externo=None,
+            componente=componente1, campus_turma=sala.campus, local=sala, ano=2020,
+            periodo=2, descricao_horario='24T12', capacidade_aluno=25, tipo='REGULAR',
+            total_solicitacoes=0, criador=criador_chefe.usuario,
+            tipo_vinculo='OBRIGATÓRIO', semestre=1, curso=curso)
+        horarios_list = converte_desc_horario(sugestao.descricao_horario)
+        sugestao.horarios.set(horarios_list)
+
+    if not SugestaoTurma.objects.filter(codigo_turma='02', componente=componente1, ano=2020, periodo=2).exists():
+        sugestao = SugestaoTurma.objects.create(
+            codigo_turma='02', docente=docente1, matricula_docente_externo=None,
+            componente=componente1, campus_turma=sala.campus, local=sala, ano=2020,
+            periodo=2, descricao_horario='35T12', capacidade_aluno=25, tipo='REGULAR',
+            total_solicitacoes=0, criador=criador_chefe.usuario,
+            tipo_vinculo='OBRIGATÓRIO', semestre=1, curso=curso)
+        horarios_list = converte_desc_horario(sugestao.descricao_horario)
+        sugestao.horarios.set(horarios_list)
 
     if not SugestaoTurma.objects.filter(codigo_turma='01', componente=componente2, ano=2020, periodo=2).exists():
-        SugestaoTurma.objects.create(codigo_turma='01', docente=docente2, matricula_docente_externo=None,
-                                     componente=componente2, campus_turma=sala.campus, local=sala, ano=2020,
-                                     periodo=2, descricao_horario='24T34', capacidade_aluno=25, tipo='REGULAR',
-                                     total_solicitacoes=0, criador=criador_chefe.usuario,
-                                     tipo_vinculo='OBRIGATÓRIO',
-                                     semestre=1, curso=curso)
+        sugestao = SugestaoTurma.objects.create(
+            codigo_turma='01', docente=docente2, matricula_docente_externo=None,
+            componente=componente2, campus_turma=sala.campus, local=sala, ano=2020,
+            periodo=2, descricao_horario='24T34', capacidade_aluno=25, tipo='REGULAR',
+            total_solicitacoes=0, criador=criador_chefe.usuario,
+            tipo_vinculo='OBRIGATÓRIO', semestre=1, curso=curso)
+        horarios_list = converte_desc_horario(sugestao.descricao_horario)
+        sugestao.horarios.set(horarios_list)
 
     if not SugestaoTurma.objects.filter(codigo_turma='01', componente=componente3, ano=2020, periodo=2).exists():
-        SugestaoTurma.objects.create(codigo_turma='01', docente=docente1, matricula_docente_externo=None,
-                                     componente=componente3, campus_turma=sala.campus, local=sala, ano=2020,
-                                     periodo=2, descricao_horario='35T12', capacidade_aluno=25, tipo='REGULAR',
-                                     total_solicitacoes=0, criador=criador_chefe.usuario,
-                                     tipo_vinculo='OPTATIVO',
-                                     semestre=2, curso=curso)
+        sugestao = SugestaoTurma.objects.create(
+            codigo_turma='01', docente=docente1, matricula_docente_externo=None,
+            componente=componente3, campus_turma=sala.campus, local=sala, ano=2020,
+            periodo=2, descricao_horario='35T12', capacidade_aluno=25, tipo='REGULAR',
+            total_solicitacoes=0, criador=criador_chefe.usuario,
+            tipo_vinculo='OPTATIVO', semestre=2, curso=curso)
+        horarios_list = converte_desc_horario(sugestao.descricao_horario)
+        sugestao.horarios.set(horarios_list)
 
     if not SugestaoTurma.objects.filter(codigo_turma='02', componente=componente3, ano=2020, periodo=2).exists():
-        SugestaoTurma.objects.create(codigo_turma='02', docente=docente2, matricula_docente_externo=None,
-                                     componente=componente3, campus_turma=sala.campus, local=sala, ano=2020,
-                                     periodo=2, descricao_horario='35T34', capacidade_aluno=25, tipo='REGULAR',
-                                     total_solicitacoes=0, criador=criador_chefe.usuario,
-                                     tipo_vinculo='OPTATIVO',
-                                     semestre=2, curso=curso)
+        sugestao = SugestaoTurma.objects.create(
+            codigo_turma='02', docente=docente2, matricula_docente_externo=None,
+            componente=componente3, campus_turma=sala.campus, local=sala, ano=2020,
+            periodo=2, descricao_horario='35T34', capacidade_aluno=25, tipo='REGULAR',
+            total_solicitacoes=0, criador=criador_chefe.usuario,
+            tipo_vinculo='OPTATIVO', semestre=2, curso=curso)
+        horarios_list = converte_desc_horario(sugestao.descricao_horario)
+        sugestao.horarios.set(horarios_list)
 
 
 def remover_sugestoes_turmas():
     try:
         SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99999).delete()
+        SugestaoTurma.objects.get(codigo_turma='02', componente__id_componente=99999).delete()
         SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99998).delete()
         SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99997).delete()
         SugestaoTurma.objects.get(codigo_turma='02', componente__id_componente=99997).delete()

@@ -1,0 +1,13 @@
+{% for vinculo in turma.vinculodocente_set.all %}
+  {% if vinculo.docente.nome == 'SUBSTITUTO' %}
+    <span style="color: orangered">
+  {% elif vinculo.docente.nome == 'VOLUNTÁRIO/EXTERNO' %}
+    <span style="color: darkorange">
+  {% else %}
+    <span style="color: darkblue">
+  {% endif %}
+    {{ vinculo.docente.primeiro_nome }} ({{ vinculo.docente.siape }})
+  </span>
+{% empty %}
+  <b style="color: red">DOCENTE NÃO DEFINIDO</b>
+{% endfor %}

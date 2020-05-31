@@ -2,6 +2,8 @@ import django
 django.setup()
 from django.contrib.auth.models import User
 
+from core.bo.sugestao import solicitacao_incluir, solicitacao_existe, solicitacao_verificar_choques
+from core.views import solicitacao_deletar
 from core.bo.sevices import get_estrutura_by_id
 from core.bo.turma import get_sugestao_turmas, carrega_turmas_horario, carrega_sugestao_turmas, \
     converte_desc_horario
@@ -91,3 +93,78 @@ class SugestaoTests(TestCase):
         self.assertEqual('01', sugestao.codigo_turma, 'Código da Turma')
         self.assertEqual(9999999, sugestao.docente.siape, 'Matrícula Siape do Docente')
         self.assertEqual('', sugestao.matricula_docente_externo, 'Matrícula do Docente Externo')
+
+    def test_incluir_solicitacao(self):
+        """
+            Teste para a inclusão de Solicitação de Turma por um discente.
+        """
+        componente1 = ComponenteCurricular.objects.get(id_componente=99999)
+        sugestao = SugestaoTurma.objects.get(codigo_turma='01', componente=componente1, ano=2020, periodo=2)
+        usuario = User.objects.get(username='discente1')
+        discente = usuario.discente
+
+        choque_comp, choque_horarios, houve_choques = \
+            solicitacao_verificar_choques(discente, sugestao)
+        self.assertIsNone(choque_comp)
+        self.assertIsNone(choque_horarios)
+        self.assertFalse(houve_choques)
+
+        qtd1 = sugestao.solicitacaoturma_set.count()
+        solicitacao, created = solicitacao_incluir(discente, sugestao)
+        qtd2 = sugestao.solicitacaoturma_set.count()
+        self.assertIsNotNone(solicitacao, 'Solicitação criada!')
+        self.assertTrue(created, 'Solicitação criada!')
+        self.assertEqual(qtd1 + 1, qtd2, 'Qtd Solicitações + 1.')
+
+        resultado = solicitacao_existe(discente, sugestao)
+        self.assertTrue(resultado, 'Solicitação do Discente existe!')
+
+        qtd3 = sugestao.solicitacaoturma_set.count()
+        solicitacao, created = solicitacao_incluir(discente, sugestao.pk)
+        qtd4 = sugestao.solicitacaoturma_set.count()
+        self.assertIsNotNone(solicitacao, 'Solicitação existe!')
+        self.assertFalse(created, 'Solicitação não foi criada, já existia!')
+        self.assertEqual(qtd3, qtd4, 'Qtd Solicitações não mudou.')
+
+        solicitacao.delete()
+
+        resultado = solicitacao_existe(discente, sugestao)
+        self.assertFalse(resultado, 'Solicitação do Discente não existe!')
+
+        qtd5 = sugestao.solicitacaoturma_set.count()
+        self.assertEqual(qtd4 - 1, qtd5, 'Qtd Solicitações não mudou.')
+
+    def test_choques_solicitacao(self):
+        """
+            Teste para a choques na inclusão de Solicitação de Turma por um discente.
+        """
+        componente1 = ComponenteCurricular.objects.get(id_componente=99999)
+        componente3 = ComponenteCurricular.objects.get(id_componente=99997)
+        sugestao1 = SugestaoTurma.objects.get(codigo_turma='01', componente=componente1, ano=2020, periodo=2)
+        sugestao2 = SugestaoTurma.objects.get(codigo_turma='02', componente=componente1, ano=2020, periodo=2)
+        sugestao3 = SugestaoTurma.objects.get(codigo_turma='01', componente=componente3, ano=2020, periodo=2)
+        usuario = User.objects.get(username='discente1')
+        discente = usuario.discente
+
+        choque_comp, choque_horarios, houve_choques = \
+            solicitacao_verificar_choques(discente, sugestao2)
+        self.assertIsNone(choque_comp)
+        self.assertIsNone(choque_horarios)
+        self.assertFalse(houve_choques)
+
+        solicitacao, created = solicitacao_incluir(discente, sugestao2)
+
+        # Choque de Horários com outra solicitação de interesse.
+        choque_comp, choque_horarios, houve_choques = \
+            solicitacao_verificar_choques(discente, sugestao3)
+        self.assertIsNotNone(choque_comp)
+        self.assertIsNotNone(choque_horarios)
+        self.assertTrue(houve_choques)
+
+        choque_comp, choque_horarios, houve_choques = \
+            solicitacao_verificar_choques(discente, sugestao2)
+        self.assertIsNone(choque_comp)
+        self.assertIsNone(choque_horarios)
+        self.assertFalse(houve_choques)
+
+        solicitacao.delete()

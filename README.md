@@ -21,6 +21,18 @@ Na página [Documentação](docs/docs.md) temos os detalhes do projeto e a lista
 
 ## Pré-requisitos
 
+Banco de Dados
+    
+   MariaDB - https://mariadb.org/ ou MySQL - https://www.mysql.com/
+
+Linguagem
+    
+   Python - https://www.python.org/
+
+ferramenta
+    
+   Docker - https://www.docker.com/
+
 ### Criação do Banco de Dados (dev e test) e Usuário
 
 Utilzamos o SGBD MariaDB/MySql.
@@ -36,6 +48,17 @@ Utilzamos o SGBD MariaDB/MySql.
 ```
 
 ### Dependências para usar o MariaDB e MySQL
+Windows
+
+No site https://www.lfd.uci.edu/~gohlke/pythonlibs/ busca o Mysqlclient compatível com a sua versão Python instalada.
+
+Instalação com o PIP:
+
+```shell script
+pip install nome_do_arquivo_baixado.whl
+```
+
+Lunux
 
 ```shell script
 sudo apt install python3-dev default-libmysqlclient-dev
@@ -50,6 +73,24 @@ MARIA_HOME=/usr/bin/mysql
 PATH=$PATH:$MARIA_HOME/bin
 PYTHONHOME=/usr/bin
 ```
+Windows
+
+Caso não tenha a Virtualenv instalada: 
+
+```shell script
+pip install virtualenv
+```
+
+Criação do Ambiente Virtual com virtualenv:
+
+```shell script
+virtualenv nome_da_virtualenv
+```
+
+Para ativar: ```cd nome_da_virtualenv\Scripts\activate```.
+Para desativar: ```cd nome_da_virtualenv\Scripts\deactivate```.
+
+Linux
 
 Criação do Ambiente Virtual com virtualenv:
 
@@ -86,12 +127,18 @@ export DJANGO_SETTINGS_MODULE=mysite.settings
 export PYTHONPATH=${PYTHONPATH}:/home/<seu_diretorio>/suggestclasses
  ```
 
-Após editar os valores execute o comando ```source path.env``` para carregar as variáveis.
+Após editar os valores, execute o comando ```source path.env``` no Linux ou ```activate path.env``` no Windows para carregar as variáveis.
 
 ## Migrations
 
 Ao modificar os models (em models.py), execute:
+Windows
+```shell script
+$ python3 manage.py makemigrations core
+$ python3 manage.py migrate
+```
 
+Linux
 ```shell script
 $ python manage.py makemigrations core
 $ python manage.py migrate
@@ -103,9 +150,15 @@ O sistema é baseado nos dados abertos da UFRN, desta forma é necessário povoa
 com informações de Horários, Centro, Salas, Departamentos, Componentes, etc.
 
 Lembre-se de deixar todas as variáveis de ambiente definidas.
-Execute o comando ```source path.env``` para carregar as variáveis.
+Execute o comando ```source path.env``` no Linux ou ```activate path.env``` no Windows para carregar as variáveis.
 
 A ordem é importante e deve ser seguida conforme descrito abaixo.
+
+### Criar Grupos e Permissões
+
+Deve-se rodar, na raiz do projeto, o script ```povoar_grupos.py``` na pasta **dados**.
+
+```python dados/povoar_grupos.py```
 
 ### Criar base de horários da UFRN
 
@@ -113,13 +166,18 @@ Deve-se rodar, na raiz do projeto, o script ```povoar_horarios.py``` na pasta **
 
 ```python dados/povoar_horarios.py```
 
-Depois execute os seguintes comandos.
+
+### Criar o restante da base de Dados
+
+Os scripts seguintes farão o povoamento do restante da base.
 
 ```shell script
 python dados/baixar_dados.py
 python dados/povoar.py
 python dados/povoar_organizacao_curricular.py
 ```
+
+Para atualizar a base, devem-ser deletados os csv's antigos e executar novamente os scripts.
 
 ## Testes
 
