@@ -479,29 +479,9 @@ def turmas_tur(request):
 
 def sugestao_list(request):
     """
-        Tela para Listar os Curso com possibilidade de cadastrar Sugestões de Turmas.
+    Tela para Listar os Curso com possibilidade de cadastrar Sugestões de Turmas.
     """
-    dir_flow = get_estrutura_direito()
-    bsi_flow = get_estrutura_sistemas_dct()
-    ped_flow = get_estrutura_pedagogia()
-    mat_flow = get_estrutura_matematica()
-    adm_flow = get_estrutura_administracao()
-    tur_flow = get_estrutura_turismo()
-    let_por_flow = get_estrutura_letras_portugues()
-    let_esp_flow = get_estrutura_letras_espanhol()
-    let_ing_flow = get_estrutura_letras_ingles()
-
-    context = {
-        'dir_flow': dir_flow,
-        'mat_flow': mat_flow,
-        'ped_flow': ped_flow,
-        'bsi_flow': bsi_flow,
-        'adm_flow': adm_flow,
-        'tur_flow': tur_flow,
-        'let_por_flow': let_por_flow,
-        'let_esp_flow': let_esp_flow,
-        'let_ing_flow': let_ing_flow,
-    }
+    context = carrega_context_flow_list()
     return render(request, 'core/sugestao/list.html', context)
 
 
