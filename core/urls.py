@@ -64,6 +64,7 @@ urlpatterns = [
     path('flow/tur/opcionais', views.flow_tur_op, name='flow_tur_op'),
 
     path('turmas/', views.turmas_list, name='turmas_list'),
+    path('turmas/cont', views.turmas_cont, name='turmas_contabeis'),
     path('turmas/dir', views.turmas_dir, name='turmas_direito'),
     path('turmas/mat', views.turmas_mat, name='turmas_matemática'),
     path('turmas/bsi', views.turmas_bsi, name='turmas_sistemas'),

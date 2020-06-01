@@ -24,10 +24,10 @@ from .bo.curso import get_cursos
 from .bo.discentes import get_discentes, get_discentes_ativos
 from .bo.docente import get_docentes, carrega_turmas_por_horario
 from .bo.sala import get_salas
-from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre, get_estrutura_direito, get_estrutura_matematica, \
+from .bo.sevices import get_estrutura_direito, get_estrutura_matematica, \
     get_estrutura_pedagogia, get_estrutura_administracao, get_estrutura_turismo, get_estrutura_letras_portugues, \
     get_estrutura_letras_espanhol, get_estrutura_letras_ingles, get_estrutura_contabeis
-from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
+from .bo.sistemas import get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
 from .dao.departamento_dao import get_departamentos
@@ -46,7 +46,7 @@ config = get_config()
 
 def index(request):
     """
-        View para o Home (Tela Inicial).
+    View para o Home (Tela Inicial).
     :param request: Uma requisição http.
     :return: Um response com dados sobre o CERES/UFRN.
     """
@@ -408,33 +408,19 @@ def turmas_list(request):
     """
         Lista todas as Turmas do centro CERES.
     """
-    dir_flow = get_estrutura_direito()
-    bsi_flow = get_estrutura_sistemas_dct()
-    ped_flow = get_estrutura_pedagogia()
-    mat_flow = get_estrutura_matematica()
-    adm_flow = get_estrutura_administracao()
-    tur_flow = get_estrutura_turismo()
-    let_por_flow = get_estrutura_letras_portugues()
-    let_esp_flow = get_estrutura_letras_espanhol()
-    let_ing_flow = get_estrutura_letras_ingles()
-
-    context = {
-        'dir_flow': dir_flow,
-        'mat_flow': mat_flow,
-        'ped_flow': ped_flow,
-        'bsi_flow': bsi_flow,
-        'adm_flow': adm_flow,
-        'tur_flow': tur_flow,
-        'let_por_flow': let_por_flow,
-        'let_esp_flow': let_esp_flow,
-        'let_ing_flow': let_ing_flow,
-    }
+    context = carrega_context_flow_list()
     return render(request, 'core/turmas/list.html', context)
 
 
 class TurmaDetailView(DetailView):
     model = Turma
     template_name = 'core/turmas/detalhar.html'
+
+
+def turmas_cont(request):
+    cont_ec = get_estrutura_contabeis()
+    turmas_list_link = '/core/turmas/cont'
+    return turmas_grade(request, cont_ec, turmas_list_link)
 
 
 def turmas_dir(request):
