@@ -501,40 +501,40 @@ def criar_turmas():
         adicionar_vinculo_docente(turma, docente1, 60, horarios_list)
 
     if not Turma.objects.filter(id_turma=99999998).exists():
-        Turma.objects.create(id_turma=99999998, codigo_turma='01', docente=docente2, matricula_docente_externo=None,
-                             observacao='', componente=componente2, ch_dedicada_periodo=60,
-                             nivel_ensino='GRADUAÇÃO', campus_turma=sala.campus, local=sala, ano=2020,
-                             periodo=1, data_inicio=parse('2020/03/30'), data_fim=parse('2020/07/30'),
-                             descricao_horario='24T34', total_solicitacoes=20, capacidade_aluno=25, tipo='REGULAR',
-                             distancia=False, data_consolidacao=None, agrupadora=False, id_turma_agrupadora=None,
-                             qtd_aulas_lancadas=5, situacao_turma='ABERTA', convenio=None,
-                             modalidade_participantes='Presencial')
+        turma = Turma.objects.create(id_turma=99999998, codigo_turma='01', docente=docente2, matricula_docente_externo=None,
+                                     observacao='', componente=componente2, ch_dedicada_periodo=60,
+                                     nivel_ensino='GRADUAÇÃO', campus_turma=sala.campus, local=sala, ano=2020,
+                                     periodo=1, data_inicio=parse('2020/03/30'), data_fim=parse('2020/07/30'),
+                                     descricao_horario='24T34', total_solicitacoes=20, capacidade_aluno=25, tipo='REGULAR',
+                                     distancia=False, data_consolidacao=None, agrupadora=False, id_turma_agrupadora=None,
+                                     qtd_aulas_lancadas=5, situacao_turma='ABERTA', convenio=None,
+                                     modalidade_participantes='Presencial')
         horarios_list = converte_desc_horario('24T34')
         turma.horarios.set(horarios_list)
         adicionar_vinculo_docente(turma, docente2, 60, horarios_list)
 
     if not Turma.objects.filter(id_turma=99999997).exists():
-        Turma.objects.create(id_turma=99999997, codigo_turma='01', docente=docente1, matricula_docente_externo=None,
-                             observacao='', componente=componente3, ch_dedicada_periodo=60,
-                             nivel_ensino='GRADUAÇÃO', campus_turma=sala.campus, local=sala, ano=2020,
-                             periodo=1, data_inicio=parse('2020/03/30'), data_fim=parse('2020/07/30'),
-                             descricao_horario='35T12', total_solicitacoes=15, capacidade_aluno=25, tipo='REGULAR',
-                             distancia=False, data_consolidacao=None, agrupadora=False, id_turma_agrupadora=None,
-                             qtd_aulas_lancadas=5, situacao_turma='ABERTA', convenio=None,
-                             modalidade_participantes='Presencial')
+        turma = Turma.objects.create(id_turma=99999997, codigo_turma='01', docente=docente1, matricula_docente_externo=None,
+                                     observacao='', componente=componente3, ch_dedicada_periodo=60,
+                                     nivel_ensino='GRADUAÇÃO', campus_turma=sala.campus, local=sala, ano=2020,
+                                     periodo=1, data_inicio=parse('2020/03/30'), data_fim=parse('2020/07/30'),
+                                     descricao_horario='35T12', total_solicitacoes=15, capacidade_aluno=25, tipo='REGULAR',
+                                     distancia=False, data_consolidacao=None, agrupadora=False, id_turma_agrupadora=None,
+                                     qtd_aulas_lancadas=5, situacao_turma='ABERTA', convenio=None,
+                                     modalidade_participantes='Presencial')
         horarios_list = converte_desc_horario('35T12')
         turma.horarios.set(horarios_list)
         adicionar_vinculo_docente(turma, docente1, 60, horarios_list)
 
     if not Turma.objects.filter(id_turma=99999996).exists():
-        Turma.objects.create(id_turma=99999996, codigo_turma='02', docente=docente2, matricula_docente_externo=None,
-                             observacao='', componente=componente3, ch_dedicada_periodo=60,
-                             nivel_ensino='GRADUAÇÃO', campus_turma=sala.campus, local=sala, ano=2020,
-                             periodo=1, data_inicio=parse('2020/03/30'), data_fim=parse('2020/07/30'),
-                             descricao_horario='35T34', total_solicitacoes=15, capacidade_aluno=25, tipo='REGULAR',
-                             distancia=False, data_consolidacao=None, agrupadora=False, id_turma_agrupadora=None,
-                             qtd_aulas_lancadas=5, situacao_turma='ABERTA', convenio=None,
-                             modalidade_participantes='Presencial')
+        turma = Turma.objects.create(id_turma=99999996, codigo_turma='02', docente=docente2, matricula_docente_externo=None,
+                                     observacao='', componente=componente3, ch_dedicada_periodo=60,
+                                     nivel_ensino='GRADUAÇÃO', campus_turma=sala.campus, local=sala, ano=2020,
+                                     periodo=1, data_inicio=parse('2020/03/30'), data_fim=parse('2020/07/30'),
+                                     descricao_horario='35T34', total_solicitacoes=15, capacidade_aluno=25, tipo='REGULAR',
+                                     distancia=False, data_consolidacao=None, agrupadora=False, id_turma_agrupadora=None,
+                                     qtd_aulas_lancadas=5, situacao_turma='ABERTA', convenio=None,
+                                     modalidade_participantes='Presencial')
         horarios_list = converte_desc_horario('35T34')
         turma.horarios.set(horarios_list)
         adicionar_vinculo_docente(turma, docente2, 60, horarios_list)
