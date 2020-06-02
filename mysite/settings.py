@@ -24,7 +24,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
-print(SECRET_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
@@ -172,11 +171,12 @@ MESSAGE_TAGS = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
 # User_Uploaded_Files
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, '/media')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
