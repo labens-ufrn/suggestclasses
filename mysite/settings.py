@@ -107,9 +107,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'scdb_dev',
-        'USER': 'sc_user',
-        'PASSWORD': 'sc_user',
+        'NAME': config('DATABASE_NAME'),
+        'USER': config('DATABASE_USER'),
+        'PASSWORD': config('DATABASE_PASSWORD'),
         'HOST': '127.0.0.1',
         'PORT': config('MARIADB_PORT'),
         # optional:
@@ -204,14 +204,15 @@ LOGGING = {
     'handlers': {
         'console': {
             'level': 'INFO',
-            'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
         'file': {
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': BASE_DIR + '/debug.log',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            # 'class': 'logging.FileHandler',
+            # 'filename': BASE_DIR + '/debug.log',
             'formatter': 'verbose'
         },
         'mail_admins': {
