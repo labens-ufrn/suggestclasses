@@ -392,3 +392,24 @@ class VinculoDocente(models.Model):
 
     class Meta:
         unique_together = ('docente', 'turma')
+
+
+class PeriodoLetivo(models.Model):
+    STATUS_CHOICES = (
+        ("1", "Consolidado"),
+        ("2", "Ativo"),
+        ("3", "Planejado"),
+        ("4", "Suspenso"),
+        ("5", "Cancelado"),
+    )
+    nome = models.CharField(max_length=50, null=False)
+    ano = models.IntegerField()
+    periodo = models.IntegerField()
+    data_inicio = models.DateField()
+    data_fim = models.DateField()
+    data_consolidacao = models.DateField()
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES)
+    observacoes = models.CharField(max_length=500, blank=True, null=True)
+
+    def __str__(self):
+        return self.nome + str(self.ano) + '.' + str(self.periodo)
