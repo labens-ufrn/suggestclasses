@@ -1,0 +1,87 @@
+{% extends 'core/base.html' %}
+{% block title %} Suggest Classes - Votar em Enquete de Turma {% endblock %}
+{% block content %}
+
+  <div class="container">
+    <div id="manter" class="center text-center form-group">
+      <h2 class="page-section-heading text-center text-secondary mb-0">
+        Votar em Enquete de Turma</h2>
+      <h5 class="page-section-heading text-center text-secondary mb-0">
+         <b>{{ enquete }}</b></h5>
+    </div>
+    <div class="alert-info">
+      <p>Você pode votar até {{ enquete.numero_votos }} vezes nesta enquete.<br>
+      Você já votou {{ qtd_votos }} vezes.</p>
+    </div>
+    <form method="post" id="VotoForm">
+      {% csrf_token %}
+      {% for field in form_voto.hidden_fields %}
+        <div>
+          {{ field }}
+          {% for error in field.errors %}
+            <p style="color: red">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
+      <table class="table table-sm table-responsive-sm">
+        {% for field in form_voto.visible_fields %}
+          <tr>
+            <th class="align-middle">
+              <label>{{ field.label_tag }}</label>
+            </th>
+            <td class="align-middle">{{ field }}
+              {% if field.help_text %}
+                <small style="color: grey">{{ field.help_text }}</small>
+              {% endif %}
+              {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+              {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+      <input type="hidden" name="next" value="{{ request.GET.next }}">
+      <div class="form-group">
+        <input type="submit" value="Salvar" class="btn btn-primary">
+      </div>
+    </form>
+  </div>
+  <div>
+    <table class="table table-striped table-sm table-bordered">
+      <thead class="thead-light">
+      <tr class="text-center">
+        <th colspan="4">Seus Votos</th>
+      </tr>
+      <tr class="text-center">
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Ação</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for voto in votos_por_discente %}
+        <tr class="text-center">
+          <td>{{ voto.componente.codigo }}</td>
+          <td>{{ voto.componente.nome }}</td>
+          <td>
+            <a href="{% url 'enquete_deletar_voto' voto.pk %}?next={{ request.path|urlencode }}">
+              <button type="button" class="btn btn-danger">
+                <span class="material-icons align-middle">
+                  delete
+                </span>
+                Excluir
+              </button>
+            </a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td class="text-center" colspan="4">Lista de Votos Vazia!</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
+{% block myscripts %}
+{% endblock myscripts %}

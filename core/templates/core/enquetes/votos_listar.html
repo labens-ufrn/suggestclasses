@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+  <section class="page-section" id="solicitacao_turma">
+    <div class="container">
+
+      <div id="manter" class="center text-center form-group">
+        <h2 class="page-section-heading text-center text-secondary mb-0">Votos de Enquete por Componente</h2>
+        <h5 class="page-section-heading text-center text-secondary mb-0">{{ enquete }}</h5>
+        <h5 class="page-section-heading text-center text-secondary mb-0">{{ componente }}</h5>
+      </div>
+
+      <div>
+        <table class="table table-striped table-sm table-bordered">
+          <thead class="thead-light">
+          <tr align="center">
+            <th colspan="4">Votos</th>
+          </tr>
+          <tr align="center">
+            <th>Matrícula</th>
+            <th>Nome</th>
+            <th>Curso</th>
+            <th>Data</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for voto in votos_componente %}
+            <tr>
+              <td align="center">{{ voto.discente.matricula }}</td>
+              <td align="center">{{ voto.discente.nome_discente }}</td>
+              <td align="center">{{ voto.discente.nome_curso }}</td>
+              <td align="center">
+                {{ voto.criado_em|date:"SHORT_DATETIME_FORMAT" }}
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td align="center" colspan="4">Votação vazia!</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
