@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 from core.models import Horario, Centro, Departamento, Curso, ComponenteCurricular, EstruturaCurricular, \
-    OrganizacaoCurricular, Docente, Turma, SugestaoTurma, Sala, FuncaoGratificada, Discente, PeriodoLetivo
+    OrganizacaoCurricular, Docente, Turma, SugestaoTurma, Sala, FuncaoGratificada, Discente, PeriodoLetivo, \
+    Enquete, VotoTurma
 
 admin.site.register(Centro)
 admin.site.register(Departamento)
@@ -61,3 +62,11 @@ class PeriodoLetivoAdmin(admin.ModelAdmin):
 
 
 admin.site.register(PeriodoLetivo, PeriodoLetivoAdmin)
+
+
+class EnqueteAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'curso', 'numero_votos', 'periodo', 'data_hora_inicio', 'data_hora_fim', 'status')
+
+
+admin.site.register(Enquete, EnqueteAdmin)
+admin.site.register(VotoTurma)
