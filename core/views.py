@@ -833,7 +833,7 @@ class EnqueteDetailView(DetailView):
             .filter(enquete=self.object) \
             .values('componente__pk', 'componente__codigo', 'componente__nome') \
             .annotate(votos=Count('componente')) \
-            .order_by('-votos')
+            .order_by('-votos', 'componente__nome')
         context['votos_por_componente'] = votos_por_componente
         return context
 
