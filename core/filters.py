@@ -1,6 +1,6 @@
 import django_filters
 
-from core.models import Sala, Docente
+from core.models import Sala, Docente, Enquete
 
 
 class SalaFilter(django_filters.FilterSet):
@@ -27,3 +27,19 @@ class DocenteFilter(django_filters.FilterSet):
     class Meta:
         model = Docente
         fields = ['siape', 'nome', 'lotacao']
+
+
+class EnqueteFilter(django_filters.FilterSet):
+    STATUS_CHOICES = (
+        ("1", "Cadastrada"),
+        ("2", "Ativa"),
+        ("3", "Fechada"),
+    )
+    status = django_filters.ChoiceFilter(choices=STATUS_CHOICES)
+
+    nome = django_filters.CharFilter(lookup_expr='icontains', label='Nome:')
+    curso = django_filters.CharFilter(lookup_expr='icontains', label='Curso:')
+
+    class Meta:
+        model = Enquete
+        fields = ['nome', 'curso', 'periodo', 'status']
