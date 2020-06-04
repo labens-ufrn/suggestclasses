@@ -4,7 +4,7 @@ import django
 django.setup()
 from dados.povoar_docentes import carregar_docente
 from dados.baixar_dados import downloads_dados
-from mysite.settings import BASE_DIR
+from suggestclasses.settings import BASE_DIR
 from dados.povoar_funcoes_gratificadas import carregar_funcoes_gratificadas
 from dados.povoar_turma import carregar_turma
 from dados.povoar_discentes import carregar_discentes

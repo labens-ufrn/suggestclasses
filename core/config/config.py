@@ -1,7 +1,7 @@
 import configparser
 import os
 
-from mysite.settings import BASE_DIR
+from suggestclasses.settings import BASE_DIR
 
 CONFIG_PATH = os.path.join(BASE_DIR, 'core/config/')
 

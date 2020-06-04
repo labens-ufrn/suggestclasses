@@ -19,7 +19,7 @@ from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, carrega_t
 from core.config.config import get_config
 from core.forms import SugestaoTurmaForm
 from core.models import SugestaoTurma, SolicitacaoTurma, Horario, Docente
-from mysite.settings import DOMAINS_WHITELIST
+from suggestclasses.settings import DOMAINS_WHITELIST
 
 logger = logging.getLogger('suggestclasses.logger')
 config = get_config()

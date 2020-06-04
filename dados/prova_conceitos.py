@@ -1,11 +1,11 @@
 import os
 from datetime import datetime, date
-from mysite.settings import BASE_DIR
+from suggestclasses.settings import BASE_DIR
 import django
 django.setup()
 from core.models import Horario, FuncaoGratificada
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "suggestclasses.settings")
 
 
 def main():

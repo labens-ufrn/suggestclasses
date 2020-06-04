@@ -2,7 +2,7 @@ from django.conf.global_settings import STATIC_ROOT
 from django.conf.urls.static import static
 from django.urls import path
 
-from mysite.settings import STATIC_URL, MEDIA_URL, MEDIA_ROOT, DEBUG
+from suggestclasses.settings import STATIC_URL, MEDIA_URL, MEDIA_ROOT, DEBUG
 from . import views
 from .visoes import suggest_view
 from .visoes import sugestao_letras_view
