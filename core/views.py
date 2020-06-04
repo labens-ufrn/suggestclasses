@@ -10,30 +10,33 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template import loader
 from django.views.generic import DetailView
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 
-from core.models import Curso, ComponenteCurricular, EstruturaCurricular, SugestaoTurma, Sala, Docente, Turma, \
-    SolicitacaoTurma
 from core.config.config import get_config
+from core.models import Curso, ComponenteCurricular, EstruturaCurricular, SugestaoTurma, Sala, Docente, Turma, \
+    SolicitacaoTurma, Enquete, VotoTurma
 from core.visoes.flow_view import flow_horizontal, flow_opcionais
 from .bo.curso import get_cursos
 from .bo.discentes import get_discentes, get_discentes_ativos
 from .bo.docente import get_docentes, carrega_turmas_por_horario
+from .bo.enquetes import get_enquetes
 from .bo.sala import get_salas
-from .bo.sevices import get_oc_by_semestre, get_ch_by_semestre, get_estrutura_direito, get_estrutura_matematica, \
+from .bo.sevices import get_estrutura_direito, get_estrutura_matematica, \
     get_estrutura_pedagogia, get_estrutura_administracao, get_estrutura_turismo, get_estrutura_letras_portugues, \
     get_estrutura_letras_espanhol, get_estrutura_letras_ingles
 from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
 from .dao.departamento_dao import get_departamentos
-from .filters import SalaFilter, DocenteFilter
+from .filters import SalaFilter, DocenteFilter, EnqueteFilter
 from .forms import CadastroUsuarioForm
 from .models import Horario
+from .visoes.enquete_view import enquete_voto_view, enquete_deletar_voto_discente
 from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir, sugestao_editar, \
     redirecionar, sugestao_deletar, atualizar_solicitacao, discente_existe, docente_existe, criar_string, \
     discente_grade_horarios, solicitacao_discente_deletar, get_solicitacoes, docente_grade_horarios
@@ -816,6 +819,56 @@ def search_salas(request):
     salas = get_salas()
     sala_filter = SalaFilter(request.GET, queryset=salas)
     return render(request, 'core/sala/list.html', {'filter': sala_filter})
+
+
+class EnqueteDetailView(DetailView):
+    model = Enquete
+    template_name = 'core/enquetes/detalhar.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        votos_por_componente = VotoTurma.objects\
+            .filter(enquete=self.object) \
+            .values('componente__pk', 'componente__codigo', 'componente__nome') \
+            .annotate(votos=Count('componente')) \
+            .order_by('-votos')
+        context['votos_por_componente'] = votos_por_componente
+        return context
+
+
+def search_enquetes(request):
+    enquetes = get_enquetes()
+    enquete_filter = EnqueteFilter(request.GET, queryset=enquetes)
+    return render(request, 'core/enquetes/list.html', {'filter': enquete_filter})
+
+
+@permission_required("core.add_vototurma", login_url='/core/usuario/logar', raise_exception=True)
+def enquete_votar(request, pk):
+    return enquete_voto_view(request, pk)
+
+
+@permission_required("core.delete_vototurma", login_url='/core/usuario/logar', raise_exception=True)
+def enquete_deletar_voto(request, pk):
+    return enquete_deletar_voto_discente(request, pk)
+
+
+@login_required(login_url='/accounts/login')
+def enquete_votos_listar(request, pk, cc_pk):
+
+    enquete = Enquete.objects.get(pk=pk)
+    componente = ComponenteCurricular.objects.get(pk=cc_pk)
+    votos_componente = VotoTurma.objects.filter(enquete_id=pk, componente__pk=cc_pk)\
+        .order_by('criado_em', 'discente__nome_discente')
+
+    context = {
+        'enquete': enquete,
+        'componente': componente,
+        'votos_componente': votos_componente,
+    }
+
+    return render(request, 'core/enquetes/votos_listar.html', context)
 
 
 @login_required(login_url='/accounts/login')
