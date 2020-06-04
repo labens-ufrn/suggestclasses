@@ -58,13 +58,13 @@ acrescente no final do arquivo dentro da tag `<VirtualHost *:80>`.
 		Require all granted
 	</Directory>
 
-	<Directory /home/taciano/dev/workspace/suggestclasses/mysite>
+	<Directory /home/taciano/dev/workspace/suggestclasses/suggestclasses>
 		<Files wsgi.py>
 			Require all granted
 		</Files>
 	</Directory>
 
-	WSGIScriptAlias / /home/taciano/dev/workspace/suggestclasses/mysite/wsgi.py
+	WSGIScriptAlias / /home/taciano/dev/workspace/suggestclasses/suggestclasses/wsgi.py
 	WSGIDaemonProcess sc_app python-path=/home/taciano/dev/workspace/suggestclasses:/home/taciano/dev/python/envP38/lib/python3.8/site-packages python-home=/home/taciano/dev/python/envP38
 	WSGIProcessGroup sc_app
 ```

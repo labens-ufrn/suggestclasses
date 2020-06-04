@@ -2,7 +2,7 @@ import os
 import csv
 import django
 django.setup()
-from mysite.settings import BASE_DIR
+from suggestclasses.settings import BASE_DIR
 from core.models import Sala, Centro
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')
 

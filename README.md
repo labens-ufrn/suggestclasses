@@ -22,15 +22,15 @@ Na página [Documentação](docs/docs.md) temos os detalhes do projeto e a lista
 ## Pré-requisitos
 
 Banco de Dados
-    
+
    MariaDB - https://mariadb.org/ ou MySQL - https://www.mysql.com/
 
 Linguagem
-    
+
    Python - https://www.python.org/
 
 ferramenta
-    
+
    Docker - https://www.docker.com/
 
 ### Criação do Banco de Dados (dev e test) e Usuário
@@ -75,7 +75,7 @@ PYTHONHOME=/usr/bin
 ```
 Windows
 
-Caso não tenha a Virtualenv instalada: 
+Caso não tenha a Virtualenv instalada:
 
 ```shell script
 pip install virtualenv
@@ -123,7 +123,7 @@ Copie os exemplos da pasta contrib:
 Edite o arquivo path.env para informar as variáveis:
 
 ```shell script
-export DJANGO_SETTINGS_MODULE=mysite.settings
+export DJANGO_SETTINGS_MODULE=suggestclasses.settings
 export PYTHONPATH=${PYTHONPATH}:/home/<seu_diretorio>/suggestclasses
  ```
 
@@ -199,7 +199,7 @@ Configurações para os testes:
 ```shell script
 pip install nose
 pip install coverage
-export DJANGO_SETTINGS_MODULE=mysite.settings
+export DJANGO_SETTINGS_MODULE=suggestclasses.settings
 ```
 
 ### Executar os Testes de Unidade e Cobertura
