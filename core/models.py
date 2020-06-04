@@ -365,7 +365,7 @@ class Discente(models.Model):
     usuario = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
-        null=True
+        blank=True, null=True
     )
 
     def __str__(self):
@@ -392,3 +392,65 @@ class VinculoDocente(models.Model):
 
     class Meta:
         unique_together = ('docente', 'turma')
+
+
+class PeriodoLetivo(models.Model):
+    STATUS_CHOICES = (
+        ("1", "Consolidado"),
+        ("2", "Ativo"),
+        ("3", "Planejado"),
+        ("4", "Suspenso"),
+        ("5", "Cancelado"),
+    )
+    nome = models.CharField(max_length=50, null=False)
+    ano = models.IntegerField()
+    periodo = models.IntegerField()
+    data_inicio = models.DateField()
+    data_fim = models.DateField()
+    data_consolidacao = models.DateField()
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES)
+    observacoes = models.CharField(max_length=500, blank=True, null=True)
+
+    def __str__(self):
+        return self.nome + ' ' + str(self.ano) + '.' + str(self.periodo)
+
+
+class Enquete(models.Model):
+    """
+    Uma enquete é uma consulta onde discente podem votar nos componentes curriculares de interesse.
+    """
+    STATUS_CHOICES = (
+        ("1", "Cadastrada"),
+        ("2", "Ativa"),
+        ("3", "Fechada"),
+    )
+    nome = models.CharField(max_length=200, null=False)
+    descricao = models.CharField(max_length=500, null=True)
+    numero_votos = models.IntegerField()
+    data_hora_inicio = models.DateTimeField()
+    data_hora_fim = models.DateTimeField(blank=True, null=True)
+    curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
+    periodo = models.ForeignKey(PeriodoLetivo, on_delete=models.PROTECT, null=True, blank=True)
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES)
+    usuario = models.ForeignKey(User, on_delete=models.PROTECT)
+    criada_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('nome', 'curso')
+
+    def __str__(self):
+        return self.nome + ' (' + self.curso.nome + ')'
+
+
+class VotoTurma(models.Model):
+    enquete = models.ForeignKey(Enquete, on_delete=models.PROTECT, related_name='votos')
+    discente = models.ForeignKey(Discente, on_delete=models.PROTECT)
+    componente = models.ForeignKey(ComponenteCurricular, on_delete=models.PROTECT)
+    horarios = models.ManyToManyField(Horario)
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('enquete', 'discente', 'componente')
+
+    def __str__(self):
+        return str(self.componente) + ' (' + self.discente.nome_discente + ')'

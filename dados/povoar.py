@@ -55,7 +55,7 @@ def criar_salas():
     print("\nCriando Salas para o CERES ...!")
 
     with open('salas-ceres.csv') as csvfile:
-        salas = csv.reader(csvfile, delimiter=';')
+        salas = csv.reader(csvfile, delimiter=',')
         next(salas)  # skip header
 
         for row in salas:
@@ -358,6 +358,7 @@ def criar_funcoes_gratificadas():
 def criar_discentes():
     print("\nCriando Discentes por Ano de Ingresso para os Cursos do CERES ...!")
 
+    criar_discentes_anual('discentes-2009.csv')
     criar_discentes_anual('discentes-2010.csv')
     criar_discentes_anual('discentes-2011.csv')
     criar_discentes_anual('discentes-2012.csv')

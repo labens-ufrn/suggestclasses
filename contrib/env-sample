@@ -6,6 +6,6 @@ DEBUG=True
 
 DATABASE_URL=mysql://sc_user:sc_user@localhost/scdb_dev
 MARIADB_PORT=32768
-DATABASE_NAME='scdb_dev'
-DATABASE_USER='sc_user'
-DATABASE_PASSWORD=sc_user'
+DATABASE_NAME=scdb_dev
+DATABASE_USER=sc_user
+DATABASE_PASSWORD=sc_user
