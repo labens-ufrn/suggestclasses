@@ -490,6 +490,18 @@ def turmas_his_lic(request):
     return turmas_grade(request, his_lic_ec, turmas_list_link)
 
 
+def turmas_geo_bac(request):
+    geo_bac_ec = get_estrutura_geografia_bacharelado()
+    turmas_list_link = '/core/turmas/geo-bac'
+    return turmas_grade(request, geo_bac_ec, turmas_list_link)
+
+
+def turmas_geo_lic(request):
+    geo_lic_ec = get_estrutura_geografia_licenciatura()
+    turmas_list_link = '/core/turmas/geo-lic'
+    return turmas_grade(request, geo_lic_ec, turmas_list_link)
+
+
 def turmas_let_esp(request):
     let_esp_ec = get_estrutura_letras_espanhol()
     turmas_list_link = '/core/turmas/let-esp'
