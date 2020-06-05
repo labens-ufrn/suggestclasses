@@ -29,7 +29,8 @@ from .bo.sala import get_salas
 from .bo.sevices import get_estrutura_direito, get_estrutura_matematica, \
     get_estrutura_pedagogia, get_estrutura_administracao, get_estrutura_turismo, get_estrutura_letras_portugues, \
     get_estrutura_letras_espanhol, get_estrutura_letras_ingles, get_estrutura_contabeis, \
-    get_estrutura_historia_licenciatura, get_estrutura_historia_bacharelado
+    get_estrutura_historia_licenciatura, get_estrutura_historia_bacharelado, get_estrutura_geografia_bacharelado, \
+    get_estrutura_geografia_licenciatura
 from .bo.sistemas import get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
@@ -297,6 +298,28 @@ def flow_his_bac_op(request):
     return flow_opcionais(request, his_bac_ec)
 
 
+def flow_geo_lic(request):
+    geo_lic_ec = get_estrutura_geografia_licenciatura()
+    link_opcionais = '/core/flow/geo-lic/opcionais'
+    return flow_horizontal(request, geo_lic_ec, link_opcionais)
+
+
+def flow_geo_lic_op(request):
+    geo_lic_ec = get_estrutura_geografia_licenciatura()
+    return flow_opcionais(request, geo_lic_ec)
+
+
+def flow_geo_bac(request):
+    geo_bac_ec = get_estrutura_geografia_bacharelado()
+    link_opcionais = '/core/flow/geo-bac/opcionais'
+    return flow_horizontal(request, geo_bac_ec, link_opcionais)
+
+
+def flow_geo_bac_op(request):
+    geo_bac_ec = get_estrutura_geografia_bacharelado()
+    return flow_opcionais(request, geo_bac_ec)
+
+
 def flow_let_por(request):
     let_por_ec = get_estrutura_letras_portugues()
     link_opcionais = '/core/flow/let-por/opcionais'
@@ -465,6 +488,18 @@ def turmas_his_lic(request):
     his_lic_ec = get_estrutura_historia_licenciatura()
     turmas_list_link = '/core/turmas/his-lic'
     return turmas_grade(request, his_lic_ec, turmas_list_link)
+
+
+def turmas_geo_bac(request):
+    geo_bac_ec = get_estrutura_geografia_bacharelado()
+    turmas_list_link = '/core/turmas/geo-bac'
+    return turmas_grade(request, geo_bac_ec, turmas_list_link)
+
+
+def turmas_geo_lic(request):
+    geo_lic_ec = get_estrutura_geografia_licenciatura()
+    turmas_list_link = '/core/turmas/geo-lic'
+    return turmas_grade(request, geo_lic_ec, turmas_list_link)
 
 
 def turmas_let_esp(request):

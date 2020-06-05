@@ -56,6 +56,12 @@ urlpatterns = [
     path('flow/his-bac/', views.flow_his_bac, name='flow_his_bac'),
     path('flow/his-bac/opcionais', views.flow_his_bac_op, name='flow_his_bac_op'),
 
+    path('flow/geo-lic/', views.flow_geo_lic, name='flow_geo_lic'),
+    path('flow/geo-lic/opcionais', views.flow_geo_lic_op, name='flow_geo_lic_op'),
+
+    path('flow/geo-bac/', views.flow_geo_bac, name='flow_geo_bac'),
+    path('flow/geo-bac/opcionais', views.flow_geo_bac_op, name='flow_geo_bac_op'),
+
     path('flow/ped-h/', views.flow_ped_h, name='flow_ped_h'),
     path('flow/ped/opcionais', views.flow_ped_op, name='Fluxograma Pedagogia - Opcionais'),
 
@@ -80,6 +86,8 @@ urlpatterns = [
     path('turmas/', views.turmas_list, name='turmas_list'),
     path('turmas/cont', views.turmas_cont, name='turmas_contabeis'),
     path('turmas/dir', views.turmas_dir, name='turmas_direito'),
+    path('turmas/geo-bac', views.turmas_geo_bac, name='turmas_geografia_bac'),
+    path('turmas/geo-lic', views.turmas_geo_lic, name='turmas_geografia_lic'),
     path('turmas/his-bac', views.turmas_his_bac, name='turmas_historia_bac'),
     path('turmas/his-lic', views.turmas_his_lic, name='turmas_historia_lic'),
     path('turmas/mat', views.turmas_mat, name='turmas_matemática'),

@@ -138,3 +138,23 @@ def get_estrutura_historia_bacharelado():
     id_ec = 96085636
     historia_bacharelado_ec = get_estrutura_by_id(id_ec)
     return historia_bacharelado_ec
+
+
+def get_estrutura_geografia_licenciatura():
+    """
+    Retorna a Estrutura Curricular ativa do Curso de Geografia - Licenciatura - Caicó.
+    :return: Um objeto da classe EstruturaCurricular.
+    """
+    id_ec = 89189948
+    geografia_licenciatura_ec = get_estrutura_by_id(id_ec)
+    return geografia_licenciatura_ec
+
+
+def get_estrutura_geografia_bacharelado():
+    """
+    Retorna a Estrutura Curricular ativa do Curso de Geografia - Bacharelado - Caicó.
+    :return: Um objeto da classe EstruturaCurricular.
+    """
+    id_ec = 89306921
+    geografia_bacharelado_ec = get_estrutura_by_id(id_ec)
+    return geografia_bacharelado_ec
