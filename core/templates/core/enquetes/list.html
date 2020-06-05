@@ -83,8 +83,9 @@
           <tbody>
           {% for enquete in filter.qs %}
             <tr>
-              <td align="center">{{ enquete.nome }}
+              <td align="center">
                 <a href="{% url 'enquete_detalhar' enquete.pk %}">
+                  {{ enquete.nome }}
                   <span class="material-icons md-18 align-middle">
                     find_in_page
                   </span>

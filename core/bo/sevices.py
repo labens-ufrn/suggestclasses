@@ -23,6 +23,43 @@ def get_cc_by_estrutura(estrutura):
     return componentes
 
 
+def get_cc_by_semestre(estrutura, semestre):
+    """
+    Retorna uma lista de componentes do estrutura para o semestre informado.
+    :param estrutura:
+    :param semestre:
+    :return:
+    """
+    oc = OrganizacaoCurricular.objects.filter(estrutura=estrutura, semestre=semestre)\
+        .values_list('componente', flat=True)
+    componentes = ComponenteCurricular.objects.filter(pk__in=oc).order_by('nome', 'codigo')
+    return componentes
+
+
+def get_cc_optativos(estrutura):
+    """
+    Retorna lista de componentes curriculares optativos da estrutura curricular.
+    :param estrutura:
+    :return:
+    """
+    semestre_opcional = 0
+    componentes = get_cc_by_semestre(estrutura, semestre_opcional)
+    return componentes
+
+
+def get_cc_obrigatorias(estrutura):
+    """
+    Retorna lista de componentes curriculares obrigatórios da estrutura curricular.
+    :param estrutura:
+    :return:
+    """
+    componentes = []
+    for semestre in range(1, 9):
+        cc = get_cc_by_semestre(estrutura, semestre)
+        componentes.extend(cc)
+    return componentes
+
+
 def get_estrutura_by_id(id_estrutura):
     estrutura = None
     if EstruturaCurricular.objects.filter(id_curriculo=id_estrutura).exists():

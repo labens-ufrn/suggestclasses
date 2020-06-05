@@ -424,6 +424,12 @@ class Enquete(models.Model):
         ("2", "Ativa"),
         ("3", "Fechada"),
     )
+    TIPO_CHOICES = (
+        ("1", "Completa"),
+        ("2", "Obrigatórias"),
+        ("3", "Optativas"),
+        ("4", "Parcial"),
+    )
     nome = models.CharField(max_length=200, null=False)
     descricao = models.CharField(max_length=500, null=True)
     numero_votos = models.IntegerField()
@@ -432,6 +438,7 @@ class Enquete(models.Model):
     curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
     periodo = models.ForeignKey(PeriodoLetivo, on_delete=models.PROTECT, null=True, blank=True)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES)
+    tipo = models.CharField(max_length=1, choices=TIPO_CHOICES)
     usuario = models.ForeignKey(User, on_delete=models.PROTECT)
     criada_em = models.DateTimeField(auto_now_add=True)
 

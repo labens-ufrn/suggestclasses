@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
+from core.bo.enquetes import get_componentes_enquete
 from core.bo.sevices import get_cc_by_estrutura, get_estrutura_by_curso
 from core.dao.componente_dao import get_componentes_curriculares
 from core.models import SugestaoTurma, Docente, ComponenteCurricular, Departamento, Sala, \
@@ -95,5 +96,4 @@ class VotoTurmaForm(ModelForm):
         enquete = kwargs.pop('enquete')
         super(VotoTurmaForm, self).__init__(*args, **kwargs)
         get_componentes_curriculares()
-        estrutura = get_estrutura_by_curso(enquete.curso)
-        self.fields['componente'].queryset = get_cc_by_estrutura(estrutura)
+        self.fields['componente'].queryset = get_componentes_enquete(enquete)
