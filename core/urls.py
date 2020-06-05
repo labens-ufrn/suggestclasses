@@ -4,7 +4,7 @@ from django.urls import path
 
 from suggestclasses.settings import STATIC_URL, MEDIA_URL, MEDIA_ROOT, DEBUG
 from . import views
-from .visoes import suggest_view
+from .visoes import suggest_view, enquete_view
 from .visoes import sugestao_letras_view
 from .visoes.sugestao_contabeis_view import sugestao_cont_list, sugestao_cont_manter, sugestao_cont_incluir, \
     sugestao_cont_editar, sugestao_cont_deletar
@@ -39,6 +39,7 @@ urlpatterns = [
     path('enquetes/<int:pk>/votar', views.enquete_votar, name='enquete_votar'),
     path('enquetes/<int:pk>/votos/manter', views.sugestao_solicitar, name='enquete_votos_manter'),
     path('enquetes/deletar/votos/<int:pk>/', views.enquete_deletar_voto, name='enquete_deletar_voto'),
+    path('ajax/load-componente/', enquete_view.load_componente, name='ajax_load_componente'),
 
     path('flow/', views.flow_list, name='Lista de Fluxogramas'),
     path('flow/bsi/opcionais', views.flow_bsi_op, name='Fluxograma BSI - Opcionais'),

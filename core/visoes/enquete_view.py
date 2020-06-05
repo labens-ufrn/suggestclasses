@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 
 from core.forms import VotoTurmaForm
-from core.models import Enquete, VotoTurma
+from core.models import Enquete, VotoTurma, ComponenteCurricular
 from core.visoes.suggest_view import discente_existe, redirecionar
 
 
@@ -115,3 +115,9 @@ def tem_permissao(request, voto_turma):
 def get_qtd_votantes(enquete):
     qtd_votantes = len(set(VotoTurma.objects.filter(enquete=enquete).values_list('discente')))
     return qtd_votantes
+
+
+def load_componente(request):
+    componente_id = request.GET.get('componenteId')
+    componente = ComponenteCurricular.objects.get(pk=componente_id)
+    return render(request, 'core/enquetes/requisitos_list.html', {'componente': componente})
