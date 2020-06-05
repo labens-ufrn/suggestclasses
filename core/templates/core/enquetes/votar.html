@@ -42,7 +42,8 @@
       </table>
       <input type="hidden" name="next" value="{{ request.GET.next }}">
       <div class="form-group">
-        <input type="submit" value="Salvar" class="btn btn-primary">
+        <input type="submit" value="Votar" class="btn btn-primary">
+        <a class="btn btn-primary btn-info" href="{% url 'enquete_detalhar' enquete.pk %}">Voltar para Enquete</a>
       </div>
     </form>
   </div>
