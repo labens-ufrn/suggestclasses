@@ -455,6 +455,18 @@ def turmas_dir(request):
     return turmas_grade(request, dir_ddir, turmas_list_link)
 
 
+def turmas_his_bac(request):
+    his_bac_ec = get_estrutura_historia_bacharelado()
+    turmas_list_link = '/core/turmas/his-bac'
+    return turmas_grade(request, his_bac_ec, turmas_list_link)
+
+
+def turmas_his_lic(request):
+    his_lic_ec = get_estrutura_historia_licenciatura()
+    turmas_list_link = '/core/turmas/his-lic'
+    return turmas_grade(request, his_lic_ec, turmas_list_link)
+
+
 def turmas_let_esp(request):
     let_esp_ec = get_estrutura_letras_espanhol()
     turmas_list_link = '/core/turmas/let-esp'
