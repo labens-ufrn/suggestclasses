@@ -15,6 +15,10 @@ def enquete_voto_view(request, pk):
     discente = usuario.discente
 
     enquete = Enquete.objects.get(pk=pk)
+    mesmo_curso = check_curso(enquete, discente)
+    if not mesmo_curso:
+        messages.error(request, 'Você não pode votar na enquete "' + enquete.nome + '".')
+        return redirect('/core/enquetes/list')
 
     if request.method == "POST":
         form_voto = VotoTurmaForm(request.POST, enquete=enquete)
