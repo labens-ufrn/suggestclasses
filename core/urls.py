@@ -56,6 +56,12 @@ urlpatterns = [
     path('flow/his-bac/', views.flow_his_bac, name='flow_his_bac'),
     path('flow/his-bac/opcionais', views.flow_his_bac_op, name='flow_his_bac_op'),
 
+    path('flow/geo-lic/', views.flow_geo_lic, name='flow_geo_lic'),
+    path('flow/geo-lic/opcionais', views.flow_geo_lic_op, name='flow_geo_lic_op'),
+
+    path('flow/geo-bac/', views.flow_geo_bac, name='flow_geo_bac'),
+    path('flow/geo-bac/opcionais', views.flow_geo_bac_op, name='flow_geo_bac_op'),
+
     path('flow/ped-h/', views.flow_ped_h, name='flow_ped_h'),
     path('flow/ped/opcionais', views.flow_ped_op, name='Fluxograma Pedagogia - Opcionais'),
 
