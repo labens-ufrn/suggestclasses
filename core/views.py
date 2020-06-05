@@ -22,7 +22,7 @@ from core.models import Curso, ComponenteCurricular, EstruturaCurricular, Sugest
     SolicitacaoTurma, Enquete, VotoTurma
 from core.visoes.flow_view import flow_horizontal, flow_opcionais
 from .bo.curso import get_cursos
-from .bo.discentes import get_discentes, get_discentes_ativos
+from .bo.discentes import get_discentes, get_discentes_ativos, get_qtd_discentes_ativos
 from .bo.docente import get_docentes, carrega_turmas_por_horario
 from .bo.enquetes import get_enquetes
 from .bo.sala import get_salas
@@ -36,7 +36,7 @@ from .dao.departamento_dao import get_departamentos
 from .filters import SalaFilter, DocenteFilter, EnqueteFilter
 from .forms import CadastroUsuarioForm
 from .models import Horario
-from .visoes.enquete_view import enquete_voto_view, enquete_deletar_voto_discente
+from .visoes.enquete_view import enquete_voto_view, enquete_deletar_voto_discente, get_qtd_votantes
 from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir, sugestao_editar, \
     redirecionar, sugestao_deletar, atualizar_solicitacao, discente_existe, docente_existe, criar_string, \
     discente_grade_horarios, solicitacao_discente_deletar, get_solicitacoes, docente_grade_horarios
@@ -835,6 +835,13 @@ class EnqueteDetailView(DetailView):
             .annotate(votos=Count('componente')) \
             .order_by('-votos', 'componente__nome')
         context['votos_por_componente'] = votos_por_componente
+        curso = self.object.curso
+        qtd_ativos = get_qtd_discentes_ativos(curso)
+        qtd_votantes = get_qtd_votantes(self.object)
+        context['discentes_ativos'] = qtd_ativos
+        taxa = round((qtd_votantes / qtd_ativos) * 100.0, 2)
+        context['discentes_votantes'] = str(qtd_votantes) + ' (' + str(taxa) + '%)'
+
         return context
 
 

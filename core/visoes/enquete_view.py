@@ -110,3 +110,8 @@ def tem_permissao(request, voto_turma):
     if discente == voto_turma.discente:
         return True
     return False
+
+
+def get_qtd_votantes(enquete):
+    qtd_votantes = len(set(VotoTurma.objects.filter(enquete=enquete).values_list('discente')))
+    return qtd_votantes
