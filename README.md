@@ -144,6 +144,12 @@ $ python manage.py makemigrations core
 $ python manage.py migrate
 ```
 
+## Django Admin Super User
+
+```commandline
+$ python manage.py createsuperuser
+```
+
 ## Povoamento
 
 O sistema é baseado nos dados abertos da UFRN, desta forma é necessário povoar o banco de dados
@@ -165,7 +171,6 @@ Deve-se rodar, na raiz do projeto, o script ```povoar_grupos.py``` na pasta **da
 Deve-se rodar, na raiz do projeto, o script ```povoar_horarios.py``` na pasta **dados**.
 
 ```python dados/povoar_horarios.py```
-
 
 ### Criar o restante da base de Dados
 

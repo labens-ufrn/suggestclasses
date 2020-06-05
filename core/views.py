@@ -28,7 +28,8 @@ from .bo.enquetes import get_enquetes
 from .bo.sala import get_salas
 from .bo.sevices import get_estrutura_direito, get_estrutura_matematica, \
     get_estrutura_pedagogia, get_estrutura_administracao, get_estrutura_turismo, get_estrutura_letras_portugues, \
-    get_estrutura_letras_espanhol, get_estrutura_letras_ingles, get_estrutura_contabeis
+    get_estrutura_letras_espanhol, get_estrutura_letras_ingles, get_estrutura_contabeis, \
+    get_estrutura_historia_licenciatura, get_estrutura_historia_bacharelado
 from .bo.sistemas import get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
@@ -274,6 +275,28 @@ def flow_dir_op(request):
     return flow_opcionais(request, dir_ec)
 
 
+def flow_his_lic(request):
+    his_lic_ec = get_estrutura_historia_licenciatura()
+    link_opcionais = '/core/flow/his-lic/opcionais'
+    return flow_horizontal(request, his_lic_ec, link_opcionais)
+
+
+def flow_his_lic_op(request):
+    his_lic_ec = get_estrutura_historia_licenciatura()
+    return flow_opcionais(request, his_lic_ec)
+
+
+def flow_his_bac(request):
+    his_bac_ec = get_estrutura_historia_bacharelado()
+    link_opcionais = '/core/flow/his-bac/opcionais'
+    return flow_horizontal(request, his_bac_ec, link_opcionais)
+
+
+def flow_his_bac_op(request):
+    his_bac_ec = get_estrutura_historia_bacharelado()
+    return flow_opcionais(request, his_bac_ec)
+
+
 def flow_let_por(request):
     let_por_ec = get_estrutura_letras_portugues()
     link_opcionais = '/core/flow/let-por/opcionais'
@@ -430,6 +453,18 @@ def turmas_dir(request):
     dir_ddir = get_estrutura_direito()
     turmas_list_link = '/core/turmas/dir'
     return turmas_grade(request, dir_ddir, turmas_list_link)
+
+
+def turmas_his_bac(request):
+    his_bac_ec = get_estrutura_historia_bacharelado()
+    turmas_list_link = '/core/turmas/his-bac'
+    return turmas_grade(request, his_bac_ec, turmas_list_link)
+
+
+def turmas_his_lic(request):
+    his_lic_ec = get_estrutura_historia_licenciatura()
+    turmas_list_link = '/core/turmas/his-lic'
+    return turmas_grade(request, his_lic_ec, turmas_list_link)
 
 
 def turmas_let_esp(request):

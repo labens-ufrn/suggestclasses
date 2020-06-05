@@ -118,3 +118,23 @@ def get_estrutura_contabeis():
     id_ec = 2984610
     contabeis_ec = get_estrutura_by_id(id_ec)
     return contabeis_ec
+
+
+def get_estrutura_historia_licenciatura():
+    """
+    Retorna a Estrutura Curricular ativa do Curso de História Licenciatura - Caicó.
+    :return: Um objeto da classe EstruturaCurricular.
+    """
+    id_ec = 96085436
+    historia_licenciatura_ec = get_estrutura_by_id(id_ec)
+    return historia_licenciatura_ec
+
+
+def get_estrutura_historia_bacharelado():
+    """
+    Retorna a Estrutura Curricular ativa do Curso de História - Bacharelado - Caicó.
+    :return: Um objeto da classe EstruturaCurricular.
+    """
+    id_ec = 96085636
+    historia_bacharelado_ec = get_estrutura_by_id(id_ec)
+    return historia_bacharelado_ec
