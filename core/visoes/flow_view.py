@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from core.bo.sevices import get_oc_by_semestre, get_ch_by_semestre, get_estrutura_direito, get_estrutura_matematica, \
     get_estrutura_pedagogia, get_estrutura_administracao, get_estrutura_turismo, get_estrutura_letras_portugues, \
-    get_estrutura_letras_espanhol, get_estrutura_letras_ingles, get_estrutura_contabeis
+    get_estrutura_letras_espanhol, get_estrutura_letras_ingles, get_estrutura_contabeis, \
+    get_estrutura_historia_licenciatura, get_estrutura_historia_bacharelado
 from core.bo.sistemas import get_estrutura_sistemas_dct
 
 
@@ -70,6 +71,8 @@ def carrega_context_flow_list():
     let_por_flow = get_estrutura_letras_portugues()
     let_esp_flow = get_estrutura_letras_espanhol()
     let_ing_flow = get_estrutura_letras_ingles()
+    his_lic_flow = get_estrutura_historia_licenciatura()
+    his_bac_flow = get_estrutura_historia_bacharelado()
 
     context = {
         'cont_flow': cont_flow,
@@ -82,6 +85,8 @@ def carrega_context_flow_list():
         'let_por_flow': let_por_flow,
         'let_esp_flow': let_esp_flow,
         'let_ing_flow': let_ing_flow,
+        'his_lic_flow': his_lic_flow,
+        'his_bac_flow': his_bac_flow,
     }
 
     return context

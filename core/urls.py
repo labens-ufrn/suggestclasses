@@ -50,6 +50,12 @@ urlpatterns = [
     path('flow/dir/', views.flow_dir, name='flow_dir'),
     path('flow/dir/opcionais', views.flow_dir_op, name='flow_dir_op'),
 
+    path('flow/his-lic/', views.flow_his_lic, name='flow_his_lic'),
+    path('flow/his-lic/opcionais', views.flow_his_lic_op, name='flow_his_lic_op'),
+
+    path('flow/his-bac/', views.flow_his_bac, name='flow_his_bac'),
+    path('flow/his-bac/opcionais', views.flow_his_bac_op, name='flow_his_bac_op'),
+
     path('flow/ped-h/', views.flow_ped_h, name='flow_ped_h'),
     path('flow/ped/opcionais', views.flow_ped_op, name='Fluxograma Pedagogia - Opcionais'),
 

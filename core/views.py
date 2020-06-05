@@ -28,7 +28,8 @@ from .bo.enquetes import get_enquetes
 from .bo.sala import get_salas
 from .bo.sevices import get_estrutura_direito, get_estrutura_matematica, \
     get_estrutura_pedagogia, get_estrutura_administracao, get_estrutura_turismo, get_estrutura_letras_portugues, \
-    get_estrutura_letras_espanhol, get_estrutura_letras_ingles, get_estrutura_contabeis
+    get_estrutura_letras_espanhol, get_estrutura_letras_ingles, get_estrutura_contabeis, \
+    get_estrutura_historia_licenciatura, get_estrutura_historia_bacharelado
 from .bo.sistemas import get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
@@ -272,6 +273,28 @@ def flow_dir(request):
 def flow_dir_op(request):
     dir_ec = get_estrutura_direito()
     return flow_opcionais(request, dir_ec)
+
+
+def flow_his_lic(request):
+    his_lic_ec = get_estrutura_historia_licenciatura()
+    link_opcionais = '/core/flow/his-lic/opcionais'
+    return flow_horizontal(request, his_lic_ec, link_opcionais)
+
+
+def flow_his_lic_op(request):
+    his_lic_ec = get_estrutura_historia_licenciatura()
+    return flow_opcionais(request, his_lic_ec)
+
+
+def flow_his_bac(request):
+    his_bac_ec = get_estrutura_historia_bacharelado()
+    link_opcionais = '/core/flow/his-bac/opcionais'
+    return flow_horizontal(request, his_bac_ec, link_opcionais)
+
+
+def flow_his_bac_op(request):
+    his_bac_ec = get_estrutura_historia_bacharelado()
+    return flow_opcionais(request, his_bac_ec)
 
 
 def flow_let_por(request):
