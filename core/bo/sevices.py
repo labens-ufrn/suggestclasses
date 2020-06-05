@@ -108,3 +108,13 @@ def get_estrutura_letras_espanhol():
     id_ec = 133506143
     turismo_ec = get_estrutura_by_id(id_ec)
     return turismo_ec
+
+
+def get_estrutura_contabeis():
+    """
+    Retorna a Estrutura Curricular ativa do Curso de Ciências Contábeis - Caicó.
+    :return: Um objeto da classe EstruturaCurricular.
+    """
+    id_ec = 2984610
+    contabeis_ec = get_estrutura_by_id(id_ec)
+    return contabeis_ec

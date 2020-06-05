@@ -20,7 +20,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 from core.config.config import get_config
 from core.models import Curso, ComponenteCurricular, EstruturaCurricular, SugestaoTurma, Sala, Docente, Turma, \
     SolicitacaoTurma, Enquete, VotoTurma
-from core.visoes.flow_view import flow_horizontal, flow_opcionais
+from core.visoes.flow_view import flow_horizontal, flow_opcionais, carrega_context_flow_list
 from .bo.curso import get_cursos
 from .bo.discentes import get_discentes, get_discentes_ativos, get_qtd_discentes_ativos
 from .bo.docente import get_docentes, carrega_turmas_por_horario
@@ -28,8 +28,8 @@ from .bo.enquetes import get_enquetes
 from .bo.sala import get_salas
 from .bo.sevices import get_estrutura_direito, get_estrutura_matematica, \
     get_estrutura_pedagogia, get_estrutura_administracao, get_estrutura_turismo, get_estrutura_letras_portugues, \
-    get_estrutura_letras_espanhol, get_estrutura_letras_ingles
-from .bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
+    get_estrutura_letras_espanhol, get_estrutura_letras_ingles, get_estrutura_contabeis
+from .bo.sistemas import get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
 from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
 from .dao.departamento_dao import get_departamentos
@@ -49,7 +49,7 @@ config = get_config()
 
 def index(request):
     """
-        View para o Home (Tela Inicial).
+    View para o Home (Tela Inicial).
     :param request: Uma requisição http.
     :return: Um response com dados sobre o CERES/UFRN.
     """
@@ -234,31 +234,9 @@ def sala_list(request):
 
 def flow_list(request):
     """
-        Lista todas as Estruturas Curriculares do centro CERES.
+    Lista todas as Estruturas Curriculares do centro CERES.
     """
-    bsi_flow_1a = get_estrutura_sistemas()
-    bsi_flow_1b = get_estrutura_sistemas_dct()
-    ped_flow = get_estrutura_pedagogia()
-    mat_flow = get_estrutura_matematica()
-    dir_flow = get_estrutura_direito()
-    adm_flow = get_estrutura_administracao()
-    tur_flow = get_estrutura_turismo()
-    let_por_flow = get_estrutura_letras_portugues()
-    let_esp_flow = get_estrutura_letras_espanhol()
-    let_ing_flow = get_estrutura_letras_ingles()
-
-    context = {
-        'dir_flow': dir_flow,
-        'mat_flow': mat_flow,
-        'ped_flow': ped_flow,
-        'bsi_flow_1a': bsi_flow_1a,
-        'bsi_flow_1b': bsi_flow_1b,
-        'adm_flow': adm_flow,
-        'tur_flow': tur_flow,
-        'let_por_flow': let_por_flow,
-        'let_esp_flow': let_esp_flow,
-        'let_ing_flow': let_ing_flow,
-    }
+    context = carrega_context_flow_list()
 
     return render(request, 'core/flow/list.html', context)
 
@@ -272,6 +250,17 @@ def flow_bsi_1b_h(request):
 def flow_bsi_op(request):
     bsi_ec = get_estrutura_sistemas_dct()
     return flow_opcionais(request, bsi_ec)
+
+
+def flow_cont(request):
+    contaveis_ec = get_estrutura_contabeis()
+    link_opcionais = '/core/flow/cont/opcionais'
+    return flow_horizontal(request, contaveis_ec, link_opcionais)
+
+
+def flow_cont_op(request):
+    contaveis_ec = get_estrutura_contabeis()
+    return flow_opcionais(request, contaveis_ec)
 
 
 def flow_dir(request):
@@ -422,33 +411,19 @@ def turmas_list(request):
     """
         Lista todas as Turmas do centro CERES.
     """
-    dir_flow = get_estrutura_direito()
-    bsi_flow = get_estrutura_sistemas_dct()
-    ped_flow = get_estrutura_pedagogia()
-    mat_flow = get_estrutura_matematica()
-    adm_flow = get_estrutura_administracao()
-    tur_flow = get_estrutura_turismo()
-    let_por_flow = get_estrutura_letras_portugues()
-    let_esp_flow = get_estrutura_letras_espanhol()
-    let_ing_flow = get_estrutura_letras_ingles()
-
-    context = {
-        'dir_flow': dir_flow,
-        'mat_flow': mat_flow,
-        'ped_flow': ped_flow,
-        'bsi_flow': bsi_flow,
-        'adm_flow': adm_flow,
-        'tur_flow': tur_flow,
-        'let_por_flow': let_por_flow,
-        'let_esp_flow': let_esp_flow,
-        'let_ing_flow': let_ing_flow,
-    }
+    context = carrega_context_flow_list()
     return render(request, 'core/turmas/list.html', context)
 
 
 class TurmaDetailView(DetailView):
     model = Turma
     template_name = 'core/turmas/detalhar.html'
+
+
+def turmas_cont(request):
+    cont_ec = get_estrutura_contabeis()
+    turmas_list_link = '/core/turmas/cont'
+    return turmas_grade(request, cont_ec, turmas_list_link)
 
 
 def turmas_dir(request):
@@ -507,29 +482,9 @@ def turmas_tur(request):
 
 def sugestao_list(request):
     """
-        Tela para Listar os Curso com possibilidade de cadastrar Sugestões de Turmas.
+    Tela para Listar os Curso com possibilidade de cadastrar Sugestões de Turmas.
     """
-    dir_flow = get_estrutura_direito()
-    bsi_flow = get_estrutura_sistemas_dct()
-    ped_flow = get_estrutura_pedagogia()
-    mat_flow = get_estrutura_matematica()
-    adm_flow = get_estrutura_administracao()
-    tur_flow = get_estrutura_turismo()
-    let_por_flow = get_estrutura_letras_portugues()
-    let_esp_flow = get_estrutura_letras_espanhol()
-    let_ing_flow = get_estrutura_letras_ingles()
-
-    context = {
-        'dir_flow': dir_flow,
-        'mat_flow': mat_flow,
-        'ped_flow': ped_flow,
-        'bsi_flow': bsi_flow,
-        'adm_flow': adm_flow,
-        'tur_flow': tur_flow,
-        'let_por_flow': let_por_flow,
-        'let_esp_flow': let_esp_flow,
-        'let_ing_flow': let_ing_flow,
-    }
+    context = carrega_context_flow_list()
     return render(request, 'core/sugestao/list.html', context)
 
 

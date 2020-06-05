@@ -1,6 +1,8 @@
-from typing import List
 from django.shortcuts import render
-from core.bo.sevices import get_oc_by_semestre, get_ch_by_semestre
+from core.bo.sevices import get_oc_by_semestre, get_ch_by_semestre, get_estrutura_direito, get_estrutura_matematica, \
+    get_estrutura_pedagogia, get_estrutura_administracao, get_estrutura_turismo, get_estrutura_letras_portugues, \
+    get_estrutura_letras_espanhol, get_estrutura_letras_ingles, get_estrutura_contabeis
+from core.bo.sistemas import get_estrutura_sistemas_dct
 
 
 def flow_horizontal(request, estrutura, link_opcionais):
@@ -52,3 +54,34 @@ def flow_opcionais(request, estrutura):
     }
 
     return render(request, 'core/flow/flow-opcionais.html', context)
+
+
+def carrega_context_flow_list():
+    """
+    Carrega todas as Estruturas Curriculares do centro CERES.
+    """
+    cont_flow = get_estrutura_contabeis()
+    dir_flow = get_estrutura_direito()
+    bsi_flow = get_estrutura_sistemas_dct()
+    ped_flow = get_estrutura_pedagogia()
+    mat_flow = get_estrutura_matematica()
+    adm_flow = get_estrutura_administracao()
+    tur_flow = get_estrutura_turismo()
+    let_por_flow = get_estrutura_letras_portugues()
+    let_esp_flow = get_estrutura_letras_espanhol()
+    let_ing_flow = get_estrutura_letras_ingles()
+
+    context = {
+        'cont_flow': cont_flow,
+        'dir_flow': dir_flow,
+        'mat_flow': mat_flow,
+        'ped_flow': ped_flow,
+        'bsi_flow': bsi_flow,
+        'adm_flow': adm_flow,
+        'tur_flow': tur_flow,
+        'let_por_flow': let_por_flow,
+        'let_esp_flow': let_esp_flow,
+        'let_ing_flow': let_ing_flow,
+    }
+
+    return context

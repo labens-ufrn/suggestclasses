@@ -6,6 +6,8 @@ from suggestclasses.settings import STATIC_URL, MEDIA_URL, MEDIA_ROOT, DEBUG
 from . import views
 from .visoes import suggest_view
 from .visoes import sugestao_letras_view
+from .visoes.sugestao_contabeis_view import sugestao_cont_list, sugestao_cont_manter, sugestao_cont_incluir, \
+    sugestao_cont_editar, sugestao_cont_deletar
 
 urlpatterns = [
     path('profile/<username>/', views.profile, name='profile'),
@@ -42,6 +44,9 @@ urlpatterns = [
     path('flow/bsi/opcionais', views.flow_bsi_op, name='Fluxograma BSI - Opcionais'),
     path('flow/bsi-1b-h/', views.flow_bsi_1b_h, name='Fluxograma BSI - 01B - Horizontal'),
 
+    path('flow/cont/', views.flow_cont, name='flow_cont'),
+    path('flow/cont/opcionais', views.flow_cont_op, name='flow_cont_op'),
+
     path('flow/dir/', views.flow_dir, name='flow_dir'),
     path('flow/dir/opcionais', views.flow_dir_op, name='flow_dir_op'),
 
@@ -67,6 +72,7 @@ urlpatterns = [
     path('flow/tur/opcionais', views.flow_tur_op, name='flow_tur_op'),
 
     path('turmas/', views.turmas_list, name='turmas_list'),
+    path('turmas/cont', views.turmas_cont, name='turmas_contabeis'),
     path('turmas/dir', views.turmas_dir, name='turmas_direito'),
     path('turmas/mat', views.turmas_mat, name='turmas_matemática'),
     path('turmas/bsi', views.turmas_bsi, name='turmas_sistemas'),
@@ -93,6 +99,12 @@ urlpatterns = [
     path('sugestao/adm/incluir', views.sugestao_adm_incluir, name='sugestao_adm_incluir'),
     path('sugestao/adm/editar/<int:pk>/', views.sugestao_adm_editar, name='sugestao_adm_editar'),
     path('sugestao/adm/deletar/<int:pk>/', views.sugestao_adm_deletar, name='sugestao_adm_deletar'),
+
+    path('sugestao/cont/list', sugestao_cont_list, name='sugestao_cont_list'),
+    path('sugestao/cont/manter', sugestao_cont_manter, name='sugestao_cont_manter'),
+    path('sugestao/cont/incluir', sugestao_cont_incluir, name='sugestao_cont_incluir'),
+    path('sugestao/cont/editar/<int:pk>/', sugestao_cont_editar, name='sugestao_cont_editar'),
+    path('sugestao/cont/deletar/<int:pk>/', sugestao_cont_deletar, name='sugestao_cont_deletar'),
 
     path('sugestao/dir/list', views.sugestao_dir_list, name='sugestao_dir_list'),
     path('sugestao/dir/manter', views.sugestao_dir_manter, name='sugestao_dir_manter'),

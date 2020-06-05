@@ -46,14 +46,14 @@ def converte_desc_horario(descricao_horario):
     # Trata descricao_horario vazia e turno None.
     if descricao_horario == '' or descricao_horario is None:
         return horarios_list
-
-    horarios_split = descricao_horario.split()
+    horarios_escape = re.escape(descricao_horario)
+    horarios_split = horarios_escape.split()
 
     for hs in horarios_split:
         hs_tratado = verificar_formato(hs)
         if hs_tratado is not None:
-            turno = get_turno(hs)
-            horarios = converte_horario_simples(hs, turno)
+            turno = get_turno(hs_tratado)
+            horarios = converte_horario_simples(hs_tratado, turno)
             horarios_list.extend(horarios)
 
     return horarios_list

@@ -163,11 +163,12 @@ def carregar_docente(siape, matricula_docente_externo, componente):
 
 
 def adicionar_vinculo_docente(turma, docente, carga_horaria, horarios_docente):
-    if not VinculoDocente.objects.filter(turma=turma, docente=docente).exists() and docente is not None:
+    if not VinculoDocente.objects.filter(turma=turma, docente=docente).exists() \
+       and docente is not None and turma is not None:
         vinculo = VinculoDocente(docente=docente, turma=turma, carga_horaria=carga_horaria)
         vinculo.save()
         vinculo.horarios.set(horarios_docente)
-        print('Add Vínculo Docente: ' + str(docente) + ' - ' + str(turma.componente) + ' - ' + carga_horaria)
+        print('Add Vínculo Docente: ' + str(docente) + ' - ' + str(turma.componente) + ' - ' + str(carga_horaria))
 
 
 if __name__ == "__main__":
