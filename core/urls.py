@@ -2,7 +2,7 @@ from django.conf.global_settings import STATIC_ROOT
 from django.conf.urls.static import static
 from django.urls import path
 
-from mysite.settings import STATIC_URL, MEDIA_URL, MEDIA_ROOT, DEBUG
+from suggestclasses.settings import STATIC_URL, MEDIA_URL, MEDIA_ROOT, DEBUG
 from . import views
 from .visoes import suggest_view
 from .visoes import sugestao_letras_view
@@ -33,6 +33,12 @@ urlpatterns = [
     path('docente/<int:pk>/', views.DocenteDetailView.as_view(), name='docente_detalhar'),
 
     path('salas/list/', views.search_salas, name='search_salas'),
+    path('enquetes/list/', views.search_enquetes, name='search_enquetes'),
+    path('enquetes/<int:pk>/', views.EnqueteDetailView.as_view(), name='enquete_detalhar'),
+    path('enquetes/<int:pk>/componente/<int:cc_pk>/', views.enquete_votos_listar, name='enquete_votos_listar'),
+    path('enquetes/<int:pk>/votar', views.enquete_votar, name='enquete_votar'),
+    path('enquetes/<int:pk>/votos/manter', views.sugestao_solicitar, name='enquete_votos_manter'),
+    path('enquetes/deletar/votos/<int:pk>/', views.enquete_deletar_voto, name='enquete_deletar_voto'),
 
     path('flow/', views.flow_list, name='Lista de Fluxogramas'),
     path('flow/bsi/opcionais', views.flow_bsi_op, name='Fluxograma BSI - Opcionais'),

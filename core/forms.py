@@ -1,11 +1,12 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User, Group
-from django.forms import Form, ModelForm
+from django.contrib.auth.models import User
+from django.forms import ModelForm
 
-from core.bo.sevices import get_cc_by_estrutura
-from core.bo.sistemas import get_estrutura_sistemas_dct
-from core.models import SugestaoTurma, Docente, ComponenteCurricular, EstruturaCurricular, Departamento, Sala
+from core.bo.sevices import get_cc_by_estrutura, get_estrutura_by_curso
+from core.dao.componente_dao import get_componentes_curriculares
+from core.models import SugestaoTurma, Docente, ComponenteCurricular, Departamento, Sala, \
+    VotoTurma
 
 
 class CadastroUsuarioForm(UserCreationForm):
@@ -82,3 +83,17 @@ class SugestaoTurmaForm(ModelForm):
         labels = {
             'codigo_turma': 'Código Turma',
         }
+
+
+class VotoTurmaForm(ModelForm):
+
+    class Meta:
+        model = VotoTurma
+        fields = ['componente']
+
+    def __init__(self, *args, **kwargs):
+        enquete = kwargs.pop('enquete')
+        super(VotoTurmaForm, self).__init__(*args, **kwargs)
+        get_componentes_curriculares()
+        estrutura = get_estrutura_by_curso(enquete.curso)
+        self.fields['componente'].queryset = get_cc_by_estrutura(estrutura)

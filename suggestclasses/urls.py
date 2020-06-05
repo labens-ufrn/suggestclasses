@@ -1,4 +1,4 @@
-"""mysite URL Configuration
+"""suggestclasses URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from mysite import settings
+from suggestclasses import settings
 
 urlpatterns = [
     path('core/', include('core.urls')),

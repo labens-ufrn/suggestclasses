@@ -1,0 +1,117 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+  <section class="page-section" id="horarios">
+    <div class="container">
+
+      <h2 class="page-section-heading text-center text-secondary mb-0">Detalhar Enquetes de Turmas</h2>
+      <br />
+      <div>
+        <table class="table table-striped table-sm table-bordered">
+          <tr>
+            <td colspan="1" class="font-weight-bold" width="15%">Nome</td>
+            <td colspan="5">{{ object.nome }}</td>
+          </tr>
+          <tr>
+            <td colspan="1" class="font-weight-bold" width="15%">Descrição</td>
+            <td colspan="5" class="text-justify flex-wrap">{{ object.descricao }}</td>
+          </tr>
+          <tr>
+            <td colspan="1" class="font-weight-bold" width="15%">Período</td>
+            <td colspan="3">
+              {{ object.periodo }}
+            </td>
+            <td colspan="1" class="font-weight-bold" width="10%">Status</td>
+            <td colspan="1">{{ object.get_status_display }}</td>
+          </tr>
+          <tr>
+            <td colspan="1" class="font-weight-bold" width="15%">Curso</td>
+            <td colspan="5">{{ object.curso }}</td>
+          </tr>
+          <tr>
+            <td class="font-weight-bold" width="15%">Taxa de Votação</td>
+            <td>
+              {{ discentes_votantes }}
+            </td>
+            <td class="font-weight-bold" width="15%">Discentes Ativos</td>
+            <td>
+              {{ discentes_ativos }}
+            </td>
+            <td class="font-weight-bold" width="18%">Votos por Discente</td>
+            <td>{{ object.numero_votos }}</td>
+          </tr>
+          <tr>
+            <td colspan="1" class="font-weight-bold" width="10%">Início</td>
+            <td colspan="2">
+              {{ object.data_hora_inicio|date:"SHORT_DATETIME_FORMAT" }}
+            </td>
+            <td colspan="1" class="font-weight-bold" width="10%">Fim</td>
+            <td colspan="2">
+              {{ object.data_hora_fim|date:"SHORT_DATETIME_FORMAT" }}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="1" class="font-weight-bold" width="18%">Criador</td>
+            <td colspan="2">{{ object.usuario.get_full_name }}</td>
+            <td colspan="1" class="font-weight-bold" width="18%">Data Criação</td>
+            <td colspan="2">
+              {{ object.criada_em|date:"SHORT_DATETIME_FORMAT" }}
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div>
+        {% if user.is_authenticated %}
+          <div id="votar" class="center text-center form-group">
+          {% if perms.core.add_vototurma %}
+            <a class="btn btn-primary btn-success"
+               href="{% url 'enquete_votar' object.pk %}?next={{ request.path|urlencode }}">
+            <span class="material-icons align-middle">
+              create
+            </span>
+              Votar</a>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+
+      <div>
+        <table class="table table-striped table-sm table-bordered">
+          <thead class="thead-light">
+          <tr class="text-center">
+            <th colspan="4">Votos Por Componente</th>
+          </tr>
+          <tr class="text-center">
+            <th>Código</th>
+            <th>Nome</th>
+            <th>Qtd Votos</th>
+            <th>Listar Votos</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for voto in votos_por_componente %}
+            <tr class="text-center">
+              <td>{{ voto.componente__codigo }}</td>
+              <td>{{ voto.componente__nome }}</td>
+              <td>{{ voto.votos }}</td>
+              <td>
+                <a href="{% url 'enquete_votos_listar' object.pk voto.componente__pk %}">
+                  <span class="material-icons md-18 align-middle">
+                    find_in_page
+                  </span>
+                </a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td class="text-center" colspan="4">Votação vazia!</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+{% endblock %}

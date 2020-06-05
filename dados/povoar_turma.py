@@ -6,7 +6,7 @@ django.setup()
 from core.bo.docente import get_docente_by_siape
 from core.bo.turma import converte_desc_horario
 from core.models import ComponenteCurricular, Docente, Turma, Departamento, VinculoDocente
-from mysite.settings import BASE_DIR
+from suggestclasses.settings import BASE_DIR
 
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')
 

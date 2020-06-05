@@ -10,12 +10,16 @@ def get_discentes():
     return Discente.objects.all()
 
 
-def get_discentes_ativos():
+def get_discentes_ativos(curso=None):
     """
             Lista dos discentes com Status ATIVO. Retorna apenas discentes ativos do CERES.
     """
     query = Q(status='ATIVO')
     query.add(Q(status='ATIVO - FORMANDO'), Q.OR)
+
+    if curso:
+        query.add(Q(id_curso=curso.codigo), Q.AND)
+
     return Discente.objects.filter(query)
 
 
@@ -30,3 +34,7 @@ def get_discente_by_matricula(matricula):
         # Professores Substitutos e Temporários não estão na lista
         discente = Discente.objects.get(matricula=matricula)
     return discente
+
+
+def get_qtd_discentes_ativos(curso=None):
+    return get_discentes_ativos(curso).all().count()

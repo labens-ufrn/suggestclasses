@@ -2,7 +2,7 @@ import django
 django.setup()
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from core.models import Horario, SugestaoTurma, SolicitacaoTurma
+from core.models import Horario, SugestaoTurma, SolicitacaoTurma, VotoTurma
 
 
 def main():
@@ -62,6 +62,12 @@ def adicionar_permissoes_discentes(discentes):
     add_permissao(codename='add_solicitacaoturma', content_type=ct, grupo=discentes)
     add_permissao(codename='change_solicitacaoturma', content_type=ct, grupo=discentes)
     add_permissao(codename='delete_solicitacaoturma', content_type=ct, grupo=discentes)
+
+    ct = ContentType.objects.get_for_model(VotoTurma)
+    add_permissao(codename='view_vototurma', content_type=ct, grupo=discentes)
+    add_permissao(codename='add_vototurma', content_type=ct, grupo=discentes)
+    add_permissao(codename='change_vototurma', content_type=ct, grupo=discentes)
+    add_permissao(codename='delete_vototurma', content_type=ct, grupo=discentes)
 
 
 def add_permissao(codename, content_type, grupo):

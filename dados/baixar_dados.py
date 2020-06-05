@@ -4,7 +4,7 @@ import urllib.request
 import django
 django.setup()
 
-from mysite.settings import BASE_DIR
+from suggestclasses.settings import BASE_DIR
 
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')
 
@@ -149,6 +149,10 @@ def download_funcoes():
 
 def download_discentes():
     print("Download do CSV dos Discentes da UFRN ...!")
+
+    url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/861b96a8-5304-4e6a-a8c4' \
+          '-068533ec7cb9/download/discentes-2009.csv'
+    download_discentes_semestre(url, 'discentes-2009.csv')
     url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/5fc61f78-19b4-4020-9f3c' \
           '-c298cb8a63aa/download/discentes-2010.csv'
     download_discentes_semestre(url, 'discentes-2010.csv')

@@ -5,7 +5,7 @@ from dateutil.parser import parse
 django.setup()
 
 from core.models import Departamento, Docente
-from mysite.settings import BASE_DIR
+from suggestclasses.settings import BASE_DIR
 
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')
 

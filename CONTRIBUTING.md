@@ -10,13 +10,13 @@ As issues são um espaço aberto para requisitar novas funcionalidades, mudança
 
 Usamos algumas classificações para categorizar as issues, esses labels foram criados usango github-labels (https://github.com/idvogados/github-labels), veja:
 
-- **Prioridade: Crítico, Alta, Média, Baixa** 
+- **Prioridade: Crítico, Alta, Média, Baixa**
   - Prioridades das issues de acordo com a necessidade de implementação.
 - **Status: Abandonado, Bloqueado, Em Progresso, Aceitamos PR, Precisa Ser Revisado, Precisa De Mais Informações, NÃO MERGEAR!, Duplicado, Fora do Plano, Pronto para implementar, Ajuda bem vinda, Aprovado**
   - O status descreve a situação atual da issue ou do pull request.
 - **Tipo: Mudança Titânica, Bug :bug:, Documentação, Funcionalidade, Refatoração, Testando, Manuntenção, CI, Questão, Discussão, Épico, Performance, Externo**
   - O tipo descreve características da tarefa em desenvolviment.
-- **Esforço: de Esfoço 1 até 10** 
+- **Esforço: de Esfoço 1 até 10**
   - Indica uma estimativa de esforço ou dificuldade para a realização da tarefa.
 
 ## Contribuir
@@ -35,7 +35,7 @@ Nosso documentação se concentra na pasta `docs/` deste repositório, aqui uma 
 |  `core/`	    | Aplicativo Django, código base de todo o sistema. 	|
 |  `dados/` 	| Contém scripts para downloads dos dados e povoamento da base de dados.	|
 |  `docs/` 	    | Contém arquivos de documentação e imagens da modelagem do Sistema. |
-|  `mysite/` 	| Arquivos de configuração do Projeto Django.|
+|  `suggestclasses/` 	| Arquivos de configuração do Projeto Django.|
 
 Ainda tem dúvida? Abre uma [Issue](https://github.com/labens-ufrn/suggestclasses/issues) que a gente responde!
 
@@ -45,7 +45,7 @@ Para rodar e fazer alterações locais na sua máquina, primeiro você deve faze
 
 ``` bash
 git clone https://github.com/<seu_usuario>/suggestclasses
-``` 
+```
 
 Depois, siga os passos descritos na página [README.md](https://github.com/labens-ufrn/suggestclasses/blob/master/README.md)!
 

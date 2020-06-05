@@ -113,3 +113,6 @@ venv.bak/
 dados/*.csv
 
 path.env
+/static/admin/
+/static/css/
+/static/js/

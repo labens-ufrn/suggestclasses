@@ -4,7 +4,7 @@ import django
 django.setup()
 from dados.povoar_docentes import carregar_docente
 from dados.baixar_dados import downloads_dados
-from mysite.settings import BASE_DIR
+from suggestclasses.settings import BASE_DIR
 from dados.povoar_funcoes_gratificadas import carregar_funcoes_gratificadas
 from dados.povoar_turma import carregar_turma
 from dados.povoar_discentes import carregar_discentes
@@ -55,7 +55,7 @@ def criar_salas():
     print("\nCriando Salas para o CERES ...!")
 
     with open('salas-ceres.csv') as csvfile:
-        salas = csv.reader(csvfile, delimiter=';')
+        salas = csv.reader(csvfile, delimiter=',')
         next(salas)  # skip header
 
         for row in salas:
@@ -358,6 +358,7 @@ def criar_funcoes_gratificadas():
 def criar_discentes():
     print("\nCriando Discentes por Ano de Ingresso para os Cursos do CERES ...!")
 
+    criar_discentes_anual('discentes-2009.csv')
     criar_discentes_anual('discentes-2010.csv')
     criar_discentes_anual('discentes-2011.csv')
     criar_discentes_anual('discentes-2012.csv')
