@@ -450,10 +450,17 @@ class Enquete(models.Model):
 
 
 class VotoTurma(models.Model):
+    VALIDO = "1"
+    ABSTENCAO = "2"
+    TIPO_CHOICES = (
+        (VALIDO, "Válido"),
+        (ABSTENCAO, "Abstenção"),
+    )
     enquete = models.ForeignKey(Enquete, on_delete=models.PROTECT, related_name='votos')
     discente = models.ForeignKey(Discente, on_delete=models.PROTECT)
-    componente = models.ForeignKey(ComponenteCurricular, on_delete=models.PROTECT)
+    componente = models.ForeignKey(ComponenteCurricular, on_delete=models.PROTECT, blank=True, null=True)
     horarios = models.ManyToManyField(Horario)
+    tipo = models.CharField(max_length=1, choices=TIPO_CHOICES)
     criado_em = models.DateTimeField(auto_now_add=True)
 
     class Meta:
