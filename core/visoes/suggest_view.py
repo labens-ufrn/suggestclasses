@@ -149,7 +149,9 @@ def verificar_existencia(form_sugestao, sugestao_turma):
 
 def verificar_choques(form_sugestao, sugestao_turma, horarios_list):
     choques_componentes = set()
+    choques_componentes_semestre = set()
     choques_horarios = []
+    choques_semestres = []
     choque_docente = []
     periodo_letivo = get_periodo_planejado()
     for horario in horarios_list:
@@ -159,12 +161,15 @@ def verificar_choques(form_sugestao, sugestao_turma, horarios_list):
             for s in sugestoes:
                 if s.codigo_turma == sugestao_turma.codigo_turma and s.componente == sugestao_turma.componente:
                     break
-                if s.local == sugestao_turma.local:
+                if sugestao_turma.local is not None and s.local == sugestao_turma.local:
                     choques_componentes.add(str(s.componente.codigo) + ' - ' + s.componente.nome)
                     choques_horarios.append(horario.dia + horario.turno + horario.ordem)
                 if s.docente == sugestao_turma.docente:
                     choques_componentes.add(str(s.componente.codigo) + ' - ' + s.componente.nome)
                     choque_docente.append(horario.dia + horario.turno + horario.ordem)
+                if s.semestre == sugestao_turma.semestre:
+                    choques_componentes_semestre.add(str(s.componente.codigo) + ' - ' + s.componente.nome)
+                    choques_semestres.append(horario.dia + horario.turno + horario.ordem)
 
     if choques_horarios or choque_docente or choques_componentes:
         if choques_componentes:
@@ -179,6 +184,12 @@ def verificar_choques(form_sugestao, sugestao_turma, horarios_list):
             form_sugestao.add_error('docente',
                                     'Docente com choque nos horários: ' +
                                     criar_string(choque_docente) + '.')
+        if choques_semestres:
+            form_sugestao.add_error('componente',
+                                    'Choque com os Componentes Curriculares do mesmo semestre: ' +
+                                    criar_string(list(choques_componentes_semestre)) + '.')
+            form_sugestao.add_error('descricao_horario', 'Choque nos horários: ' +
+                                    criar_string(choques_semestres) + '.')
         return True
     return False
 
