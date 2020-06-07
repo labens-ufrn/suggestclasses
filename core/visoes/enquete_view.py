@@ -7,12 +7,12 @@ from core.models import Enquete, VotoTurma, ComponenteCurricular
 from core.visoes.suggest_view import discente_existe, redirecionar
 
 
-def enquete_voto_view(request, pk):
+def enquete_voto_view(request, pk, abstencao=None):
     usuario = request.user
     if not discente_existe(usuario):
         messages.error(request, 'Não há um discente relacionado ao usuário.')
         return redirecionar(request)
-    discente = usuario.discente
+    discente = check_discente(request)
 
     enquete = Enquete.objects.get(pk=pk)
     mesmo_curso = check_curso(enquete, discente)
@@ -23,17 +23,24 @@ def enquete_voto_view(request, pk):
     if request.method == "POST":
         form_voto = VotoTurmaForm(request.POST, enquete=enquete)
 
-        if form_voto.is_valid():
+        if form_voto.is_valid() and tem_componente(form_voto):
             voto_turma = form_voto.save(commit=False)
-            voto_turma.discente = discente
-            voto_turma.enquete = enquete
+            voto_turma_carregar(enquete, discente, voto_turma, VotoTurma.VALIDO)
 
             if voto_permitido(request, enquete, discente, voto_turma.componente):
+                enquete_deletar_votos_discente(request, enquete, discente, abstencao=True   )
                 voto_turma.save()
                 messages.success(request, 'Voto cadastrada com sucesso.')
                 return redirect('/core/enquetes/' + str(enquete.pk) + '/votar')
-
         messages.error(request, form_voto.errors)
+    elif abstencao and voto_permitido(request, enquete, discente):
+        voto_turma = VotoTurma()
+        voto_turma_carregar(enquete, discente, voto_turma, VotoTurma.ABSTENCAO)
+        enquete_deletar_votos_discente(request, enquete, discente)
+        voto_turma.save()
+        messages.success(request, 'Abstenção cadastrada com sucesso.')
+        return redirect('/core/enquetes/' + str(enquete.pk) + '/votar')
+        form_voto = VotoTurmaForm(enquete=enquete)
     else:
         form_voto = VotoTurmaForm(enquete=enquete)
 
@@ -48,8 +55,31 @@ def enquete_voto_view(request, pk):
     return render(request, 'core/enquetes/votar.html', context)
 
 
-def voto_permitido(request, enquete, discente, componente):
-    existe_voto = voto_existe(enquete, discente, componente)
+def tem_componente(form_voto):
+    if form_voto.cleaned_data['componente']:
+        return True
+    form_voto.add_error('componente', 'Selecione um Componente Curricular para votar.')
+    return False
+
+
+def voto_turma_carregar(enquete, discente, voto_turma, tipo):
+    voto_turma.discente = discente
+    voto_turma.enquete = enquete
+    voto_turma.tipo = tipo
+
+
+def check_discente(request):
+    usuario = request.user
+    if not discente_existe(usuario):
+        messages.error(request, 'Não há um discente relacionado ao usuário.')
+        return redirecionar(request)
+    return usuario.discente
+
+
+def voto_permitido(request, enquete, discente, componente=None):
+    existe_voto = False
+    if componente:
+        existe_voto = voto_existe(enquete, discente, componente)
     votou_max = votou(enquete, discente)
     mesmo_curso = check_curso(enquete, discente)
 
@@ -95,29 +125,46 @@ def get_votos(enquete, discente):
 @permission_required("core.delete_vototurma", login_url='/core/usuario/logar', raise_exception=True)
 def enquete_deletar_voto_discente(request, pk, template_name='core/enquetes/voto_confirm_delete.html'):
     voto_turma = get_object_or_404(VotoTurma, pk=pk)
-    if not tem_permissao(request, voto_turma):
+    if not tem_permissao(request, voto_turma.discente):
         messages.error(request, 'Você não tem permissão de Excluir este voto.')
         return redirecionar(request)
     if request.method == 'POST':
         voto_turma.delete()
-        messages.success(request, 'Voto em turma excluído com sucesso.')
+        messages.success(request, 'Voto na enquete excluído com sucesso.')
         return redirecionar(request)
     return render(request, template_name, {'object': voto_turma})
 
 
-def tem_permissao(request, voto_turma):
+@permission_required("core.delete_vototurma", login_url='/core/usuario/logar', raise_exception=True)
+def enquete_deletar_votos_discente(request, enquete, discente, abstencao=None):
+    if not tem_permissao(request, discente):
+        messages.error(request, 'Você não tem permissão de Excluir votos.')
+        return redirecionar(request)
+    if abstencao:
+        VotoTurma.objects.filter(enquete=enquete, discente=discente, tipo=VotoTurma.ABSTENCAO).delete()
+    else:
+        VotoTurma.objects.filter(enquete=enquete, discente=discente).delete()
+
+
+def tem_permissao(request, discente_voto):
     usuario = request.user
     if not discente_existe(usuario):
         messages.error(request, 'Não há um discente relacionado ao usuário.')
         return redirecionar(request)
     discente = usuario.discente
-    if discente == voto_turma.discente:
+    if discente == discente_voto:
         return True
     return False
 
 
 def get_qtd_votantes(enquete):
     qtd_votantes = len(set(VotoTurma.objects.filter(enquete=enquete).values_list('discente')))
+    return qtd_votantes
+
+
+def get_qtd_abstencao(enquete):
+    qtd_votantes = len(set(VotoTurma.objects.filter(
+        enquete=enquete, tipo=VotoTurma.ABSTENCAO).values_list('discente')))
     return qtd_votantes
 
 

@@ -38,7 +38,7 @@ from .dao.departamento_dao import get_departamentos
 from .filters import SalaFilter, DocenteFilter, EnqueteFilter
 from .forms import CadastroUsuarioForm
 from .models import Horario
-from .visoes.enquete_view import enquete_voto_view, enquete_deletar_voto_discente, get_qtd_votantes
+from .visoes.enquete_view import enquete_voto_view, enquete_deletar_voto_discente, get_qtd_votantes, get_qtd_abstencao
 from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir, sugestao_editar, \
     redirecionar, sugestao_deletar, atualizar_solicitacao, discente_existe, docente_existe, criar_string, \
     discente_grade_horarios, solicitacao_discente_deletar, get_solicitacoes, docente_grade_horarios
@@ -855,7 +855,7 @@ class EnqueteDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         # Add in a QuerySet of all the books
         votos_por_componente = VotoTurma.objects\
-            .filter(enquete=self.object) \
+            .filter(enquete=self.object, tipo=VotoTurma.VALIDO) \
             .values('componente__pk', 'componente__codigo', 'componente__nome') \
             .annotate(votos=Count('componente')) \
             .order_by('-votos', 'componente__nome')
@@ -863,9 +863,12 @@ class EnqueteDetailView(DetailView):
         curso = self.object.curso
         qtd_ativos = get_qtd_discentes_ativos(curso)
         qtd_votantes = get_qtd_votantes(self.object)
+        qtd_abstencao = get_qtd_abstencao(self.object)
         context['discentes_ativos'] = qtd_ativos
         taxa = round((qtd_votantes / qtd_ativos) * 100.0, 2)
-        context['discentes_votantes'] = str(qtd_votantes) + ' (' + str(taxa) + '%)'
+        taxa_abstencao = round((qtd_abstencao / qtd_ativos) * 100.0, 2)
+        context['taxa_votacao'] = str(taxa) + '% (' + str(qtd_votantes) + ')'
+        context['taxa_abstencao'] = str(taxa_abstencao) + '% (' + str(qtd_abstencao) + ')'
 
         return context
 
@@ -879,6 +882,11 @@ def search_enquetes(request):
 @permission_required("core.add_vototurma", login_url='/core/usuario/logar', raise_exception=True)
 def enquete_votar(request, pk):
     return enquete_voto_view(request, pk)
+
+
+@permission_required("core.add_vototurma", login_url='/core/usuario/logar', raise_exception=True)
+def enquete_abstencao(request, pk):
+    return enquete_voto_view(request, pk, abstencao=True)
 
 
 @permission_required("core.delete_vototurma", login_url='/core/usuario/logar', raise_exception=True)

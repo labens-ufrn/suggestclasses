@@ -37,6 +37,7 @@ urlpatterns = [
     path('enquetes/<int:pk>/', views.EnqueteDetailView.as_view(), name='enquete_detalhar'),
     path('enquetes/<int:pk>/componente/<int:cc_pk>/', views.enquete_votos_listar, name='enquete_votos_listar'),
     path('enquetes/<int:pk>/votar', views.enquete_votar, name='enquete_votar'),
+    path('enquetes/<int:pk>/abastencao', views.enquete_abstencao, name='enquete_abstencao'),
     path('enquetes/<int:pk>/votos/manter', views.sugestao_solicitar, name='enquete_votos_manter'),
     path('enquetes/deletar/votos/<int:pk>/', views.enquete_deletar_voto, name='enquete_deletar_voto'),
     path('ajax/load-componente/', enquete_view.load_componente, name='ajax_load_componente'),
