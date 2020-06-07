@@ -867,8 +867,8 @@ class EnqueteDetailView(DetailView):
         context['discentes_ativos'] = qtd_ativos
         taxa = round((qtd_votantes / qtd_ativos) * 100.0, 2)
         taxa_abstencao = round((qtd_abstencao / qtd_ativos) * 100.0, 2)
-        context['taxa_votacao'] = str(taxa) + '% (' + str(qtd_votantes) + ')'
-        context['taxa_abstencao'] = str(taxa_abstencao) + '% (' + str(qtd_abstencao) + ')'
+        context['taxa_votacao'] = str(taxa) + '% (' + str(qtd_votantes) + ' discentes)'
+        context['taxa_abstencao'] = str(taxa_abstencao) + '% (' + str(qtd_abstencao) + ' discentes)'
 
         return context
 
