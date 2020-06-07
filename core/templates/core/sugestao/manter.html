@@ -6,10 +6,10 @@
     <div class="container">
 
       <div id="manter" class="center text-center form-group">
-        <h2 class="page-section-heading text-center text-secondary mb-0">
-          Sugestões de Turmas - <b>{{ estrutura.curso.nome }}</b></h2>
+        <h3 class="page-section-heading text-center text-secondary mb-0">
+          Sugestões de Turmas - <b>{{ estrutura.curso.nome }}</b></h3>
         <h5 class="page-section-heading text-center text-secondary mb-0">
-          Período: {{ ano_periodo }}</h5>
+          {{ periodo_letivo }}</h5>
       </div>
       {% if user.is_authenticated %}
         <div id="manter" class="center text-center form-group">

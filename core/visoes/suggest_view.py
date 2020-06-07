@@ -1,7 +1,5 @@
-import logging
 import json
-from django.http import JsonResponse
-from django.template.loader import render_to_string
+import logging
 from urllib.parse import urlparse
 
 from django.contrib import messages
@@ -9,12 +7,15 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
 
 from core.bo.docente import get_funcao_by_siape
+from core.bo.periodos import get_periodo_planejado
 from core.bo.sevices import get_organizacao_by_componente
 from core.bo.sugestao import solicitacao_incluir, solicitacao_verificar_choques
-from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, carrega_turmas_horario, converte_desc_horario, \
+from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, converte_desc_horario, \
     TurmaHorario, carrega_sugestao_horario
 from core.config.config import get_config
 from core.forms import SugestaoTurmaForm
@@ -28,17 +29,14 @@ config = get_config()
 def sugestao_grade_horarios(request, estrutura, sugestao_incluir_link, sugestao_manter_link, sugestao_list_link):
     semestres = request.GET.getlist('semestres')
     semestres = atualiza_semestres(semestres)
+    periodo_letivo = get_periodo_planejado()
 
-    ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
-    ano = config.get('PeriodoSeguinte', 'ano')
-    periodo = config.get('PeriodoSeguinte', 'periodo')
-
-    tt = carrega_sugestao_horario(ano, periodo, curso=estrutura.curso, semestres=semestres)
-
+    tt = carrega_sugestao_horario(periodo_letivo.ano, periodo_letivo.periodo,
+                                  curso=estrutura.curso, semestres=semestres)
     context = {
         'tt': tt,
         'estrutura': estrutura,
-        'ano_periodo': ano_periodo,
+        'periodo_letivo': periodo_letivo,
         'semestres_atual': criar_string(semestres) + '.',
         'sugestao_incluir_link': sugestao_incluir_link,
         'sugestao_manter_link': sugestao_manter_link,
@@ -57,15 +55,13 @@ def sugestao_manter(request, estrutura, sugestao_incluir_link, sugestao_grade_li
     semestres = ['100']
     semestres = atualiza_semestres(semestres)
 
-    ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
-    ano = config.get('PeriodoSeguinte', 'ano')
-    periodo = config.get('PeriodoSeguinte', 'periodo')
+    periodo_letivo = get_periodo_planejado()
 
-    st_list = carrega_sugestao_turmas(estrutura, semestres, ano, periodo)
+    st_list = carrega_sugestao_turmas(estrutura, semestres, periodo_letivo.ano, periodo_letivo.periodo)
     st_list = sorted(st_list, key=lambda sc: sc.componente.nome)
 
     context = {
-        'ano_periodo': ano_periodo,
+        'periodo_letivo': periodo_letivo,
         'estrutura': estrutura,
         'sugestao_incluir_link': sugestao_incluir_link,
         'sugestao_editar_link': sugestao_editar_link,
@@ -78,10 +74,8 @@ def sugestao_manter(request, estrutura, sugestao_incluir_link, sugestao_grade_li
 
 
 def sugestao_incluir(request, estrutura, sugestao_manter_link):
-    ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
-
+    periodo_letivo = get_periodo_planejado()
     vinculos = []
-
     if request.method == "POST":
         form_sugestao = SugestaoTurmaForm(request.POST, estrutura=estrutura)
         vinculos_docente = request.POST.get('vinculos_docente')
@@ -102,7 +96,7 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
         form_sugestao = SugestaoTurmaForm(estrutura=estrutura)
 
     context = {
-        'ano_periodo': ano_periodo,
+        'periodo_letivo': periodo_letivo,
         'estrutura': estrutura,
         'form_sugestao': form_sugestao,
         'vinculos': vinculos,
@@ -118,13 +112,14 @@ def atualizar_horarios(sugestao, novos_horarios):
 
 
 def carregar_dados(request, sugestao_turma, estrutura):
-    ano = config.get('PeriodoSeguinte', 'ano')
-    periodo = config.get('PeriodoSeguinte', 'periodo')
+    periodo_letivo = get_periodo_planejado()
 
     sugestao_turma.tipo = 'REGULAR'
-    sugestao_turma.ano = ano
-    sugestao_turma.periodo = periodo
-    sugestao_turma.campus_turma = sugestao_turma.local.campus
+    sugestao_turma.ano = periodo_letivo.ano
+    sugestao_turma.periodo = periodo_letivo.periodo
+    sugestao_turma.campus_turma = estrutura.curso.centro.sigla
+    if sugestao_turma.local:
+        sugestao_turma.campus_turma = sugestao_turma.local.campus
     sugestao_turma.criador = request.user
     sugestao_turma.total_solicitacoes = 0
 
@@ -156,8 +151,10 @@ def verificar_choques(form_sugestao, sugestao_turma, horarios_list):
     choques_componentes = set()
     choques_horarios = []
     choque_docente = []
+    periodo_letivo = get_periodo_planejado()
     for horario in horarios_list:
-        sugestoes = horario.sugestoes.all()
+        sugestoes = horario.sugestoes.all().filter(
+            ano=periodo_letivo.ano, periodo=periodo_letivo.periodo)
         if sugestoes:
             for s in sugestoes:
                 if s.codigo_turma == sugestao_turma.codigo_turma and s.componente == sugestao_turma.componente:
@@ -523,11 +520,11 @@ def carregar_vinculos(vinculos_docente):
 
 def existe_choques_docente(docente, horarios_list):
     choque_docente = []
-    ano = config.get('PeriodoSeguinte', 'ano')
-    periodo = config.get('PeriodoSeguinte', 'periodo')
+    periodo_letivo = get_periodo_planejado()
 
     for horario in horarios_list:
-        docente_sugestoes = list(horario.sugestoes.all().filter(docente=docente, ano=ano, periodo=periodo))
+        docente_sugestoes = list(horario.sugestoes.all().filter(
+            docente=docente, ano=periodo_letivo.ano, periodo=periodo_letivo.periodo))
         if docente_sugestoes:
             choque_docente.append(horario.dia + horario.turno + horario.ordem)
 

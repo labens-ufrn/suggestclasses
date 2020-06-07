@@ -395,6 +395,11 @@ class VinculoDocente(models.Model):
 
 
 class PeriodoLetivo(models.Model):
+    CONSOLIDADO = "1"
+    ATIVO = "2"
+    PLANEJADO = "3"
+    SUSPENSO = "4"
+    CANCELADO = "5"
     STATUS_CHOICES = (
         ("1", "Consolidado"),
         ("2", "Ativo"),

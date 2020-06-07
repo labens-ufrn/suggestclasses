@@ -4,10 +4,10 @@
 
   <div class="container">
     <div id="manter" class="center text-center form-group">
-      <h2 class="page-section-heading text-center text-secondary mb-0">
-        Cadastro de Sugestão de Turma - <b>{{ estrutura.curso.nome }}</b></h2>
+      <h3 class="page-section-heading text-center text-secondary mb-0">
+        Cadastro de Sugestão de Turma - <b>{{ estrutura.curso.nome }}</b></h3>
       <h5 class="page-section-heading text-center text-secondary mb-0">
-        Período: {{ ano_periodo }}</h5>
+        {{ periodo_letivo }}</h5>
     </div>
     <form method="post" id="SugestaoForm" data-docentes-url="{% url 'ajax_load_docentes' %}"
           check-vinculo-docente-url="{% url 'ajax_check_vinculo_docente' %}"
