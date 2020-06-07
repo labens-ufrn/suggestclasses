@@ -10,7 +10,12 @@
           {% csrf_token %}
           <div class="form-row">
             <div class="alert alert-warning">
-              Tem certeza de que deseja excluir o <b>Voto</b> em {{ object.componente }}?
+              Tem certeza de que deseja excluir o <b>Voto</b>
+              {% if object.tipo == "2" %}
+                <b>ABSTENÇÃO</b>?
+              {% else %}
+                em <b>{{ object.componente }}</b>?
+              {% endif %}
             </div>
           </div>
           <button type="submit" class="btn btn-danger">

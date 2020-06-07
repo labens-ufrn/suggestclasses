@@ -9,9 +9,11 @@
       <h5 class="page-section-heading text-center text-secondary mb-0">
          <b>{{ enquete }}</b></h5>
     </div>
-    <div class="alert-info">
-      <p>Você pode votar até {{ enquete.numero_votos }} vezes nesta enquete.<br>
-      Você já votou {{ qtd_votos }} vezes.</p>
+    <div id="avisos">
+      <p class="alert-info">Você pode votar até <b>{{ enquete.numero_votos }} vezes</b> nesta enquete.<br>
+        Você já votou <b>{{ qtd_votos }} vezes</b>.</p>
+      <p class="alert-warning"><b>Abstenção:</b> Você não pretende cursar <b>Nenhum Componente Curricular</b> ou
+        não decidiu ainda quais. Excluirá todos os seus votos em Componentes Curriculares.</p>
     </div>
     <form method="post" id="VotoForm">
       {% csrf_token %}
@@ -43,8 +45,11 @@
       <input type="hidden" name="next" value="{{ request.GET.next }}">
       <div id="div_componente_selecionado" class="alert-info"></div>
       <div class="form-group">
-        <input type="submit" value="Votar" class="btn btn-primary">
-        <a class="btn btn-primary btn-info" href="{% url 'enquete_detalhar' enquete.pk %}">Voltar para Enquete</a>
+        <a class="btn btn-primary btn-warning" href="{% url 'enquete_abstencao' enquete.pk %}">
+          Abstenção</a>
+        <a class="btn btn-primary btn-danger" href="{% url 'enquete_detalhar' enquete.pk %}">
+          Cancelar</a>
+        <input type="submit" value="Votar" class="btn btn-success">
       </div>
     </form>
   </div>
@@ -63,9 +68,14 @@
       </thead>
       <tbody>
       {% for voto in votos_por_discente %}
-        <tr class="text-center">
-          <td>{{ voto.componente.codigo }}</td>
-          <td>{{ voto.componente.nome }}</td>
+        <tr class="text-center align-middle">
+          {% if voto.tipo == voto.ABSTENCAO %}
+            <td></td>
+            <td class="align-middle btn-warning">ABSTENÇÃO</td>
+          {% else %}
+            <td class="align-middle">{{ voto.componente.codigo }}</td>
+            <td class="align-middle">{{ voto.componente.nome }}</td>
+          {% endif %}
           <td>
             <a href="{% url 'enquete_deletar_voto' voto.pk %}?next={{ request.path|urlencode }}">
               <button type="button" class="btn btn-danger">
