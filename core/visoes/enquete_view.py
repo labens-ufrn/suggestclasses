@@ -19,12 +19,9 @@ def enquete_voto_view(request, pk, abstencao=None):
 
     enquete = Enquete.objects.get(pk=pk)
 
-    agora = datetime.now()
-    utc = pytz.UTC
-    if enquete.data_hora_inicio.replace(tzinfo=utc) > agora.replace(tzinfo=utc) \
-       or agora.replace(tzinfo=utc) > enquete.data_hora_fim.replace(tzinfo=utc):
-        messages.error(request, 'Voto fora do período da Enquete "' + enquete.nome + '".')
-        return redirect('/core/enquetes/list')
+    url_redirect = check_periodo_enquete(request, enquete)
+    if url_redirect:
+        return url_redirect
 
     mesmo_curso = check_curso(enquete, discente)
     if not mesmo_curso:
@@ -157,6 +154,9 @@ def enquete_deletar_voto_discente(request, pk, template_name='core/enquetes/voto
     if not tem_permissao(request, voto_turma.discente):
         messages.error(request, 'Você não tem permissão de Excluir este voto.')
         return redirecionar(request)
+    url_redirect = check_periodo_enquete(request, voto_turma.enquete)
+    if url_redirect:
+        return url_redirect
     if request.method == 'POST':
         voto_turma.delete()
         messages.success(request, 'Voto na enquete excluído com sucesso.')
@@ -201,3 +201,13 @@ def load_componente(request):
     componente_id = request.GET.get('componenteId')
     componente = ComponenteCurricular.objects.get(pk=componente_id)
     return render(request, 'core/enquetes/requisitos_list.html', {'componente': componente})
+
+
+def check_periodo_enquete(request, enquete):
+    agora = datetime.now()
+    utc = pytz.UTC
+    if enquete.data_hora_inicio.replace(tzinfo=utc) > agora.replace(tzinfo=utc) \
+       or agora.replace(tzinfo=utc) > enquete.data_hora_fim.replace(tzinfo=utc):
+        messages.error(request, 'Voto fora do período da Enquete "' + enquete.nome + '".')
+        return redirect('/core/enquetes/list')
+    return None
