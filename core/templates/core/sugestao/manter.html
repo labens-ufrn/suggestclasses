@@ -41,14 +41,8 @@
             <td class="align-middle text-center">{{ turma.codigo_turma }}</td>
             <td class="align-middle text-left">{{ turma.componente }}</td>
             <td class="align-middle text-center">{{ turma.semestre }}</td>
-            <td class="align-middle text-center">{% if turma.docente is not None %}
-              <span style="color: darkblue">{{ turma.docente.primeiro_nome }}
-                          ({{ turma.docente.siape }})</span> <br/>
-            {% elif turma.matricula_docente_externo is not None and turma.matricula_docente_externo != '' %}
-              <i style="color: orangered">Prof. Substituto ({{ turma.matricula_docente_externo }})</i> <br/>
-            {% else %}
-              <b style="color: red">DOCENTE NÃO DEFINIDO</b> <br/>
-            {% endif %}
+            <td class="align-middle text-center">
+              {% include 'core/sugestao/vinculos_docente_exibir.html' %}
             </td>
             <td class="align-middle text-center">{{ turma.descricao_horario }}</td>
             <td class="align-middle text-center">

@@ -473,3 +473,15 @@ class VotoTurma(models.Model):
 
     def __str__(self):
         return str(self.componente) + ' (' + self.discente.nome_discente + ')'
+
+
+class VinculoDocenteSugestao(models.Model):
+    docente = models.ForeignKey(Docente, on_delete=models.PROTECT)
+    sugestao = models.ForeignKey(SugestaoTurma, on_delete=models.CASCADE)
+    carga_horaria = models.IntegerField()
+    descricao_horario = models.CharField(max_length=150)
+    horarios = models.ManyToManyField(Horario, related_name='vinculos_sugestao')
+    criada_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('docente', 'sugestao')
