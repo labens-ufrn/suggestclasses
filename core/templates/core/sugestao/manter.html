@@ -32,8 +32,9 @@
           <th>Turma</th>
           <th>Componente</th>
           <th>Semestre</th>
-          <th>Docente</th>
+          <th>Vagas</th>
           <th>Horário</th>
+          <th>Docente</th>
           <th colspan="3">Ações</th>
         </tr>
         {% for turma in sugestao_list %}
@@ -41,38 +42,33 @@
             <td class="align-middle text-center">{{ turma.codigo_turma }}</td>
             <td class="align-middle text-left">{{ turma.componente }}</td>
             <td class="align-middle text-center">{{ turma.semestre }}</td>
+            <td class="align-middle text-center">{{ turma.capacidade_aluno }}</td>
+            <td class="align-middle text-center">{{ turma.descricao_horario }}</td>
             <td class="align-middle text-center">
               {% include 'core/sugestao/vinculos_docente_exibir.html' %}
             </td>
-            <td class="align-middle text-center">{{ turma.descricao_horario }}</td>
             <td class="align-middle text-center">
-              <a href="{% url 'sugestao_detalhar' turma.pk %}">
-                <button type="button" class="btn btn-info">
-                    <span class="material-icons align-middle">
+              <a class="btn btn-info" href="{% url 'sugestao_detalhar' turma.pk %}" style="font-size: 12px;">
+                    <span class="material-icons md-18 align-middle">
                       find_in_page
                     </span>
                   Detalhar
-                </button>
               </a>
             </td>
             <td class="align-middle text-center">
-              <a href="{% url sugestao_editar_link turma.pk %}?next={{ request.path|urlencode }}">
-                <button type="button" class="btn btn-info">
-                    <span class="material-icons align-middle">
+              <a class="btn btn-info" href="{% url sugestao_editar_link turma.pk %}?next={{ request.path|urlencode }}" style="font-size: 12px;">
+                    <span class="material-icons md-18 align-middle">
                       edit
                     </span>
                   Editar
-                </button>
               </a>
             </td>
             <td class="align-middle text-center">
-              <a href="{% url sugestao_deletar_link turma.pk %}?next={{ request.path|urlencode }}">
-                <button type="button" class="btn btn-danger">
-                    <span class="material-icons align-middle">
+              <a class="btn btn-danger" href="{% url sugestao_deletar_link turma.pk %}?next={{ request.path|urlencode }}" style="font-size: 12px;">
+                    <span class="material-icons md-18 align-middle">
                       delete
                     </span>
                   Excluir
-                </button>
               </a>
             </td>
           </tr>
