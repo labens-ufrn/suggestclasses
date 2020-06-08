@@ -19,7 +19,7 @@ from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, converte_
     TurmaHorario, carrega_sugestao_horario
 from core.config.config import get_config
 from core.forms import SugestaoTurmaForm
-from core.models import SugestaoTurma, SolicitacaoTurma, Horario, Docente
+from core.models import SugestaoTurma, SolicitacaoTurma, Horario, Docente, VinculoDocenteSugestao
 from suggestclasses.settings import DOMAINS_WHITELIST
 
 logger = logging.getLogger('suggestclasses.logger')
@@ -88,6 +88,7 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
             if not verificar_existencia(form_sugestao, sugestao_turma) \
                and not verificar_choques(form_sugestao, sugestao_turma, horarios_list):
                 sugestao_turma.save()
+                vinculos_docente_salvar(sugestao_turma, vinculos)
                 atualizar_horarios(sugestao_turma, horarios_list)
                 messages.success(request, 'Sugestão de Turma cadastrada com sucesso.')
                 return redirect(sugestao_manter_link)
@@ -212,6 +213,11 @@ def sugestao_editar(request, pk, estrutura, template_name='core/sugestao/editar.
         messages.error(request, 'Você não tem permissão de Editar esta Sugestão de Turma.')
         return redirecionar(request)
     form_sugestao = SugestaoTurmaForm(request.POST or None, instance=sugestao, estrutura=estrutura)
+    vinculos_docente = request.POST.get('vinculos_docente')
+    if vinculos_docente is not None:
+        vinculos = carregar_vinculos(vinculos_docente)
+    else:
+        vinculos = load_vinculos_docentes(sugestao)
     if form_sugestao.is_valid():
         sugestao_turma = form_sugestao.save(commit=False)
         horarios_list = converte_desc_horario(sugestao_turma.descricao_horario)
@@ -219,12 +225,13 @@ def sugestao_editar(request, pk, estrutura, template_name='core/sugestao/editar.
             sugestao_turma.save()
             sugestao_turma.horarios.clear()  # limpa o conjunto de horários
             sugestao_turma.horarios.set(horarios_list)  # adiciona os novos horários
-
+            vinculos_docente_salvar(sugestao_turma, vinculos)
             messages.success(request, 'Sugestão de Turma alterada com sucesso.')
             return redirecionar(request)
     else:
         messages.error(request, form_sugestao.errors)
-    return render(request, template_name, {'form': form_sugestao})
+    return render(request, template_name,
+                  {'form': form_sugestao, 'vinculos': vinculos})
 
 
 @permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
@@ -516,7 +523,7 @@ def load_vinculos(request):
 
 def carregar_vinculos(vinculos_docente):
     vinculos = []
-    if vinculos_docente != '':
+    if vinculos_docente is not None and vinculos_docente != '':
         vds = json.loads(vinculos_docente)
         for v in vds['vinculos']:
             docente_id = v["docente"]
@@ -525,7 +532,18 @@ def carregar_vinculos(vinculos_docente):
             docente = Docente.objects.get(pk=docente_id)
             vinculo = {'docente': docente, 'horarios': horarios, 'carga_horaria': carga_horaria}
             vinculos.append(vinculo)
-            print(vinculo)
+    return vinculos
+
+
+def load_vinculos_docentes(sugestao):
+    vinculos_list = VinculoDocenteSugestao.objects.filter(sugestao=sugestao).all()
+    vinculos = []
+    for v in vinculos_list:
+        horarios = v.descricao_horario
+        carga_horaria = v.carga_horaria
+        docente = v.docente
+        vinculo = {'docente': docente, 'horarios': horarios, 'carga_horaria': carga_horaria}
+        vinculos.append(vinculo)
     return vinculos
 
 
@@ -542,3 +560,18 @@ def existe_choques_docente(docente, horarios_list):
     if choque_docente:
         return choque_docente, True
     return None, False
+
+
+def adicionar_vinculo_docente(sugestao, docente, carga_horaria, horarios):
+    if docente is not None and sugestao is not None and \
+       not VinculoDocenteSugestao.objects.filter(sugestao=sugestao, docente=docente).exists():
+        vinculo = VinculoDocenteSugestao(
+            docente=docente, sugestao=sugestao, carga_horaria=carga_horaria, descricao_horario=horarios)
+        vinculo.save()
+        horarios_docente = converte_desc_horario(horarios)
+        vinculo.horarios.set(horarios_docente)
+
+
+def vinculos_docente_salvar(sugestao, vinculos):
+    for vinculo in vinculos:
+        adicionar_vinculo_docente(sugestao, vinculo['docente'], vinculo['carga_horaria'], vinculo['horarios'])
