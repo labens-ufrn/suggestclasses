@@ -395,6 +395,11 @@ class VinculoDocente(models.Model):
 
 
 class PeriodoLetivo(models.Model):
+    CONSOLIDADO = "1"
+    ATIVO = "2"
+    PLANEJADO = "3"
+    SUSPENSO = "4"
+    CANCELADO = "5"
     STATUS_CHOICES = (
         ("1", "Consolidado"),
         ("2", "Ativo"),
@@ -419,6 +424,15 @@ class Enquete(models.Model):
     """
     Uma enquete é uma consulta onde discente podem votar nos componentes curriculares de interesse.
     """
+    COMPLETA = "1"
+    OBRIGATORIAS = "2"
+    OPTATIVAS = "3"
+    PARCIAL = "4"
+
+    CADASTRADA = "1"
+    ATIVA = "2"
+    FECHADA = "3"
+
     STATUS_CHOICES = (
         ("1", "Cadastrada"),
         ("2", "Ativa"),
@@ -468,3 +482,15 @@ class VotoTurma(models.Model):
 
     def __str__(self):
         return str(self.componente) + ' (' + self.discente.nome_discente + ')'
+
+
+class VinculoDocenteSugestao(models.Model):
+    docente = models.ForeignKey(Docente, on_delete=models.PROTECT)
+    sugestao = models.ForeignKey(SugestaoTurma, on_delete=models.CASCADE)
+    carga_horaria = models.IntegerField()
+    descricao_horario = models.CharField(max_length=150)
+    horarios = models.ManyToManyField(Horario, related_name='vinculos_sugestao')
+    criada_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('docente', 'sugestao')

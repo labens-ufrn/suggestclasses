@@ -1,7 +1,5 @@
-import logging
 import json
-from django.http import JsonResponse
-from django.template.loader import render_to_string
+import logging
 from urllib.parse import urlparse
 
 from django.contrib import messages
@@ -9,16 +7,19 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
 
 from core.bo.docente import get_funcao_by_siape
+from core.bo.periodos import get_periodo_planejado
 from core.bo.sevices import get_organizacao_by_componente
 from core.bo.sugestao import solicitacao_incluir, solicitacao_verificar_choques
-from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, carrega_turmas_horario, converte_desc_horario, \
+from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, converte_desc_horario, \
     TurmaHorario, carrega_sugestao_horario
 from core.config.config import get_config
 from core.forms import SugestaoTurmaForm
-from core.models import SugestaoTurma, SolicitacaoTurma, Horario, Docente
+from core.models import SugestaoTurma, SolicitacaoTurma, Horario, Docente, VinculoDocenteSugestao
 from suggestclasses.settings import DOMAINS_WHITELIST
 
 logger = logging.getLogger('suggestclasses.logger')
@@ -28,17 +29,14 @@ config = get_config()
 def sugestao_grade_horarios(request, estrutura, sugestao_incluir_link, sugestao_manter_link, sugestao_list_link):
     semestres = request.GET.getlist('semestres')
     semestres = atualiza_semestres(semestres)
+    periodo_letivo = get_periodo_planejado()
 
-    ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
-    ano = config.get('PeriodoSeguinte', 'ano')
-    periodo = config.get('PeriodoSeguinte', 'periodo')
-
-    tt = carrega_sugestao_horario(ano, periodo, curso=estrutura.curso, semestres=semestres)
-
+    tt = carrega_sugestao_horario(periodo_letivo.ano, periodo_letivo.periodo,
+                                  curso=estrutura.curso, semestres=semestres)
     context = {
         'tt': tt,
         'estrutura': estrutura,
-        'ano_periodo': ano_periodo,
+        'periodo_letivo': periodo_letivo,
         'semestres_atual': criar_string(semestres) + '.',
         'sugestao_incluir_link': sugestao_incluir_link,
         'sugestao_manter_link': sugestao_manter_link,
@@ -57,15 +55,13 @@ def sugestao_manter(request, estrutura, sugestao_incluir_link, sugestao_grade_li
     semestres = ['100']
     semestres = atualiza_semestres(semestres)
 
-    ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
-    ano = config.get('PeriodoSeguinte', 'ano')
-    periodo = config.get('PeriodoSeguinte', 'periodo')
+    periodo_letivo = get_periodo_planejado()
 
-    st_list = carrega_sugestao_turmas(estrutura, semestres, ano, periodo)
+    st_list = carrega_sugestao_turmas(estrutura, semestres, periodo_letivo.ano, periodo_letivo.periodo)
     st_list = sorted(st_list, key=lambda sc: sc.componente.nome)
 
     context = {
-        'ano_periodo': ano_periodo,
+        'periodo_letivo': periodo_letivo,
         'estrutura': estrutura,
         'sugestao_incluir_link': sugestao_incluir_link,
         'sugestao_editar_link': sugestao_editar_link,
@@ -78,10 +74,8 @@ def sugestao_manter(request, estrutura, sugestao_incluir_link, sugestao_grade_li
 
 
 def sugestao_incluir(request, estrutura, sugestao_manter_link):
-    ano_periodo = config.get('PeriodoSeguinte', 'ano_periodo')
-
+    periodo_letivo = get_periodo_planejado()
     vinculos = []
-
     if request.method == "POST":
         form_sugestao = SugestaoTurmaForm(request.POST, estrutura=estrutura)
         vinculos_docente = request.POST.get('vinculos_docente')
@@ -94,6 +88,7 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
             if not verificar_existencia(form_sugestao, sugestao_turma) \
                and not verificar_choques(form_sugestao, sugestao_turma, horarios_list):
                 sugestao_turma.save()
+                vinculos_docente_salvar(sugestao_turma, vinculos)
                 atualizar_horarios(sugestao_turma, horarios_list)
                 messages.success(request, 'Sugestão de Turma cadastrada com sucesso.')
                 return redirect(sugestao_manter_link)
@@ -102,7 +97,7 @@ def sugestao_incluir(request, estrutura, sugestao_manter_link):
         form_sugestao = SugestaoTurmaForm(estrutura=estrutura)
 
     context = {
-        'ano_periodo': ano_periodo,
+        'periodo_letivo': periodo_letivo,
         'estrutura': estrutura,
         'form_sugestao': form_sugestao,
         'vinculos': vinculos,
@@ -118,13 +113,14 @@ def atualizar_horarios(sugestao, novos_horarios):
 
 
 def carregar_dados(request, sugestao_turma, estrutura):
-    ano = config.get('PeriodoSeguinte', 'ano')
-    periodo = config.get('PeriodoSeguinte', 'periodo')
+    periodo_letivo = get_periodo_planejado()
 
     sugestao_turma.tipo = 'REGULAR'
-    sugestao_turma.ano = ano
-    sugestao_turma.periodo = periodo
-    sugestao_turma.campus_turma = sugestao_turma.local.campus
+    sugestao_turma.ano = periodo_letivo.ano
+    sugestao_turma.periodo = periodo_letivo.periodo
+    sugestao_turma.campus_turma = estrutura.curso.centro.sigla
+    if sugestao_turma.local:
+        sugestao_turma.campus_turma = sugestao_turma.local.campus
     sugestao_turma.criador = request.user
     sugestao_turma.total_solicitacoes = 0
 
@@ -154,22 +150,29 @@ def verificar_existencia(form_sugestao, sugestao_turma):
 
 def verificar_choques(form_sugestao, sugestao_turma, horarios_list):
     choques_componentes = set()
+    choques_componentes_semestre = set()
     choques_horarios = []
+    choques_semestres = []
     choque_docente = []
+    periodo_letivo = get_periodo_planejado()
     for horario in horarios_list:
-        sugestoes = horario.sugestoes.all()
+        sugestoes = horario.sugestoes.all().filter(
+            ano=periodo_letivo.ano, periodo=periodo_letivo.periodo)
         if sugestoes:
             for s in sugestoes:
                 if s.codigo_turma == sugestao_turma.codigo_turma and s.componente == sugestao_turma.componente:
                     break
-                if s.local == sugestao_turma.local:
+                if sugestao_turma.local is not None and s.local == sugestao_turma.local:
                     choques_componentes.add(str(s.componente.codigo) + ' - ' + s.componente.nome)
                     choques_horarios.append(horario.dia + horario.turno + horario.ordem)
-                if s.docente == sugestao_turma.docente:
+                if sugestao_turma.docente is not None and s.docente == sugestao_turma.docente:
                     choques_componentes.add(str(s.componente.codigo) + ' - ' + s.componente.nome)
                     choque_docente.append(horario.dia + horario.turno + horario.ordem)
+                if s.semestre == sugestao_turma.semestre:
+                    choques_componentes_semestre.add(str(s.componente.codigo) + ' - ' + s.componente.nome)
+                    choques_semestres.append(horario.dia + horario.turno + horario.ordem)
 
-    if choques_horarios or choque_docente or choques_componentes:
+    if choques_horarios or choque_docente or choques_componentes or choques_semestres:
         if choques_componentes:
             form_sugestao.add_error('componente',
                                     'Choque com os Componentes Curriculares: ' +
@@ -182,6 +185,12 @@ def verificar_choques(form_sugestao, sugestao_turma, horarios_list):
             form_sugestao.add_error('docente',
                                     'Docente com choque nos horários: ' +
                                     criar_string(choque_docente) + '.')
+        if choques_semestres:
+            form_sugestao.add_error('componente',
+                                    'Choque com os Componentes Curriculares do mesmo semestre: ' +
+                                    criar_string(list(choques_componentes_semestre)) + '.')
+            form_sugestao.add_error('descricao_horario', 'Choque nos horários: ' +
+                                    criar_string(choques_semestres) + '.')
         return True
     return False
 
@@ -204,6 +213,11 @@ def sugestao_editar(request, pk, estrutura, template_name='core/sugestao/editar.
         messages.error(request, 'Você não tem permissão de Editar esta Sugestão de Turma.')
         return redirecionar(request)
     form_sugestao = SugestaoTurmaForm(request.POST or None, instance=sugestao, estrutura=estrutura)
+    vinculos_docente = request.POST.get('vinculos_docente')
+    if vinculos_docente is not None:
+        vinculos = carregar_vinculos(vinculos_docente)
+    else:
+        vinculos = load_vinculos_docentes(sugestao)
     if form_sugestao.is_valid():
         sugestao_turma = form_sugestao.save(commit=False)
         horarios_list = converte_desc_horario(sugestao_turma.descricao_horario)
@@ -211,12 +225,13 @@ def sugestao_editar(request, pk, estrutura, template_name='core/sugestao/editar.
             sugestao_turma.save()
             sugestao_turma.horarios.clear()  # limpa o conjunto de horários
             sugestao_turma.horarios.set(horarios_list)  # adiciona os novos horários
-
+            vinculos_docente_salvar(sugestao_turma, vinculos)
             messages.success(request, 'Sugestão de Turma alterada com sucesso.')
             return redirecionar(request)
     else:
         messages.error(request, form_sugestao.errors)
-    return render(request, template_name, {'form': form_sugestao})
+    return render(request, template_name,
+                  {'form': form_sugestao, 'vinculos': vinculos})
 
 
 @permission_required("core.delete_sugestaoturma", login_url='/core/usuario/logar', raise_exception=True)
@@ -508,7 +523,7 @@ def load_vinculos(request):
 
 def carregar_vinculos(vinculos_docente):
     vinculos = []
-    if vinculos_docente != '':
+    if vinculos_docente is not None and vinculos_docente != '':
         vds = json.loads(vinculos_docente)
         for v in vds['vinculos']:
             docente_id = v["docente"]
@@ -517,20 +532,46 @@ def carregar_vinculos(vinculos_docente):
             docente = Docente.objects.get(pk=docente_id)
             vinculo = {'docente': docente, 'horarios': horarios, 'carga_horaria': carga_horaria}
             vinculos.append(vinculo)
-            print(vinculo)
+    return vinculos
+
+
+def load_vinculos_docentes(sugestao):
+    vinculos_list = VinculoDocenteSugestao.objects.filter(sugestao=sugestao).all()
+    vinculos = []
+    for v in vinculos_list:
+        horarios = v.descricao_horario
+        carga_horaria = v.carga_horaria
+        docente = v.docente
+        vinculo = {'docente': docente, 'horarios': horarios, 'carga_horaria': carga_horaria}
+        vinculos.append(vinculo)
     return vinculos
 
 
 def existe_choques_docente(docente, horarios_list):
     choque_docente = []
-    ano = config.get('PeriodoSeguinte', 'ano')
-    periodo = config.get('PeriodoSeguinte', 'periodo')
+    periodo_letivo = get_periodo_planejado()
 
     for horario in horarios_list:
-        docente_sugestoes = list(horario.sugestoes.all().filter(docente=docente, ano=ano, periodo=periodo))
+        docente_sugestoes = list(horario.sugestoes.all().filter(
+            docente=docente, ano=periodo_letivo.ano, periodo=periodo_letivo.periodo))
         if docente_sugestoes:
             choque_docente.append(horario.dia + horario.turno + horario.ordem)
 
     if choque_docente:
         return choque_docente, True
     return None, False
+
+
+def adicionar_vinculo_docente(sugestao, docente, carga_horaria, horarios):
+    if docente is not None and sugestao is not None and \
+       not VinculoDocenteSugestao.objects.filter(sugestao=sugestao, docente=docente).exists():
+        vinculo = VinculoDocenteSugestao(
+            docente=docente, sugestao=sugestao, carga_horaria=carga_horaria, descricao_horario=horarios)
+        vinculo.save()
+        horarios_docente = converte_desc_horario(horarios)
+        vinculo.horarios.set(horarios_docente)
+
+
+def vinculos_docente_salvar(sugestao, vinculos):
+    for vinculo in vinculos:
+        adicionar_vinculo_docente(sugestao, vinculo['docente'], vinculo['carga_horaria'], vinculo['horarios'])

@@ -44,11 +44,12 @@
       </table>
       <input type="hidden" name="next" value="{{ request.GET.next }}">
       <div id="div_componente_selecionado" class="alert-info"></div>
-      <div class="form-group">
-        <a class="btn btn-primary btn-warning" href="{% url 'enquete_abstencao' enquete.pk %}">
-          Abstenção</a>
+      <div class="form-group text-center">
         <a class="btn btn-primary btn-danger" href="{% url 'enquete_detalhar' enquete.pk %}">
           Cancelar</a>
+        <a class="btn btn-primary btn-warning" href="{% url 'enquete_abstencao' enquete.pk %}">
+          Abstenção</a>
+
         <input type="submit" value="Votar" class="btn btn-success">
       </div>
     </form>

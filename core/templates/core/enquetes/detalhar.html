@@ -58,19 +58,26 @@
         </table>
       </div>
 
-      <div>
-        {% if user.is_authenticated %}
-          <div id="votar" class="center text-center form-group">
-          {% if perms.core.add_vototurma %}
-            <a class="btn btn-primary btn-success"
-               href="{% url 'enquete_votar' object.pk %}?next={{ request.path|urlencode }}">
-            <span class="material-icons align-middle">
-              create
-            </span>
-              Votar</a>
+      <div id="votar" class="center text-center form-group">
+        <a class="btn btn-primary btn-danger" href="/core/enquetes/list/">
+          Voltar
+        </a>
+        <a class="btn btn-primary btn-warning"
+             href="{% url 'enquete_detalhar_voto' object.pk %}?next={{ request.path|urlencode }}">
+          <span class="material-icons align-middle">
+            find_in_page
+          </span>
+            Detalhar Voto</a>
+          {% if user.is_authenticated %}
+            {% if perms.core.add_vototurma and object.status != object.FECHADA %}
+              <a class="btn btn-primary btn-success"
+                 href="{% url 'enquete_votar' object.pk %}?next={{ request.path|urlencode }}">
+              <span class="material-icons align-middle">
+                create
+              </span>
+                Votar</a>
+            {% endif %}
           {% endif %}
-        </div>
-        {% endif %}
       </div>
 
       <div>

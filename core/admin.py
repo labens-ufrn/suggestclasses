@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from core.models import Horario, Centro, Departamento, Curso, ComponenteCurricular, EstruturaCurricular, \
     OrganizacaoCurricular, Docente, Turma, SugestaoTurma, Sala, FuncaoGratificada, Discente, PeriodoLetivo, \
-    Enquete, VotoTurma
+    Enquete, VotoTurma, VinculoDocente, VinculoDocenteSugestao
 
 admin.site.register(Centro)
 admin.site.register(Departamento)
@@ -13,7 +13,14 @@ class SalaAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Sala, SalaAdmin)
-admin.site.register(ComponenteCurricular)
+
+
+class ComponenteCurricularAdmin(admin.ModelAdmin):
+    list_display = ('codigo', 'nome', 'departamento')
+    search_fields = ['nome']
+
+
+admin.site.register(ComponenteCurricular, ComponenteCurricularAdmin)
 admin.site.register(EstruturaCurricular)
 
 
@@ -70,3 +77,5 @@ class EnqueteAdmin(admin.ModelAdmin):
 
 admin.site.register(Enquete, EnqueteAdmin)
 admin.site.register(VotoTurma)
+admin.site.register(VinculoDocente)
+admin.site.register(VinculoDocenteSugestao)

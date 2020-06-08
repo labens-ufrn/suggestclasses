@@ -25,7 +25,7 @@
         <tr>
           <td class="font-weight-bold" width="18%">Docente</td>
           <td>
-            {% include 'core/sugestao/docente_exibir.html' with turma=object %}
+            {% include 'core/sugestao/detalhar_vinculos_docente.html' with turma=object %}
             {% if object.docente %}
             <a href="{% url 'docente_detalhar' object.docente.pk %}">
               <span class="material-icons md-18 align-middle">
