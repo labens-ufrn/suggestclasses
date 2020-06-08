@@ -39,7 +39,8 @@ from .dao.departamento_dao import get_departamentos
 from .filters import SalaFilter, DocenteFilter, EnqueteFilter
 from .forms import CadastroUsuarioForm
 from .models import Horario
-from .visoes.enquete_view import enquete_voto_view, enquete_deletar_voto_discente, get_qtd_votantes, get_qtd_abstencao
+from .visoes.enquete_view import enquete_voto_view, enquete_deletar_voto_discente, get_qtd_votantes, get_qtd_abstencao, \
+    enquete_detalhar_voto_view
 from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir, sugestao_editar, \
     redirecionar, sugestao_deletar, atualizar_solicitacao, discente_existe, docente_existe, criar_string, \
     discente_grade_horarios, solicitacao_discente_deletar, get_solicitacoes, docente_grade_horarios
@@ -883,6 +884,11 @@ def search_enquetes(request):
 @permission_required("core.add_vototurma", login_url='/core/usuario/logar', raise_exception=True)
 def enquete_votar(request, pk):
     return enquete_voto_view(request, pk)
+
+
+@login_required(login_url='/accounts/login')
+def enquete_detalhar_voto(request, pk):
+    return enquete_detalhar_voto_view(request, pk)
 
 
 @permission_required("core.add_vototurma", login_url='/core/usuario/logar', raise_exception=True)

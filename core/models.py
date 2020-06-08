@@ -424,6 +424,15 @@ class Enquete(models.Model):
     """
     Uma enquete é uma consulta onde discente podem votar nos componentes curriculares de interesse.
     """
+    COMPLETA = "1"
+    OBRIGATORIAS = "2"
+    OPTATIVAS = "3"
+    PARCIAL = "4"
+
+    CADASTRADA = "1"
+    ATIVA = "2"
+    FECHADA = "3"
+
     STATUS_CHOICES = (
         ("1", "Cadastrada"),
         ("2", "Ativa"),

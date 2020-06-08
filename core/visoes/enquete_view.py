@@ -1,3 +1,6 @@
+from datetime import datetime
+
+import pytz
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect, get_object_or_404
@@ -15,6 +18,14 @@ def enquete_voto_view(request, pk, abstencao=None):
     discente = check_discente(request)
 
     enquete = Enquete.objects.get(pk=pk)
+
+    agora = datetime.now()
+    utc = pytz.UTC
+    if enquete.data_hora_inicio.replace(tzinfo=utc) > agora.replace(tzinfo=utc) \
+       or agora.replace(tzinfo=utc) > enquete.data_hora_fim.replace(tzinfo=utc):
+        messages.error(request, 'Voto fora do período da Enquete "' + enquete.nome + '".')
+        return redirect('/core/enquetes/list')
+
     mesmo_curso = check_curso(enquete, discente)
     if not mesmo_curso:
         messages.error(request, 'Você não pode votar na enquete "' + enquete.nome + '".')
@@ -53,6 +64,24 @@ def enquete_voto_view(request, pk, abstencao=None):
         'votos_por_discente': votos_por_discente,
     }
     return render(request, 'core/enquetes/votar.html', context)
+
+
+def enquete_detalhar_voto_view(request, pk, abstencao=None):
+    usuario = request.user
+    if not discente_existe(usuario):
+        messages.error(request, 'Não há um discente relacionado ao usuário.')
+        return redirecionar(request)
+    discente = check_discente(request)
+    enquete = Enquete.objects.get(pk=pk)
+
+    qtd_votos = get_qtd_votos(enquete, discente)
+    votos_por_discente = get_votos(enquete, discente)
+    context = {
+        'enquete': enquete,
+        'qtd_votos': qtd_votos,
+        'votos_por_discente': votos_por_discente,
+    }
+    return render(request, 'core/enquetes/detalhar_voto.html', context)
 
 
 def tem_componente(form_voto):
