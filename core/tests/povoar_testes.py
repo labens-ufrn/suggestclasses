@@ -6,7 +6,8 @@ from dateutil.parser import parse
 from django.contrib.auth.models import User, Group
 from core.bo.turma import converte_desc_horario
 from core.models import Centro, Departamento, ComponenteCurricular, Docente, EstruturaCurricular, Curso, \
-    OrganizacaoCurricular, Turma, Sala, SugestaoTurma, Discente, FuncaoGratificada, Horario, VinculoDocente
+    OrganizacaoCurricular, Turma, Sala, SugestaoTurma, Discente, FuncaoGratificada, Horario, VinculoDocente, \
+    PeriodoLetivo
 from dados.povoar_horarios import povoar_horarios
 from dados.povoar_turma import adicionar_vinculo_docente
 
@@ -62,6 +63,7 @@ def remover_dados():
 
 def criar_tudo():
     criar_horarios()
+    criar_periodos()
     criar_usuario()
     criar_grupos()
     criar_centro()
@@ -93,6 +95,7 @@ def remover_tudo():
     remover_salas()
     remover_centro()
     remover_grupos()
+    remover_periodos()
     remover_usuario()
 
 
@@ -111,6 +114,17 @@ def criar_usuario():
         User.objects.create_user('docente3', 'docente3@thebeatles.com', 'johnpassword')
     if not User.objects.filter(username='discente1'):
         User.objects.create_user('discente1', 'discente1@thebeatles.com', 'johnpassword')
+
+
+def criar_periodos():
+    PeriodoLetivo.objects.create(
+        nome='Teste 2020.2', ano=2020, periodo=2,
+        data_inicio=parse('2020/05/01'), data_fim=parse('2020/11/30'),
+        data_consolidacao=parse('2020/12/31'), status=PeriodoLetivo.PLANEJADO)
+    PeriodoLetivo.objects.create(
+        nome='Teste 2020.1', ano=2020, periodo=1,
+        data_inicio=parse('2020/01/01'), data_fim=parse('2020/06/30'),
+        data_consolidacao=parse('2020/07/31'), status=PeriodoLetivo.ATIVO)
 
 
 def criar_grupos():
@@ -148,6 +162,14 @@ def remover_grupos():
         Group.objects.get(name='DocentesTeste').delete()
         Group.objects.get(name='ChefesTeste').delete()
     except Group.DoesNotExist:
+        print('.', end="")
+
+
+def remover_periodos():
+    try:
+        PeriodoLetivo.objects.get(nome='Teste 2020.1', ano=2020, periodo=1).delete()
+        PeriodoLetivo.objects.get(nome='Teste 2020.2', ano=2020, periodo=2).delete()
+    except PeriodoLetivo.DoesNotExist:
         print('.', end="")
 
 
