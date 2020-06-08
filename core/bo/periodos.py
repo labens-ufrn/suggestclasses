@@ -16,3 +16,9 @@ def get_periodo_planejado():
     periodos = get_periodo_letivo(status=PeriodoLetivo.PLANEJADO)
     periodo_letivo = periodos.first()
     return periodo_letivo
+
+
+def get_periodo_ativo():
+    periodos = get_periodo_letivo(status=PeriodoLetivo.ATIVO)
+    periodo_letivo = periodos.first()
+    return periodo_letivo

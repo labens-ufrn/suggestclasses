@@ -25,6 +25,7 @@ from .bo.curso import get_cursos
 from .bo.discentes import get_discentes, get_discentes_ativos, get_qtd_discentes_ativos
 from .bo.docente import get_docentes, carrega_turmas_por_horario
 from .bo.enquetes import get_enquetes
+from .bo.periodos import get_periodo_planejado, get_periodo_ativo
 from .bo.sala import get_salas
 from .bo.sevices import get_estrutura_direito, get_estrutura_matematica, \
     get_estrutura_pedagogia, get_estrutura_administracao, get_estrutura_turismo, get_estrutura_letras_portugues, \
@@ -913,13 +914,8 @@ def enquete_votos_listar(request, pk, cc_pk):
 
 @login_required(login_url='/accounts/login')
 def profile(request, username):
-    ano_periodo_atual = config.get('PeriodoAtual', 'ano_periodo')
-    ano_atual = config.get('PeriodoAtual', 'ano')
-    periodo_atual = config.get('PeriodoAtual', 'periodo')
-
-    ano_periodo_seguinte = config.get('PeriodoSeguinte', 'ano_periodo')
-    ano_seguinte = config.get('PeriodoSeguinte', 'ano')
-    periodo_seguinte = config.get('PeriodoSeguinte', 'periodo')
+    periodo_letivo_atual = get_periodo_ativo()
+    periodo_letivo_planejado = get_periodo_planejado()
     usuario = User.objects.get(username=username)
 
     if request.user != usuario:
@@ -935,14 +931,18 @@ def profile(request, username):
         perfil = usuario.discente
         perfil_link = 'core/usuario/profile_discente.html'
         grupos = criar_string(usuario.groups.all())
-        horarios = discente_grade_horarios(perfil, ano_seguinte, periodo_seguinte)
-        solicitacao_list = get_solicitacoes(perfil, ano_seguinte, periodo_seguinte)
+        horarios = discente_grade_horarios(
+            perfil, periodo_letivo_planejado.ano, periodo_letivo_planejado.periodo)
+        solicitacao_list = get_solicitacoes(
+            perfil, periodo_letivo_planejado.ano, periodo_letivo_planejado.periodo)
     elif docente_existe(usuario):
         perfil = usuario.docente
         perfil_link = 'core/usuario/profile_docente.html'
         grupos = criar_string(usuario.groups.all())
-        horarios_atual = carrega_turmas_por_horario(perfil, ano_atual, periodo_atual)
-        horarios = docente_grade_horarios(perfil, ano_seguinte, periodo_seguinte, semestres)
+        horarios_atual = carrega_turmas_por_horario(
+            perfil, periodo_letivo_atual.ano, periodo_letivo_atual.periodo)
+        horarios = docente_grade_horarios(
+            perfil, periodo_letivo_planejado.ano, periodo_letivo_planejado.periodo, semestres)
     else:
         perfil = None
         perfil_link = 'core/usuario/profile.html'
@@ -954,8 +954,8 @@ def profile(request, username):
         'perfil': perfil,
         'horarios_atual': horarios_atual,
         'horarios': horarios,
-        'ano_periodo_atual': ano_periodo_atual,
-        'ano_periodo': ano_periodo_seguinte,
+        'ano_periodo_atual': periodo_letivo_atual,
+        'ano_periodo': periodo_letivo_planejado,
         'solicitacao_deletar_link': 'solicitacao_deletar',
         'solicitacao_list': solicitacao_list,
     }
