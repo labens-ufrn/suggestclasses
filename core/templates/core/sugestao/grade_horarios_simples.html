@@ -1,0 +1,146 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+  <section class="page-section" id="horarios">
+    <div class="container">
+
+      <div id="manter" class="center text-center form-group">
+        <h3 class="page-section-heading text-center text-secondary mb-0">
+          Sugestões de Turmas - <b>{{ estrutura.curso.nome }}</b></h3>
+        <h5 class="page-section-heading text-center text-secondary mb-0">
+          {{ periodo_letivo }}</h5>
+      </div>
+      {% if user.is_authenticated %}
+        <div id="manter" class="center text-center form-group">
+          {% if perms.core.add_sugestaoturma %}
+            <a class="btn btn-primary btn-success" href="{{ sugestao_incluir_link }}?next={{ request.path|urlencode }}">
+            <span class="material-icons align-middle">
+              create
+            </span>
+              Incluir Sugestões de Turmas</a>
+          {% endif %}
+          {% if perms.core.change_sugestaoturma %}
+            <a class="btn btn-primary btn-info" href="{{ sugestao_manter_link }}">
+            <span class="material-icons align-middle">
+              edit
+            </span>
+              Manter Sugestões de Turmas</a>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="text-center" id="div_semestres" style="font-size: 90%">
+        <form id="form_semestres" method="get">
+          <fieldset>
+            <input type="checkbox" id="1p" name="semestres" value="1">
+            <label for="1p">1º Período</label>
+            <input type="checkbox" id="2p" name="semestres" value="2">
+            <label for="2p">2º Período</label>
+            <input type="checkbox" id="3p" name="semestres" value="3">
+            <label for="3p">3º Período</label>
+            <input type="checkbox" id="4p" name="semestres" value="4">
+            <label for="4p">4º Período</label>
+            <input type="checkbox" id="5p" name="semestres" value="5">
+            <label for="5p">5º Período</label>
+            <input type="checkbox" id="6p" name="semestres" value="6">
+            <label for="6p">6º Período</label>
+            <input type="checkbox" id="7p" name="semestres" value="7">
+            <label for="7p">7º Período</label>
+            <input type="checkbox" id="8p" name="semestres" value="8">
+            <label for="8p">8º Período</label>
+            <input type="checkbox" id="0p" name="semestres" value="0">
+            <label for="0p">Opcionais</label>
+            <input type="checkbox" id="todos" name="semestres" value="100">
+            <label for="todos">Todos</label>
+          </fieldset>
+          <button id="get_sugestoes" type="submit">Carregar Sugestões de Turmas</button>
+        </form>
+      </div>
+
+      <br/>
+      <table class="table table-striped table-sm table-bordered">
+        <thead class="thead-light">
+        <tr align="center">
+          <th colspan="7">Sugestões de Turmas - {{ periodo_letivo }} - Semestres: {{ semestres_atual }}
+            <div class="align-middle" style="font-size: 12px">
+              <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>
+              <span class="align-middle">Obrigatória&nbsp;&nbsp;</span>
+              <span class="material-icons md-18 align-middle" style="color: green">bookmark</span>
+              <span class="align-middle">Optativa&nbsp;&nbsp;</span>
+              <span class="material-icons md-18 align-middle" style="color: dodgerblue">school</span>
+              <span class="align-middle">Vagas&nbsp;&nbsp;</span>
+              <span class="material-icons md-18 align-middle" style="color: dodgerblue">star</span>
+              <span class="align-middle">Interessados&nbsp;&nbsp;</span>
+              <span class="material-icons md-18 align-middle" style="color: dodgerblue">find_in_page</span>
+              <span class="align-middle">Detalhar&nbsp;&nbsp;</span>
+            </div>
+          </th>
+        </tr>
+        <tr align="center">
+          <th scope="col">#</th>
+          <th scope="col">Segunda</th>
+          <th scope="col">Terça</th>
+          <th scope="col">Quarta</th>
+          <th scope="col">Quinta</th>
+          <th scope="col">Sexta</th>
+          <th scope="col">Sábado</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for semana in tt %}
+          <tr>
+            <th class="align-middle" scope="row" width="12.4%" style="font-size: 12px;text-align: center;">
+              {{ semana.0.horario.ordem }}º: {{ semana.0.horario.hora_inicio }} - {{ semana.0.horario.hora_final }}
+            </th>
+            {% for th in semana %}
+              <td class="align-middle text-center" width="14.6%">
+                {% for turma in th.turmas %}
+                  <div class="sugestao-turma border">
+                    {% if turma.semestre != 0 %}
+                      <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>
+                      <span class="align-middle" style="color: darkslateblue">
+                        &nbsp;{{ turma.componente.codigo }} - T{{ turma.codigo_turma }}&nbsp;
+                      </span>
+                      <span class="material-icons md-18 align-middle" style="color: darkslateblue">
+                          filter_{{ turma.semestre }}
+                      </span>
+                    {% else %}
+                      <span class="material-icons md-18 align-middle" style="color: green">bookmark</span>
+                      <span class="align-middle" style="color: green">
+                        &nbsp;{{ turma.componente.codigo }} - T{{ turma.codigo_turma }}&nbsp;
+                      </span>
+                      <span class="material-icons md-18 align-middle" style="color: green">
+                        check_circle_outline
+                      </span>
+                    {% endif %}
+                    <br/>
+                    <b>{{ turma.componente.nome }}</b>
+                    <br/>
+                    {% include 'core/sugestao/vinculos_docente_exibir.html' %}
+                    <br/>
+                  </div>
+                {% endfor %}
+              </td>
+            {% endfor %}
+          </tr>
+        {% empty %}
+          <tr>
+            <td class="align-middle text-center" colspan="7">Não há Sugestões de Turmas cadastradas!</td>
+          </tr>
+        {% endfor %}
+        <tbody>
+      </table>
+    </div>
+  </section>
+{% endblock content %}
+{% block myscripts %}
+  <script>
+    $(document).ready(function () {
+      $('#get_sugestoes').click({
+        serviceUrl: '{{ sugestao_list_link }}',
+        paramName: 'semestres',
+      });
+    });
+  </script>
+{% endblock myscripts %}

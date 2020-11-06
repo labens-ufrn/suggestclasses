@@ -116,3 +116,5 @@ path.env
 /static/admin/
 /static/css/
 /static/js/
+.vscode/settings.json
+dados/locais.txt
