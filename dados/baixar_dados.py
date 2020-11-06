@@ -122,6 +122,25 @@ def download_turmas():
         urllib.request.urlretrieve(url, file_name)
         print('.................')
 
+    print("Download do CSV das Turmas 2020.5 do CERES/UFRN ...!")
+    file_name = "turmas-2020.5.csv"
+    if os.path.exists(file_name):
+        print("Arquivo turmas-2020.5.csv já existe!")
+    else:
+        url = 'http://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/eba5c0bb-5199-469b-acbd' \
+              '-d941d151c16f/download/turmas-2020.5.csv'
+        urllib.request.urlretrieve(url, file_name)
+        print('.................')
+
+    print("Download do CSV das Turmas 2020.6 do CERES/UFRN ...!")
+    file_name = "turmas-2020.6.csv"
+    if os.path.exists(file_name):
+        print("Arquivo turmas-2020.6.csv já existe!")
+    else:
+        url = 'http://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/964f91df-f322-4e56-897b' \
+              '-f06cca611904/download/turmas-2020.6.csv'
+        urllib.request.urlretrieve(url, file_name)
+        print('.................')
 
 def download_docentes():
     print("Download do CSV dos Docentes do CERES/UFRN ...!")

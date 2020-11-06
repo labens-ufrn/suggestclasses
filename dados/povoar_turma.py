@@ -31,6 +31,8 @@ def criar_turmas():
     criar_turmas_semestre('turmas-2019.1.csv')
     criar_turmas_semestre('turmas-2019.2.csv')
     criar_turmas_semestre('turmas-2020.1.csv')
+    criar_turmas_semestre('turmas-2020.5.csv')
+    criar_turmas_semestre('turmas-2020.6.csv')
 
 
 def criar_turmas_semestre(turmas_csv):
@@ -89,7 +91,7 @@ def carregar_turma(row):
                                    componente=cc)
 
         local_str = local + ', ' + campus_turma
-        print('Local: ' + local_str)
+        # print('Local: ' + local_str)
         locais_set.add(local_str)
 
         horarios_list = converte_desc_horario(descricao_horario)
