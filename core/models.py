@@ -312,8 +312,8 @@ class SugestaoTurma(models.Model):
         verbose_name_plural = 'sugestões de turmas'
 
     def __str__(self):
-        return self.codigo_turma + ' - ' + self.componente.__str__() + ' - ' \
-               + self.descricao_horario
+        return self.codigo_turma + ' - ' + str(self.componente) + ' - ' \
+               + self.descricao_horario + ' (' + str(self.ano) + '.' + str(self.periodo) + ')'
 
 
 class FuncaoGratificada(models.Model):
@@ -382,6 +382,8 @@ class SolicitacaoTurma(models.Model):
     class Meta:
         unique_together = ('solicitador', 'turma')
 
+    def __str__(self):
+        return str(self.solicitador) + ' (' + str(self.turma) + ')'
 
 class VinculoDocente(models.Model):
     docente = models.ForeignKey(Docente, on_delete=models.PROTECT)
@@ -494,3 +496,7 @@ class VinculoDocenteSugestao(models.Model):
 
     class Meta:
         unique_together = ('docente', 'sugestao')
+    
+    def __str__(self):
+        return str(self.sugestao) + ' ' + str(self.sugestao.ano) + '.' + str(self.sugestao.periodo) + ' (' + str(self.docente) + ')'
+
