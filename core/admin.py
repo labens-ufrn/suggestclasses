@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from core.models import Horario, Centro, Departamento, Curso, ComponenteCurricular, EstruturaCurricular, \
-    OrganizacaoCurricular, Docente, Turma, SugestaoTurma, Sala, FuncaoGratificada, Discente, PeriodoLetivo, \
+    OrganizacaoCurricular, Docente, SolicitacaoTurma, Turma, SugestaoTurma, Sala, FuncaoGratificada, Discente, PeriodoLetivo, \
     Enquete, VotoTurma, VinculoDocente, VinculoDocenteSugestao
 
 admin.site.register(Centro)
@@ -79,3 +79,4 @@ admin.site.register(Enquete, EnqueteAdmin)
 admin.site.register(VotoTurma)
 admin.site.register(VinculoDocente)
 admin.site.register(VinculoDocenteSugestao)
+admin.site.register(SolicitacaoTurma)
