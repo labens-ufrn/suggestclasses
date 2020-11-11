@@ -16,7 +16,7 @@
     <td>{{ v.horarios }}</td>
     <td>{{ v.carga_horaria }}</td>
     <td><input id="vinculo_{{ v.docente.pk }}"
-               onclick="remover_vinculo({{ v.docente.pk }})"
+               onclick="remover_vinculo('{{ v.docente.pk }}')"
                type="button" value="Remover" class="btn btn-primary">
     </td>
   </tr>
