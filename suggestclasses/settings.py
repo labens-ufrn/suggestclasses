@@ -33,8 +33,10 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver']
 DOMAINS_WHITELIST = ALLOWED_HOSTS
 
-SESSION_COOKIE_AGE = 15 * 60  # 15 minutos
+SESSION_COOKIE_AGE = 60 * 60 * 12 # 12 horas
 SESSION_COOKIE_SECURE = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_PATH = '/core'
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/core'
