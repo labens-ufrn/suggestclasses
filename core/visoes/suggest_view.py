@@ -482,6 +482,8 @@ def check_vinculo_docente(request):
     docente_id = request.GET.get('vinculo[docente]')
     horarios = request.GET.get('vinculo[horarios]')
     carga_horaria = request.GET.get('vinculo[carga_horaria]')
+    componente_id = request.GET.get('vinculo[componente]')
+    codigo_turma = request.GET.get('vinculo[codigo_turma]')
 
     docente = Docente.objects.get(pk=docente_id)
     existe_docente = False
@@ -493,7 +495,7 @@ def check_vinculo_docente(request):
 
     if not existe_docente:
         horarios_list = converte_desc_horario(horarios)
-        choques_docente, houve_choque = existe_choques_docente(docente, horarios_list)
+        choques_docente, houve_choque = existe_choques_docente(docente, horarios_list, componente_id, codigo_turma)
         if not houve_choque:
             vinculo = {'docente': docente, 'horarios': horarios, 'carga_horaria': carga_horaria}
             vinculos.append(vinculo)
@@ -517,6 +519,9 @@ def check_vinculo_docente(request):
 
 def load_vinculos(request):
     vinculos_docente = request.GET.get('vinculos_docente')
+    docente_removido = request.GET.get('docente_removido')
+    sugestao_id = request.GET.get('sugestao_id')
+    remover_vinculo_docente(sugestao_id, docente_removido)
     vinculos = carregar_vinculos(vinculos_docente)
     return render(request, 'core/sugestao/vinculo_docente_list.html', {'vinculos': vinculos})
 
@@ -547,15 +552,20 @@ def load_vinculos_docentes(sugestao):
     return vinculos
 
 
-def existe_choques_docente(docente, horarios_list):
+def existe_choques_docente(docente, horarios_list, componente_id, codigo_turma):
     choque_docente = []
     periodo_letivo = get_periodo_planejado()
 
     for horario in horarios_list:
         docente_sugestoes = list(horario.sugestoes.all().filter(
-            docente=docente, ano=periodo_letivo.ano, periodo=periodo_letivo.periodo))
-        if docente_sugestoes:
-            choque_docente.append(horario.dia + horario.turno + horario.ordem)
+            ano=periodo_letivo.ano, periodo=periodo_letivo.periodo
+            ).exclude(componente__id=componente_id, codigo_turma=codigo_turma) )
+
+        for ds in docente_sugestoes:
+            vinculos_existentes = ds.vinculodocentesugestao_set.all()
+            existe = vinculos_existentes.filter(docente__id=docente.id)
+            if existe:
+                choque_docente.append(horario.dia + horario.turno + horario.ordem)
 
     if choque_docente:
         return choque_docente, True
@@ -575,3 +585,10 @@ def adicionar_vinculo_docente(sugestao, docente, carga_horaria, horarios):
 def vinculos_docente_salvar(sugestao, vinculos):
     for vinculo in vinculos:
         adicionar_vinculo_docente(sugestao, vinculo['docente'], vinculo['carga_horaria'], vinculo['horarios'])
+
+def remover_vinculo_docente(sugestao, docente):
+    if docente is not None and sugestao is not None and \
+       VinculoDocenteSugestao.objects.filter(sugestao__id=sugestao, docente__id=docente).exists():
+        vinculo = VinculoDocenteSugestao.objects.get(
+            docente__id=docente, sugestao__id=sugestao)
+        vinculo.delete()

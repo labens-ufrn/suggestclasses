@@ -92,6 +92,8 @@
 
     $("#add_vinculo").click(function () {
       const url = $("#SugestaoForm").attr("check-vinculo-docente-url")
+      const turmaId = $("#id_codigo_turma").val()
+      const componenteId = $("#id_componente").val()
       const docenteId = $("#id_docente").val()
       const desc_horarios = $("#id_horario_docente").val()
       const cargaHoraria = $("#id_ch_docente").val()
@@ -101,6 +103,8 @@
         docente: docenteId,
         horarios: desc_horarios,
         carga_horaria: cargaHoraria,
+        codigo_turma: turmaId,
+        componente: componenteId,
       };
 
       const data_input = {
@@ -127,16 +131,15 @@
     });
 
     function remover_vinculo(docenteId) {
-      console.log('Removendo ...')
-      console.log(docenteId)
-      console.log(lista)
+      console.log('Removendo docente: ' + docenteId)
       lista = lista.filter((item) => item.docente !== docenteId);
-      console.log(lista)
 
       let vinculos_json = JSON.stringify({vinculos:lista})
       $("#id_vinculos_docente").val(vinculos_json)
 
       const data_input = {
+        sugestao_id: '{{ form.instance.pk }}',
+        docente_removido: docenteId,
         vinculos_docente: vinculos_json,
       }
 
@@ -151,19 +154,16 @@
     }
 
     $(window).on('load',function(){
+      console.log('Carrega vínculos de docentes ...')
+      '{% for v in vinculos %}'
+        lista.push({
+          docente: '{{ v.docente.id }}',
+          horarios: '{{ v.horarios }}',
+          carga_horaria: '{{ v.carga_horaria }}',
+        });
+      '{% endfor %}'
       let vinculos_json = JSON.stringify({vinculos:lista})
-      const data_input = {
-        vinculos_docente: vinculos_json,
-      }
-
-      $.ajax({
-        url: "{% url 'ajax_load_vinculos' %}",
-        data: data_input,
-        success: function (data) {
-          const listaHTML = $("#table_vinculos")
-          listaHTML.html(data)
-        }
-      });
+      $("#id_vinculos_docente").val(vinculos_json)
     });
   </script>
 {% endblock myscripts %}

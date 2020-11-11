@@ -91,6 +91,8 @@
 
     $("#add_vinculo").click(function () {
       const url = $("#SugestaoForm").attr("check-vinculo-docente-url")
+      const turmaId = $("#id_codigo_turma").val()
+      const componenteId = $("#id_componente").val()
       const docenteId = $("#id_docente").val()
       const desc_horarios = $("#id_horario_docente").val()
       const cargaHoraria = $("#id_ch_docente").val()
@@ -100,6 +102,8 @@
         docente: docenteId,
         horarios: desc_horarios,
         carga_horaria: cargaHoraria,
+        codigo_turma: turmaId,
+        componente: componenteId,
       };
 
       const data_input = {
@@ -126,11 +130,8 @@
     });
 
     function remover_vinculo(docenteId) {
-      console.log('Removendo ...')
-      console.log(docenteId)
-      console.log(lista)
+      console.log('Removendo docente: ' + docenteId)
       lista = lista.filter((item) => item.docente !== docenteId);
-      console.log(lista)
 
       let vinculos_json = JSON.stringify({vinculos:lista})
       $("#id_vinculos_docente").val(vinculos_json)
