@@ -36,12 +36,11 @@ DOMAINS_WHITELIST = ALLOWED_HOSTS
 SESSION_COOKIE_AGE = 60 * 60 * 12 # 12 horas
 SESSION_COOKIE_SECURE = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_PATH = '/core'
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/core'
 LOGIN_URL = '/accounts/login'
-LOGOUT_REDIRECT_URL = '/core'
+LOGOUT_REDIRECT_URL = '/accounts/login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
