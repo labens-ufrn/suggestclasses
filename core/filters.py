@@ -38,7 +38,7 @@ class EnqueteFilter(django_filters.FilterSet):
     status = django_filters.ChoiceFilter(choices=STATUS_CHOICES)
 
     nome = django_filters.CharFilter(lookup_expr='icontains', label='Nome:')
-    curso = django_filters.CharFilter(lookup_expr='icontains', label='Curso:')
+    curso__nome = django_filters.CharFilter(lookup_expr='icontains', label='Curso:')
 
     class Meta:
         model = Enquete
