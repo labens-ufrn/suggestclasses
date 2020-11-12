@@ -24,7 +24,7 @@ from core.visoes.flow_view import flow_horizontal, flow_opcionais, carrega_conte
 from .bo.curso import get_cursos
 from .bo.discentes import get_discentes, get_discentes_ativos, get_qtd_discentes_ativos
 from .bo.docente import get_docentes, carrega_turmas_por_horario
-from .bo.enquetes import get_enquetes
+from .bo.enquetes import get_enquetes, get_enquetes_por_curso
 from .bo.periodos import get_periodo_planejado, get_periodo_ativo
 from .bo.sala import get_salas
 from .bo.sevices import get_estrutura_direito, get_estrutura_matematica, \
@@ -876,7 +876,13 @@ class EnqueteDetailView(DetailView):
 
 
 def search_enquetes(request):
-    enquetes = get_enquetes()
+    
+    usuario = request.user
+    if discente_existe(usuario):
+        discente = usuario.discente
+        enquetes = get_enquetes_por_curso(discente.id_curso)
+    else:
+        enquetes = get_enquetes()
     enquete_filter = EnqueteFilter(request.GET, queryset=enquetes)
     return render(request, 'core/enquetes/list.html', {'filter': enquete_filter})
 
