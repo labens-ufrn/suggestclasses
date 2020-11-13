@@ -118,3 +118,4 @@ path.env
 /static/js/
 .vscode/settings.json
 dados/locais.txt
+.vscode/launch.json
