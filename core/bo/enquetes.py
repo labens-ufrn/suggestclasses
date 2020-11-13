@@ -23,7 +23,7 @@ def get_enquetes_por_curso(curso_id=None):
         Lista todos as Enquetes.
     """
     return Enquete.objects.filter(curso__codigo=curso_id)\
-            .order_by('curso', 'status', 'data_hora_inicio', 'nome', 'periodo')
+            .order_by('curso', 'status', '-data_hora_inicio', 'nome', 'periodo')
 
 
 def get_componentes_enquete(enquete):
