@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import csv
 import django
@@ -5,9 +6,12 @@ from dateutil.parser import parse
 django.setup()
 
 from core.models import Departamento, Docente
+from dados.service.docente_service import atualizar_docente
 from suggestclasses.settings import BASE_DIR
 
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')
+
+docentes_atualizados_set = set()
 
 
 def main():
@@ -25,6 +29,13 @@ def carregar_docentes():
         for row in docentes:
             carregar_docente(row)
         print()
+    
+    data_e_hora_atuais = datetime.now()
+    docentes_atualizados = open("docentes_atualizados " + str(data_e_hora_atuais) + ".txt", "a")
+    for docente_modificados in docentes_atualizados_set:
+    # \n is placed to indicate EOL (End of Line)
+        docentes_atualizados.write(docente_modificados + '\n')
+    docentes_atualizados.close()
 
 
 def carregar_docente(row):
@@ -65,6 +76,13 @@ def carregar_docente(row):
             if docente.departamento is None:
                 docente.departamento = depto
                 docente.save()
+            
+            docente_antigo, atualizacoes = atualizar_docente(
+                siape, nome, sexo, formacao, tipo_jornada_trabalho, vinculo, categoria, \
+                classe_funcional, id_unidade_lotacao, lotacao, admissao, depto)
+            if docente_antigo and atualizacoes:
+                docentes_atualizados_set.add(str(docente_antigo) + ', ' + str(atualizacoes))
+            else:
                 print('.', end="")
 
 
