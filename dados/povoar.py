@@ -9,9 +9,11 @@ from dados.povoar_funcoes_gratificadas import carregar_funcoes_gratificadas
 from dados.povoar_turma import carregar_turma
 from dados.povoar_discentes import carregar_discentes
 from dados.povoar_salas import carregar_sala
+from dados.service.componente_service import atualizar_componente_curricular
 from core.models import Curso, Centro, Departamento, ComponenteCurricular, EstruturaCurricular, \
     OrganizacaoCurricular
 from core.bo.docente import get_docente_by_nome
+from datetime import datetime
 
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')
 
@@ -146,6 +148,8 @@ def cursos():
 def componentes():
     print("\nCriando Componentes para os Departamentos do CERES ...!")
 
+    componentes_atualizados_set = set()
+
     with open('componentes-curriculares-presenciais.csv') as csvfile:
         componentes_ceres = csv.reader(csvfile, delimiter=';')
         next(componentes_ceres)  # skip header
@@ -197,8 +201,23 @@ def componentes():
                                               modalidade=modalidade, departamento=depto)
                     cc.save()
                 else:
-                    print('.', end="")
+                    cc_antigo, atualizacoes = atualizar_componente_curricular(
+                        id_componente, tipo_componente, codigo_componente, nivel_componente, nome_componente,
+                        ch_teorico, ch_pratico, ch_estagio, ch_total, ch_dedicada_docente, ch_ead, cr_max_ead,
+                        equivalencia, pre_requisito, co_requisito, ementa, modalidade, depto
+                    )
+                    if cc_antigo and atualizacoes:
+                        componentes_atualizados_set.add(str(cc_antigo) + ', ' + str(atualizacoes))
+                    else:
+                        print('.', end="")
         print()
+    
+    data_e_hora_atuais = datetime.now()
+    componentes_atualizados = open("componentes_atualizados " + str(data_e_hora_atuais) + ".txt", "a")
+    for cc_modificados in componentes_atualizados_set:
+        # \n is placed to indicate EOL (End of Line)
+        componentes_atualizados.write(cc_modificados + '\n')
+    componentes_atualizados.close()
 
 
 def estruturas():
