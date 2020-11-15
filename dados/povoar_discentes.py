@@ -95,7 +95,7 @@ def carregar_discentes(row):
                 tipo_discente, status, sigla_nivel_ensino, nivel_ensino, id_curso, nome_curso,
                 modalidade_educacao, id_unidade, nome_unidade, id_unidade_gestora, nome_unidade_gestora)
             if discente_antigo and atualizacoes:
-                discente_atualizados_list.add(str(discente_antigo) + ', ' + str(atualizacoes))
+                discentes_atualizados_list.add(str(discente_antigo) + ', ' + str(atualizacoes))
             else:
                 print('.', end="")
 
