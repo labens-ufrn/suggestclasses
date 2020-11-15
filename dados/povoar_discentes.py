@@ -1,5 +1,56 @@
+from datetime import datetime
+import os
+import csv
+import django
+django.setup()
+from dados.service.discente_service import atualizar_discente
 from core.models import Centro, Discente
+from suggestclasses.settings import BASE_DIR
 
+DADOS_PATH = os.path.join(BASE_DIR, 'dados')
+
+discentes_atualizados_list =list()
+
+
+def main():
+    os.chdir(DADOS_PATH)
+    criar_discentes()
+
+
+def criar_discentes():
+    print("\nCriando Discentes por Ano de Ingresso para os Cursos do CERES ...!")
+
+    criar_discentes_anual('discentes-2009.csv')
+    criar_discentes_anual('discentes-2010.csv')
+    criar_discentes_anual('discentes-2011.csv')
+    criar_discentes_anual('discentes-2012.csv')
+    criar_discentes_anual('discentes-2013.csv')
+    criar_discentes_anual('discentes-2014.csv')
+    criar_discentes_anual('discentes-2015.csv')
+    criar_discentes_anual('discentes-2016.csv')
+    criar_discentes_anual('discentes-2017.csv')
+    criar_discentes_anual('discentes-2018.csv')
+    criar_discentes_anual('discentes-2019.csv')
+    criar_discentes_anual('discentes-2020.csv')
+
+
+def criar_discentes_anual(discentes_csv):
+    print("\nCriando Discentes Ingressantes: " + discentes_csv + " para os Cursos do CERES ...!")
+
+    with open(discentes_csv) as csvfile:
+        discentes = csv.reader(csvfile, delimiter=';')
+        next(discentes)  # skip header
+
+        for row in discentes:
+            carregar_discentes(row)
+        print()
+
+    data_e_hora_atuais = datetime.now()
+    discentes_atualizados = open("atualizados/" + discentes_csv[:-4] + "_atualizados " + str(data_e_hora_atuais) + ".txt", "a")
+    for discente_modificados in discentes_atualizados_list:
+    # \n is placed to indicate EOL (End of Line)
+        discentes_atualizados.write(discente_modificados + '\n')
+    discentes_atualizados.close()
 
 def carregar_discentes(row):
     id_unidade = row[13] if row[13] != '' else None
@@ -39,4 +90,14 @@ def carregar_discentes(row):
                                 id_unidade_gestora=id_unidade_gestora, nome_unidade_gestora=nome_unidade_gestora)
             discente.save()
         else:
-            print('.', end="")
+            discente_antigo, atualizacoes = atualizar_discente(
+                matricula, nome_discente, sexo, ano_ingresso, periodo_ingresso, forma_ingresso,
+                tipo_discente, status, sigla_nivel_ensino, nivel_ensino, id_curso, nome_curso,
+                modalidade_educacao, id_unidade, nome_unidade, id_unidade_gestora, nome_unidade_gestora)
+            if discente_antigo and atualizacoes:
+                discentes_atualizados_list.add(str(discente_antigo) + ', ' + str(atualizacoes))
+            else:
+                print('.', end="")
+
+if __name__ == "__main__":
+    main()
