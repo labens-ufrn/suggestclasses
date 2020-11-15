@@ -119,3 +119,4 @@ path.env
 .vscode/settings.json
 dados/locais.txt
 .vscode/launch.json
+dados/atualizados/*.txt
