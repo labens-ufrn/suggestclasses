@@ -11,7 +11,7 @@ from suggestclasses.settings import BASE_DIR
 
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')
 
-componentes_atualizados_set = set()
+componentes_atualizados_list = list()
 
 
 def main():
@@ -32,7 +32,7 @@ def carregar_componentes():
     
     data_e_hora_atuais = datetime.now()
     componentes_atualizados = open("componentes_atualizados " + str(data_e_hora_atuais) + ".txt", "a")
-    for cc_modificados in componentes_atualizados_set:
+    for cc_modificados in componentes_atualizados_list:
         # \n is placed to indicate EOL (End of Line)
         componentes_atualizados.write(cc_modificados + '\n')
     componentes_atualizados.close()
@@ -90,7 +90,7 @@ def carregar_componente(row):
                 equivalencia, pre_requisito, co_requisito, ementa, modalidade, depto
             )
             if cc_antigo and atualizacoes:
-                componentes_atualizados_set.add(str(cc_antigo) + ', ' + str(atualizacoes))
+                componentes_atualizados_list.append(str(cc_antigo) + ', ' + str(atualizacoes))
             else:
                 print('.', end="")
 
