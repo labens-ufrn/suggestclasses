@@ -31,7 +31,7 @@ def carregar_componentes():
         print()
     
     data_e_hora_atuais = datetime.now()
-    componentes_atualizados = open("componentes_atualizados " + str(data_e_hora_atuais) + ".txt", "a")
+    componentes_atualizados = open("atualizados/" + "componentes_atualizados " + str(data_e_hora_atuais) + ".txt", "a")
     for cc_modificados in componentes_atualizados_list:
         # \n is placed to indicate EOL (End of Line)
         componentes_atualizados.write(cc_modificados + '\n')

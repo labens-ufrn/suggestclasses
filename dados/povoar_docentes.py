@@ -30,7 +30,7 @@ def carregar_docentes():
         print()
     
     data_e_hora_atuais = datetime.now()
-    docentes_atualizados = open("docentes_atualizados " + str(data_e_hora_atuais) + ".txt", "a")
+    docentes_atualizados = open("atualizados/" + "docentes_atualizados " + str(data_e_hora_atuais) + ".txt", "a")
     for docente_modificados in docentes_atualizados_set:
     # \n is placed to indicate EOL (End of Line)
         docentes_atualizados.write(docente_modificados + '\n')
