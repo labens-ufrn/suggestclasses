@@ -1,17 +1,16 @@
-from datetime import datetime
 import os
 import csv
 import django
-from dateutil.parser import parse
 django.setup()
-
+from datetime import datetime
+from dateutil.parser import parse
 from core.models import Departamento, Docente
 from dados.service.docente_service import atualizar_docente
 from suggestclasses.settings import BASE_DIR
 
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')
 
-docentes_atualizados_set = set()
+docentes_atualizados_set = list()
 
 
 def main():
@@ -81,7 +80,7 @@ def carregar_docente(row):
                 siape, nome, sexo, formacao, tipo_jornada_trabalho, vinculo, categoria, \
                 classe_funcional, id_unidade_lotacao, lotacao, admissao, depto)
             if docente_antigo and atualizacoes:
-                docentes_atualizados_set.add(str(docente_antigo) + ', ' + str(atualizacoes))
+                docentes_atualizados_set.append(str(docente_antigo) + ', ' + str(atualizacoes))
             else:
                 print('.', end="")
 
