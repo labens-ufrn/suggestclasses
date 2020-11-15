@@ -1,3 +1,4 @@
+from dados.service.util import gravar_arquivo
 import os
 import csv
 import django
@@ -10,7 +11,7 @@ from suggestclasses.settings import BASE_DIR
 
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')
 
-docentes_atualizados_set = list()
+docentes_atualizados_list = list()
 
 
 def main():
@@ -21,7 +22,7 @@ def main():
 def carregar_docentes():
     print("\nCriando Docentes do CERES ...!")
 
-    with open('docentes.csv') as csvfile:
+    with open('csv/docentes.csv') as csvfile:
         docentes = csv.reader(csvfile, delimiter=';')
         next(docentes)  # skip header
 
@@ -29,12 +30,8 @@ def carregar_docentes():
             carregar_docente(row)
         print()
     
-    data_e_hora_atuais = datetime.now()
-    docentes_atualizados = open("atualizados/" + "docentes_atualizados " + str(data_e_hora_atuais) + ".txt", "a")
-    for docente_modificados in docentes_atualizados_set:
-    # \n is placed to indicate EOL (End of Line)
-        docentes_atualizados.write(docente_modificados + '\n')
-    docentes_atualizados.close()
+    if docentes_atualizados_list:
+        gravar_arquivo('docentes_atualizados', docentes_atualizados_list)
 
 
 def carregar_docente(row):
@@ -80,7 +77,7 @@ def carregar_docente(row):
                 siape, nome, sexo, formacao, tipo_jornada_trabalho, vinculo, categoria, \
                 classe_funcional, id_unidade_lotacao, lotacao, admissao, depto)
             if docente_antigo and atualizacoes:
-                docentes_atualizados_set.append(str(docente_antigo) + ', ' + str(atualizacoes))
+                docentes_atualizados_list.append(str(docente_antigo) + ', ' + str(atualizacoes))
             else:
                 print('.', end="")
 

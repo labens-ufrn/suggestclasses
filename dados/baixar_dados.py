@@ -144,7 +144,7 @@ def download_turmas():
 
 def download_docentes():
     print("Download do CSV dos Docentes do CERES/UFRN ...!")
-    file_name = "docentes.csv"
+    file_name = "csv/docentes.csv"
     if os.path.exists(file_name):
         print("Arquivo docentes.csv já existe!")
     else:
