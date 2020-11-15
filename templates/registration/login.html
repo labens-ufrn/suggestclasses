@@ -7,8 +7,14 @@
     <h2 class="page-section-heading text-center text-secondary mb-0">Login de Usuário</h2>
     <br />
 
-    {% if form_login.errors %}
-        <p style="color: red">Your username and password didn't match. Please try again.</p>
+    {% if form.errors %}
+    {% for key, value in form.errors.items %}
+        <div class="alert alert-danger" role="alert" id="msg">
+          {% for error in value %}
+            {{ error }} <br />
+          {% endfor %}
+        </div>
+      {% endfor %}
     {% endif %}
 
     {% if next %}
@@ -19,20 +25,20 @@
         <p>Please login to see this page.</p>
       {% endif %}
     {% endif %}
-
+    <br />
     <form method="post" action="{% url 'login' %}">
       {% csrf_token %}
       <table class="table-sm table-responsive-sm">
         <tr>
           <th>
-            {% for error in form_login.username.errors %}
+            {% for error in form.username.errors %}
               <p style="color: red">{{ error }}</p>
             {% endfor %}
             {{ form.username.label_tag }}
           </th>
           <td>{{ form.username }}
-            {% if form_login.username.help_text %}
-              <p><small style="color: grey">{{ form_login.username.help_text }}</small></p>
+            {% if form.username.help_text %}
+              <p><small style="color: grey">{{ form.username.help_text }}</small></p>
             {% endif %}
           </td>
         </tr>
@@ -41,14 +47,14 @@
         </tr>
         <tr>
           <th>
-            {% for error in form_login.password.errors %}
+            {% for error in form.password.errors %}
               <p style="color: red">{{ error }}</p>
             {% endfor %}
             {{ form.password.label_tag }}
           </th>
           <td>{{ form.password }}
-            {% if form_login.password.help_text %}
-              <p><small style="color: grey">{{ form_login.password.help_text }}</small></p>
+            {% if form.password.help_text %}
+              <p><small style="color: grey">{{ form.password.help_text }}</small></p>
             {% endif %}
           </td>
         </tr>
