@@ -452,6 +452,7 @@ class Enquete(models.Model):
     data_hora_inicio = models.DateTimeField()
     data_hora_fim = models.DateTimeField(blank=True, null=True)
     curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
+    qtd_discentes_ativos = models.IntegerField(blank=True, null=True)
     periodo = models.ForeignKey(PeriodoLetivo, on_delete=models.PROTECT, null=True, blank=True)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES)
     tipo = models.CharField(max_length=1, choices=TIPO_CHOICES)

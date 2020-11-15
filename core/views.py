@@ -863,7 +863,11 @@ class EnqueteDetailView(DetailView):
             .order_by('-votos', 'componente__nome')
         context['votos_por_componente'] = votos_por_componente
         curso = self.object.curso
-        qtd_ativos = get_qtd_discentes_ativos(curso)
+        if not self.object.qtd_discentes_ativos:
+            self.object.qtd_discentes_ativos = get_qtd_discentes_ativos(curso)
+            self.object.save()
+        # qtd_ativos = get_qtd_discentes_ativos(curso)
+        qtd_ativos = self.object.qtd_discentes_ativos
         qtd_votantes = get_qtd_votantes(self.object)
         qtd_abstencao = get_qtd_abstencao(self.object)
         context['discentes_ativos'] = qtd_ativos
@@ -878,7 +882,7 @@ class EnqueteDetailView(DetailView):
 def search_enquetes(request):
     
     usuario = request.user
-    if discente_existe(usuario):
+    if usuario.id is not None and discente_existe(usuario):
         discente = usuario.discente
         enquetes = get_enquetes_por_curso(discente.id_curso)
     else:
