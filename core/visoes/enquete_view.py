@@ -36,7 +36,7 @@ def enquete_voto_view(request, pk, abstencao=None):
             voto_turma_carregar(enquete, discente, voto_turma, VotoTurma.VALIDO)
 
             if voto_permitido(request, enquete, discente, voto_turma.componente):
-                enquete_deletar_votos_discente(request, enquete, discente, abstencao=True   )
+                enquete_deletar_votos_discente(request, enquete, discente, abstencao=True)
                 voto_turma.save()
                 messages.success(request, 'Voto cadastrada com sucesso.')
                 return redirect('/core/enquetes/' + str(enquete.pk) + '/votar')
@@ -204,10 +204,10 @@ def load_componente(request):
 
 
 def check_periodo_enquete(request, enquete):
-    agora = datetime.now()
     utc = pytz.UTC
-    if enquete.data_hora_inicio.replace(tzinfo=utc) > agora.replace(tzinfo=utc) \
-       or agora.replace(tzinfo=utc) > enquete.data_hora_fim.replace(tzinfo=utc):
+    agora = datetime.now(pytz.UTC)
+    if enquete.data_hora_inicio.replace(tzinfo=utc) > agora \
+       or agora > enquete.data_hora_fim.replace(tzinfo=utc):
         messages.error(request, 'Voto fora do período da Enquete "' + enquete.nome + '".')
         return redirect('/core/enquetes/list')
     return None
