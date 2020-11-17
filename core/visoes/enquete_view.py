@@ -38,7 +38,7 @@ def enquete_voto_view(request, pk, abstencao=None):
             if voto_permitido(request, enquete, discente, voto_turma.componente):
                 enquete_deletar_votos_discente(request, enquete, discente, abstencao=True)
                 voto_turma.save()
-                messages.success(request, 'Voto cadastrada com sucesso.')
+                messages.success(request, 'Voto cadastrado com sucesso.')
                 return redirect('/core/enquetes/' + str(enquete.pk) + '/votar')
         messages.error(request, form_voto.errors)
     elif abstencao and voto_permitido(request, enquete, discente):
