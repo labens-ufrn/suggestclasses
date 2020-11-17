@@ -53,10 +53,11 @@ def get_cc_obrigatorias(estrutura):
     :param estrutura:
     :return:
     """
-    componentes = []
-    for semestre in range(1, 9):
+    componentes = get_cc_by_semestre(estrutura, 1)
+    for semestre in range(2, 9):
         cc = get_cc_by_semestre(estrutura, semestre)
-        componentes.extend(cc)
+        # The querysets can be merged using the | operator:
+        componentes = componentes | cc
     return componentes
 
 
