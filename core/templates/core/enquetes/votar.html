@@ -10,10 +10,10 @@
          <b>{{ enquete }}</b></h5>
     </div>
     <div id="avisos">
-      <p class="alert-info">Você pode votar até <b>{{ enquete.numero_votos }} vezes</b> nesta enquete.<br>
+      <p class="alert-info">Você pode votar até <b>{{ enquete.numero_votos }} vezes</b> nesta enquete.
         Você já votou <b>{{ qtd_votos }} vezes</b>.</p>
       <p class="alert-warning"><b>Abstenção:</b> Você não pretende cursar <b>Nenhum Componente Curricular</b> ou
-        não decidiu ainda quais. Excluirá todos os seus votos em Componentes Curriculares.</p>
+        não decidiu ainda quais. Excluirá todos os seus votos!</p>
     </div>
     <form method="post" id="VotoForm">
       {% csrf_token %}
@@ -74,7 +74,13 @@
             <td></td>
             <td class="align-middle btn-warning">ABSTENÇÃO</td>
           {% else %}
-            <td class="align-middle">{{ voto.componente.codigo }}</td>
+            <td class="align-middle">{{ voto.componente.codigo }}
+              <a href="{% url 'componente_detalhar' voto.componente.pk %}">
+                <span class="material-icons md-18 align-middle">
+                  find_in_page
+                </span>
+              </a>
+            </td>
             <td class="align-middle">{{ voto.componente.nome }}</td>
           {% endif %}
           <td>
