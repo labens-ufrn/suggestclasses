@@ -7,8 +7,8 @@
  ![GitHub issues](https://img.shields.io/github/issues/labens-ufrn/suggestclasses)
  [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Flabens-ufrn%2Fsuggestclasses)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Flabens-ufrn%2Fsuggestclasses)
 
-
 # SuggestClasses by LABENS/UFRN
+
 Sistema de Sugestão de Horários para o BSI/UFRN.
 
 ## Lista de Requisitos Funcionais
@@ -48,6 +48,7 @@ Utilzamos o SGBD MariaDB/MySql.
 ```
 
 ### Dependências para usar o MariaDB e MySQL
+
 Windows
 
 No site https://www.lfd.uci.edu/~gohlke/pythonlibs/ busca o Mysqlclient compatível com a sua versão Python instalada.
@@ -55,13 +56,13 @@ No site https://www.lfd.uci.edu/~gohlke/pythonlibs/ busca o Mysqlclient compatí
 Instalação com o PIP:
 
 ```shell script
-pip install nome_do_arquivo_baixado.whl
+    pip install nome_do_arquivo_baixado.whl
 ```
 
 Lunux
 
 ```shell script
-sudo apt install python3-dev default-libmysqlclient-dev
+    sudo apt install python3-dev default-libmysqlclient-dev
 ```
 
 ## Virtualenv e variáveis de ambiente
@@ -69,22 +70,23 @@ sudo apt install python3-dev default-libmysqlclient-dev
 Adicionar em ~/.profile as variáveis de ambiente:
 
 ```shell script
-MARIA_HOME=/usr/bin/mysql
-PATH=$PATH:$MARIA_HOME/bin
-PYTHONHOME=/usr/bin
+    MARIA_HOME=/usr/bin/mysql
+    PATH=$PATH:$MARIA_HOME/bin
+    PYTHONHOME=/usr/bin
 ```
+
 Windows
 
 Caso não tenha a Virtualenv instalada:
 
 ```shell script
-pip install virtualenv
+    pip install virtualenv
 ```
 
 Criação do Ambiente Virtual com virtualenv:
 
 ```shell script
-virtualenv nome_da_virtualenv
+    virtualenv nome_da_virtualenv
 ```
 
 Para ativar: ```cd nome_da_virtualenv\Scripts\activate```.
@@ -95,7 +97,7 @@ Linux
 Criação do Ambiente Virtual com virtualenv:
 
 ```shell script
-virtualenv -p python3 venv
+    virtualenv -p python3 venv
 ```
 
 Para ativar: ```source venv/bin/activate```.
@@ -104,7 +106,7 @@ Para desativar: ```deactivate```.
 ### Instalação das Dependência do Projeto
 
 ```shell script
-pip install -r requirements.txt
+    pip install -r requirements.txt
 ```
 
 ## Ocultando a instância de configuração
@@ -123,8 +125,8 @@ Copie os exemplos da pasta contrib:
 Edite o arquivo path.env para informar as variáveis:
 
 ```shell script
-export DJANGO_SETTINGS_MODULE=suggestclasses.settings
-export PYTHONPATH=${PYTHONPATH}:/home/<seu_diretorio>/suggestclasses
+    export DJANGO_SETTINGS_MODULE=suggestclasses.settings
+    export PYTHONPATH=${PYTHONPATH}:/home/<seu_diretorio>/suggestclasses
  ```
 
 Após editar os valores, execute o comando ```source path.env``` no Linux ou ```activate path.env``` no Windows para carregar as variáveis.
@@ -133,21 +135,23 @@ Após editar os valores, execute o comando ```source path.env``` no Linux ou ```
 
 Ao modificar os models (em models.py), execute:
 Windows
-```shell script
-$ python3 manage.py makemigrations core
-$ python3 manage.py migrate
+
+```console
+    python3 manage.py makemigrations core
+    python3 manage.py migrate
 ```
 
 Linux
+
 ```shell script
-$ python manage.py makemigrations core
-$ python manage.py migrate
+    python manage.py makemigrations core
+    python manage.py migrate
 ```
 
 ## Django Admin Super User
 
 ```commandline
-$ python manage.py createsuperuser
+    python manage.py createsuperuser
 ```
 
 ## Povoamento
@@ -177,9 +181,9 @@ Deve-se rodar, na raiz do projeto, o script ```povoar_horarios.py``` na pasta **
 Os scripts seguintes farão o povoamento do restante da base.
 
 ```shell script
-python dados/baixar_dados.py
-python dados/povoar.py
-python dados/povoar_organizacao_curricular.py
+    python dados/baixar_dados.py
+    python dados/povoar.py
+    python dados/povoar_organizacao_curricular.py
 ```
 
 Para atualizar a base, devem-ser deletados os csv's antigos e executar novamente os scripts.
@@ -189,29 +193,52 @@ Para atualizar a base, devem-ser deletados os csv's antigos e executar novamente
 Rodar os testes mantendo o banco de testes:
 
 ```shell script
-python manage.py test --keepdb core/
+    python manage.py test --keepdb core/
 ```
 
 Devemos acrescentar nas classes de testes:
 
 ```pythonstub
-import django
-django.setup()
+    import django
+    django.setup()
 ```
 
-Configurações para os testes:
+Configurações executar os testes:
 
 ```shell script
-pip install nose
-pip install coverage
-export DJANGO_SETTINGS_MODULE=suggestclasses.settings
+    export DJANGO_SETTINGS_MODULE=suggestclasses.settings
+
+    python manage.py test
 ```
 
 ### Executar os Testes de Unidade e Cobertura
 
+#### Utilizando o Cobetura
+
+Primeiro defina a varíavel de ambiente: ```export DJANGO_SETTINGS_MODULE=projectname.settings```.
+
+Depois instale o **coverage** e rode para ele gerar o arquivo `coverage.xml`.
+
+```pythonstub
+    pip install coverage
+
+    coverage run -m unittest discover
+    coverage xml
+```
+
+Se usar `coverage html`, ele gera o relatório em html.
+
+#### Utilizando Nose (desativado)
+
 ```shell script
-nosetests --with-xunit
-nosetests --with-coverage --cover-package=core --cover-branches --cover-xml
+    pip install nose
+    pip install coverage
+    export DJANGO_SETTINGS_MODULE=suggestclasses.settings
+```
+
+```shell script
+    nosetests --with-xunit
+    nosetests --with-coverage --cover-package=core --cover-branches --cover-xml
 ```
 
 ## Executar o Sonar
@@ -229,41 +256,41 @@ sonar-scanner \
 
 * Criando o container do mariadb
 
-    ```shell script
+```shell script
     docker pull mariadb
     docker run --name mariadb -e MYSQL_ROOT_PASSWORD=root -p 32768:3306 -d mariadb
-    ```
+```
 
 * Verificando se o container está rodando
 
-    ```shell script
+```shell script
     docker ps
-    ```
+```
 
 * Verificando todos os containers (ativos e inativos)
 
-    ```shell script
+```shell script
     docker ps -a
-    ```
+```
 
 * Pausando container do mariadb
 
-    ```shell script
+```shell script
     docker stop mariadb
-    ```
+```
 
 * Iniciando o container do mariadb e logando
 
-    ```shell script
+```shell script
     docker start mariabd
     docker exec -it mariadb mariadb -p
-    ```
+```
 
 ## Outras Configurações
 
 * Arquivo _.editorconfig_ de estilo de codificação adicionado.
 
-##  Tabela com horários de aula
+## Tabela com horários de aula
 
 Matutino | Vespertino | Noturno
 -------- | ---------- | -------
