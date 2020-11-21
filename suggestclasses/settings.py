@@ -30,7 +30,7 @@ CSRF_COOKIE_SECURE = True
 # DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'dct.ceres.ufrn.br']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', 'dct.ceres.ufrn.br']
 DOMAINS_WHITELIST = ALLOWED_HOSTS
 
 SESSION_COOKIE_AGE = 60 * 60 * 12 # 12 horas
