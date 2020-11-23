@@ -1,10 +1,10 @@
-from core.bo.requisitos import create_token_lst, replace_and, replace_expressao, replace_or
+from core.bo.requisitos import replace_expressao
 from django.test import TestCase
 
 
 class RequisitoTests(TestCase):
 
-    def test_get_discentes_by_matricula(self):
+    def test_check_requisitos(self):
 
         requisito1 = '( ( BSI3102 ) OU ( DCT2305 ) ) E ( ( BSI1107 ) OU ( DCT1107 ) ) '
         requisito2 = '( ( BSI2301 ) OU ( DCT2301 ) ) E ( ( BSI2201 ) OU ( DCT2201 ) ) E ( ( BSI1109 ) OU ( DCT1109 ) ) '
