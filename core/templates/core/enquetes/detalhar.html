@@ -87,6 +87,7 @@
             <th colspan="4">Votos Por Componente</th>
           </tr>
           <tr class="text-center">
+            <th>Período</th>
             <th>Código</th>
             <th>Nome</th>
             <th>Qtd Votos</th>
@@ -96,6 +97,7 @@
           <tbody>
           {% for voto in votos_por_componente %}
             <tr class="text-center">
+              <td>{{ voto.periodo }}</td>
               <td>{{ voto.componente__codigo }}
                 <a href="{% url 'componente_detalhar' voto.componente__pk %}">
                   <span class="material-icons md-18 align-middle">

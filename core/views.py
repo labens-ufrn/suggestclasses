@@ -2,6 +2,7 @@ import io
 import logging
 from random import sample
 from typing import List
+from django.db.models.expressions import OuterRef, Subquery
 
 import matplotlib.pyplot as plt
 from django.contrib import messages
@@ -38,7 +39,7 @@ from .dao.componente_dao import get_componentes_by_depto, get_componentes_curric
 from .dao.departamento_dao import get_departamentos
 from .filters import SalaFilter, DocenteFilter, EnqueteFilter
 from .forms import CadastroUsuarioForm
-from .models import Horario
+from .models import Horario, OrganizacaoCurricular
 from .visoes.enquete_view import enquete_voto_view, enquete_deletar_voto_discente, get_qtd_votantes, get_qtd_abstencao, \
     enquete_detalhar_voto_view
 from .visoes.suggest_view import sugestao_grade_horarios, sugestao_manter, sugestao_incluir, sugestao_editar, \
@@ -855,11 +856,17 @@ class EnqueteDetailView(DetailView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
+        # Subconsulta para saber o período do componente
+        periodo_qs = OrganizacaoCurricular.objects.filter(
+            estrutura__curso=self.object.curso,
+            componente=OuterRef("componente__pk")
+            )
+        # Consulta com a totalização de votos por componente
         votos_por_componente = VotoTurma.objects\
             .filter(enquete=self.object, tipo=VotoTurma.VALIDO) \
             .values('componente__pk', 'componente__codigo', 'componente__nome') \
             .annotate(votos=Count('componente')) \
+            .annotate(periodo=Subquery(periodo_qs.values('semestre')[:1])) \
             .order_by('-votos', 'componente__nome')
         context['votos_por_componente'] = votos_por_componente
         curso = self.object.curso
