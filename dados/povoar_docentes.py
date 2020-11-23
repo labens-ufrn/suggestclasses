@@ -1,4 +1,3 @@
-from dados.service.util import gravar_arquivo
 import os
 import csv
 import django
@@ -7,6 +6,7 @@ from datetime import datetime
 from dateutil.parser import parse
 from core.models import Departamento, Docente
 from dados.service.docente_service import atualizar_docente
+from dados.service.util import gravar_arquivo
 from suggestclasses.settings import BASE_DIR
 
 DADOS_PATH = os.path.join(BASE_DIR, 'dados')

@@ -57,7 +57,7 @@ def criar_salas():
     # Buscando o Centro CERES
     print("\nCriando Salas para o CERES ...!")
 
-    with open('salas-ceres.csv') as csvfile:
+    with open('csv/salas-ceres.csv') as csvfile:
         salas = csv.reader(csvfile, delimiter=',')
         next(salas)  # skip header
 
@@ -71,7 +71,7 @@ def departamentos():
     print("\nCriando Departamentos para o CERES ...!")
     ceres = Centro.objects.get(id_unidade=1482)
 
-    with open('unidades.csv') as csvfile:
+    with open('csv/unidades.csv') as csvfile:
         unidades = csv.reader(csvfile, delimiter=';')
         next(unidades)  # skip header
 
@@ -117,7 +117,7 @@ def cursos():
     # Buscando o Centro CERES
     ceres = Centro.objects.get(id_unidade=1482)
 
-    with open('cursos-ufrn.csv') as csvfile:
+    with open('csv/cursos-ufrn.csv') as csvfile:
         cursos_ufrn = csv.reader(csvfile, delimiter=';')
         next(cursos_ufrn)  # skip header
 
@@ -149,7 +149,7 @@ def cursos():
 def criar_componentes():
     print("\nCriando Componentes para os Departamentos do CERES ...!")
 
-    with open('componentes-curriculares-presenciais.csv') as csvfile:
+    with open('csv/componentes-curriculares-presenciais.csv') as csvfile:
         componentes_ceres = csv.reader(csvfile, delimiter=';')
         next(componentes_ceres)  # skip header
 
@@ -161,7 +161,7 @@ def criar_componentes():
 def estruturas():
     print("\nCriando Estruturas Curriculares para os Cursos do CERES ...!")
 
-    with open('estruturas-curriculares.csv') as csvfile:
+    with open('csv/estruturas-curriculares.csv') as csvfile:
         estruturas_ceres = csv.reader(csvfile, delimiter=';')
         next(estruturas_ceres)  # skip header
 
@@ -234,7 +234,7 @@ def estruturas():
 def organizacao():
     print("\nCriando Organizações Curriculares para os Cursos do CERES ...!")
 
-    with open('curriculo-componente-graduacao.csv') as csvfile:
+    with open('csv/curriculo-componente-graduacao.csv') as csvfile:
         ccg = csv.reader(csvfile, delimiter=';')
         next(ccg)  # skip header
 
@@ -270,7 +270,7 @@ def organizacao():
 def criar_docentes():
     print("\nCriando Docentes do CERES ...!")
 
-    with open('docentes.csv') as csvfile:
+    with open('csv/docentes.csv') as csvfile:
         docentes = csv.reader(csvfile, delimiter=';')
         next(docentes)  # skip header
 
@@ -282,9 +282,9 @@ def criar_docentes():
 def criar_turmas():
     print("\nCriando Turmas 2019.1, 2019.2 e 2020.1 para os Cursos do CERES ...!")
 
-    criar_turmas_semestre('turmas-2019.1.csv')
-    criar_turmas_semestre('turmas-2019.2.csv')
-    criar_turmas_semestre('turmas-2020.1.csv')
+    criar_turmas_semestre('csv/turmas-2019.1.csv')
+    criar_turmas_semestre('csv/turmas-2019.2.csv')
+    criar_turmas_semestre('csv/turmas-2020.1.csv')
 
 
 def criar_turmas_semestre(turmas_csv):
@@ -300,7 +300,7 @@ def criar_turmas_semestre(turmas_csv):
 
 
 def criar_funcoes_gratificadas():
-    funcoes_gratificadas_csv = 'funcoes-gratificadas.csv'
+    funcoes_gratificadas_csv = 'csv/funcoes-gratificadas.csv'
     print("\nCriando Funções Gratificadas: " + funcoes_gratificadas_csv + " para os Docentes do CERES ...!")
 
     with open(funcoes_gratificadas_csv) as csvfile:
@@ -315,18 +315,18 @@ def criar_funcoes_gratificadas():
 def criar_discentes():
     print("\nCriando Discentes por Ano de Ingresso para os Cursos do CERES ...!")
 
-    criar_discentes_anual('discentes-2009.csv')
-    criar_discentes_anual('discentes-2010.csv')
-    criar_discentes_anual('discentes-2011.csv')
-    criar_discentes_anual('discentes-2012.csv')
-    criar_discentes_anual('discentes-2013.csv')
-    criar_discentes_anual('discentes-2014.csv')
-    criar_discentes_anual('discentes-2015.csv')
-    criar_discentes_anual('discentes-2016.csv')
-    criar_discentes_anual('discentes-2017.csv')
-    criar_discentes_anual('discentes-2018.csv')
-    criar_discentes_anual('discentes-2019.csv')
-    criar_discentes_anual('discentes-2020.csv')
+    criar_discentes_anual('csv/discentes-2009.csv')
+    criar_discentes_anual('csv/discentes-2010.csv')
+    criar_discentes_anual('csv/discentes-2011.csv')
+    criar_discentes_anual('csv/discentes-2012.csv')
+    criar_discentes_anual('csv/discentes-2013.csv')
+    criar_discentes_anual('csv/discentes-2014.csv')
+    criar_discentes_anual('csv/discentes-2015.csv')
+    criar_discentes_anual('csv/discentes-2016.csv')
+    criar_discentes_anual('csv/discentes-2017.csv')
+    criar_discentes_anual('csv/discentes-2018.csv')
+    criar_discentes_anual('csv/discentes-2019.csv')
+    criar_discentes_anual('csv/discentes-2020.csv')
 
 
 def criar_discentes_anual(discentes_csv):
