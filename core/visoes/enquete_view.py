@@ -48,7 +48,6 @@ def enquete_voto_view(request, pk, abstencao=None):
         voto_turma.save()
         messages.success(request, 'Abstenção cadastrada com sucesso.')
         return redirect('/core/enquetes/' + str(enquete.pk) + '/votar')
-        form_voto = VotoTurmaForm(enquete=enquete)
     else:
         form_voto = VotoTurmaForm(enquete=enquete)
 
