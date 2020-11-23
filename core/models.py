@@ -373,6 +373,12 @@ class Discente(models.Model):
                + self.nome_curso + ' (' + self.nome_unidade + ')'
 
 
+# class Matricula(models.Model):
+#     """
+#     Modelo para os dados das Matriculas.
+#     """
+
+
 class SolicitacaoTurma(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.PROTECT)
     solicitador = models.ForeignKey(Discente, on_delete=models.PROTECT)
@@ -501,3 +507,14 @@ class VinculoDocenteSugestao(models.Model):
     def __str__(self):
         return str(self.sugestao) + ' ' + str(self.sugestao.ano) + '.' + str(self.sugestao.periodo) + ' (' + str(self.docente) + ')'
 
+
+class Historico(models.Model):
+    discente = models.ForeignKey(Discente, on_delete=models.PROTECT)
+    componente = models.ForeignKey(ComponenteCurricular, on_delete=models.PROTECT, blank=True, null=True)
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('discente', 'componente')
+
+    def __str__(self):
+        return str(self.componente) + ' (' + self.discente.nome_discente + ')'
