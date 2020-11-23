@@ -1,7 +1,38 @@
+import os
+import csv
+import django
+django.setup()
 from dateutil.parser import parse
-
+from dados.service.util import gravar_arquivo
+from dados.service.funcoes_service import atualizar_funcao
 from core.bo.docente import get_docente_by_siape
 from core.models import Docente, FuncaoGratificada
+from suggestclasses.settings import BASE_DIR
+
+DADOS_PATH = os.path.join(BASE_DIR, 'dados')
+
+funcoes_atualizadas_list = list()
+
+
+def main():
+    os.chdir(DADOS_PATH)
+    criar_funcoes_gratificadas()
+
+
+def criar_funcoes_gratificadas():
+    funcoes_gratificadas_csv = 'csv/funcoes-gratificadas.csv'
+    print("\nCriando Funções Gratificadas: " + funcoes_gratificadas_csv + " para os Docentes do CERES ...!")
+
+    with open(funcoes_gratificadas_csv) as csvfile:
+        funcoes_gratificadas = csv.reader(csvfile, delimiter=';')
+        next(funcoes_gratificadas)  # skip header
+
+        for row in funcoes_gratificadas:
+            carregar_funcoes_gratificadas(row)
+        print()
+
+    if funcoes_atualizadas_list:
+        gravar_arquivo('funcoes_atualizados', funcoes_atualizadas_list)
 
 
 def carregar_funcoes_gratificadas(row):
@@ -21,9 +52,7 @@ def carregar_funcoes_gratificadas(row):
         unidade_designacao = row[9]
         atividade = row[10]
         observacoes = row[11]
-        print(siape)
-        print(inicio)
-        print(fim)
+
         if not FuncaoGratificada.objects.filter(
            siape=siape, id_unidade=id_unidade, inicio=inicio, atividade=atividade).exists():
             print("Adicionando FuncaoGratificada " + siape + " - " + id_unidade + "- " + inicio.__str__() + " - " + atividade)
@@ -34,4 +63,14 @@ def carregar_funcoes_gratificadas(row):
                                    observacoes=observacoes)
             fg.save()
         else:
-            print('.', end="")
+            funcao_antiga, atualizacoes = atualizar_funcao(
+                siape, nome, situacao_servidor, id_unidade, lotacao, sigla, inicio, fim, 
+                id_unidade_designacao, unidade_designacao, atividade, observacoes)
+            if funcao_antiga and atualizacoes:
+                funcoes_atualizadas_list.append(str(funcao_antiga) + ', ' + str(atualizacoes))
+            else:
+                print('.', end="")
+
+
+if __name__ == "__main__":
+    main()
