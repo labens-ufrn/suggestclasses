@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
-CSRF_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 # DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
@@ -33,7 +33,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', 'dct.ceres.ufrn.br']
 DOMAINS_WHITELIST = ALLOWED_HOSTS
 
-SESSION_COOKIE_AGE = 60 * 60 * 12 # 12 horas
+SESSION_COOKIE_AGE = 60 * 60 # 1 hora
 # SESSION_COOKIE_SECURE = True
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
