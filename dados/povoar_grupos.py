@@ -40,6 +40,7 @@ def adicionar_permissoes_coordenadores(coordenadores):
     add_permissao(codename='view_sugestaoturma', content_type=ct, grupo=coordenadores)
     add_permissao(codename='change_sugestaoturma', content_type=ct, grupo=coordenadores)
     add_permissao(codename='add_sugestaoturma', content_type=ct, grupo=coordenadores)
+    add_permissao(codename='delete_sugestaoturma', content_type=ct, grupo=coordenadores)
 
     ct = ContentType.objects.get_for_model(SolicitacaoTurma)
     add_permissao(codename='view_solicitacaoturma', content_type=ct, grupo=coordenadores)
