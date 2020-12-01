@@ -20,8 +20,13 @@ class ComponenteCurricularAdmin(admin.ModelAdmin):
     search_fields = ['nome']
 
 
+class EstruturaCurricularAdmin(admin.ModelAdmin):
+    list_display = ('codigo', 'nome', 'ch_total_minima', 'status')
+    search_fields = ['nome']
+
+
 admin.site.register(ComponenteCurricular, ComponenteCurricularAdmin)
-admin.site.register(EstruturaCurricular)
+admin.site.register(EstruturaCurricular, EstruturaCurricularAdmin)
 
 
 class OrganizacaoCurricularAdmin(admin.ModelAdmin):
