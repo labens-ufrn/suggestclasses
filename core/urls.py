@@ -4,13 +4,14 @@ from django.urls import path
 
 from suggestclasses.settings import STATIC_URL, MEDIA_URL, MEDIA_ROOT, DEBUG
 from . import views
-from .visoes import suggest_view, enquete_view
+from .visoes import suggest_view, enquete_view, profile_view
 from .visoes import sugestao_letras_view
 from .visoes.sugestao_contabeis_view import sugestao_cont_list, sugestao_cont_manter, sugestao_cont_incluir, \
     sugestao_cont_editar, sugestao_cont_deletar
 
 urlpatterns = [
-    path('profile/<username>/', views.profile, name='profile'),
+    path('profile/<username>/', profile_view.profile, name='profile'),
+    path('ajax/load-componentes-historico/', profile_view.load_componentes_historico, name='ajax_load_componentes_historico'),
 
     path('usuario/cadastrar', views.cadastrar_usuario, name='Cadastro de Usuário'),
     path('usuario/logar', views.logar_usuario, name='Login de Usuário'),
