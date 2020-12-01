@@ -150,28 +150,36 @@ class EstruturaCurricular(models.Model):
     semestre_conclusao_minimo = models.IntegerField(null=True)
     semestre_conclusao_ideal = models.IntegerField(null=True)
     semestre_conclusao_maximo = models.IntegerField(null=True)
-    meses_conclusao_minimo = models.IntegerField(null=True)
-    meses_conclusao_ideal = models.IntegerField(null=True)
-    meses_conclusao_maximo = models.IntegerField(null=True)
-    cr_total_minimo = models.IntegerField(null=True)
+    meses_conclusao_minimo = models.IntegerField(null=True, blank=True)
+    meses_conclusao_ideal = models.IntegerField(null=True, blank=True)
+    meses_conclusao_maximo = models.IntegerField(null=True, blank=True)
+    cr_total_minimo = models.IntegerField(null=True, blank=True)
     ch_total_minima = models.IntegerField(null=True)
     ch_optativas_minima = models.IntegerField(null=True)
-    ch_complementar_minima = models.IntegerField(null=True)
-    max_eletivos = models.IntegerField(null=True)
-    ch_nao_atividade_obrigatoria = models.IntegerField(null=True)
-    cr_nao_atividade_obrigatorio = models.IntegerField(null=True)
-    ch_atividade_obrigatoria = models.IntegerField(null=True)
-    cr_minimo_semestre = models.IntegerField(null=True)
-    cr_ideal_semestre = models.IntegerField(null=True)
-    cr_maximo_semestre = models.IntegerField(null=True)
-    ch_minima_semestre = models.IntegerField(null=True)
-    ch_ideal_semestre = models.IntegerField(null=True)
-    ch_maxima_semestre = models.IntegerField(null=True)
+    ch_complementar_minima = models.IntegerField(null=True, blank=True)
+    max_eletivos = models.IntegerField(null=True, blank=True)
+    ch_nao_atividade_obrigatoria = models.IntegerField(null=True, blank=True)
+    cr_nao_atividade_obrigatorio = models.IntegerField(null=True, blank=True)
+    ch_atividade_obrigatoria = models.IntegerField(null=True, blank=True)
+    cr_minimo_semestre = models.IntegerField(null=True, blank=True)
+    cr_ideal_semestre = models.IntegerField(null=True, blank=True)
+    cr_maximo_semestre = models.IntegerField(null=True, blank=True)
+    ch_minima_semestre = models.IntegerField(null=True, blank=True)
+    ch_ideal_semestre = models.IntegerField(null=True, blank=True)
+    ch_maxima_semestre = models.IntegerField(null=True, blank=True)
     periodo_entrada_vigor = models.IntegerField(null=True)
     ano_entrada_vigor = models.IntegerField(null=True)
-    observacao = models.TextField(max_length=500, null=True)
+    observacao = models.TextField(max_length=500, null=True, blank=True)
     curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
 
+    ATIVA = "1"
+    INATIVA = "2"
+
+    STATUS_CHOICES = (
+        ("1", "Ativa"),
+        ("2", "Inativa"),
+    )
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True)
     class Meta:
         verbose_name = 'estrutura curricular'
         verbose_name_plural = 'estruturas curriculares'
