@@ -13,6 +13,7 @@
         <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#usuario">Usuário</a></li>
         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#horarios">Horários</a></li>
         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#solicitacoes">Solicitações</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#historico">Histórico</a></li>
       </ul>
 
       <div class="tab-content">
@@ -209,6 +210,9 @@
             </tr>
           {% endfor %}
         </table>
+        </div>
+        <div id="historico" class="tab-pane container fade">
+          {% include 'core/usuario/historico.html' %}
         </div>
       </div>
     </div>
