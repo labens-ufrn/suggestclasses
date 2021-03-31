@@ -433,7 +433,7 @@ class PeriodoLetivo(models.Model):
     observacoes = models.CharField(max_length=500, blank=True, null=True)
 
     def __str__(self):
-        return self.nome + ' ' + str(self.ano) + '.' + str(self.periodo)
+        return str(self.ano) + '.' + str(self.periodo)
 
 
 class Enquete(models.Model):
@@ -511,7 +511,7 @@ class VinculoDocenteSugestao(models.Model):
 
     class Meta:
         unique_together = ('docente', 'sugestao')
-    
+
     def __str__(self):
         return str(self.sugestao) + ' ' + str(self.sugestao.ano) + '.' + str(self.sugestao.periodo) + ' (' + str(self.docente) + ')'
 
