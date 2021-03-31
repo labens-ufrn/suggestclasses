@@ -14,10 +14,10 @@ def atualizar_docente(
             docente.nome = nome
 
         if not docente.sexo == sexo:
-            atualizacoes += 'sexo = ' + docente.sexo + ' --> ' + sexo + ','
+            atualizacoes += 'sexo = ' + str(docente.sexo) + ' --> ' + sexo + ','
             docente.sexo = sexo
 
-        if not docente.formacao == formacao: 
+        if not docente.formacao == formacao:
             atualizacoes += 'formação = ' + docente.formacao + ' --> ' + formacao + ','
             docente.formacao = formacao
 
@@ -50,9 +50,9 @@ def atualizar_docente(
             docente.admissao = admissao.date()
 
         if not docente.departamento == depto:
-            atualizacoes += 'depto = ' + docente.depto + ' --> ' + depto + ','
+            atualizacoes += 'depto = ' + docente.departamento.sigla + ' --> ' + depto.sigla + ','
             docente.departamento = depto
-        
+
         if len(atualizacoes) > 0:
             atualizacoes = atualizacoes[:-1]
             docente.save()
