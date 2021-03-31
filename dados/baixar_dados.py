@@ -33,7 +33,7 @@ def downloads_dados():
 
 def download_departamentos():
     print("Download do CSV dos Departamentos do CERES/UFRN ...!")
-    file_name = 'unidades.csv'
+    file_name = 'csv/unidades.csv'
     if os.path.exists(file_name):
         print("Arquivo unidades.csv já existe!")
     else:
@@ -45,7 +45,7 @@ def download_departamentos():
 
 def download_cursos():
     print("Download do CSV dos Cursos do CERES/UFRN ...!")
-    file_name = 'cursos-ufrn.csv'
+    file_name = 'csv/cursos-ufrn.csv'
     if os.path.exists(file_name):
         print("Arquivo cursos-ufrn.csv já existe!")
     else:
@@ -57,7 +57,7 @@ def download_cursos():
 
 def download_componentes():
     print("Download do CSV dos Componentes do CERES/UFRN ...!")
-    file_name = 'componentes-curriculares-presenciais.csv'
+    file_name = 'csv/componentes-curriculares-presenciais.csv'
     if os.path.exists(file_name):
         print("Arquivo componentes-curriculares-presenciais.csv já existe!")
     else:
@@ -69,7 +69,7 @@ def download_componentes():
 
 def download_estruturas():
     print("Download do CSV das Estruturas Curriculares do CERES/UFRN ...!")
-    file_name = 'estruturas-curriculares.csv'
+    file_name = 'csv/estruturas-curriculares.csv'
     if os.path.exists(file_name):
         print("Arquivo estruturas-curriculares.csv já existe!")
     else:
@@ -81,7 +81,7 @@ def download_estruturas():
 
 def download_curriculos():
     print("Download do CSV dos Organização Curricular do CERES/UFRN ...!")
-    file_name = 'curriculo-componente-graduacao.csv'
+    file_name = 'csv/curriculo-componente-graduacao.csv'
     if os.path.exists(file_name):
         print("Arquivo curriculo-componente-graduacao.csv já existe!")
     else:
@@ -93,7 +93,7 @@ def download_curriculos():
 
 def download_turmas():
     print("Download do CSV das Turmas 2019.1 do CERES/UFRN ...!")
-    file_name = "turmas-2019.1.csv"
+    file_name = "csv/turmas-2019.1.csv"
     if os.path.exists(file_name):
         print("Arquivo turmas-2019.1.csv já existe!")
     else:
@@ -103,7 +103,7 @@ def download_turmas():
         print('.................')
 
     print("Download do CSV das Turmas 2019.2 do CERES/UFRN ...!")
-    file_name = "turmas-2019.2.csv"
+    file_name = "csv/turmas-2019.2.csv"
     if os.path.exists(file_name):
         print("Arquivo turmas-2019.2.csv já existe!")
     else:
@@ -113,7 +113,7 @@ def download_turmas():
         print('.................')
 
     print("Download do CSV das Turmas 2020.1 do CERES/UFRN ...!")
-    file_name = "turmas-2020.1.csv"
+    file_name = "csv/turmas-2020.1.csv"
     if os.path.exists(file_name):
         print("Arquivo turmas-2020.1.csv já existe!")
     else:
@@ -123,7 +123,7 @@ def download_turmas():
         print('.................')
 
     print("Download do CSV das Turmas 2020.5 do CERES/UFRN ...!")
-    file_name = "turmas-2020.5.csv"
+    file_name = "csv/turmas-2020.5.csv"
     if os.path.exists(file_name):
         print("Arquivo turmas-2020.5.csv já existe!")
     else:
@@ -133,7 +133,7 @@ def download_turmas():
         print('.................')
 
     print("Download do CSV das Turmas 2020.6 do CERES/UFRN ...!")
-    file_name = "turmas-2020.6.csv"
+    file_name = "csv/turmas-2020.6.csv"
     if os.path.exists(file_name):
         print("Arquivo turmas-2020.6.csv já existe!")
     else:
@@ -156,7 +156,7 @@ def download_docentes():
 
 def download_funcoes():
     print("Download do CSV das Funções Gratificadas do CERES/UFRN ...!")
-    file_name = "funcoes-gratificadas.csv"
+    file_name = "csv/funcoes-gratificadas.csv"
     if os.path.exists(file_name):
         print("Arquivo funcoes-gratificadas.csv já existe!")
     else:
@@ -171,45 +171,45 @@ def download_discentes():
 
     url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/861b96a8-5304-4e6a-a8c4' \
           '-068533ec7cb9/download/discentes-2009.csv'
-    download_discentes_semestre(url, 'discentes-2009.csv')
+    download_discentes_semestre(url, 'csv/discentes-2009.csv')
     url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/5fc61f78-19b4-4020-9f3c' \
           '-c298cb8a63aa/download/discentes-2010.csv'
-    download_discentes_semestre(url, 'discentes-2010.csv')
+    download_discentes_semestre(url, 'csv/discentes-2010.csv')
     url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/2bb3dec9-7f23-434c-a179' \
           '-21515f91abc8/download/discentes-2011.csv'
-    download_discentes_semestre(url, 'discentes-2011.csv')
+    download_discentes_semestre(url, 'csv/discentes-2011.csv')
     url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/fc283aa9-61a7-4cf0-91fb' \
           '-c403c0817b48/download/discentes-2012.csv'
-    download_discentes_semestre(url, 'discentes-2012.csv')
+    download_discentes_semestre(url, 'csv/discentes-2012.csv')
     url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/dba208c2-822f-4e26-adc3' \
           '-b61d4cb110b6/download/discentes-2013.csv'
-    download_discentes_semestre(url, 'discentes-2013.csv')
+    download_discentes_semestre(url, 'csv/discentes-2013.csv')
     url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/6c23a430-9a7c-4d0f-9602' \
           '-1d5d97d40e6a/download/discentes-2014.csv'
-    download_discentes_semestre(url, 'discentes-2014.csv')
+    download_discentes_semestre(url, 'csv/discentes-2014.csv')
     url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/e2b5b843-4f58-497e-8979' \
           '-44daf8df8f94/download/discentes-2015.csv'
-    download_discentes_semestre(url, 'discentes-2015.csv')
+    download_discentes_semestre(url, 'csv/discentes-2015.csv')
 
     url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/7d2fa5b3-743f-465f-8450' \
           '-91719b34a002/download/discentes-2016.csv'
-    download_discentes_semestre(url, 'discentes-2016.csv')
+    download_discentes_semestre(url, 'csv/discentes-2016.csv')
 
     url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/dc732572-a51a-4d4a-a39d' \
           '-2db37cbe5382/download/discentes-2017.csv'
-    download_discentes_semestre(url, 'discentes-2017.csv')
+    download_discentes_semestre(url, 'csv/discentes-2017.csv')
 
     url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/146b749b-b9d0-49b2-b114' \
           '-ac6cc82a4051/download/discentes-2018.csv'
-    download_discentes_semestre(url, 'discentes-2018.csv')
+    download_discentes_semestre(url, 'csv/discentes-2018.csv')
 
     url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/a55aef81-e094-4267-8643' \
           '-f283524e3dd7/download/discentes-2019.csv'
-    download_discentes_semestre(url, 'discentes-2019.csv')
+    download_discentes_semestre(url, 'csv/discentes-2019.csv')
 
     url = 'http://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/7795c538-86fc-483f-9da9' \
           '-67b2fcc834ae/download/discentes-2020.csv'
-    download_discentes_semestre(url, 'discentes-2020.csv')
+    download_discentes_semestre(url, 'csv/discentes-2020.csv')
 
 
 def download_discentes_semestre(url, discentes_csv):
