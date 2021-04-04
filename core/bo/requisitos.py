@@ -28,3 +28,15 @@ def replace_expressao(s, disciplinas):
             else:
                 expressao = expressao.replace(t, 'False')
     return expressao
+
+
+def create_token_expressao(expressao_requisitos):
+    """
+        Separa os código dos componentes da expressão.
+    """
+    s = expressao_requisitos.replace('(', '')
+    s = s.replace(')', '')
+    s = s.replace('E', '')
+    s = s.replace('OU', '')
+
+    return s.split()

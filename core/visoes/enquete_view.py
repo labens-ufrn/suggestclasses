@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from core.forms import VotoTurmaForm
 from core.models import Enquete, VotoTurma, ComponenteCurricular
 from core.visoes.suggest_view import discente_existe, redirecionar
+from core.bo.requisitos import create_token_expressao
 
 
 def enquete_voto_view(request, pk, abstencao=None):
@@ -199,7 +200,17 @@ def get_qtd_abstencao(enquete):
 def load_componente(request):
     componente_id = request.GET.get('componenteId')
     componente = ComponenteCurricular.objects.get(pk=componente_id)
-    return render(request, 'core/enquetes/requisitos_list.html', {'componente': componente})
+    tokens_componentes = create_token_expressao(componente.requisito)
+    requisitos = set()
+    for t in tokens_componentes:
+        requisitos.add(ComponenteCurricular.objects.get(codigo=t))
+
+    context = {
+        'componente': componente,
+        'requisitos': requisitos
+    }
+
+    return render(request, 'core/enquetes/requisitos_list.html', context)
 
 
 def check_periodo_enquete(request, enquete):
