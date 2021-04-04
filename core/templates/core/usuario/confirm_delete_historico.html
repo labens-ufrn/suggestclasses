@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+{% block content %}
+  <div class="container">
+    <h2 class="page-section-heading text-center text-secondary mb-0">Excluir de Componentes do Histórico</h2>
+    <br/>
+    <div class="row">
+      <div class="col-md-1 col-xs-1 col-sm-1"></div>
+      <div class="col-md-10 col-xs-10 col-sm-10">
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-row">
+            <div class="alert alert-warning">
+              Tem certeza de que deseja excluir o Componente {{ object.componente }} do seu histórico?
+            </div>
+          </div>
+          <button type="submit" class="btn btn-danger">
+            <span class="material-icons align-middle">
+              delete
+            </span>
+            Excluir
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

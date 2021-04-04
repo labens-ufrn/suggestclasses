@@ -12,7 +12,8 @@ def listar_historicos():
 
 
 def listar_historicos_by_discente(discente):
-    historicos = Historico.objects.filter(discente=discente)
+    historicos = Historico.objects.filter(discente=discente) \
+        .order_by('-semestre', 'componente__nome')
     return historicos
 
 def excluir_historico(discente, componente):
@@ -21,4 +22,3 @@ def excluir_historico(discente, componente):
         return True
     except Historico.DoesNotExist:
         return False
-    

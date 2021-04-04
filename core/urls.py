@@ -13,6 +13,8 @@ urlpatterns = [
     path('profile/<username>/', profile_view.profile, name='profile'),
     path('ajax/load-componentes-historico/', profile_view.load_componentes_historico, name='ajax_load_componentes_historico'),
 
+    path('profile/historico_deletar/<int:pk>', profile_view.historico_deletar_componente, name='historico_deletar_componente'),
+
     path('usuario/cadastrar', views.cadastrar_usuario, name='Cadastro de Usuário'),
     path('usuario/logar', views.logar_usuario, name='Login de Usuário'),
     path('usuario/deslogar', views.deslogar_usuario, name='Logout de Usuário'),

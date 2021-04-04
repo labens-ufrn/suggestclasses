@@ -518,7 +518,8 @@ class VinculoDocenteSugestao(models.Model):
 
 class Historico(models.Model):
     discente = models.ForeignKey(Discente, on_delete=models.PROTECT)
-    componente = models.ForeignKey(ComponenteCurricular, on_delete=models.PROTECT, blank=True, null=True)
+    componente = models.ForeignKey(ComponenteCurricular, on_delete=models.PROTECT)
+    semestre = models.CharField(max_length=1)
     criado_em = models.DateTimeField(auto_now_add=True)
 
     class Meta:
