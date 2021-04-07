@@ -121,3 +121,4 @@ dados/locais.txt
 .vscode/launch.json
 dados/atualizados/*.txt
 dados/csv/*.csv
+data/*
