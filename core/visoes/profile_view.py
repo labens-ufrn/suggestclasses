@@ -1,6 +1,3 @@
-
-
-
 from core.models import Historico
 from core.bo.curso import get_curso_by_codigo
 from core.bo.curriculo import get_componentes_by_curso, get_componentes_by_curso_semestre
