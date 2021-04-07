@@ -5,7 +5,12 @@ SECRET_KEY=cg#p$g+j9tax!#a3cup@1$8obt2_+&k3q+pmu)5%asj6yjpkag
 DEBUG=True
 
 DATABASE_URL=mysql://sc_user:sc_user@localhost/scdb_dev
-MARIADB_PORT=32768
+MARIADB_PORT=3306
 DATABASE_NAME=scdb_dev
 DATABASE_USER=sc_user
-DATABASE_PASSWORD=sc_user
+DATABASE_PASSWORD=password
+DATABASE_ROOT_PASSWORD=docker
+DATABASE_HOST = mariadb
+
+EMAIL_USER=
+EMAIL_PASS=
