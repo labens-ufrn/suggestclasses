@@ -1,16 +1,17 @@
 import csv
+
 import os
 import django
 django.setup()
-from dados.povoar_componentes import carregar_componente
-from dados.povoar_docentes import carregar_docente
-from dados.baixar_dados import downloads_dados
 from suggestclasses.settings import BASE_DIR
+from dados.baixar_dados import downloads_dados
+from dados.povoar_componentes import carregar_componente, carregar_componentes
+from dados.povoar_docentes import carregar_docente, carregar_docentes
+from dados.povoar_cursos import carregar_cursos
 from dados.povoar_funcoes_gratificadas import carregar_funcoes_gratificadas
-from dados.povoar_turma import carregar_turma
+from dados.povoar_turma import carregar_turma, carregar_turmas
 from dados.povoar_discentes import carregar_discentes
 from dados.povoar_salas import carregar_sala
-from dados.service.componente_service import atualizar_componente_curricular
 from core.models import Curso, Centro, Departamento, ComponenteCurricular, EstruturaCurricular, \
     OrganizacaoCurricular
 from core.bo.docente import get_docente_by_nome
@@ -32,7 +33,7 @@ def main():
     criar_salas()
     departamentos()
     criar_docentes()
-    cursos()
+    criar_cursos()
     criar_componentes()
     estruturas()
     organizacao()
@@ -112,50 +113,19 @@ def departamentos():
                     print('.', end="")
 
 
-def cursos():
+def criar_docentes():
+    print("\nCriando Docentes do CERES ...!")
+    carregar_docentes()
+
+
+def criar_cursos():
     print("\nCriando cursos para o CERES ...!")
-    # Buscando o Centro CERES
-    ceres = Centro.objects.get(id_unidade=1482)
-
-    with open('csv/cursos-ufrn.csv') as csvfile:
-        cursos_ufrn = csv.reader(csvfile, delimiter=';')
-        next(cursos_ufrn)  # skip header
-
-        for row in cursos_ufrn:
-
-            id_curso = row[0]
-            nome_curso = row[1]
-
-            coordenador = row[3]
-            # TODO a busca foi feita pelo nome pois na tabela curso não tem o SIAPE do coordenador
-            docente = get_docente_by_nome(coordenador)
-
-            nivel_ensino = row[5]
-            grau_academico = row[6]
-            modalidade_educacao = row[7]
-            turno = row[10]
-            id_unidade_responsavel = row[14]
-
-            if id_unidade_responsavel == '1482':
-                if not Curso.objects.filter(codigo=id_curso).exists():
-                    c = Curso(codigo=id_curso, nome=nome_curso, coordenador=docente, nivel=nivel_ensino,
-                              grau=grau_academico, modalidade=modalidade_educacao, turno=turno, centro=ceres)
-                    c.save()
-                else:
-                    print('.', end="")
-    print()
+    carregar_cursos()
 
 
 def criar_componentes():
     print("\nCriando Componentes para os Departamentos do CERES ...!")
-
-    with open('csv/componentes-curriculares-presenciais.csv') as csvfile:
-        componentes_ceres = csv.reader(csvfile, delimiter=';')
-        next(componentes_ceres)  # skip header
-
-        for row in componentes_ceres:
-            carregar_componente(row)
-        print()
+    carregar_componentes()
 
 
 def estruturas():
@@ -267,36 +237,9 @@ def organizacao():
         print()
 
 
-def criar_docentes():
-    print("\nCriando Docentes do CERES ...!")
-
-    with open('csv/docentes.csv') as csvfile:
-        docentes = csv.reader(csvfile, delimiter=';')
-        next(docentes)  # skip header
-
-        for row in docentes:
-            carregar_docente(row)
-        print()
-
-
 def criar_turmas():
     print("\nCriando Turmas 2019.1, 2019.2 e 2020.1 para os Cursos do CERES ...!")
-
-    criar_turmas_semestre('csv/turmas-2019.1.csv')
-    criar_turmas_semestre('csv/turmas-2019.2.csv')
-    criar_turmas_semestre('csv/turmas-2020.1.csv')
-
-
-def criar_turmas_semestre(turmas_csv):
-    print("\nCriando Turmas: " + turmas_csv + " para os Cursos do CERES ...!")
-
-    with open(turmas_csv) as csvfile:
-        turmas = csv.reader(csvfile, delimiter=';')
-        next(turmas)  # skip header
-
-        for row in turmas:
-            carregar_turma(row)
-        print()
+    carregar_turmas()
 
 
 def criar_funcoes_gratificadas():
@@ -314,31 +257,7 @@ def criar_funcoes_gratificadas():
 
 def criar_discentes():
     print("\nCriando Discentes por Ano de Ingresso para os Cursos do CERES ...!")
-
-    criar_discentes_anual('csv/discentes-2009.csv')
-    criar_discentes_anual('csv/discentes-2010.csv')
-    criar_discentes_anual('csv/discentes-2011.csv')
-    criar_discentes_anual('csv/discentes-2012.csv')
-    criar_discentes_anual('csv/discentes-2013.csv')
-    criar_discentes_anual('csv/discentes-2014.csv')
-    criar_discentes_anual('csv/discentes-2015.csv')
-    criar_discentes_anual('csv/discentes-2016.csv')
-    criar_discentes_anual('csv/discentes-2017.csv')
-    criar_discentes_anual('csv/discentes-2018.csv')
-    criar_discentes_anual('csv/discentes-2019.csv')
-    criar_discentes_anual('csv/discentes-2020.csv')
-
-
-def criar_discentes_anual(discentes_csv):
-    print("\nCriando Discentes Ingressantes: " + discentes_csv + " para os Cursos do CERES ...!")
-
-    with open(discentes_csv) as csvfile:
-        discentes = csv.reader(csvfile, delimiter=';')
-        next(discentes)  # skip header
-
-        for row in discentes:
-            carregar_discentes(row)
-        print()
+    carregar_discentes()
 
 
 if __name__ == "__main__":

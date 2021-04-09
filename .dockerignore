@@ -1,0 +1,7 @@
+data/
+docs/
+
+.venv/
+.git/
+.github/
+.vscode/

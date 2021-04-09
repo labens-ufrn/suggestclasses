@@ -3,10 +3,12 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
+from core.bo.curso import get_curso_by_codigo
+from core.bo.curriculo import get_componentes_by_curso, get_componentes_by_curso_semestre, get_semestres_by_curso
 from core.bo.enquetes import get_componentes_enquete
 from core.bo.sevices import get_cc_by_estrutura, get_estrutura_by_curso
 from core.dao.componente_dao import get_componentes_curriculares
-from core.models import SugestaoTurma, Docente, ComponenteCurricular, Departamento, Sala, \
+from core.models import Discente, Historico, OrganizacaoCurricular, SugestaoTurma, Docente, ComponenteCurricular, Departamento, Sala, \
     VotoTurma
 
 
@@ -87,7 +89,6 @@ class SugestaoTurmaForm(ModelForm):
 
 
 class VotoTurmaForm(ModelForm):
-
     class Meta:
         model = VotoTurma
         fields = ['componente']
@@ -95,5 +96,41 @@ class VotoTurmaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         enquete = kwargs.pop('enquete')
         super(VotoTurmaForm, self).__init__(*args, **kwargs)
-        get_componentes_curriculares()
         self.fields['componente'].queryset = get_componentes_enquete(enquete)
+
+SEMESTER_CHOICES = (
+    ("1", "1º Semestre"),
+    ("2", "2º Semestre"),
+    ("3", "3º Semestre"),
+    ("4", "4º Semestre"),
+    ("5", "5º Semestre"),
+    ("6", "6º Semestre"),
+    ("7", "7º Semestre"),
+    ("8", "8º Semestre"),
+    ("9", "9º Semestre"),
+    ("10", "10º Semestre"),
+    ("0", "Optativas"),
+)
+
+class HistoricoForm(ModelForm):
+    semestre = forms.ChoiceField(choices = SEMESTER_CHOICES, label='Semestre do Curso')
+    componente = forms.ModelChoiceField(queryset=ComponenteCurricular.objects.all(), label='Componente Cursado')
+    curso = forms.CharField(label='Curso', widget=forms.HiddenInput, required=False)
+    discente = forms.ModelChoiceField(queryset=Discente.objects.all(), label='Discente', widget=forms.HiddenInput, required=False)
+    class Meta:
+        model = Historico
+        fields = ['semestre', 'componente', 'curso', 'discente']
+
+    def __init__(self, *args, **kwargs):
+        discente = kwargs.pop('discente')
+        super(HistoricoForm, self).__init__(*args, **kwargs)
+        curso = get_curso_by_codigo(discente.id_curso)
+        self.initial['curso'] = discente.id_curso
+        self.initial['discente'] = discente
+        print(self.data)
+        semestre = 1
+        if self.data:
+            semestre = self.data['semestre']
+        self.fields['componente'].queryset = get_componentes_by_curso_semestre(curso=curso, semestre=semestre)
+        # self.fields['semestre'].queryset = get_semestres_by_curso(curso)
+        # self.fields['componente'].queryset = get_componentes_by_curso(curso=curso)

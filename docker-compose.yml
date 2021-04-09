@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  mariadb:
+    container_name: suggestclasses-mariadb
+    image: mariadb
+    volumes:
+      - ./data/db:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=$DATABASE_NAME
+      - MYSQL_USER=$DATABASE_USER
+      - MYSQL_PASSWORD=$DATABASE_PASSWORD
+      - MYSQL_ROOT_PASSWORD=$DATABASE_ROOT_PASSWORD
+      - MYSQL_HOST=$DATABASE_HOST
+    restart: always
+    ports:
+        - "3310:$MARIADB_PORT"
+  web:
+    container_name: suggestclasses-server
+    build: .
+    command: >
+      sh -c "python manage.py collectstatic --noinput
+             python manage.py migrate --noinput
+             export DJANGO_SUPERUSER_PASSWORD=admin
+             export DJANGO_SUPERUSER_USERNAME=admin
+             export DJANGO_SUPERUSER_EMAIL=labensufrn@gmail.com
+             python manage.py createsuperuser --noinput
+             export DJANGO_SETTINGS_MODULE=suggestclasses.settings
+             export PYTHONPATH=${PYTHONPATH}:/code
+             python dados/povoar_grupos.py
+             python dados/povoar_horarios.py
+             python dados/povoar.py
+             python dados/povoar_organizacao_curricular.py
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mariadb

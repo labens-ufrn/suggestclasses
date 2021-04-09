@@ -1,3 +1,4 @@
+from dados.service.util import gravar_arquivo
 from datetime import datetime
 import os
 import csv
@@ -14,27 +15,26 @@ discentes_atualizados_list =list()
 
 def main():
     os.chdir(DADOS_PATH)
-    criar_discentes()
-
-
-def criar_discentes():
     print("\nCriando Discentes por Ano de Ingresso para os Cursos do CERES ...!")
-
-    criar_discentes_anual('discentes-2009.csv')
-    criar_discentes_anual('discentes-2010.csv')
-    criar_discentes_anual('discentes-2011.csv')
-    criar_discentes_anual('discentes-2012.csv')
-    criar_discentes_anual('discentes-2013.csv')
-    criar_discentes_anual('discentes-2014.csv')
-    criar_discentes_anual('discentes-2015.csv')
-    criar_discentes_anual('discentes-2016.csv')
-    criar_discentes_anual('discentes-2017.csv')
-    criar_discentes_anual('discentes-2018.csv')
-    criar_discentes_anual('discentes-2019.csv')
-    criar_discentes_anual('discentes-2020.csv')
+    carregar_discentes()
 
 
-def criar_discentes_anual(discentes_csv):
+def carregar_discentes():
+    carregar_discentes_anual('csv/discentes-2009.csv')
+    carregar_discentes_anual('csv/discentes-2010.csv')
+    carregar_discentes_anual('csv/discentes-2011.csv')
+    carregar_discentes_anual('csv/discentes-2012.csv')
+    carregar_discentes_anual('csv/discentes-2013.csv')
+    carregar_discentes_anual('csv/discentes-2014.csv')
+    carregar_discentes_anual('csv/discentes-2015.csv')
+    carregar_discentes_anual('csv/discentes-2016.csv')
+    carregar_discentes_anual('csv/discentes-2017.csv')
+    carregar_discentes_anual('csv/discentes-2018.csv')
+    carregar_discentes_anual('csv/discentes-2019.csv')
+    carregar_discentes_anual('csv/discentes-2020.csv')
+
+
+def carregar_discentes_anual(discentes_csv):
     print("\nCriando Discentes Ingressantes: " + discentes_csv + " para os Cursos do CERES ...!")
 
     with open(discentes_csv) as csvfile:
@@ -42,17 +42,14 @@ def criar_discentes_anual(discentes_csv):
         next(discentes)  # skip header
 
         for row in discentes:
-            carregar_discentes(row)
+            carregar_discente(row)
         print()
 
-    data_e_hora_atuais = datetime.now()
-    discentes_atualizados = open("atualizados/" + discentes_csv[:-4] + "_atualizados " + str(data_e_hora_atuais) + ".txt", "a")
-    for discente_modificados in discentes_atualizados_list:
-    # \n is placed to indicate EOL (End of Line)
-        discentes_atualizados.write(discente_modificados + '\n')
-    discentes_atualizados.close()
+    if discentes_atualizados_list:
+        gravar_arquivo(discentes_csv[4:-4] + "_atualizados ", discentes_atualizados_list)
 
-def carregar_discentes(row):
+
+def carregar_discente(row):
     id_unidade = row[13] if row[13] != '' else None
 
     # Carregamento apenas de alunos do CERES.

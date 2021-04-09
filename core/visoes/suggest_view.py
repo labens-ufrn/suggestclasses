@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models.deletion import ProtectedError
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -241,8 +242,11 @@ def sugestao_deletar(request, pk, estrutura, template_name='core/sugestao/confir
         messages.error(request, 'Você não tem permissão de Excluir esta Sugestão de Turma.')
         return redirecionar(request)
     if request.method == 'POST':
-        sugestao.delete()
-        messages.success(request, 'Sugestão de Turma excluída com sucesso.')
+        try:
+            sugestao.delete()
+            messages.success(request, 'Sugestão de Turma excluída com sucesso.')
+        except ProtectedError as err:
+            messages.error(request, 'Sugestão de Turma não pode ser excluída. Erro {0}'.format(err))
         return redirecionar(request)
     return render(request, template_name, {'object': sugestao})
 
@@ -339,7 +343,9 @@ def is_coordenador(usuario, curso):
     grupos = usuario.groups.all()
 
     siape = usuario.docente.siape
-    test_coordenador1 = curso.coordenador.siape == siape
+    test_coordenador1 = False
+    if curso.coordenador:
+        test_coordenador1 = curso.coordenador.siape == siape
 
     funcoes = get_funcao_by_siape(siape)
     test_coordenador2 = False
@@ -349,7 +355,7 @@ def is_coordenador(usuario, curso):
         # curso.id_unidade == id_unidade_designacao
         test_coordenador2 = test_coordenador2 or 'COORDENADOR DE CURSO' == funcao.atividade
 
-    return grupo_chefes in grupos and test_coordenador1 and test_coordenador2
+    return grupo_chefes in grupos and (test_coordenador1 and test_coordenador2)
 
 
 def docente_existe(usuario):

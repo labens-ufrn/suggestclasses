@@ -5,6 +5,7 @@ django.setup()
 from datetime import datetime
 from dateutil.parser import parse
 from core.models import Departamento, Docente
+from dados.service.util import gravar_arquivo
 from dados.service.docente_service import atualizar_docente
 from dados.service.util import gravar_arquivo
 from suggestclasses.settings import BASE_DIR
@@ -16,20 +17,18 @@ docentes_atualizados_list = list()
 
 def main():
     os.chdir(DADOS_PATH)
+    print("\nCriando Docentes do CERES ...!")
     carregar_docentes()
 
 
 def carregar_docentes():
-    print("\nCriando Docentes do CERES ...!")
-
     with open('csv/docentes.csv') as csvfile:
         docentes = csv.reader(csvfile, delimiter=';')
         next(docentes)  # skip header
-
         for row in docentes:
             carregar_docente(row)
         print()
-    
+
     if docentes_atualizados_list:
         gravar_arquivo('docentes_atualizados', docentes_atualizados_list)
 
@@ -72,7 +71,7 @@ def carregar_docente(row):
             if docente.departamento is None:
                 docente.departamento = depto
                 docente.save()
-            
+
             docente_antigo, atualizacoes = atualizar_docente(
                 siape, nome, sexo, formacao, tipo_jornada_trabalho, vinculo, categoria, \
                 classe_funcional, id_unidade_lotacao, lotacao, admissao, depto)

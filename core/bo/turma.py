@@ -244,7 +244,7 @@ def get_sugestoes_por_horario(horario, ano, periodo, curso=None, docente=None, s
             curso=curso, ano=ano, periodo=periodo, semestre__in=semestres))
     elif not curso and docente:
         turmas_por_horario = list(horario.sugestoes.all().filter(
-            docente=docente, ano=ano, periodo=periodo, semestre__in=semestres))
+            vinculodocentesugestao__docente=docente, ano=ano, periodo=periodo, semestre__in=semestres))
     else:
         turmas_por_horario = list(horario.sugestoes.all().filter(
             curso=curso, docente=docente, ano=ano, periodo=periodo, semestre__in=semestres))

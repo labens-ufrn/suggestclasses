@@ -9,6 +9,13 @@ def get_componentes_curriculares():
     return ComponenteCurricular.objects.all()
 
 
+def get_componente_by_id(id_componente):
+    """
+        Retorna um componente curricular pelo id_componente.
+    """
+    return ComponenteCurricular.objects.get(id_componente=id_componente)
+
+
 def get_componentes_by_depto(depto):
     """
         Lista todos os componentes de um departamento.

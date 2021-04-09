@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from core.models import Horario, Centro, Departamento, Curso, ComponenteCurricular, EstruturaCurricular, \
+from core.models import Historico, Horario, Centro, Departamento, Curso, ComponenteCurricular, EstruturaCurricular, \
     OrganizacaoCurricular, Docente, SolicitacaoTurma, Turma, SugestaoTurma, Sala, FuncaoGratificada, Discente, PeriodoLetivo, \
     Enquete, VotoTurma, VinculoDocente, VinculoDocenteSugestao
 
@@ -20,8 +20,13 @@ class ComponenteCurricularAdmin(admin.ModelAdmin):
     search_fields = ['nome']
 
 
+class EstruturaCurricularAdmin(admin.ModelAdmin):
+    list_display = ('codigo', 'nome', 'ch_total_minima', 'status')
+    search_fields = ['nome']
+
+
 admin.site.register(ComponenteCurricular, ComponenteCurricularAdmin)
-admin.site.register(EstruturaCurricular)
+admin.site.register(EstruturaCurricular, EstruturaCurricularAdmin)
 
 
 class OrganizacaoCurricularAdmin(admin.ModelAdmin):
@@ -80,3 +85,4 @@ admin.site.register(VotoTurma)
 admin.site.register(VinculoDocente)
 admin.site.register(VinculoDocenteSugestao)
 admin.site.register(SolicitacaoTurma)
+admin.site.register(Historico)

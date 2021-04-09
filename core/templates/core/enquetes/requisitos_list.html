@@ -1,2 +1,20 @@
-<p><b>Pré-Requisitos</b>: {{ componente.requisito }}</p>
-<p><b>Ementa</b>: {{ componente.ementa }}</p>
+<p><strong>Nome</strong>: {{ componente.nome }}
+  <a href="{% url 'componente_detalhar' componente.pk %}">
+    <span class="material-icons md-18 align-middle">
+      find_in_page
+    </span>
+  </a>
+</p>
+<p><strong>Ementa</strong>: {{ componente.ementa }}</p>
+<p><strong>Pré-Requisitos</strong>:
+  {% if componente.requisito %}
+    {{ componente.requisito }}
+    <ul>
+      {% for req in requisitos %}
+        <li>{{ req }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    Componente curricular sem pre-requisitos!
+  {% endif %}
+</p>
