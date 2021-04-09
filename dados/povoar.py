@@ -1,17 +1,17 @@
 import csv
-from dados.povoar_cursos import carregar_cursos
+
 import os
 import django
 django.setup()
+from suggestclasses.settings import BASE_DIR
+from dados.baixar_dados import downloads_dados
 from dados.povoar_componentes import carregar_componente, carregar_componentes
 from dados.povoar_docentes import carregar_docente, carregar_docentes
-from dados.baixar_dados import downloads_dados
-from suggestclasses.settings import BASE_DIR
+from dados.povoar_cursos import carregar_cursos
 from dados.povoar_funcoes_gratificadas import carregar_funcoes_gratificadas
 from dados.povoar_turma import carregar_turma, carregar_turmas
 from dados.povoar_discentes import carregar_discentes
 from dados.povoar_salas import carregar_sala
-from dados.service.componente_service import atualizar_componente_curricular
 from core.models import Curso, Centro, Departamento, ComponenteCurricular, EstruturaCurricular, \
     OrganizacaoCurricular
 from core.bo.docente import get_docente_by_nome
@@ -58,7 +58,7 @@ def criar_salas():
     # Buscando o Centro CERES
     print("\nCriando Salas para o CERES ...!")
 
-    with open('salas-ceres.csv') as csvfile:
+    with open('csv/salas-ceres.csv') as csvfile:
         salas = csv.reader(csvfile, delimiter=',')
         next(salas)  # skip header
 
