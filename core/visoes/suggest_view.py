@@ -339,7 +339,9 @@ def is_coordenador(usuario, curso):
     grupos = usuario.groups.all()
 
     siape = usuario.docente.siape
-    test_coordenador1 = curso.coordenador.siape == siape
+    test_coordenador1 = False
+    if curso.coordenador:
+        test_coordenador1 = curso.coordenador.siape == siape
 
     funcoes = get_funcao_by_siape(siape)
     test_coordenador2 = False
@@ -349,7 +351,7 @@ def is_coordenador(usuario, curso):
         # curso.id_unidade == id_unidade_designacao
         test_coordenador2 = test_coordenador2 or 'COORDENADOR DE CURSO' == funcao.atividade
 
-    return grupo_chefes in grupos and test_coordenador1 and test_coordenador2
+    return grupo_chefes in grupos and (test_coordenador1 and test_coordenador2)
 
 
 def docente_existe(usuario):
