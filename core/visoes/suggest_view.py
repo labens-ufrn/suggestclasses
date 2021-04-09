@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models.deletion import ProtectedError
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -241,8 +242,11 @@ def sugestao_deletar(request, pk, estrutura, template_name='core/sugestao/confir
         messages.error(request, 'Você não tem permissão de Excluir esta Sugestão de Turma.')
         return redirecionar(request)
     if request.method == 'POST':
-        sugestao.delete()
-        messages.success(request, 'Sugestão de Turma excluída com sucesso.')
+        try:
+            sugestao.delete()
+            messages.success(request, 'Sugestão de Turma excluída com sucesso.')
+        except ProtectedError as err:
+            messages.error(request, 'Sugestão de Turma não pode ser excluída. Erro {0}'.format(err))
         return redirecionar(request)
     return render(request, template_name, {'object': sugestao})
 
