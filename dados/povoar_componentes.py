@@ -1,3 +1,4 @@
+from dados.service.util import gravar_arquivo
 from datetime import datetime
 import os
 import csv
@@ -16,26 +17,21 @@ componentes_atualizados_list = list()
 
 def main():
     os.chdir(DADOS_PATH)
+    print("\nCriando Componentes para os Departamentos do CERES ...!")
     carregar_componentes()
 
 
 def carregar_componentes():
-    print("\nCriando Componentes para os Departamentos do CERES ...!")
-
-    with open('componentes-curriculares-presenciais.csv') as csvfile:
+    with open('csv/componentes-curriculares-presenciais.csv') as csvfile:
         componentes_ceres = csv.reader(csvfile, delimiter=';')
         next(componentes_ceres)  # skip header
 
         for row in componentes_ceres:
             carregar_componente(row)
         print()
-    
-    data_e_hora_atuais = datetime.now()
-    componentes_atualizados = open("atualizados/" + "componentes_atualizados " + str(data_e_hora_atuais) + ".txt", "a")
-    for cc_modificados in componentes_atualizados_list:
-        # \n is placed to indicate EOL (End of Line)
-        componentes_atualizados.write(cc_modificados + '\n')
-    componentes_atualizados.close()
+
+    if componentes_atualizados_list:
+        gravar_arquivo("componentes_atualizados", componentes_atualizados_list)
 
 
 def carregar_componente(row):

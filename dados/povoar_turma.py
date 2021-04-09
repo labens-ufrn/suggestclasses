@@ -16,7 +16,8 @@ locais_set = set()
 def main():
     print("Povoar Turmas da UFRN!")
     os.chdir(DADOS_PATH)
-    criar_turmas()
+    print("Criando Turmas 2019.1, 2019.2 e 2020.1 para os Cursos do CERES ...!")
+    carregar_turmas()
 
     locais = open("locais.txt", "a")
     for local in locais_set:
@@ -25,17 +26,15 @@ def main():
     locais.close()
 
 
-def criar_turmas():
-    print("Criando Turmas 2019.1, 2019.2 e 2020.1 para os Cursos do CERES ...!")
-
-    criar_turmas_semestre('turmas-2019.1.csv')
-    criar_turmas_semestre('turmas-2019.2.csv')
-    criar_turmas_semestre('turmas-2020.1.csv')
-    criar_turmas_semestre('turmas-2020.5.csv')
-    criar_turmas_semestre('turmas-2020.6.csv')
+def carregar_turmas():
+    carregar_turmas_semestre('csv/turmas-2019.1.csv')
+    carregar_turmas_semestre('csv/turmas-2019.2.csv')
+    carregar_turmas_semestre('csv/turmas-2020.1.csv')
+    carregar_turmas_semestre('csv/turmas-2020.5.csv')
+    carregar_turmas_semestre('csv/turmas-2020.6.csv')
 
 
-def criar_turmas_semestre(turmas_csv):
+def carregar_turmas_semestre(turmas_csv):
     print("Criando Turmas: " + turmas_csv + " para os Cursos do CERES ...!")
 
     with open(turmas_csv) as csvfile:
