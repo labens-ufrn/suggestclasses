@@ -14,7 +14,7 @@ services:
       - MYSQL_HOST=$DATABASE_HOST
     restart: always
     ports:
-        - "3310:$MARIADB_PORT"
+        - "3310:3306"
   web:
     container_name: suggestclasses-server
     build: .
