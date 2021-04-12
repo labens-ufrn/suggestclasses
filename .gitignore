@@ -121,4 +121,5 @@ dados/locais.txt
 .vscode/launch.json
 dados/atualizados/*.txt
 dados/csv/*.csv
+!dados/csv/salas-ceres.csv
 data/*
