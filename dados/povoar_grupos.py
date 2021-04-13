@@ -7,10 +7,10 @@ from core.models import Horario, SugestaoTurma, SolicitacaoTurma, VotoTurma
 
 def main():
     print("Povoar Grupos e Permissões!")
-    criar_grupos()
+    adicionar_grupos()
 
 
-def criar_grupos():
+def adicionar_grupos():
     docentes, created = Group.objects.get_or_create(name='Docentes')
     adicionar_permissoes_docentes(docentes)
 

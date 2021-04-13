@@ -15,40 +15,26 @@ def povoar_horarios():
     criar_horarios_turno('M')
     criar_horarios_turno('T')
     criar_horarios_turno('N')
-    criar_horarios_turno_sabado('M')
-    criar_horarios_turno_sabado('T')
-    criar_horarios_turno_sabado('N')
 
 
 def criar_horarios_turno(turno):
-    n = 7
+    dias = 8
+    ordens = 7
     if turno == 'N':
-        n = 5
+        ordens = 6
 
-    for d in range(2, 7):
-        for i in range(1, n):
-            if not Horario.objects.filter(dia=d, turno=turno, ordem=i,
-                                          hora_inicio=get_horario_inicio(turno, i),
-                                          hora_final=get_horario_final(turno, i)).exists():
-                Horario.objects.create(dia=d, turno=turno, ordem=i,
-                                       hora_inicio=get_horario_inicio(turno, i),
-                                       hora_final=get_horario_final(turno, i))
-                print('+', end="")
-            else:
-                print('.', end="")
+    # d (dia) vai de segunda até sábado, o range usa o intervalo [2,8)
+    # i (ordem) vai do 1º horário até o 6º horário, o range usa o intervalo [1,7)
+    for d in range(2, dias):
+        for i in range(1, ordens):
+            if not Horario.objects.filter(
+                dia=d, turno=turno, ordem=i,
+                hora_inicio=get_horario_inicio(turno, i),
+                hora_final=get_horario_final(turno, i)).exists():
 
-
-def criar_horarios_turno_sabado(turno):
-    n = 7
-    for d in range(7, 8):
-        for i in range(1, n):
-            if not Horario.objects.filter(dia=d, turno=turno, ordem=i,
-                                            hora_inicio=get_horario_inicio(turno, i),
-                                            hora_final=get_horario_final(turno, i)).exists():
-                if turno != 'N' and (i != 5 or i != 6):
-                    Horario.objects.create(dia=d, turno=turno, ordem=i,
-                                        hora_inicio=get_horario_inicio(turno, i),
-                                        hora_final=get_horario_final(turno, i))
+                    Horario.objects.create(
+                        dia=d, turno=turno, ordem=i,                     hora_inicio=get_horario_inicio(turno, i),
+                        hora_final=get_horario_final(turno, i))
                     print('+', end="")
             else:
                 print('.', end="")
@@ -107,6 +93,10 @@ def get_horario_inicio_noite(turno, ordem):
         hora_inicio = time(20, 35, 00)
     if turno == 'N' and ordem == 4:
         hora_inicio = time(21, 25, 00)
+    if turno == 'N' and ordem == 4:
+        hora_inicio = time(21, 25, 00)
+    if turno == 'N' and ordem == 5:
+        hora_inicio = time(22, 15, 00)
     return hora_inicio
 
 
@@ -162,6 +152,8 @@ def get_horario_final_noite(turno, ordem):
         hora_final = time(21, 25, 00)
     if turno == 'N' and ordem == 4:
         hora_final = time(22, 15, 00)
+    if turno == 'N' and ordem == 5:
+        hora_final = time(23, 5, 00)
     return hora_final
 
 
