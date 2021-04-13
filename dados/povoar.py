@@ -1,4 +1,6 @@
 import csv
+from dados.povoar_grupos import adicionar_grupos
+from dados.povoar_horarios import povoar_horarios
 
 import os
 import django
@@ -29,6 +31,8 @@ def main():
     print(os.path.join(BASE_DIR, 'dados'))
 
     downloads_dados()
+    criar_horarios()
+    criar_grupos()
     centros()  # Adicionamos apenas o CERES.
     criar_salas()
     departamentos()
@@ -40,6 +44,18 @@ def main():
     criar_turmas()
     criar_funcoes_gratificadas()
     criar_discentes()
+
+
+def criar_horarios():
+    print("Povoar Horários da UFRN!")
+    povoar_horarios()
+    print()
+
+
+def criar_grupos():
+    print("Povoar Grupos e Permissões!")
+    adicionar_grupos()
+    print()
 
 
 def centros():
