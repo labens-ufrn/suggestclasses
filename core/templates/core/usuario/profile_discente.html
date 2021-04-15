@@ -221,7 +221,25 @@
 
 {% block myscripts %}
 <script>
-  {% if tab_active %} $("#{{tab_active}}").addClass("show") {% endif %}
+  {% if tab_active %}
+    $("#{{tab_active}}").addClass("show")
+  {% endif %}
+</script>
+<script>
+  $("#id_semestre").change(function () {
+    const semestre_id = $(this).val();
+    const curso_id = $("#id_curso").val()
+
+    $.ajax({
+      url: "{% url 'ajax_load_componentes_historico' %}",
+      data: {
+        'semestre_id': semestre_id,
+        'curso_id': curso_id
+      },
+      success: function (data) {
+        $("#id_componente").html(data);
+      }
+    });
+  });
 </script>
 {% endblock myscripts %}
-
