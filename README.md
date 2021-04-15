@@ -21,48 +21,46 @@ Na página [Documentação](docs/docs.md) temos os detalhes do projeto e a lista
 
 ## Pré-requisitos
 
-Banco de Dados
+* Banco de Dados
+  * [MariaDB](https://mariadb.org)
+  * [MySQL](https://www.mysql.com)
 
-   MariaDB - https://mariadb.org/ ou MySQL - https://www.mysql.com/
+* Linguagem
+  * [Python](https://www.python.org)
 
-Linguagem
-
-   Python - https://www.python.org/
-
-ferramenta
-
-   Docker - https://www.docker.com/
+* Ferramenta
+  * [Docker](https://www.docker.com)
 
 ### Criação do Banco de Dados (dev e test) e Usuário
 
 Utilzamos o SGBD MariaDB/MySql.
 
 ```sql
-    CREATE DATABASE scdb_dev character set UTF8 collate utf8_bin;
-    CREATE DATABASE scdb_test character set UTF8 collate utf8_bin;
+CREATE DATABASE scdb_dev character set UTF8 collate utf8_bin;
+CREATE DATABASE scdb_test character set UTF8 collate utf8_bin;
 
-    CREATE USER 'sc_user'@'%' IDENTIFIED BY 'password';
+CREATE USER 'sc_user'@'%' IDENTIFIED BY 'password';
 
-    GRANT ALL ON scdb_dev.* TO 'sc_user'@'%';
-    GRANT ALL ON scdb_test.* TO 'sc_user'@'%';
+GRANT ALL ON scdb_dev.* TO 'sc_user'@'%';
+GRANT ALL ON scdb_test.* TO 'sc_user'@'%';
 ```
 
 ### Dependências para usar o MariaDB e MySQL
 
 Windows
 
-No site https://www.lfd.uci.edu/~gohlke/pythonlibs/ busca o Mysqlclient compatível com a sua versão Python instalada.
+No site <https://www.lfd.uci.edu/~gohlke/pythonlibs/> busca o Mysqlclient compatível com a sua versão Python instalada.
 
 Instalação com o PIP:
 
 ```shell script
-    pip install nome_do_arquivo_baixado.whl
+pip install nome_do_arquivo_baixado.whl
 ```
 
-Lunux
+Linux
 
 ```shell script
-    sudo apt install python3-dev default-libmysqlclient-dev
+sudo apt install python3-dev default-libmysqlclient-dev
 ```
 
 ## Virtualenv e variáveis de ambiente
@@ -70,9 +68,9 @@ Lunux
 Adicionar em ~/.profile as variáveis de ambiente:
 
 ```shell script
-    MARIA_HOME=/usr/bin/mysql
-    PATH=$PATH:$MARIA_HOME/bin
-    PYTHONHOME=/usr/bin
+MARIA_HOME=/usr/bin/mysql
+PATH=$PATH:$MARIA_HOME/bin
+PYTHONHOME=/usr/bin
 ```
 
 Windows
@@ -80,13 +78,13 @@ Windows
 Caso não tenha a Virtualenv instalada:
 
 ```shell script
-    pip install virtualenv
+pip install virtualenv
 ```
 
 Criação do Ambiente Virtual com virtualenv:
 
 ```shell script
-    virtualenv nome_da_virtualenv
+virtualenv nome_da_virtualenv
 ```
 
 Para ativar: ```cd nome_da_virtualenv\Scripts\activate```.
@@ -97,7 +95,7 @@ Linux
 Criação do Ambiente Virtual com virtualenv:
 
 ```shell script
-    virtualenv -p python3 venv
+virtualenv -p python3 venv
 ```
 
 Para ativar: ```source venv/bin/activate```.
@@ -106,7 +104,7 @@ Para desativar: ```deactivate```.
 ### Instalação das Dependência do Projeto
 
 ```shell script
-    pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Ocultando a instância de configuração
@@ -125,8 +123,8 @@ Copie os exemplos da pasta contrib:
 Edite o arquivo path.env para informar as variáveis:
 
 ```shell script
-    export DJANGO_SETTINGS_MODULE=suggestclasses.settings
-    export PYTHONPATH=${PYTHONPATH}:/home/<seu_diretorio>/suggestclasses
+export DJANGO_SETTINGS_MODULE=suggestclasses.settings
+export PYTHONPATH=${PYTHONPATH}:/home/<seu_diretorio>/suggestclasses
  ```
 
 Após editar os valores, execute o comando ```source path.env``` no Linux ou ```activate path.env``` no Windows para carregar as variáveis.
@@ -137,21 +135,21 @@ Ao modificar os models (em models.py), execute:
 Windows
 
 ```console
-    python3 manage.py makemigrations core
-    python3 manage.py migrate
+python3 manage.py makemigrations core
+python3 manage.py migrate
 ```
 
 Linux
 
 ```shell script
-    python manage.py makemigrations core
-    python manage.py migrate
+python manage.py makemigrations core
+python manage.py migrate
 ```
 
 ## Django Admin Super User
 
 ```commandline
-    python manage.py createsuperuser
+python manage.py createsuperuser
 ```
 
 ## Povoamento
@@ -181,9 +179,9 @@ Deve-se rodar, na raiz do projeto, o script ```povoar_horarios.py``` na pasta **
 Os scripts seguintes farão o povoamento do restante da base.
 
 ```shell script
-    python dados/baixar_dados.py
-    python dados/povoar.py
-    python dados/povoar_organizacao_curricular.py
+python dados/baixar_dados.py
+python dados/povoar.py
+python dados/povoar_organizacao_curricular.py
 ```
 
 Para atualizar a base, devem-ser deletados os csv's antigos e executar novamente os scripts.
@@ -193,22 +191,21 @@ Para atualizar a base, devem-ser deletados os csv's antigos e executar novamente
 Rodar os testes mantendo o banco de testes:
 
 ```shell script
-    python manage.py test --keepdb core/
+python manage.py test --keepdb core/
 ```
 
 Devemos acrescentar nas classes de testes:
 
 ```pythonstub
-    import django
-    django.setup()
+import django
+django.setup()
 ```
 
 Configurações executar os testes:
 
 ```shell script
-    export DJANGO_SETTINGS_MODULE=suggestclasses.settings
-
-    python manage.py test
+export DJANGO_SETTINGS_MODULE=suggestclasses.settings
+python manage.py test
 ```
 
 ### Executar os Testes de Unidade e Cobertura
@@ -220,10 +217,9 @@ Primeiro defina a varíavel de ambiente: ```export DJANGO_SETTINGS_MODULE=projec
 Depois instale o **coverage** e rode para ele gerar o arquivo `coverage.xml`.
 
 ```pythonstub
-    pip install coverage
-
-    coverage run -m unittest discover
-    coverage xml
+pip install coverage
+coverage run -m unittest discover
+coverage xml
 ```
 
 Se usar `coverage html`, ele gera o relatório em html.
@@ -231,14 +227,14 @@ Se usar `coverage html`, ele gera o relatório em html.
 #### Utilizando Nose (desativado)
 
 ```shell script
-    pip install nose
-    pip install coverage
-    export DJANGO_SETTINGS_MODULE=suggestclasses.settings
+pip install nose
+pip install coverage
+export DJANGO_SETTINGS_MODULE=suggestclasses.settings
 ```
 
 ```shell script
-    nosetests --with-xunit
-    nosetests --with-coverage --cover-package=core --cover-branches --cover-xml
+nosetests --with-xunit
+nosetests --with-coverage --cover-package=core --cover-branches --cover-xml
 ```
 
 ## Executar o Sonar
@@ -252,38 +248,33 @@ sonar-scanner \
   -Dsonar.login=02254c57898053f6e25acfb70756ef6f840d4d35
 ```
 
-## Rodando Mariadb em container Docker
+## Rodando o projeto usando Docker e Docker Compose
 
-* Criando o container do mariadb
+Tenha certeza que o Docker e o Docker Compose estão instalados em sua máquina. Caso contrário, [Instalando o Docker](https://docs.docker.com/get-docker/) e [Instalando Docker Compose](https://docs.docker.com/compose/install/).
 
-```shell script
-    docker pull mariadb
-    docker run --name mariadb -e MYSQL_ROOT_PASSWORD=root -p 32768:3306 -d mariadb
+Rode os seguintes comandos para criar as imagens.
+
+```shell
+docker build .
+docker-compose build
 ```
 
-* Verificando se o container está rodando
+Para rodar o projeto rode o seguinte comando.
 
-```shell script
-    docker ps
+```shell
+docker-compose up
 ```
 
-* Verificando todos os containers (ativos e inativos)
+Se preferir iniciar apenas o container do mariadb para rodar o projeto do suggestclasses fora de um container, use o comando.
 
-```shell script
-    docker ps -a
+```shell
+docker-compose up -d mariadb
 ```
 
-* Pausando container do mariadb
+Para desativar os containers, digite o seguinte comando.
 
-```shell script
-    docker stop mariadb
-```
-
-* Iniciando o container do mariadb e logando
-
-```shell script
-    docker start mariabd
-    docker exec -it mariadb mariadb -p
+```shell
+docker-compose down
 ```
 
 ## Outras Configurações
@@ -303,30 +294,30 @@ M6 – 11h40 às 12h30 | T6 – 17h40 às 18h30 |
 
 # Links
 
-* https://www.techiediaries.com/django/django-3-tutorial-and-crud-example-with-mysql-and-bootstrap/
-* https://learndjango.com/tutorials/django-favicon-tutorial
-* https://automationpanda.com/2017/09/14/django-projects-in-pycharm-community-edition/
-* http://craigthomas.ca/blog/2014/06/02/python-code-inspection-with-sonarqube/
-* https://docs.sonarqube.org/display/PLUG/Python+Unit+Tests+Execution+Reports+Import
-* https://stackoverflow.com/questions/34114427/django-upgrading-to-1-9-error-appregistrynotready-apps-arent-loaded-yet
-* https://simpleisbetterthancomplex.com/tutorial/2017/02/18/how-to-create-user-sign-up-view.html
-* https://stackoverflow.com/questions/32612690/bootstrap-4-glyphicons-migration
-* https://engineering.contaazul.com/versionamento-de-software-na-era-%C3%A1gil-8b53f6c08192
-* https://studygyaan.com/django/how-to-use-message-framework-django-templates
-* https://realpython.com/django-redirects/
-* https://stackoverflow.com/questions/5836674/why-does-debug-false-setting-make-my-django-static-files-access-fail
-* https://casesup.com/category/knowledgebase/howtos/python-django-handling-custom-error-page
-* https://coderbook.com/@marcus/how-to-restrict-access-with-django-permissions/
-* https://www.agiliq.com/blog/2018/05/django-unit-testing/
-* https://coderbook.com/@marcus/how-to-change-name-of-django-application/
-* https://stackoverflow.com/questions/16797623/how-do-i-rename-a-django-project-in-pycharm
-* https://django-project-skeleton.readthedocs.io/en/latest/structure.html
-* https://stackoverflow.com/questions/35796195/how-to-redirect-to-previous-page-in-django-after-post-request/35796330
-* https://github.com/hjwp/Test-Driven-Django-Tutorial
-* https://material.io/resources/icons/?style=baseline
-* https://micropyramid.com/blog/django-unit-test-cases-with-forms-and-views/
-* https://stackoverflow.com/questions/19331497/set-environment-variables-from-file-of-key-value-pairs/30969768#30969768
-* https://simpleisbetterthancomplex.com/article/2017/08/19/how-to-render-django-form-manually.html
-* https://simpleisbetterthancomplex.com/tutorial/2016/11/28/how-to-filter-querysets-dynamically.html
-* https://bootstrapious.com/p/bootstrap-sidebar
-* https://simpleisbetterthancomplex.com/tutorial/2016/11/15/how-to-implement-a-crud-using-ajax-and-json.html
+* <https://www.techiediaries.com/django/django-3-tutorial-and-crud-example-with-mysql-and-bootstrap/>
+* <https://learndjango.com/tutorials/django-favicon-tutorial>
+* <https://automationpanda.com/2017/09/14/django-projects-in-pycharm-community-edition/>
+* <http://craigthomas.ca/blog/2014/06/02/python-code-inspection-with-sonarqube/>
+* <https://docs.sonarqube.org/display/PLUG/Python+Unit+Tests+Execution+Reports+Import>
+* <https://stackoverflow.com/questions/34114427/django-upgrading-to-1-9-error-appregistrynotready-apps-arent-loaded-yet>
+* <https://simpleisbetterthancomplex.com/tutorial/2017/02/18/how-to-create-user-sign-up-view.html>
+* <https://stackoverflow.com/questions/32612690/bootstrap-4-glyphicons-migration>
+* <https://engineering.contaazul.com/versionamento-de-software-na-era-%C3%A1gil-8b53f6c08192>
+* <https://studygyaan.com/django/how-to-use-message-framework-django-templates>
+* <https://realpython.com/django-redirects/>
+* <https://stackoverflow.com/questions/5836674/why-does-debug-false-setting-make-my-django-static-files-access-fail>
+* <https://casesup.com/category/knowledgebase/howtos/python-django-handling-custom-error-page>
+* <https://coderbook.com/@marcus/how-to-restrict-access-with-django-permissions/>
+* <https://www.agiliq.com/blog/2018/05/django-unit-testing/>
+* <https://coderbook.com/@marcus/how-to-change-name-of-django-application/>
+* <https://stackoverflow.com/questions/16797623/how-do-i-rename-a-django-project-in-pycharm>
+* <https://django-project-skeleton.readthedocs.io/en/latest/structure.html>
+* <https://stackoverflow.com/questions/35796195/how-to-redirect-to-previous-page-in-django-after-post-request/35796330>
+* <https://github.com/hjwp/Test-Driven-Django-Tutorial>
+* <https://material.io/resources/icons/?style=baseline>
+* <https://micropyramid.com/blog/django-unit-test-cases-with-forms-and-views/>
+* <https://stackoverflow.com/questions/19331497/set-environment-variables-from-file-of-key-value-pairs/30969768#30969768>
+* <https://simpleisbetterthancomplex.com/article/2017/08/19/how-to-render-django-form-manually.html>
+* <https://simpleisbetterthancomplex.com/tutorial/2016/11/28/how-to-filter-querysets-dynamically.html>
+* <https://bootstrapious.com/p/bootstrap-sidebar>
+* <https://simpleisbetterthancomplex.com/tutorial/2016/11/15/how-to-implement-a-crud-using-ajax-and-json.html>

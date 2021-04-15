@@ -27,8 +27,6 @@ services:
              python manage.py createsuperuser --noinput
              export DJANGO_SETTINGS_MODULE=suggestclasses.settings
              export PYTHONPATH=${PYTHONPATH}:/code
-             python dados/povoar_grupos.py
-             python dados/povoar_horarios.py
              python dados/povoar.py
              python dados/povoar_organizacao_curricular.py
              python manage.py runserver 0.0.0.0:8000"
