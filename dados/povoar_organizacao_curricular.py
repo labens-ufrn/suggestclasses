@@ -2,6 +2,7 @@ import django
 django.setup()
 from core.bo.sistemas import get_estrutura_sistemas, get_estrutura_sistemas_dct
 from core.models import EstruturaCurricular, OrganizacaoCurricular, ComponenteCurricular, Curso
+from dados.service.estrutura_service import STATUS_ATIVA, STATUS_INATIVA
 
 
 def main():
@@ -15,24 +16,30 @@ def criar_estrutura_sistemas_dct():
     print("\nCriar Estrutura de Sistemas 01B - Códigos DCT")
     if not EstruturaCurricular.objects.filter(id_curriculo=510230608).exists():
         curso_sistemas = Curso.objects.get(codigo=7191770)
-        EstruturaCurricular.objects.create(id_curriculo=510230608, codigo='01B',
-                                           nome='SISTEMAS DE INFORMAÇÃO - CAICÓ - MT - BACHARELADO',
-                                           semestre_conclusao_minimo=8, semestre_conclusao_ideal=8,
-                                           semestre_conclusao_maximo=12, meses_conclusao_minimo=None,
-                                           meses_conclusao_ideal=None, meses_conclusao_maximo=None, cr_total_minimo=148,
-                                           ch_total_minima=3000, ch_optativas_minima=300, ch_complementar_minima=180,
-                                           max_eletivos=240, ch_nao_atividade_obrigatoria=2220,
-                                           cr_nao_atividade_obrigatorio=148, ch_atividade_obrigatoria=480,
-                                           cr_minimo_semestre=8, cr_ideal_semestre=24, cr_maximo_semestre=28,
-                                           ch_minima_semestre=120, ch_ideal_semestre=None, ch_maxima_semestre=0,
-                                           periodo_entrada_vigor=1, ano_entrada_vigor=2015,
-                                           observacao='', curso=curso_sistemas)
+        EstruturaCurricular.objects.create(
+            id_curriculo=510230608, codigo='01B',
+            nome='SISTEMAS DE INFORMAÇÃO - CAICÓ - MT - BACHARELADO',
+            semestre_conclusao_minimo=8, semestre_conclusao_ideal=8,
+            semestre_conclusao_maximo=12, meses_conclusao_minimo=None,
+            meses_conclusao_ideal=None, meses_conclusao_maximo=None, cr_total_minimo=148,
+            ch_total_minima=3000, ch_optativas_minima=300, ch_complementar_minima=180,
+            max_eletivos=240, ch_nao_atividade_obrigatoria=2220,
+            cr_nao_atividade_obrigatorio=148, ch_atividade_obrigatoria=480,
+            cr_minimo_semestre=8, cr_ideal_semestre=24, cr_maximo_semestre=28,
+            ch_minima_semestre=120, ch_ideal_semestre=None, ch_maxima_semestre=0,
+            periodo_entrada_vigor=1, ano_entrada_vigor=2015,
+            observacao='', status=STATUS_ATIVA, curso=curso_sistemas)
 
 
 def criar_organizacao_sistemas_dct():
     print("\nPovoar Componentes de Sistemas com Código DCT")
     bsi_ec_dcea = get_estrutura_sistemas()
+    bsi_ec_dcea.status = STATUS_INATIVA
+    bsi_ec_dcea.save()
+
     bsi_ec_dct = get_estrutura_sistemas_dct()
+    bsi_ec_dct.status = STATUS_ATIVA
+    bsi_ec_dct.save()
 
     org_bsi_dcea = OrganizacaoCurricular.objects.filter(estrutura=bsi_ec_dcea)
 
@@ -53,6 +60,8 @@ def criar_organizacao_sistemas_dct():
                 cc = ComponenteCurricular.objects.get(codigo=cod_dct)
             else:
                 print('\nERROR - Componente não existe: ' + cod_dct + ' - ' + org.componente.nome)
+                cc = ComponenteCurricular.objects.get(codigo=cod_original)
+
         else:
             # print(cod_original)
             cc = ComponenteCurricular.objects.get(codigo=cod_original)
