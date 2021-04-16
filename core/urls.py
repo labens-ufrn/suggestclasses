@@ -5,7 +5,7 @@ from django.urls import path
 from suggestclasses.settings import STATIC_URL, MEDIA_URL, MEDIA_ROOT, DEBUG
 from . import views
 from .visoes import suggest_view, enquete_view, profile_view
-from .visoes import sugestao_letras_view
+from .visoes import sugestao_letras_view, sugestao_historia_view
 from .visoes.sugestao_contabeis_view import sugestao_cont_list, sugestao_cont_manter, sugestao_cont_incluir, \
     sugestao_cont_editar, sugestao_cont_deletar
 
@@ -133,6 +133,22 @@ urlpatterns = [
     path('sugestao/dir/incluir', views.sugestao_dir_incluir, name='sugestao_dir_incluir'),
     path('sugestao/dir/editar/<int:pk>/', views.sugestao_dir_editar, name='sugestao_dir_editar'),
     path('sugestao/dir/deletar/<int:pk>/', views.sugestao_dir_deletar, name='sugestao_dir_deletar'),
+
+    path('sugestao/his-bac', sugestao_historia_view.sugestao_his_bac_list, name='sugestao_his_bac_list'),
+    path('sugestao/his-bac/manter', sugestao_historia_view.sugestao_his_bac_manter, name='sugestao_his_bac_manter'),
+    path('sugestao/his-bac/incluir', sugestao_historia_view.sugestao_his_bac_incluir, name='sugestao_his_bac_incluir'),
+    path('sugestao/his-bac/editar/<int:pk>/', sugestao_historia_view.sugestao_his_bac_editar,
+         name='sugestao_his_bac_editar'),
+    path('sugestao/his-bac/deletar/<int:pk>/', sugestao_historia_view.sugestao_his_bac_deletar,
+         name='sugestao_his_bac_deletar'),
+
+    path('sugestao/his-lic', sugestao_historia_view.sugestao_his_lic_list, name='sugestao_his_lic_list'),
+    path('sugestao/his-lic/manter', sugestao_historia_view.sugestao_his_lic_manter, name='sugestao_his_lic_manter'),
+    path('sugestao/his-lic/incluir', sugestao_historia_view.sugestao_his_lic_incluir, name='sugestao_his_lic_incluir'),
+    path('sugestao/his-lic/editar/<int:pk>/', sugestao_historia_view.sugestao_his_lic_editar,
+         name='sugestao_his_lic_editar'),
+    path('sugestao/his-lic/deletar/<int:pk>/', sugestao_historia_view.sugestao_his_lic_deletar,
+         name='sugestao_his_lic_deletar'),
 
     path('sugestao/let-esp/list', sugestao_letras_view.sugestao_let_esp_list, name='sugestao_let_esp_list'),
     path('sugestao/let-esp/manter', sugestao_letras_view.sugestao_let_esp_manter, name='sugestao_let_esp_manter'),
