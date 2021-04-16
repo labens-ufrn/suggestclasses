@@ -1,10 +1,11 @@
 import csv
-from dados.povoar_grupos import adicionar_grupos
-from dados.povoar_horarios import povoar_horarios
-
 import os
 import django
 django.setup()
+from dados.povoar_organizacao_curricular import adicionar_componentes_pedagogia, criar_estrutura_sistemas_dct, criar_organizacao_sistemas_dct
+from dados.povoar_estruturas import carregar_estruturas
+from dados.povoar_grupos import adicionar_grupos
+from dados.povoar_horarios import povoar_horarios
 from suggestclasses.settings import BASE_DIR
 from dados.baixar_dados import downloads_dados
 from dados.povoar_componentes import carregar_componente, carregar_componentes
@@ -146,75 +147,7 @@ def criar_componentes():
 
 def estruturas():
     print("\nCriando Estruturas Curriculares para os Cursos do CERES ...!")
-
-    with open('csv/estruturas-curriculares.csv') as csvfile:
-        estruturas_ceres = csv.reader(csvfile, delimiter=';')
-        next(estruturas_ceres)  # skip header
-
-        for row in estruturas_ceres:
-
-            curso_ufrn = row[3]
-
-            if Curso.objects.filter(codigo=curso_ufrn).exists():
-                curso_ceres = Curso.objects.get(codigo=curso_ufrn)
-
-                id_curriculo = row[0]
-                codigo = row[1]
-                nome_matriz = row[2]
-                id_curso = row[3]
-                nome_curso = row[4]
-                semestre_conclusao_minimo = row[5] if row[5] != '' else None
-                semestre_conclusao_ideal = row[6] if row[6] != '' else None
-                semestre_conclusao_maximo = row[7] if row[7] != '' else None
-                meses_conclusao_minimo = row[8] if row[8] != '' else None
-                meses_conclusao_ideal = row[9] if row[9] != '' else None
-                meses_conclusao_maximo = row[10] if row[10] != '' else None
-                cr_total_minimo = row[11] if row[11] != '' else None
-                ch_total_minima = row[12] if row[12] != '' else None
-                ch_optativas_minima = row[13] if row[13] != '' else None
-                ch_complementar_minima = row[14] if row[14] != '' else None
-                max_eletivos = row[15] if row[15] != '' else None
-                ch_nao_atividade_obrigatoria = row[16] if row[16] != '' else None
-                cr_nao_atividade_obrigatorio = row[17] if row[17] != '' else None
-                ch_atividade_obrigatoria = row[18] if row[18] != '' else None
-                cr_minimo_semestre = row[19] if row[19] != '' else None
-                cr_ideal_semestre = row[20] if row[20] != '' else None
-                cr_maximo_semestre = row[21] if row[21] != '' else None
-                ch_minima_semestre = row[22] if row[22] != '' else None
-                ch_ideal_semestre = row[23] if row[23] != '' else None
-                ch_maxima_semestre = row[24] if row[24] != '' else None
-                periodo_entrada_vigor = row[25] if row[25] != '' else None
-                ano_entrada_vigor = row[26] if row[26] != '' else None
-                observacao = row[27]
-
-                if not EstruturaCurricular.objects.filter(id_curriculo=id_curriculo).exists():
-                    print("Adicionando Estrutura: " + id_curriculo + " - " + codigo + " - " + nome_matriz)
-                    ec = EstruturaCurricular(id_curriculo=id_curriculo, codigo=codigo, nome=nome_matriz,
-                                             semestre_conclusao_minimo=semestre_conclusao_minimo,
-                                             semestre_conclusao_ideal=semestre_conclusao_ideal,
-                                             semestre_conclusao_maximo=semestre_conclusao_maximo,
-                                             meses_conclusao_minimo=meses_conclusao_minimo,
-                                             meses_conclusao_ideal=meses_conclusao_ideal,
-                                             meses_conclusao_maximo=meses_conclusao_maximo,
-                                             cr_total_minimo=cr_total_minimo, ch_total_minima=ch_total_minima,
-                                             ch_optativas_minima=ch_optativas_minima,
-                                             ch_complementar_minima=ch_complementar_minima, max_eletivos=max_eletivos,
-                                             ch_nao_atividade_obrigatoria=ch_nao_atividade_obrigatoria,
-                                             cr_nao_atividade_obrigatorio=cr_nao_atividade_obrigatorio,
-                                             ch_atividade_obrigatoria=ch_atividade_obrigatoria,
-                                             cr_minimo_semestre=cr_minimo_semestre,
-                                             cr_ideal_semestre=cr_ideal_semestre,
-                                             cr_maximo_semestre=cr_maximo_semestre,
-                                             ch_minima_semestre=ch_minima_semestre,
-                                             ch_ideal_semestre=ch_ideal_semestre,
-                                             ch_maxima_semestre=ch_maxima_semestre,
-                                             periodo_entrada_vigor=periodo_entrada_vigor,
-                                             ano_entrada_vigor=ano_entrada_vigor, observacao=observacao,
-                                             curso=curso_ceres)
-                    ec.save()
-                else:
-                    print('.', end="")
-        print()
+    carregar_estruturas()
 
 
 def organizacao():
@@ -251,6 +184,10 @@ def organizacao():
                     else:
                         print('.', end="")
         print()
+    print("Criando Organizações Modificadas - SuggestClasses ...!")
+    adicionar_componentes_pedagogia()
+    criar_estrutura_sistemas_dct()
+    criar_organizacao_sistemas_dct()
 
 
 def criar_turmas():
