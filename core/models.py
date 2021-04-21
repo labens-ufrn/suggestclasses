@@ -50,7 +50,7 @@ class Docente(models.Model):
     usuario = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
-        null=True
+        blank=True, null=True
     )
 
     def primeiro_nome(self):
