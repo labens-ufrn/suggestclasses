@@ -169,9 +169,8 @@ def verificar_choques(form_sugestao, sugestao_turma, horarios_list):
                 if sugestao_turma.docente is not None and s.docente == sugestao_turma.docente:
                     choques_componentes.add(str(s.componente.codigo) + ' - ' + s.componente.nome)
                     choque_docente.append(horario.dia + horario.turno + horario.ordem)
-                if s.semestre == sugestao_turma.semestre:
-                    choques_componentes_semestre.add(str(s.componente.codigo) + ' - ' + s.componente.nome)
-                    choques_semestres.append(horario.dia + horario.turno + horario.ordem)
+
+                verificar_choques_semestre(form_sugestao, horario, s, sugestao_turma, choques_componentes_semestre, choques_semestres)
 
     if choques_horarios or choque_docente or choques_componentes or choques_semestres:
         if choques_componentes:
@@ -194,6 +193,17 @@ def verificar_choques(form_sugestao, sugestao_turma, horarios_list):
                                     criar_string(choques_semestres) + '.')
         return True
     return False
+
+
+def verificar_choques_semestre(form_sugestao, horario, sugestao_existente, nova_sugestao, choques_componentes_semestre, choques_semestres):
+    checked = form_sugestao.cleaned_data['checked']
+    if (sugestao_existente.semestre == nova_sugestao.semestre) and \
+                    ((not nova_sugestao.semestre == 0) or \
+                     (nova_sugestao.semestre == 0 and checked)):
+        choques_componentes_semestre.add(
+            str(sugestao_existente.componente.codigo) + ' - ' +
+                sugestao_existente.componente.nome)
+        choques_semestres.append(horario.dia + horario.turno + horario.ordem)
 
 
 def criar_string(colecao):
