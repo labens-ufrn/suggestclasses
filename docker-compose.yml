@@ -28,7 +28,6 @@ services:
              export DJANGO_SETTINGS_MODULE=suggestclasses.settings
              export PYTHONPATH=${PYTHONPATH}:/code
              python dados/povoar.py
-             python dados/povoar_organizacao_curricular.py
              python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
