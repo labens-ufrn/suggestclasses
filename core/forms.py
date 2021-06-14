@@ -39,7 +39,8 @@ class SugestaoTurmaForm(ModelForm):
 
     local = forms.ModelChoiceField(queryset=Sala.objects.all().order_by('campus', 'nome'),
                                    label='Local', required=False)
-
+    checked = forms.BooleanField(
+        label='Verificar Choques em Optativas', initial=True,required=False)
     departamento = forms.ModelChoiceField(queryset=Departamento.objects.all().order_by('nome'),
                                           label='Departamento', required=False)
 
