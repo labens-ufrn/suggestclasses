@@ -10,9 +10,20 @@
       </div>
 
       <ul class="nav nav-pills nav-justified">
-        <li class="nav-item"><a class="nav-link {% if tab_active == 'usuario' %}active{% endif %}" data-toggle="tab" href="#usuario">Usuário</a></li>
-        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#horarios">Horários</a></li>
-        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#solicitacoes">Solicitações</a></li>
+        <li class="nav-item">
+          <a class="nav-link {% if tab_active == 'usuario' %}active{% endif %}" data-toggle="tab" href="#usuario">Usuário</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#horarios_atual">
+            Horários {{ ano_periodo_atual }}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#horarios">
+            Horários {{ ano_periodo }}
+          </a>
+        </li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#solicitacoes">Solicitações {{ ano_periodo }}</a></li>
         <li class="nav-item"><a class="nav-link {% if tab_active == 'historico' %}active{% endif %}" data-toggle="tab" href="#historico">Histórico</a></li>
       </ul>
 
@@ -75,94 +86,14 @@
             </tr>
           </table>
         </div>
+        <div id="horarios_atual" class="tab-pane container fade">
+          <div id="avisos">
+            <p class="alert-info">O Horário Atual é montado a partir de suas solicitações no semestre anterior, pois isso pode estar vazio.</p>
+          </div>
+          {% include 'core/usuario/discente/horarios_atual_periodo.html' %}
+        </div>
         <div id="horarios" class="tab-pane container fade">
-          <table class="table table-striped table-sm table-bordered">
-            <thead class="thead-light">
-            <tr align="center">
-              <th colspan="7">Solicitações de Turmas - {{ ano_periodo }}
-                <div class="align-middle" style="font-size: 12px">
-                  <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>
-                  <span class="align-middle">Obrigatória&nbsp;&nbsp;</span>
-                  <span class="material-icons md-18 align-middle" style="color: green">bookmark</span>
-                  <span class="align-middle">Optativa&nbsp;&nbsp;</span>
-                  <span class="material-icons md-18 align-middle" style="color: dodgerblue">school</span>
-                  <span class="align-middle">Vagas&nbsp;&nbsp;</span>
-                  <span class="material-icons md-18 align-middle" style="color: dodgerblue">star</span>
-                  <span class="align-middle">Interessados&nbsp;&nbsp;</span>
-                  <span class="material-icons md-18 align-middle" style="color: dodgerblue">find_in_page</span>
-                  <span class="align-middle">Detalhar&nbsp;&nbsp;</span>
-                </div>
-              </th>
-            </tr>
-            <tr align="center">
-              <th scope="col">#</th>
-              <th scope="col">Segunda</th>
-              <th scope="col">Terça</th>
-              <th scope="col">Quarta</th>
-              <th scope="col">Quinta</th>
-              <th scope="col">Sexta</th>
-              <th scope="col">Sábado</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for semana in horarios %}
-              <tr>
-                <th class="align-middle" scope="row" style="font-size: 12px;text-align: center;width: 12.4%">
-                  {{ semana.0.horario.ordem }}º: {{ semana.0.horario.hora_inicio }} - {{ semana.0.horario.hora_final }}
-                </th>
-                {% for th in semana %}
-                  <td align="center" width="18%" style="width: 14.6%">
-                    {% for turma in th.turmas %}
-                      <div class="sugestao-turma border">
-                        {% if turma.semestre != 0 %}
-                          <span class="material-icons md-18 align-middle" style="color: darkslateblue">bookmark</span>
-                          <span class="align-middle" style="color: darkslateblue">
-                        &nbsp;{{ turma.componente.codigo }} - T{{ turma.codigo_turma }}&nbsp;
-                      </span>
-                          <span class="material-icons md-18 align-middle" style="color: darkslateblue">
-                          filter_{{ turma.semestre }}
-                      </span>
-                        {% else %}
-                          <span class="material-icons md-18 align-middle" style="color: green">bookmark</span>
-                          <span class="align-middle" style="color: green">
-                        &nbsp;{{ turma.componente.codigo }} - T{{ turma.codigo_turma }}&nbsp;
-                      </span>
-                          <span class="material-icons md-18 align-middle" style="color: green">
-                        check_circle_outline
-                      </span>
-                        {% endif %}
-                        <br/>
-                        <b>{{ turma.componente.nome }}</b>
-                        <br/>
-                        {% include 'core/sugestao/vinculos_docente_exibir.html' %}
-                        <br>
-                        <i>{{ turma.local }}</i> <br/>
-                        <span class="material-icons md-18 align-middle" style="color: dodgerblue">school</span>
-                        <span class="align-middle" style="color: dodgerblue">
-                        <b>{{ turma.capacidade_aluno }}</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-
-                        <a href="{% url 'sugestao_solicitar' turma.pk %}?next={{ request.path|urlencode }}">
-                      <span class="material-icons md-18 align-middle">star</span>
-                      <span class="align-middle">
-                        <b>{{ turma.solicitacaoturma_set.count }}</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    </a>
-                        <a href="{% url 'sugestao_detalhar' turma.pk %}">
-                      <span class="material-icons md-18 align-middle">
-                        find_in_page
-                      </span>
-                    </a>
-                      </div>
-                    {% endfor %}
-                  </td>
-                {% endfor %}
-              </tr>
-            {% empty %}
-              <tr>
-                <td class="align-middle text-center" colspan="6">Não há Sugestões de Turmas cadastradas!</td>
-              </tr>
-            {% endfor %}
-            <tbody>
-          </table>
+          {% include 'core/usuario/discente/horarios_prox_periodo.html' %}
         </div>
         <div id="solicitacoes" class="tab-pane container fade">
           <table class="table table-striped table-sm table-bordered">

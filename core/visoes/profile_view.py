@@ -34,6 +34,8 @@ def profile(request, username):
         perfil = usuario.discente
         perfil_link = 'core/usuario/profile_discente.html'
         grupos = criar_string(usuario.groups.all())
+        horarios_atual = discente_grade_horarios(
+            perfil, periodo_letivo_atual.ano, periodo_letivo_atual.periodo)
         horarios = discente_grade_horarios(
             perfil, periodo_letivo_planejado.ano, periodo_letivo_planejado.periodo)
         solicitacao_list = get_solicitacoes(
