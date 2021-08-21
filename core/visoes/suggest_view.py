@@ -13,7 +13,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 
 from core.bo.docente import get_funcao_by_siape
-from core.bo.periodos import get_periodo_planejado
+from core.bo.periodos import get_periodo_ativo, get_periodo_planejado
 from core.bo.sevices import get_organizacao_by_componente
 from core.bo.sugestao import solicitacao_incluir, solicitacao_verificar_choques
 from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, converte_desc_horario, \
@@ -30,14 +30,24 @@ config = get_config()
 def sugestao_grade_horarios(request, estrutura, sugestao_incluir_link, sugestao_manter_link, sugestao_list_link):
     semestres = request.GET.getlist('semestres')
     semestres = atualiza_semestres(semestres)
-    periodo_letivo = get_periodo_planejado()
+    ano_periodo_atual = get_periodo_ativo()
+    ano_periodo_prox = get_periodo_planejado()
+    ano_periodo = request.GET.getlist('ano_periodo')
+    if ano_periodo is None or ano_periodo == []:
+        ano_periodo = ano_periodo_prox
+    elif ano_periodo_atual.is_same_as(ano_periodo[0]):
+        ano_periodo = ano_periodo_atual
+    else:
+        ano_periodo = ano_periodo_prox
 
-    tt = carrega_sugestao_horario(periodo_letivo.ano, periodo_letivo.periodo,
+    tt = carrega_sugestao_horario(ano_periodo.ano, ano_periodo.periodo,
                                   curso=estrutura.curso, semestres=semestres)
     context = {
         'tt': tt,
         'estrutura': estrutura,
-        'periodo_letivo': periodo_letivo,
+        'ano_periodo_atual': ano_periodo_atual,
+        'ano_periodo_prox': ano_periodo_prox,
+        'ano_periodo_sel': ano_periodo,
         'semestres_atual': criar_string(semestres) + '.',
         'sugestao_incluir_link': sugestao_incluir_link,
         'sugestao_manter_link': sugestao_manter_link,
