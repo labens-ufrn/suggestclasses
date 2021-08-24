@@ -3,8 +3,10 @@ from django.db.models import Q
 from core.models import PeriodoLetivo
 
 
-def get_periodo_letivo(status, ano=None, periodo=None):
-    query = Q(status=status)
+def get_periodo_letivo(status=None, ano=None, periodo=None):
+    query = Q()
+    if status:
+        query.add(Q(status=status), Q.AND)
     if ano:
         query.add(Q(ano=ano), Q.AND)
     if periodo:

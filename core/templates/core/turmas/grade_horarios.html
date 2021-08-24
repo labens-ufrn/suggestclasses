@@ -12,12 +12,12 @@
       <div class="text-center" id="div_semestres" style="font-size: 90%">
         <form id="form_semestres" method="get">
           <fieldset>
-            <input type="radio" id="p19.1" name="ano_periodo" value="2019.1">
-            <label for="p19.1">Período 2019.1</label>
-            <input type="radio" id="p19.2" name="ano_periodo" value="2019.2">
-            <label for="p19.2">Período 2019.2</label>
-            <input type="radio" id="p20.1" name="ano_periodo" value="2020.1">
-            <label for="p20.1">Período 2020.1</label>
+            <input type="radio" id="p19.1" name="ano_periodo" value="{{ ano_periodo_anterior2 }}">
+            <label for="p19.1">Período {{ ano_periodo_anterior2 }}</label>
+            <input type="radio" id="p19.2" name="ano_periodo" value="{{ ano_periodo_anterior1 }}">
+            <label for="p19.2">Período {{ ano_periodo_anterior1 }}</label>
+            <input type="radio" id="p20.1" name="ano_periodo" value="{{ ano_periodo_atual }}">
+            <label for="p20.1">Período {{ ano_periodo_atual }}</label>
           </fieldset>
           <fieldset>
             <input type="checkbox" id="1p" name="semestres" value="1">

@@ -435,6 +435,16 @@ class PeriodoLetivo(models.Model):
     def __str__(self):
         return str(self.ano) + '.' + str(self.periodo)
 
+    def is_same_as(self, ano_periodo: str) -> bool:
+        if ano_periodo is None or ano_periodo == '':
+            return False
+        ano = ano_periodo.split('.')[0]
+        periodo = ano_periodo.split('.')[1]
+        if str(self.ano) == ano and str(self.periodo) == periodo:
+            return True
+        else:
+            return False
+
 
 class Enquete(models.Model):
     """

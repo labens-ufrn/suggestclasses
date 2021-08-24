@@ -1,3 +1,4 @@
+from core.bo.periodos import get_periodo_ativo, get_periodo_letivo
 import re
 
 from core.bo.sevices import get_oc_by_semestre
@@ -116,6 +117,15 @@ def atualiza_ano_periodo(ano_periodo):
     if ano_periodo is None or ano_periodo == []:
         config = get_config()
         ano_periodo = [config.get('PeriodoAtual', 'ano_periodo')]
+    return ano_periodo
+
+def atualiza_periodo_letivo(ano_periodo):
+    if ano_periodo is None or ano_periodo == []:
+        ano_periodo = get_periodo_ativo()
+    else:
+        ano = get_ano(ano_periodo)
+        periodo = get_periodo(ano_periodo)
+        ano_periodo = get_periodo_letivo(status=None, ano=ano, periodo=periodo)
     return ano_periodo
 
 
