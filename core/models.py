@@ -381,10 +381,20 @@ class Discente(models.Model):
                + self.nome_curso + ' (' + self.nome_unidade + ')'
 
 
-# class Matricula(models.Model):
-#     """
-#     Modelo para os dados das Matriculas.
-#     """
+class Matricula(models.Model):
+    """
+        Modelo para os dados das Matriculas.
+   """
+    id_turma = models.IntegerField()
+    id_discente  = models.CharField(max_length=32)
+    id_curso = models.IntegerField()
+    unidade = models.IntegerField()
+    nota = models.DecimalField(max_digits=3, decimal_places=1)
+    reposicao = models.BooleanField()
+    faltas_unidade = models.IntegerField()
+    media_final = models.DecimalField(max_digits=3, decimal_places=1)
+    numero_total_faltas = models.IntegerField()
+    situacao = models.CharField(max_length=32)
 
 
 class SolicitacaoTurma(models.Model):
