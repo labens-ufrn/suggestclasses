@@ -32,6 +32,7 @@ def carregar_discentes():
     carregar_discentes_anual('csv/discentes-2018.csv')
     carregar_discentes_anual('csv/discentes-2019.csv')
     carregar_discentes_anual('csv/discentes-2020.csv')
+    # carregar_discentes_anual('csv/discentes-2021.csv')
 
 
 def carregar_discentes_anual(discentes_csv):
@@ -51,26 +52,41 @@ def carregar_discentes_anual(discentes_csv):
 
 def carregar_discente(row):
     id_unidade = row[13] if row[13] != '' else None
-
+    # id_unidade = row[4] if row[4] != '' else None
     # Carregamento apenas de alunos do CERES.
     if Centro.objects.filter(id_unidade=id_unidade).exists():
         matricula = row[0]
         nome_discente = row[1]
+        # nome_discente = row[6]
         sexo = row[2]
+        # sexo = row[7]
         ano_ingresso = row[3]
+        # ano_ingresso = row[1]
         periodo_ingresso = row[4]
+        # periodo_ingresso = row[2]
         forma_ingresso = row[5]
+        # forma_ingresso = row[8]
         tipo_discente = row[6]
+        # tipo_discente = row[9]
         status = row[7]
+        # status = row[10]
         sigla_nivel_ensino = row[8]
+        # sigla_nivel_ensino = row[11]
         nivel_ensino = row[9]
+        # nivel_ensino = row[12]
         id_curso = row[10]
+        # id_curso = row[3]
         nome_curso = row[11]
+        # nome_curso = row[13]
         modalidade_educacao = row[12]
-        id_unidade = row[13]
+        # modalidade_educacao = row[14]
+        # id_unidade = row[13]
         nome_unidade = row[14]
+        # nome_unidade = row[15]
         id_unidade_gestora = row[15]
+        # id_unidade_gestora = row[5]
         nome_unidade_gestora = row[16]
+        # nome_unidade_gestora = row[16]
 
         if not Discente.objects.filter(matricula=matricula).exists():
             print("Adicionando Discente " + matricula + " - " + nome_discente + "- " + nome_curso)
@@ -92,9 +108,10 @@ def carregar_discente(row):
                 tipo_discente, status, sigla_nivel_ensino, nivel_ensino, id_curso, nome_curso,
                 modalidade_educacao, id_unidade, nome_unidade, id_unidade_gestora, nome_unidade_gestora)
             if discente_antigo and atualizacoes:
-                discentes_atualizados_list.add(str(discente_antigo) + ', ' + str(atualizacoes))
+                discentes_atualizados_list.append(str(discente_antigo) + ', ' + str(atualizacoes))
             else:
                 print('.', end="")
+
 
 if __name__ == "__main__":
     main()

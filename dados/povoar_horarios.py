@@ -93,8 +93,6 @@ def get_horario_inicio_noite(turno, ordem):
         hora_inicio = time(20, 35, 00)
     if turno == 'N' and ordem == 4:
         hora_inicio = time(21, 25, 00)
-    if turno == 'N' and ordem == 4:
-        hora_inicio = time(21, 25, 00)
     if turno == 'N' and ordem == 5:
         hora_inicio = time(22, 15, 00)
     return hora_inicio
@@ -153,7 +151,7 @@ def get_horario_final_noite(turno, ordem):
     if turno == 'N' and ordem == 4:
         hora_final = time(22, 15, 00)
     if turno == 'N' and ordem == 5:
-        hora_final = time(23, 5, 00)
+        hora_final = time(22, 55, 00)
     return hora_final
 
 
