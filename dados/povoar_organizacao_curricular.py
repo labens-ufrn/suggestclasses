@@ -53,7 +53,7 @@ def criar_organizacao_sistemas_dct():
         dep = cod_original[:3]
         num = cod_original[3:]
 
-        if dep == 'BSI' and (num != '5001' and num != '5002'):
+        if (dep == 'BSI' and (num != '5001' and num != '5002')) or cod_original == 'CEA0008':
             cod_dct = 'DCT' + num
             # print('Código do Componente DCT: ' + cod_dct)
             if ComponenteCurricular.objects.filter(codigo=cod_dct).exists():
@@ -66,7 +66,7 @@ def criar_organizacao_sistemas_dct():
             # print(cod_original)
             cc = ComponenteCurricular.objects.get(codigo=cod_original)
 
-        if not OrganizacaoCurricular.objects.filter(estrutura=bsi_ec_dct, componente=cc):
+        if not OrganizacaoCurricular.objects.filter(estrutura=bsi_ec_dct, componente=cc).exists():
             oc = OrganizacaoCurricular(id_curriculo_componente=id_curriculo_componente, estrutura=bsi_ec_dct,
                                        componente=cc, semestre=org.semestre, tipo_vinculo=org.tipo_vinculo,
                                        nivel=org.nivel)
