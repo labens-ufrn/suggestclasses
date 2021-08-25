@@ -42,6 +42,10 @@ class DiscenteAdmin(admin.ModelAdmin):
     list_filter = ['ano_ingresso', 'periodo_ingresso', 'status', 'nome_curso']
     search_fields = ['matricula', 'nome_discente']
 
+class TurmaAdmin(admin.ModelAdmin):
+    list_display = ('codigo_turma', 'componente', 'ano', 'periodo')
+    list_filter = ['ano', 'periodo']
+    search_fields = ['componente']
 
 class PeriodoLetivoAdmin(admin.ModelAdmin):
     list_display = ('nome', 'ano', 'periodo', 'data_inicio', 'data_fim', 'status')
@@ -84,14 +88,14 @@ admin.site.register(OrganizacaoCurricular, OrganizacaoCurricularAdmin)
 admin.site.register(Curso)
 admin.site.register(Horario)
 admin.site.register(Docente, DocenteAdmin)
-admin.site.register(Turma)
+admin.site.register(Turma, TurmaAdmin)
 admin.site.register(SugestaoTurma)
 admin.site.register(FuncaoGratificada, FuncaoGratificadaAdmin)
 admin.site.register(Discente, DiscenteAdmin)
 admin.site.register(PeriodoLetivo, PeriodoLetivoAdmin)
 admin.site.register(Enquete, EnqueteAdmin)
-admin.site.register(VotoTurma, VotoTurmaAdmin)
 admin.site.register(VinculoDocente)
 admin.site.register(VinculoDocenteSugestao)
 admin.site.register(SolicitacaoTurma)
 admin.site.register(Historico)
+admin.site.register(VotoTurma, VotoTurmaAdmin)
