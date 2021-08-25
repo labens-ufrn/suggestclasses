@@ -50,7 +50,13 @@ def atualizar_docente(
             docente.admissao = admissao.date()
 
         if not docente.departamento == depto:
-            atualizacoes += 'depto = ' + docente.departamento.sigla + ' --> ' + depto.sigla + ','
+            sigla = None
+            sigla_dep = None
+            if depto:
+                sigla = depto.sigla
+            if docente.departamento:
+                sigla_dep = docente.departamento.sigla
+            atualizacoes += 'depto = ' + sigla_dep + ' --> ' + str(sigla) + ','
             docente.departamento = depto
 
         if len(atualizacoes) > 0:

@@ -48,7 +48,9 @@ def carregar_docente(row):
     # https://stackabuse.com/converting-strings-to-datetime-in-python/
     admissao = parse(admissao_str)
 
-    if id_unidade_lotacao == '1482' or Departamento.objects.filter(id_unidade=id_unidade_lotacao).exists():
+    if id_unidade_lotacao == '1482' \
+        or Departamento.objects.filter(id_unidade=id_unidade_lotacao).exists() \
+        or id_unidade_lotacao == '31011':
 
         depto = None
         if Departamento.objects.filter(id_unidade=id_unidade_lotacao).exists():
