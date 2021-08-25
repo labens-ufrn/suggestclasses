@@ -3,7 +3,7 @@ import re
 
 from core.bo.sevices import get_oc_by_semestre
 from core.config.config import get_config
-from core.models import Turma, Horario, SugestaoTurma
+from core.models import PeriodoLetivo, Turma, Horario, SugestaoTurma
 
 
 def get_turmas(estrutura, semestre, ano, periodo):
@@ -94,11 +94,10 @@ def get_turno(horario):
     return None
 
 
-def carrega_turmas(estrutura, semestres, ano_periodo):
+def carrega_turmas(estrutura, semestres, periodo_letivo: PeriodoLetivo):
     semestres = atualiza_semestres(semestres)
-    ano_periodo = atualiza_ano_periodo(ano_periodo)
-    ano = get_ano(ano_periodo)
-    periodo = get_periodo(ano_periodo)
+    ano = periodo_letivo.ano
+    periodo = periodo_letivo.periodo
 
     turmas = []
     for s in semestres:
@@ -125,7 +124,7 @@ def atualiza_periodo_letivo(ano_periodo):
     else:
         ano = get_ano(ano_periodo)
         periodo = get_periodo(ano_periodo)
-        ano_periodo = get_periodo_letivo(status=None, ano=ano, periodo=periodo)
+        ano_periodo = get_periodo_letivo(status=None, ano=ano, periodo=periodo).first()
     return ano_periodo
 
 
