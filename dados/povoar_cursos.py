@@ -41,19 +41,19 @@ def carregar_curso(row):
     turno = row[10]
     id_unidade_responsavel = row[14]
 
-    if id_unidade_responsavel == '1482':
-        # Buscando o Centro CERES
-        ceres = Centro.objects.get(id_unidade=1482)
+    if id_unidade_responsavel == '1482' or id_unidade_responsavel == '31011':
+        # Buscando o Centro CERES e FELCS
+        centro = Centro.objects.get(id_unidade=id_unidade_responsavel)
         # TODO a busca foi feita pelo nome pois na tabela curso não tem o SIAPE do coordenador
         docente = get_docente_by_nome(coordenador)
         if not Curso.objects.filter(codigo=id_curso).exists():
             c = Curso(codigo=id_curso, nome=nome_curso, coordenador=docente, nivel=nivel_ensino,
-                        grau=grau_academico, modalidade=modalidade_educacao, turno=turno, centro=ceres)
+                        grau=grau_academico, modalidade=modalidade_educacao, turno=turno, centro=centro)
             c.save()
             print('+', end="")
         else:
             curso_antigo, atualizacoes = atualizar_curso(id_curso, nome_curso, docente, nivel_ensino, \
-                grau_academico, modalidade_educacao, turno, ceres)
+                grau_academico, modalidade_educacao, turno, centro)
             if curso_antigo and atualizacoes:
                 cursos_atualizados_list.append(str(curso_antigo) + ', ' + str(atualizacoes))
             else:

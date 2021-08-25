@@ -4,7 +4,7 @@ SETA = ' --> '
 
 def atualizar_curso(
     id_curso, nome_curso, docente, nivel_ensino,
-    grau_academico, modalidade_educacao, turno, ceres):
+    grau_academico, modalidade_educacao, turno, centro):
 
     curso = Curso.objects.get(codigo=id_curso)
 
@@ -34,9 +34,9 @@ def atualizar_curso(
             atualizacoes += 'turno = ' + curso.turno + SETA + turno + ','
             curso.turno = turno
 
-        if not curso.centro == ceres:
-            atualizacoes += 'centro = ' + curso.centro + ' --> ' + ceres + ','
-            curso.centro = ceres
+        if not curso.centro == centro:
+            atualizacoes += 'centro = ' + str(curso.centro) + ' --> ' + str(centro) + ','
+            curso.centro = centro
 
         if len(atualizacoes) > 0:
             atualizacoes = atualizacoes[:-1]
