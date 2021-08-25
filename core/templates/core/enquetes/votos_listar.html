@@ -15,13 +15,14 @@
         <table class="table table-striped table-sm table-bordered">
           <thead class="thead-light">
           <tr align="center">
-            <th colspan="4">Votos</th>
+            <th id="votos" colspan="5">Votos</th>
           </tr>
           <tr align="center">
-            <th>Matrícula</th>
-            <th>Nome</th>
-            <th>Curso</th>
-            <th>Data</th>
+            <th id="atr1">Matrícula</th>
+            <th id="atr2">Nome</th>
+            <th id="atr3">Email</th>
+            <th id="atr4">Curso</th>
+            <th id="atr5">Data</th>
           </tr>
           </thead>
           <tbody>
@@ -29,6 +30,7 @@
             <tr>
               <td align="center">{{ voto.discente.matricula }}</td>
               <td align="center">{{ voto.discente.nome_discente }}</td>
+              <td align="center">{{ voto.discente.usuario.email }}</td>
               <td align="center">{{ voto.discente.nome_curso }}</td>
               <td align="center">
                 {{ voto.criado_em|date:"SHORT_DATETIME_FORMAT" }}
@@ -36,7 +38,7 @@
             </tr>
           {% empty %}
             <tr>
-              <td align="center" colspan="4">Votação vazia!</td>
+              <td align="center" colspan="5">Votação vazia!</td>
             </tr>
           {% endfor %}
           </tbody>
