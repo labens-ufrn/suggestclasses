@@ -13,9 +13,9 @@ class TipoEnquete(Enum):
 
 def get_enquetes():
     """
-        Lista todos as Enquetes.
+        Lista todas as Enquetes.
     """
-    return Enquete.objects.all().order_by('status', 'curso', 'periodo', '-data_hora_inicio', 'nome')
+    return Enquete.objects.all().order_by('status', 'curso', '-periodo', '-data_hora_inicio', 'nome')
 
 
 def get_enquetes_por_curso(curso_id=None):
