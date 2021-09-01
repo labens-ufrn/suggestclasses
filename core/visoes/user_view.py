@@ -11,7 +11,7 @@ from core.models import Docente, FuncaoGratificada, Discente
 def criar_usuario(request, form_usuario):
     usuario = form_usuario.save(commit=False)
 
-    # check_username(request, form_usuario)
+    check_user_exists(request, form_usuario)
     check_email(request, form_usuario)
     grupos = check_grupos(request, form_usuario, usuario)
 
@@ -34,11 +34,18 @@ def check_usuario(usuario, form_usuario, g):
         discente.save()
 
 
-def check_username(request, form_usuario):
-    username = form_usuario.cleaned_data.get('username')
-    if User.objects.filter(username=username).exists():
-        messages.error(request, 'O username informado já foi cadastrado!')
-        raise ValidationError("O username já existe!")
+def check_user_exists(request, form_usuario):
+    matricula = form_usuario.cleaned_data.get('matricula')
+    if Docente.objects.filter(siape=matricula).exists():
+        docente = Docente.objects.get(siape=matricula)
+        if docente.usuario:
+            messages.error(request, 'Já existe usuário para a matricula informada: ' + str(docente.usuario) + ' <' + docente.usuario.email + '>')
+            raise ValidationError("Já existe usuário para a matricula informada!")
+    elif Discente.objects.filter(matricula=matricula).exists():
+        discente = Discente.objects.get(matricula=matricula)
+        if discente.usuario:
+            messages.error(request, 'Já existe usuário para a matricula informada: ' + str(discente.usuario) + ' <' + discente.usuario.email + '>')
+            raise ValidationError("Já existe usuário para a matricula informada!")
 
 
 def check_email(request, form_usuario):
