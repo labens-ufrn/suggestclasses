@@ -40,18 +40,29 @@ def sugestao_grade_horarios(request, estrutura, sugestao_incluir_link, sugestao_
     else:
         ano_periodo = ano_periodo_prox
 
+    docente_sel = request.GET.getlist('docente_sel')
+    docente_obj: Docente = None
+    if docente_sel is not None and docente_sel != []:
+        docente_sel = docente_sel[0]
+        docente_obj = Docente.objects.filter(nome=docente_sel).first()
+    else:
+        docente_sel = ""
+
     tt = carrega_sugestao_horario(ano_periodo.ano, ano_periodo.periodo,
-                                  curso=estrutura.curso, semestres=semestres)
+                                  curso=estrutura.curso, semestres=semestres, docente=docente_obj)
     context = {
         'tt': tt,
         'estrutura': estrutura,
         'ano_periodo_atual': ano_periodo_atual,
         'ano_periodo_prox': ano_periodo_prox,
         'ano_periodo_sel': ano_periodo,
+        'semestres': semestres,
         'semestres_atual': criar_string(semestres) + '.',
         'sugestao_incluir_link': sugestao_incluir_link,
         'sugestao_manter_link': sugestao_manter_link,
         'sugestao_list_link': sugestao_list_link,
+        'docentes': Docente.objects.all(),
+        'docente_sel': docente_sel
     }
 
     return render(request, 'core/sugestao/grade_horarios.html', context)
