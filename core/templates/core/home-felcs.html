@@ -15,13 +15,18 @@
       <div class="row">
         <div class="col-md-8 mb-5 text-justify">
           <hr>
-          <div class="row">
-            <p>O Sistema <strong>SuggestClass</strong> permite o carregamento de <strong>Dados Abertos da UFRN</strong> e exibe informações
-            tratadas que possam ser utilizadas por gestores, docentes e discentes. Exibimos a seguir informações do CERES, dados da FELCS serão divulgados posteriomente.</p>
-            <span class="alert-info">
-              <strong>Atualização: </strong>Dados atualizados em 08/07/2022! As </strong>Enquetes para 2022.2 estão ativas, acesse <a href="/core/enquetes/list/">Enquetes</a> e vote.
-            </span>
-          </div>
+          <p>O Sistema <strong>SuggestClass</strong> permite o carregamento de <strong>Dados Abertos da UFRN</strong> e exibe informações
+            tratadas que possam ser utilizadas por gestores, docentes e discentes.</p>
+          <p class="alert-info">
+            <strong>Atualização 1: </strong>Dados atualizados em 18/02/2022!<br>
+            <strong>Atualização 2: </strong>Enquetes para 2022.1 ativas, acesse <a href="/core/enquetes/list/">Enquetes</a> e vote.
+          </p>
+
+          <p>A versão 1.5.1 permite visualizar <a href="/core/turmas/"><strong>Turmas do Período Atual e Anteriores</strong></a> e
+            <a href="/core/sugestao/"><strong>Sugestões de Turmas do Próximo Período</strong></a> em formato de
+            tabela de horários. Permite também visualizar os horários em <strong>Perfil</strong>, o discente pode
+            adicionar disciplinas ao histórico, e alguns bugs foram resolvidos.
+            Mais informações e novidades acesse o menu <a href="/core/sobre">Sobre</a>. Exibimos a seguir informações do CERES, dados da FELCS podem ser acessados <a href="/core/sobre">aqui</a>!</p>
           <hr>
           <div class="row">
             <div class="col-sm-3 col-md-6 col-lg-6">
@@ -43,7 +48,7 @@
             <div class="col-sm-6 col-md-6 col-lg-6">
               <ul class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                  <a href="/core/discente/list/" class="disabled" tabindex="-1">Discentes</a>
+                  <a href="/core/discente/list/" class="disabled" tabindex="-1">Discentes Ingressantes</a>
                   <span class="badge badge-primary badge-pill">{{ discentes.count }}</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -55,16 +60,6 @@
                   <span class="badge badge-primary badge-pill">{{ docentes.count }}</span>
                 </li>
               </ul>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="text-justify">
-              <span>A versão 1.6.0 permite visualizar <a href="/core/turmas/"><strong>Turmas do Período Atual e Anteriores</strong></a> e
-                <a href="/core/sugestao/"><strong>Sugestões de Turmas do Próximo Período</strong></a> em formato de
-                tabela de horários. Permite também visualizar os horários em <strong>Perfil</strong>, o discente pode
-                adicionar disciplinas ao histórico, e alguns bugs foram resolvidos.
-                Mais informações e novidades acesse o menu <a href="/core/sobre">Sobre</a>.</span>
             </div>
           </div>
           <br>
@@ -82,10 +77,11 @@
             <abbr title="Email">E-mail:</abbr>
             <a href="mailto:#">taciano.silva@ufrn.br</a>
           </address>
-          <p class="alert-danger">
-            <strong>Obs. 1: </strong>SuggestClasses v1.6.0: Versão GAMA pode conter funcionalidades em desenvolvimento!
-          </p>
+          <span class="alert-danger">
+            <strong>Obs. 1: </strong>SuggestClasses v1.5.1: Versão GAMA pode conter funcionalidades em desenvolvimento!
+          </span>
           <p class="alert-info"><strong>Obs. 2:</strong> Sugestões de melhorias são bem-vindas por e-mail.</p>
+
         </div>
       </div>
     </div>
