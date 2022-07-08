@@ -1,5 +1,5 @@
 from core.dao.departamento_dao import get_dct
-from core.models import ComponenteCurricular
+from core.models import Centro, ComponenteCurricular
 
 
 def get_componentes_curriculares():
@@ -7,6 +7,12 @@ def get_componentes_curriculares():
         Lista todos os componentes curriculares.
     """
     return ComponenteCurricular.objects.all()
+
+def get_cc_by_centro(centro: Centro):
+    """
+        Lista os componentes curriculares dos departamentos de um dado centro.
+    """
+    return ComponenteCurricular.objects.filter(departamento__centro=centro)
 
 
 def get_componente_by_id(id_componente):

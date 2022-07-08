@@ -108,7 +108,7 @@ def carrega_turmas(estrutura, semestres, periodo_letivo: PeriodoLetivo):
 
 def atualiza_semestres(semestres):
     if semestres is None or semestres.__contains__('100') or semestres == []:
-        semestres = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+        semestres = ['1', '2', '3', '4', '5', '6', '7', '8', '0']
     return semestres
 
 

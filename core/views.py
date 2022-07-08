@@ -23,9 +23,9 @@ from core.config.config import get_config
 from core.models import Curso, ComponenteCurricular, EstruturaCurricular, SugestaoTurma, Sala, Docente, Turma, \
     SolicitacaoTurma, Enquete, VotoTurma
 from core.visoes.flow_view import flow_horizontal, flow_opcionais, carrega_context_flow_list
-from .bo.curso import get_cursos
-from .bo.discentes import get_discentes, get_discentes_ativos, get_qtd_discentes_ativos
-from .bo.docente import get_docentes, carrega_turmas_por_horario
+from .bo.curso import get_cursos, get_cursos_by_centro
+from .bo.discentes import get_discentes, get_discentes_ativos, get_discentes_by_centro, get_qtd_discentes_ativos
+from .bo.docente import get_docentes, carrega_turmas_por_horario, get_docentes_by_centro
 from .bo.enquetes import get_enquetes, get_enquetes_por_curso
 from .bo.periodos import get_periodo_planejado, get_periodo_ativo
 from .bo.sala import get_salas
@@ -36,8 +36,8 @@ from .bo.sevices import get_estrutura_direito, get_estrutura_matematica, \
     get_estrutura_geografia_licenciatura
 from .bo.sistemas import get_estrutura_sistemas_dct
 from .dao.centro_dao import get_ceres
-from .dao.componente_dao import get_componentes_by_depto, get_componentes_curriculares
-from .dao.departamento_dao import get_departamentos
+from .dao.componente_dao import get_cc_by_centro, get_componentes_by_depto, get_componentes_curriculares
+from .dao.departamento_dao import get_departamentos, get_deptos_by_centro
 from .filters import SalaFilter, DocenteFilter, EnqueteFilter
 from .forms import CadastroUsuarioForm
 from .models import Horario, OrganizacaoCurricular
@@ -51,7 +51,7 @@ from .visoes.user_view import criar_usuario, autenticar_logar
 
 logger = logging.getLogger('suggestclasses.logger')
 config = get_config()
-
+ceres = get_ceres()
 
 def index(request):
     """
@@ -59,13 +59,12 @@ def index(request):
     :param request: Uma requisição http.
     :return: Um response com dados sobre o CERES/UFRN.
     """
-    ceres = get_ceres()
-    departamentos = get_departamentos()
-    cursos = get_cursos()
-    componentes = get_componentes_curriculares()
-    docentes = get_docentes()
-    discentes = get_discentes()
-    discentes_ativos = get_discentes_ativos()
+    departamentos = get_deptos_by_centro(centro=ceres)
+    cursos = get_cursos_by_centro(ceres)
+    componentes = get_cc_by_centro(ceres)
+    docentes = get_docentes_by_centro(ceres)
+    discentes = get_discentes_by_centro(ceres)
+    discentes_ativos = get_discentes_ativos(centro=ceres)
 
     context = {
         'ceres': ceres,
@@ -157,7 +156,7 @@ def departamento_list(request):
     """
             Lista todos os componentes curriculares.
     """
-    departamentos = get_departamentos()
+    departamentos = get_deptos_by_centro(centro=ceres)
 
     context = {
         'departamentos': departamentos
@@ -170,7 +169,7 @@ def curso_list(request):
     """
             Lista todos os componentes curriculares.
     """
-    cursos = Curso.objects.all()
+    cursos = get_cursos_by_centro(ceres)
 
     context = {
         'cursos': cursos
@@ -183,7 +182,7 @@ def componente_list(request):
     """
         Lista todos os componentes curriculares.
     """
-    componentes = ComponenteCurricular.objects.all()
+    componentes = get_cc_by_centro(ceres)
 
     context = {
         'componentes': componentes
@@ -216,7 +215,7 @@ def docentes_list(request):
     """
             Lista todas os docentes do centro.
     """
-    docentes = get_docentes()
+    docentes = get_docentes_by_centro(ceres)
     docente_filter = DocenteFilter(request.GET, queryset=docentes)
     context = {
         'filter': docente_filter
@@ -888,7 +887,7 @@ class EnqueteDetailView(DetailView):
 
 
 def search_enquetes(request):
-    
+
     usuario = request.user
     if usuario.id is not None and discente_existe(usuario):
         discente = usuario.discente
