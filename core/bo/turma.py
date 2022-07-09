@@ -256,7 +256,7 @@ def get_sugestoes_por_horario(horario, ano, periodo, curso=None, docente=None, s
             vinculodocentesugestao__docente=docente, ano=ano, periodo=periodo, semestre__in=semestres))
     else:
         turmas_por_horario = list(horario.sugestoes.all().filter(
-            curso=curso, docente=docente, ano=ano, periodo=periodo, semestre__in=semestres))
+            curso=curso, vinculodocentesugestao__docente=docente, ano=ano, periodo=periodo, semestre__in=semestres))
     return turmas_por_horario
 
 
