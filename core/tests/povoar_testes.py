@@ -326,7 +326,7 @@ def criar_funcao_gratificada():
     departamento = Departamento.objects.get(id_unidade=9998)
     docente1 = Docente.objects.get(siape=9999998)
     inicio = parse('2019/11/19')
-    fim = parse('2021/11/18')
+    fim = parse('2022/11/18')
     atividade = 'CHEFE DE DEPARTAMENTO'
 
     if not FuncaoGratificada.objects.filter(
