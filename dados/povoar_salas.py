@@ -15,7 +15,7 @@ def main():
 def carregar_salas():
     print("\nCriando Salas para o CERES ...!")
 
-    with open('salas-ceres.csv') as csvfile:
+    with open('csv/salas-ceres.csv') as csvfile:
         salas = csv.reader(csvfile, delimiter=',')
         next(salas)  # skip header
 
