@@ -148,8 +148,8 @@ def download_docentes():
     if os.path.exists(file_name):
         print("Arquivo " + file_name + " já existe!")
     else:
-        url = 'http://dados.ufrn.br/dataset/8bf1a468-48ff-4f4d-95ee-b17b7a3a5592/resource/ff0a457e-76fa-4aca-ad99' \
-              '-48aebd7db070/download/docentes.csv'
+        url = 'https://dados.ufrn.br/dataset/8bf1a468-48ff-4f4d-95ee-b17b7a3a5592/resource/6a8e5461-e748-45c6-aac6' \
+            '-432188d88dde/download/docentes.csv'
         urllib.request.urlretrieve(url, file_name)
         print('.................')
 
