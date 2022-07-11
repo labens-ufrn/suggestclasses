@@ -3,6 +3,8 @@ import os
 import urllib.request
 import django
 django.setup()
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 from suggestclasses.settings import BASE_DIR
 
