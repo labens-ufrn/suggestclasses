@@ -3,6 +3,8 @@ import os
 import urllib.request
 import django
 django.setup()
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 from suggestclasses.settings import BASE_DIR
 
@@ -142,14 +144,44 @@ def download_turmas():
         urllib.request.urlretrieve(url, file_name)
         print('.................')
 
+    print("Download do CSV das Turmas 2021.1 do CERES/UFRN ...!")
+    file_name = "csv/turmas-2021.1.csv"
+    if os.path.exists(file_name):
+        print("Arquivo " + file_name + " já existe!")
+    else:
+        url = 'http://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/964f91df-f322-4e56-897b' \
+              '-f06cca611904/download/turmas-2021.1.csv'
+        urllib.request.urlretrieve(url, file_name)
+        print('.................')
+
+        print("Download do CSV das Turmas 2021.2 do CERES/UFRN ...!")
+    file_name = "csv/turmas-2021.2.csv"
+    if os.path.exists(file_name):
+        print("Arquivo " + file_name + " já existe!")
+    else:
+        url = 'http://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/964f91df-f322-4e56-897b' \
+              '-f06cca611904/download/turmas-2021.2.csv'
+        urllib.request.urlretrieve(url, file_name)
+        print('.................')
+
+        print("Download do CSV das Turmas 2022.1 do CERES/UFRN ...!")
+    file_name = "csv/turmas-2022.1.csv"
+    if os.path.exists(file_name):
+        print("Arquivo " + file_name + " já existe!")
+    else:
+        url = 'http://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/964f91df-f322-4e56-897b' \
+              '-f06cca611904/download/turmas-2022.1.csv'
+        urllib.request.urlretrieve(url, file_name)
+        print('.................')
+
 def download_docentes():
     print("Download do CSV dos Docentes do CERES/UFRN ...!")
     file_name = "csv/docentes.csv"
     if os.path.exists(file_name):
         print("Arquivo " + file_name + " já existe!")
     else:
-        url = 'http://dados.ufrn.br/dataset/8bf1a468-48ff-4f4d-95ee-b17b7a3a5592/resource/ff0a457e-76fa-4aca-ad99' \
-              '-48aebd7db070/download/docentes.csv'
+        url = 'https://dados.ufrn.br/dataset/8bf1a468-48ff-4f4d-95ee-b17b7a3a5592/resource/6a8e5461-e748-45c6-aac6' \
+            '-432188d88dde/download/docentes.csv'
         urllib.request.urlretrieve(url, file_name)
         print('.................')
 

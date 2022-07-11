@@ -16,7 +16,7 @@ locais_set = set()
 def main():
     print("Povoar Turmas da UFRN!")
     os.chdir(DADOS_PATH)
-    print("Criando Turmas 2019.1, 2019.2 e 2020.1 para os Cursos do CERES ...!")
+    print("Criando Turmas 2019.1 a 2022.1 para os Cursos do CERES ...!")
     carregar_turmas()
 
     locais = open("locais.txt", "a")
@@ -32,6 +32,9 @@ def carregar_turmas():
     carregar_turmas_semestre('csv/turmas-2020.1.csv')
     carregar_turmas_semestre('csv/turmas-2020.5.csv')
     carregar_turmas_semestre('csv/turmas-2020.6.csv')
+    carregar_turmas_semestre('csv/turmas-2021.1.csv')
+    carregar_turmas_semestre('csv/turmas-2021.2.csv')
+    carregar_turmas_semestre('csv/turmas-2022.1.csv')
 
 
 def carregar_turmas_semestre(turmas_csv):

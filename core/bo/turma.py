@@ -108,7 +108,7 @@ def carrega_turmas(estrutura, semestres, periodo_letivo: PeriodoLetivo):
 
 def atualiza_semestres(semestres):
     if semestres is None or semestres.__contains__('100') or semestres == []:
-        semestres = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+        semestres = ['1', '2', '3', '4', '5', '6', '7', '8', '0']
     return semestres
 
 
@@ -256,7 +256,7 @@ def get_sugestoes_por_horario(horario, ano, periodo, curso=None, docente=None, s
             vinculodocentesugestao__docente=docente, ano=ano, periodo=periodo, semestre__in=semestres))
     else:
         turmas_por_horario = list(horario.sugestoes.all().filter(
-            curso=curso, docente=docente, ano=ano, periodo=periodo, semestre__in=semestres))
+            curso=curso, vinculodocentesugestao__docente=docente, ano=ano, periodo=periodo, semestre__in=semestres))
     return turmas_por_horario
 
 
