@@ -2,7 +2,7 @@ nome,sigla,capacidade,tamanho,bloco,centro_id,campus
 Laboratório III (Alan Turing),BSI Lab. III,50,0.0,Bloco BSI,1,1
 Laboratório II (John von Neumann),BSI Lab. II,25,0.0,Bloco BSI,1,1
 Laboratório I (Ada Lovelace),BSI Lab. I,25,0.0,Bloco BSI,1,1
-Laboratório do IMD,Lab. IMD,50,0.0,Bloco C,1,1
+Laboratório do IMD,Lab. IMD,40,0.0,Bloco C,1,1
 Núcleo de Prática Jurídica,NPJ,50,0.0,NPJ,1,1
 Laboratório de Geoprocessamento e Geografia Física,LAGGEF,50,0.0,CERES,1,1
 Laboratório de Estudos Geográficos,LABIGEO,50,0.0,CERES,1,1
@@ -62,4 +62,4 @@ Sala F05,F05,50,0.0,Bloco F,1,2
 Sala F06,F06,50,0.0,Bloco F,1,2
 Auditório A,Auditório A,50,0.0,Bloco A,1,2
 Anfiteatro Currais Novos,Anfiteatro Currais Novos,100,0.0,Bloco F,1,2
-Anfiteatro Caicó,Anfiteatro Caicó,100,0.0,CERES,1,2
+Anfiteatro Caicó,Anfiteatro Caicó,100,0.0,CERES,1,1
