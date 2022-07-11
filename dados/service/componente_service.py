@@ -21,7 +21,7 @@ def atualizar_componente_curricular(
             atualizacoes += 'codigo = ' + cc.codigo + ' --> ' + codigo_componente + ','
             cc.codigo = codigo_componente
             print('*', end="")
-        if not cc.nivel == nivel_componente: 
+        if not cc.nivel == nivel_componente:
             atualizacoes += 'nivel = ' + cc.nivel + ' --> ' + nivel_componente + ','
             cc.nivel = nivel_componente
             print('*', end="")
@@ -30,31 +30,31 @@ def atualizar_componente_curricular(
             cc.nome = nome_componente
             print('*', end="")
         if not cc.ch_teorica == int(ch_teorica):
-            atualizacoes += 'ch_teorica = ' + cc.ch_teorica + ' --> ' + ch_teorica + ','
+            atualizacoes += 'ch_teorica = ' + str(cc.ch_teorica) + ' --> ' + ch_teorica + ','
             cc.ch_teorica = int(ch_teorica)
             print('*', end="")
         if not cc.ch_pratica == int(ch_pratica):
-            atualizacoes += 'ch_pratica = ' + cc.ch_pratica + ' --> ' + ch_pratica + ','
+            atualizacoes += 'ch_pratica = ' + str(cc.ch_pratica) + ' --> ' + ch_pratica + ','
             cc.ch_pratica = int(ch_pratica)
             print('*', end="")
         if not cc.ch_estagio == int(ch_estagio):
-            atualizacoes += 'ch_estagio = ' + cc.ch_estagio + ' --> ' + ch_estagio + ','
+            atualizacoes += 'ch_estagio = ' + str(cc.ch_estagio) + ' --> ' + ch_estagio + ','
             cc.ch_estagio = int(ch_estagio)
             print('*', end="")
         if not cc.ch_total == int(ch_total):
-            atualizacoes += 'ch_total = ' + cc.ch_total + ' --> ' + ch_total + ','
+            atualizacoes += 'ch_total = ' + str(cc.ch_total) + ' --> ' + ch_total + ','
             cc.ch_total = int(ch_total)
             print('*', end="")
         if not cc.ch_docente == int(ch_dedicada_docente):
-            atualizacoes += 'ch_docente = ' + cc.ch_docente + ' --> ' + ch_dedicada_docente + ','
+            atualizacoes += 'ch_docente = ' + str(cc.ch_docente) + ' --> ' + ch_dedicada_docente + ','
             cc.ch_docente = int(ch_dedicada_docente)
             print('*', end="")
         if not cc.ch_ead == int(ch_ead):
-            atualizacoes += 'ch_ead = ' + cc.ch_ead + ' --> ' + ch_ead + ','
+            atualizacoes += 'ch_ead = ' + str(cc.ch_ead) + ' --> ' + ch_ead + ','
             cc.ch_ead = int(ch_ead)
             print('*', end="")
         if not cc.cr_max_ead == int(cr_max_ead):
-            atualizacoes += 'cr_max_ead = ' + cc.cr_max_ead + ' --> ' + cr_max_ead + ','
+            atualizacoes += 'cr_max_ead = ' + str(cc.cr_max_ead) + ' --> ' + cr_max_ead + ','
             cc.cr_max_ead = int(cr_max_ead)
             print('*', end="")
         if not cc.equivalencia == equivalencia:
