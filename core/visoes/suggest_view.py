@@ -16,7 +16,7 @@ from core.bo.docente import get_funcao_by_siape
 from core.bo.periodos import get_periodo_ativo, get_periodo_planejado
 from core.bo.sevices import get_organizacao_by_componente
 from core.bo.sugestao import solicitacao_incluir, solicitacao_verificar_choques
-from core.bo.turma import atualiza_semestres, carrega_sugestao_turmas, converte_desc_horario, \
+from core.bo.turma import atualiza_exibicao, atualiza_semestres, carrega_sugestao_turmas, converte_desc_horario, \
     TurmaHorario, carrega_sugestao_horario
 from core.config.config import get_config
 from core.forms import SugestaoTurmaForm
@@ -56,7 +56,7 @@ def sugestao_grade_horarios(request, estrutura, sugestao_incluir_link, sugestao_
         'ano_periodo_atual': ano_periodo_atual,
         'ano_periodo_prox': ano_periodo_prox,
         'ano_periodo_sel': ano_periodo,
-        'semestres': semestres,
+        'semestres': atualiza_exibicao(semestres),
         'semestres_atual': criar_string(semestres) + '.',
         'sugestao_incluir_link': sugestao_incluir_link,
         'sugestao_manter_link': sugestao_manter_link,
@@ -219,7 +219,7 @@ def verificar_choques(form_sugestao, sugestao_turma, horarios_list):
 def verificar_choques_semestre(form_sugestao, horario, sugestao_existente, nova_sugestao, choques_componentes_semestre, choques_semestres):
     checked = form_sugestao.cleaned_data['checked']
     if (sugestao_existente.semestre == nova_sugestao.semestre) and \
-                    ((not nova_sugestao.semestre == 0) or \
+                    ((nova_sugestao.semestre != 0) or \
                      (nova_sugestao.semestre == 0 and checked)):
         choques_componentes_semestre.add(
             str(sugestao_existente.componente.codigo) + ' - ' +
