@@ -33,6 +33,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', 'dct.ceres.ufrn.br']
+CSRF_TRUSTED_ORIGINS = ['http://dct.ceres.ufrn.br']
 DOMAINS_WHITELIST = ALLOWED_HOSTS
 
 SESSION_COOKIE_AGE = 60 * 60 # 1 hora
