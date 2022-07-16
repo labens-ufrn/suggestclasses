@@ -136,19 +136,19 @@
                       </span>
                     {% endif %}
                     <br/>
-                    <b>{{ turma.componente.nome }}</b>
+                    <strong>{{ turma.componente.nome }}</strong>
                     <br/>
                     {% include 'core/sugestao/vinculos_docente_exibir.html' %}
                     <br/>
                     <i>{{ turma.local.nome }} - {{ turma.local.get_campus_display }}</i> <br/>
                       <span class="material-icons md-18 align-middle" style="color: dodgerblue">school</span>
                       <span class="align-middle" style="color: dodgerblue">
-                        <b>{{ turma.capacidade_aluno }}</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <strong>{{ turma.capacidade_aluno }}</strong>&nbsp;&nbsp;&nbsp;&nbsp;</span>
 
                     <a href="{% url 'sugestao_solicitar' turma.pk %}?next={{ request.path|urlencode }}">
                       <span class="material-icons md-18 align-middle">star</span>
                       <span class="align-middle">
-                        <b>{{ turma.solicitacaoturma_set.count }}</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <strong>{{ turma.solicitacaoturma_set.count }}</strong>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     </a>
                     <a href="{% url 'sugestao_detalhar' turma.pk %}">
                       <span class="material-icons md-18 align-middle">

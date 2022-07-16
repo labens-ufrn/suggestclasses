@@ -111,6 +111,10 @@ def atualiza_semestres(semestres):
         semestres = ['1', '2', '3', '4', '5', '6', '7', '8', '0']
     return semestres
 
+def atualiza_exibicao(semestres):
+    if semestres is None or len(semestres) >= 9 or semestres == []:
+        semestres = ['100']
+    return semestres
 
 def atualiza_ano_periodo(ano_periodo):
     if ano_periodo is None or ano_periodo == []:

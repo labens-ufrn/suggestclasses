@@ -149,8 +149,8 @@ def download_turmas():
     if os.path.exists(file_name):
         print("Arquivo " + file_name + " já existe!")
     else:
-        url = 'http://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/964f91df-f322-4e56-897b' \
-              '-f06cca611904/download/turmas-2021.1.csv'
+        url = 'https://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/21a54fb0-84b9-4eab-a697' \
+            '-9851b932729d/download/turmas-2021.1.csv'
         urllib.request.urlretrieve(url, file_name)
         print('.................')
 
@@ -159,8 +159,8 @@ def download_turmas():
     if os.path.exists(file_name):
         print("Arquivo " + file_name + " já existe!")
     else:
-        url = 'http://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/964f91df-f322-4e56-897b' \
-              '-f06cca611904/download/turmas-2021.2.csv'
+        url = 'https://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/2d657f25-de50-4dd8-b3bf' \
+            '-e272ddc9fb27/download/turmas-2021.2.csv'
         urllib.request.urlretrieve(url, file_name)
         print('.................')
 
@@ -169,8 +169,8 @@ def download_turmas():
     if os.path.exists(file_name):
         print("Arquivo " + file_name + " já existe!")
     else:
-        url = 'http://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/964f91df-f322-4e56-897b' \
-              '-f06cca611904/download/turmas-2022.1.csv'
+        url = 'https://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/222b1028-ca3c-4acc-bfb2' \
+            '-fa4e45d7cd0d/download/turmas-2022.1.csv'
         urllib.request.urlretrieve(url, file_name)
         print('.................')
 
@@ -247,6 +247,9 @@ def download_discentes():
           '-d384eb2de3b6/download/discentes-2021.csv'
     download_discentes_semestre(url, 'csv/discentes-2021.csv')
 
+    url = 'https://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/14afbb6c-395e-411c-b24d' \
+        '-0e494cb95866/download/discentes-2022.csv'
+    download_discentes_semestre(url, 'csv/discentes-2022.csv')
 
 def download_discentes_semestre(url, discentes_csv):
     file_name = discentes_csv
