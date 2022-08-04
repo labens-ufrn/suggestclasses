@@ -1,12 +1,3 @@
- ![GitHub](https://github.com/labens-ufrn/suggestclasses/workflows/Python%20application/badge.svg)
- ![GitHub](https://img.shields.io/github/license/labens-ufrn/suggestclasses)
- ![GitHub top language](https://img.shields.io/github/languages/top/labens-ufrn/suggestclasses)
- ![GitHub All Releases](https://img.shields.io/github/downloads/labens-ufrn/suggestclasses/total)
- [![GitHub forks](https://img.shields.io/github/forks/labens-ufrn/suggestclasses)](https://github.com/labens-ufrn/suggestclasses/network)
- [![GitHub stars](https://img.shields.io/github/stars/labens-ufrn/suggestclasses)](https://github.com/labens-ufrn/suggestclasses/stargazers)
- ![GitHub issues](https://img.shields.io/github/issues/labens-ufrn/suggestclasses)
- [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Flabens-ufrn%2Fsuggestclasses)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Flabens-ufrn%2Fsuggestclasses)
-
 # SuggestClasses by LABENS/UFRN
 
 Sistema de Sugestão de Horários para o BSI/UFRN.
@@ -21,125 +12,90 @@ Na página [Documentação](docs/docs.md) temos os detalhes do projeto e a lista
 
 ## Pré-requisitos
 
-* Banco de Dados
-  * [MariaDB](https://mariadb.org)
-  * [MySQL](https://www.mysql.com)
-
-* Linguagem
-  * [Python](https://www.python.org)
-
-* Ferramenta
-  * [Docker](https://www.docker.com)
+O sistema atualmente utiliza o SGBD [PostgreSQL](https://www.postgresql.org/) para armazenar os dados, e é desenvolvido com o [Django]() framework e [Python 3](https://www.python.org). Utilizamos o [Docker](https://www.docker.com) e [docker-compose](https://docs.docker.com/compose/) para deploy e execução no servidor. Inicialmente o SGBD era o [MariaDB](https://mariadb.org) e sua configuração está [aqui!](docs/mariadb.md).
 
 ### Criação do Banco de Dados (dev e test) e Usuário
 
-Utilzamos o SGBD MariaDB/MySql.
-
+Utilzamos o SGBD PostgreSQL para armazenar os dados.
+Crie o Usuário:
 ```sql
-CREATE DATABASE scdb_dev character set UTF8 collate utf8_bin;
-CREATE DATABASE scdb_test character set UTF8 collate utf8_bin;
+CREATE ROLE sc_user WITH
+	LOGIN
+	NOSUPERUSER
+	NOCREATEDB
+	NOCREATEROLE
+	NOINHERIT
+	NOREPLICATION
+	CONNECTION LIMIT -1
+	PASSWORD 'xxxxxx';
+```
+Crie os bancos de dados:
+```sql
+CREATE DATABASE scdb_dev
+    WITH
+    OWNER = sc_user
+    ENCODING = 'UTF8'
+    CONNECTION LIMIT = -1;
 
-CREATE USER 'sc_user'@'%' IDENTIFIED BY 'password';
-
-GRANT ALL ON scdb_dev.* TO 'sc_user'@'%';
-GRANT ALL ON scdb_test.* TO 'sc_user'@'%';
+CREATE DATABASE scdb_test
+    WITH
+    OWNER = sc_user
+    ENCODING = 'UTF8'
+    CONNECTION LIMIT = -1;
+```
+Defina as permissions e privilégios do Usuário:
+```sql
+GRANT ALL PRIVILEGES ON DATABASE scdb_dev TO sc_user;
+GRANT ALL PRIVILEGES ON DATABASE scdb_test TO sc_user;
 ```
 
-### Dependências para usar o MariaDB e MySQL
+## Ambiente Virtual
 
-Windows
-
-No site <https://www.lfd.uci.edu/~gohlke/pythonlibs/> busca o Mysqlclient compatível com a sua versão Python instalada.
-
-Instalação com o PIP:
+Criação do Ambiente Virtual com [python3-venv](https://docs.python.org/pt-br/3/library/venv.html):
 
 ```shell script
-pip install nome_do_arquivo_baixado.whl
+python3 -m venv .venv
 ```
 
-Linux
-
-```shell script
-sudo apt install python3-dev default-libmysqlclient-dev
-```
-
-## Virtualenv e variáveis de ambiente
-
-Adicionar em ~/.profile as variáveis de ambiente:
-
-```shell script
-MARIA_HOME=/usr/bin/mysql
-PATH=$PATH:$MARIA_HOME/bin
-PYTHONHOME=/usr/bin
-```
-
-Windows
-
-Caso não tenha a Virtualenv instalada:
-
-```shell script
-pip install virtualenv
-```
-
-Criação do Ambiente Virtual com virtualenv:
-
-```shell script
-virtualenv nome_da_virtualenv
-```
-
-Para ativar: ```cd nome_da_virtualenv\Scripts\activate```.
-Para desativar: ```cd nome_da_virtualenv\Scripts\deactivate```.
-
-Linux
-
-Criação do Ambiente Virtual com virtualenv:
-
-```shell script
-virtualenv -p python3 venv
-```
-
-Para ativar: ```source venv/bin/activate```.
+Para ativar: ```source .venv/bin/activate```.
 Para desativar: ```deactivate```.
 
-### Instalação das Dependência do Projeto
+### Variáveis de Ambiente
 
-```shell script
-pip install -r requirements.txt
-```
+É recomendado a ocultação das configurações do ambiente de Desenvolvimento ou de Produção. Para isso, criamos arquivos os `.env` e `path.env` no diretório raiz do projeto. No arquivo `.env` inserimos as variáveis de ambiente: `SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS`, `DATABASE_URL`, etc. No arquivo `path.env` inserimos o caminho para o diretório raiz do projeto.
 
-## Ocultando a instância de configuração
+Copie os exemplos destes arquivos no diretório raiz do projeto:
 
-* Crie um arquivo .env na raiz do projeto e insira as seguintes variáveis.
-* SECRET_KEY=Sua$eCretKeyAqui (Pegue a secret key no arquivo settings.py)
-* DEBUG=True
-* MARIADB_PORT=32768
+```cp .env.sample .env```
 
-Copie os exemplos da pasta contrib:
+```cp path.env.sample path.env```
 
-```cp contrib/env-sample .env```
-
-```cp contrib/path.env-sample path.env```
-
-Edite o arquivo path.env para informar as variáveis:
+Edite o arquivo `path.env` para informar as variáveis:
 
 ```shell script
 export DJANGO_SETTINGS_MODULE=suggestclasses.settings
 export PYTHONPATH=${PYTHONPATH}:/home/<seu_diretorio>/suggestclasses
  ```
 
-Após editar os valores, execute o comando ```source path.env``` no Linux ou ```activate path.env``` no Windows para carregar as variáveis.
+Após editar os valores, execute os comandos:
+
+```shell script
+source .env
+source path.env
+```
+
+ No Windows use ```activate path.env``` para carregar as variáveis.
+
+### Instalação das Dependência do Projeto
+
+```shell script
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
 ## Migrations
 
 Ao modificar os models (em models.py), execute:
-Windows
-
-```console
-python3 manage.py makemigrations core
-python3 manage.py migrate
-```
-
-Linux
 
 ```shell script
 python manage.py makemigrations core
@@ -157,8 +113,7 @@ python manage.py createsuperuser
 O sistema é baseado nos dados abertos da UFRN, desta forma é necessário povoar o banco de dados
 com informações de Horários, Centro, Salas, Departamentos, Componentes, etc.
 
-Lembre-se de deixar todas as variáveis de ambiente definidas.
-Execute o comando ```source path.env``` no Linux ou ```activate path.env``` no Windows para carregar as variáveis.
+Lembre-se de deixar todas as variáveis de ambiente definidas. Execute o comando ```source path.env``` no Linux ou ```activate path.env``` no Windows para carregar as variáveis.
 
 A ordem é importante e deve ser seguida conforme descrito abaixo.
 
