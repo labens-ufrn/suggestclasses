@@ -177,6 +177,7 @@ def verificar_choques(form_sugestao, sugestao_turma, horarios_list):
                     choques_componentes.add(str(s.componente.codigo) + ' - ' + s.componente.nome)
                     choques_horarios.append(horario.dia + horario.turno + horario.ordem)
                 if sugestao_turma.docente is not None and s.docente == sugestao_turma.docente:
+                    # TODO: verificar este choque usando os vínculos do docente
                     choques_componentes.add(str(s.componente.codigo) + ' - ' + s.componente.nome)
                     choque_docente.append(horario.dia + horario.turno + horario.ordem)
 
@@ -208,6 +209,7 @@ def verificar_choques(form_sugestao, sugestao_turma, horarios_list):
 def verificar_choques_semestre(form_sugestao, horario, sugestao_existente, nova_sugestao, choques_componentes_semestre, choques_semestres):
     checked = form_sugestao.cleaned_data['checked']
     if (sugestao_existente.semestre == nova_sugestao.semestre) and \
+            (sugestao_existente.curso == nova_sugestao.curso) and \
                     ((not nova_sugestao.semestre == 0) or \
                      (nova_sugestao.semestre == 0 and checked)):
         choques_componentes_semestre.add(
