@@ -123,3 +123,5 @@ dados/atualizados/*.txt
 dados/csv/*.csv
 !dados/csv/salas-ceres.csv
 data/*
+dados/csv/olds/*.csv
+dados/csv/olds/

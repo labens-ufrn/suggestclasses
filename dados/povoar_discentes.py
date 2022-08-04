@@ -32,15 +32,16 @@ def carregar_discentes():
     carregar_discentes_anual('csv/discentes-2018.csv')
     carregar_discentes_anual('csv/discentes-2019.csv')
     carregar_discentes_anual('csv/discentes-2020.csv')
-    # carregar_discentes_anual('csv/discentes-2021.csv')
+    carregar_discentes_anual('csv/discentes-2021.csv')
+    carregar_discentes_anual('csv/discentes-2022.csv')
 
-
+## Utilizamos a leitura do csv usando os headers
+## Página: https://docs.python.org/pt-br/3/library/csv.html
 def carregar_discentes_anual(discentes_csv):
     print("\nCriando Discentes Ingressantes: " + discentes_csv + " para os Cursos do CERES ...!")
 
     with open(discentes_csv) as csvfile:
-        discentes = csv.reader(csvfile, delimiter=';')
-        next(discentes)  # skip header
+        discentes = csv.DictReader(csvfile, delimiter=';')
 
         for row in discentes:
             carregar_discente(row)
@@ -51,48 +52,29 @@ def carregar_discentes_anual(discentes_csv):
 
 
 def carregar_discente(row):
-    id_unidade = row[13] if row[13] != '' else None
-    # id_unidade = row[4] if row[4] != '' else None
-    # Carregamento apenas de alunos do CERES.
+    id_unidade = row['id_unidade'] if row['id_unidade'] != '' else None
+    # Carregamento apenas de alunos do CERES e FELCS.
     if Centro.objects.filter(id_unidade=id_unidade).exists():
-        matricula = row[0]
-        nome_discente = row[1]
-        # nome_discente = row[6]
-        sexo = row[2]
-        # sexo = row[7]
-        ano_ingresso = row[3]
-        # ano_ingresso = row[1]
-        periodo_ingresso = row[4]
-        # periodo_ingresso = row[2]
-        forma_ingresso = row[5]
-        # forma_ingresso = row[8]
-        tipo_discente = row[6]
-        # tipo_discente = row[9]
-        status = row[7]
-        # status = row[10]
-        sigla_nivel_ensino = row[8]
-        # sigla_nivel_ensino = row[11]
-        nivel_ensino = row[9]
-        # nivel_ensino = row[12]
-        id_curso = row[10]
-        # id_curso = row[3]
-        nome_curso = row[11]
-        # nome_curso = row[13]
-        modalidade_educacao = row[12]
-        # modalidade_educacao = row[14]
-        # id_unidade = row[13]
-        nome_unidade = row[14]
-        # nome_unidade = row[15]
-        id_unidade_gestora = row[15]
-        # id_unidade_gestora = row[5]
-        nome_unidade_gestora = row[16]
-        # nome_unidade_gestora = row[16]
+        matricula = row['matricula']
+        nome_discente = row['nome_discente']
+        sexo = row['sexo']
+        ano_ingresso = row['ano_ingresso']
+        periodo_ingresso = row['periodo_ingresso']
+        forma_ingresso = row['forma_ingresso']
+        tipo_discente = row['tipo_discente']
+        status = row['status']
+        sigla_nivel_ensino = row['sigla_nivel_ensino']
+        nivel_ensino = row['nivel_ensino']
+        id_curso = row['id_curso']
+        nome_curso = row['nome_curso']
+        modalidade_educacao = row['modalidade_educacao']
+        nome_unidade = row['nome_unidade']
+        id_unidade_gestora = row['id_unidade_gestora']
+        nome_unidade_gestora = row['nome_unidade_gestora']
 
         if not Discente.objects.filter(matricula=matricula).exists():
             print("Adicionando Discente " + matricula + " - " + nome_discente + "- " + nome_curso)
-            if sexo == "M" or sexo == "F":
-                sexo = sexo
-            else:
+            if sexo != "M" or sexo != "F":
                 sexo = ""
             discente = Discente(matricula=matricula, nome_discente=nome_discente, sexo=sexo,
                                 ano_ingresso=ano_ingresso, periodo_ingresso=periodo_ingresso,

@@ -1,4 +1,4 @@
-from core.models import Departamento
+from core.models import Centro, Departamento
 
 
 def get_departamentos():
@@ -7,6 +7,11 @@ def get_departamentos():
     """
     return Departamento.objects.all()
 
+def get_deptos_by_centro(centro: Centro):
+    """
+        Lista os departamentos de um centro.
+    """
+    return Departamento.objects.filter(centro=centro)
 
 def get_depto_by_id(id_depto):
     return Departamento.objects.get(id_unidade=id_depto)

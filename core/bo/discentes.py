@@ -1,6 +1,6 @@
 from django.db.models import Q
 
-from core.models import Discente
+from core.models import Centro, Curso, Discente
 
 
 def get_discentes():
@@ -9,8 +9,13 @@ def get_discentes():
     """
     return Discente.objects.all()
 
+def get_discentes_by_centro(centro: Centro):
+    """
+        Lista todos os discentes de um centro.
+    """
+    return Discente.objects.filter(id_unidade=centro.id_unidade)
 
-def get_discentes_ativos(curso=None):
+def get_discentes_ativos(curso: Curso = None, centro: Centro = None):
     """
             Lista dos discentes com Status ATIVO. Retorna apenas discentes ativos do CERES.
     """
@@ -19,6 +24,9 @@ def get_discentes_ativos(curso=None):
 
     if curso:
         query.add(Q(id_curso=curso.codigo), Q.AND)
+
+    if centro:
+        query.add(Q(id_unidade=centro.id_unidade), Q.AND)
 
     return Discente.objects.filter(query)
 

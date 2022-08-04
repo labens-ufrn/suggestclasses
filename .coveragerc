@@ -2,4 +2,4 @@
 source=
     .
 omit=
-    ./env/*, */migrations/*, manage.py, */tests/*, ./dados/*
+    ./.venv/*, ./env/*, */migrations/*, manage.py, */tests/*, ./dados/*

@@ -12,8 +12,8 @@ def atualizar_discente(
     discente = Discente.objects.get(matricula=matricula)
 
     atualizacoes = ''
-    if discente.matricula == int(matricula):
-        if not discente.nome_discente == nome_discente:
+    if discente.matricula == matricula:
+        if discente.nome_discente != nome_discente:
             atualizacoes += 'nome_discente = ' + discente.nome_discente + ' --> ' + nome_discente + ','
             discente.nome_discente = nome_discente
 
@@ -21,13 +21,13 @@ def atualizar_discente(
             atualizacoes += 'sexo = ' + discente.sexo + ' --> ' + sexo + ','
             discente.sexo = sexo
 
-        if not discente.ano_ingresso == ano_ingresso:
-            atualizacoes += 'ano_ingresso = ' + discente.ano_ingresso + ' --> ' + ano_ingresso + ','
-            discente.ano_ingresso = ano_ingresso
+        if not discente.ano_ingresso == int(ano_ingresso):
+            atualizacoes += 'ano_ingresso = ' + str(discente.ano_ingresso) + ' --> ' + ano_ingresso + ','
+            discente.ano_ingresso = int(ano_ingresso)
 
-        if not discente.periodo_ingresso == periodo_ingresso:
-            atualizacoes += 'periodo_ingresso = ' + discente.periodo_ingresso + ' --> ' + periodo_ingresso + ','
-            discente.periodo_ingresso = periodo_ingresso
+        if not discente.periodo_ingresso == int(periodo_ingresso):
+            atualizacoes += 'periodo_ingresso = ' + str(discente.periodo_ingresso) + ' --> ' + periodo_ingresso + ','
+            discente.periodo_ingresso = int(periodo_ingresso)
 
         if not discente.forma_ingresso == forma_ingresso:
             atualizacoes += 'forma_ingresso = ' + discente.forma_ingresso + ' --> ' + forma_ingresso + ','
@@ -61,17 +61,17 @@ def atualizar_discente(
             atualizacoes += 'modalidade_educacao = ' + discente.modalidade_educacao + ' --> ' + modalidade_educacao + ','
             discente.modalidade_educacao = modalidade_educacao
 
-        if not discente.id_unidade == id_unidade:
-            atualizacoes += 'id_unidade = ' + discente.id_unidade + ' --> ' + id_unidade + ','
-            discente.id_unidade = id_unidade
+        if not discente.id_unidade == int(id_unidade):
+            atualizacoes += 'id_unidade = ' + str(discente.id_unidade) + ' --> ' + id_unidade + ','
+            discente.id_unidade = int(id_unidade)
 
         if not discente.nome_unidade == nome_unidade:
             atualizacoes += 'nome_unidade = ' + discente.nome_unidade + ' --> ' + nome_unidade + ','
             discente.nome_unidade = nome_unidade
 
-        if not discente.id_unidade_gestora == id_unidade_gestora:
-            atualizacoes += 'id_unidade_gestora = ' + discente.id_unidade_gestora + ' --> ' + id_unidade_gestora + ','
-            discente.id_unidade_gestora = id_unidade_gestora
+        if not discente.id_unidade_gestora == int(id_unidade_gestora):
+            atualizacoes += 'id_unidade_gestora = ' + str(discente.id_unidade_gestora) + ' --> ' + id_unidade_gestora + ','
+            discente.id_unidade_gestora = int(id_unidade_gestora)
 
         if not discente.nome_unidade_gestora == nome_unidade_gestora:
             atualizacoes += 'nome_unidade_gestora = ' + discente.nome_unidade_gestora + ' --> ' + nome_unidade_gestora + ','

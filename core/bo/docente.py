@@ -1,5 +1,5 @@
 from core.bo.turma import TurmaHorario
-from core.models import Docente, FuncaoGratificada, Horario
+from core.models import Centro, Docente, FuncaoGratificada, Horario
 from datetime import date
 
 
@@ -8,6 +8,12 @@ def get_docentes():
         Lista todos os docentes efetivos. Retorna apenas docentes do CERES.
     """
     return Docente.objects.all().order_by('nome')
+
+def get_docentes_by_centro(centro: Centro):
+    """
+        Lista todos os docentes efetivos do centro.
+    """
+    return Docente.objects.filter(departamento__centro=centro, vinculo='Ativo Permanente').order_by('nome')
 
 
 def get_docente_by_siape(siape):

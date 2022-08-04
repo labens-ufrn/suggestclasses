@@ -11,7 +11,7 @@ class SalaAdmin(admin.ModelAdmin):
 
 class ComponenteCurricularAdmin(admin.ModelAdmin):
     list_display = ('codigo', 'nome', 'departamento')
-    search_fields = ['nome']
+    search_fields = ['codigo','nome']
 
 
 class EstruturaCurricularAdmin(admin.ModelAdmin):
