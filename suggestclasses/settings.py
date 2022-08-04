@@ -129,11 +129,11 @@ DATABASES = {
                             'sql_mode=STRICT_TRANS_TABLES'  # see note below
             # 'SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
 
-        },
-        'TEST': {
-            'NAME': 'scdb_test',
-        }
+    },
+    'TEST': {
+        'NAME': 'scdb_test',
     }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
