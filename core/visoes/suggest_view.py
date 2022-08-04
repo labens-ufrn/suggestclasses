@@ -221,7 +221,6 @@ def verificar_choques_semestre(form_sugestao, horario, sugestao_existente, nova_
     checked = form_sugestao.cleaned_data['checked']
     if (sugestao_existente.semestre == nova_sugestao.semestre) and \
             (sugestao_existente.curso == nova_sugestao.curso) and \
-                    ((not nova_sugestao.semestre == 0) or \
                     ((nova_sugestao.semestre != 0) or \
                      (nova_sugestao.semestre == 0 and checked)):
         choques_componentes_semestre.add(
