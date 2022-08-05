@@ -77,5 +77,4 @@ jobs:
           cp contrib/env-sample .env
       - name: Test with manage.py test
         run: |
-          python manage.py migrate core
-          python manage.py test core --keepdb
+          python manage.py test --keepdb
