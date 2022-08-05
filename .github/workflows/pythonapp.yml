@@ -76,8 +76,6 @@ jobs:
       - name: Copying configurations
         run: |
           cp contrib/env-sample .env
-          source .env
-          python manage.py migrate
       - name: Test with manage.py test
         run: |
-          python manage.py test --keepdb
+          python manage.py test
