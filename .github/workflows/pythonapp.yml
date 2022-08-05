@@ -50,6 +50,7 @@ jobs:
           mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "GRANT ALL ON scdb_test.* TO 'sc_user'@'localhost'"
           mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "GRANT ALL ON scdb_dev.* TO 'sc_user'@'localhost'"
           mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "GRANT ALL ON scdb_test.* TO 'sc_user'@'%'"
+          mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "GRANT ALL ON scdb_dev.* TO 'sc_user'@'%'"
           mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "flush privileges"
           mysql --host 127.0.0.1 --port 3306 -usc_user -psc_user -e "SHOW DATABASES"
       - name: Set up Python 3.8
@@ -75,7 +76,8 @@ jobs:
       - name: Copying configurations
         run: |
           cp contrib/env-sample .env
+          source .env
+          python manage.py migrate
       - name: Test with manage.py test
         run: |
-          python manage.py migrate
           python manage.py test --keepdb

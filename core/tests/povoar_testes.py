@@ -195,8 +195,15 @@ def criar_discentes():
 def criar_centro():
     if not Centro.objects.filter(id_unidade=9999).exists():
         Centro.objects.create(id_unidade=9999, codigo=9999, nome='Centro de Teste',
-                              sigla='CTESTE', endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
-                              site='https://www.ceres.ufrn.br/')
+        sigla='CTESTE',
+        endereco='Rua C Teste, Penedo, Caicó - RN',
+        site='https://www.ceres.ufrn.br/')
+
+    if not Centro.objects.filter(id_unidade=1482).exists():
+        Centro.objects.create(id_unidade=1482, codigo=1800, nome='Centro de Ensino Superior do Seridó',
+        sigla='CERES',
+        endereco='Rua Joaquim Gregório, Penedo, Caicó - RN',
+        site='https://www.ceres.ufrn.br/')
 
 
 def remover_centro():

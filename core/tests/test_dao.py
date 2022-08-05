@@ -33,7 +33,7 @@ class DAOTests(TestCase):
         codigo = 9999
         sigla = 'CTESTE'
         nome = 'Centro de Teste'
-        endereco = 'Rua Joaquim Gregório, Penedo, Caicó - RN'
+        endereco = 'Rua C Teste, Penedo, Caicó - RN'
         site = 'https://www.ceres.ufrn.br/'
 
         centro = get_centro_by_id(9999)
@@ -53,7 +53,7 @@ class DAOTests(TestCase):
         codigo = 9999
         sigla = 'CTESTE'
         nome = 'Centro de Teste'
-        endereco = 'Rua Joaquim Gregório, Penedo, Caicó - RN'
+        endereco = 'Rua C Teste, Penedo, Caicó - RN'
         site = 'https://www.ceres.ufrn.br/'
 
         centro = get_centro_by_id(id_centro)

@@ -14,7 +14,7 @@ class UserViewTests(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        super(UserViewTests, cls).setUpClass()
+        super().setUpClass()
         print('\nUserViewTests')
         criar_dados()
 
