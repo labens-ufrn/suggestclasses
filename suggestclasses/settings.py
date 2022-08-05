@@ -131,7 +131,7 @@ DATABASES = {
 
         },
         'TEST': {
-            'NAME': 'scdb_test',
+            'NAME': config('DATABASE_TEST'),
         }
     }
 }
