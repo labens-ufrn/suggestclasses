@@ -117,7 +117,7 @@ DATABASES = {
         'USER': config('DATABASE_USER'),
         'PASSWORD': config('DATABASE_PASSWORD'),
         'HOST': config('DATABASE_HOST'),
-        'PORT': config('MARIADB_PORT'),
+        'PORT': config('DATABASE_PORT'),
         # optional:
         'OPTIONS': {
             'charset': 'utf8',
@@ -128,10 +128,11 @@ DATABASES = {
                             'collation_connection=utf8_bin,'
                             'sql_mode=STRICT_TRANS_TABLES'  # see note below
             # 'SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
+
         },
         'TEST': {
-            'NAME': 'scdb_test',
-        },
+            'NAME': config('DATABASE_TEST'),
+        }
     }
 }
 

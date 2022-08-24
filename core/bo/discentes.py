@@ -13,7 +13,9 @@ def get_discentes_by_centro(centro: Centro):
     """
         Lista todos os discentes de um centro.
     """
-    return Discente.objects.filter(id_unidade=centro.id_unidade)
+    if centro:
+        return Discente.objects.filter(id_unidade=centro.id_unidade)
+    return get_discentes()
 
 def get_discentes_ativos(curso: Curso = None, centro: Centro = None):
     """
