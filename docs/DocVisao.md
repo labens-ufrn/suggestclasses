@@ -20,6 +20,15 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
   * um componente curricular tem:
     * código, nível, nome, ementa, carga horária, carga horária teórica, carga horária prática, carga horária do estágio, carga horária total, carga horária do docente, carga horária ead, carga horária máxima ead;
     * equivalências, requisitos com outros componentes, corequisito, modalidade e departamento;
+* Manter cadastro de Estruturas Curriculares;
+  * uma estrutura curricular tem codigo, nome;
+  * uma estrutura curricular tem semestre de conclusão mínimo, ideal e máximo;
+  * uma estrutura curricular tem uma carga horária;
+  * a carga horária é dividida entre horas obrigatórias, opcionais, eletivas e de atividades;
+  * uma estrutura curricular é organizada em períodos;
+  * cada período contém um conjunto de componentes curriculares;
+  * componentes curriculares podem ser obrigatórios, opcionais ou eletivos;
+  * componentes curriculares tem período de entrada, ano de entrada, observações e o curso;
 * Manter cadastro de Turmas;
   * uma turma tem: id de turma, código, docente, sala e horários (horário da turma);
   * uma turma é de um componente curricular;
@@ -41,13 +50,6 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
   * um aluno pode votar em uma sugestão de horário;
 * Manter o cadastro de cursos;
   * um curso tem: código, nome, habilitação, turnos, modalidade;
-* Manter cadastro de Estruturas Curriculares;
-  * uma estrutura curricular tem: codigo, sigla, nome e ano_periodo;
-  * uma estrutura curricular tem uma carga horária;
-  * a carga horária é dividida entre horas obrigatórias, opcionais, eletivas e de atividades;
-  * uma estrutura curricular é organizada em períodos;
-  * cada período contém um conjunto de componentes curriculares;
-  * componentes curriculares podem ser obrigatórios, opcionais ou eletivos;
 * Manter Organização Curricular:
 * uma organização curricular tem id_curriculo_componente;
 * estrutura curricular;
