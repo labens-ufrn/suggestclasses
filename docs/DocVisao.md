@@ -11,13 +11,15 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
   * Um departamento tem: id de unidade, código, nome, sigla, endereço, site e centro.
 * Manter o cadastro de Docentes;
   * Um docente tem: siape, nome, sexo, formação, tipo de jornada de trabalho, vínculo, categoria, classe funcional, id da unidade de lotação, lotação, departamento, admissão e usuário.
-Manter o cadastro de Cursos;
+* Manter o cadastro de Cursos;
   * um curso tem: código, nome, coordenador, nível, grau, modalidade, turno, centro;
+* Manter o cadastro de Salas;
+  * uma sala tem um número, nome, sigla, capacidade, tamanho, bloco, centro, campus;
 * Manter cadastro de Componentes Curriculares;
   * um componente curricular é de um tipo de componente;
   * um componente curricular tem:
-    * código, nível, nome, ementa, departamento, carga horária e modalidade, carga horária teorica, carga horária pratica, carga horária estagio, carga horária total, carga horária docente, carga horária ead e carga horária máxima ead.
-    * equivalências, requisitos com outros componentes, corequisito, modalidade, departamento;
+    * código, nível, nome, ementa, carga horária, carga horária teórica, carga horária prática, carga horária do estágio, carga horária total, carga horária do docente, carga horária ead, carga horária máxima ead;
+    * equivalências, requisitos com outros componentes, corequisito, modalidade e departamento;
 * Manter cadastro de Turmas;
   * uma turma tem: id de turma, código, docente, sala e horários (horário da turma);
   * uma turma é de um componente curricular;
@@ -31,8 +33,6 @@ Manter o cadastro de Cursos;
 * Manter o cadastro de Sugestões de Horário de Turma;
   * uma sugestão de horário é de uma turma;
   * uma sugestão de horário tem um horário de turma;
-* Manter o cadastro de Salas;
-  * uma sala tem um número, um nome, sigla, capacidade, tamanho, bloco, centro, campus;
 * Manter o cadastro de Docentes;
   * um docente tem: matrícula, nome, sexo, formação, jornada de trabalho, vínculo, categoria, classe funcional, unidade de lotação, lotação.
 * Manter o cadastro de alunos;
