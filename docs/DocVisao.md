@@ -29,16 +29,20 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
   * cada período contém um conjunto de componentes curriculares;
   * componentes curriculares podem ser obrigatórios, opcionais ou eletivos;
   * componentes curriculares tem período de entrada, ano de entrada, observações e o curso;
-* Manter cadastro de Turmas;
-  * uma turma tem: id de turma, código, docente, sala e horários (horário da turma);
-  * uma turma é de um componente curricular;
-  * uma turma tem um ou mais professores;
-  * uma turma tem uma ou mais salas;
-  * uma turma tem vários horários de aulas;
+* Manter Organização Curricular:
+  * uma organização curricular tem:
+    * código, estrutura curricular, componente curricular, semestre, tipo de vínculo, nível.
 * Manter o cadastro de Horários de Aula;
   * um horário tem:
     * um dia de semana, um turno, uma ordem (ordenação/identificador);
     * uma hora de início, uma hora de final;
+* Manter cadastro de Turmas;
+  * uma turma tem: código, professor, sala e horários (horário da turma);
+  * uma turma é de um componente curricular;
+  * uma turma tem um ou mais professores;
+  * uma turma tem uma ou mais salas;
+  * uma turma tem vários horários de aulas;
+  * uma turma tem local, ano, périodo, data inicio, data fim, descrição do horário, total de solicitações, capacidade de alunos, tipo, distância, data de consolidação, agrupadora, id de turma agrupadora, quantidade de aulas lançadas, situação da turma, convênio e modalidade dos participantes.
 * Manter o cadastro de Sugestões de Horário de Turma;
   * uma sugestão de horário é de uma turma;
   * uma sugestão de horário tem um horário de turma;
@@ -50,14 +54,6 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
   * um aluno pode votar em uma sugestão de horário;
 * Manter o cadastro de cursos;
   * um curso tem: código, nome, habilitação, turnos, modalidade;
-* Manter Organização Curricular:
-* uma organização curricular tem id_curriculo_componente;
-* estrutura curricular;
-* componente curricular;
-* semestre
-* tipo_vinculo
-* nível
-
 * Manter cadastro de Enquete:
   * Uma enquete tem: nome, descrição, o número de votos, a data e a hora de inicio e fim, o curso
 
