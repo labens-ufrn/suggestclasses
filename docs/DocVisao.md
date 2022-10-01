@@ -1,18 +1,25 @@
 # Documento de Visão
 
 Documento construído a partido do **Modelo BSI - Doc 001 - Documento de Visão** que pode ser encontrado no
-link: https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBNFyLa6A/edit?usp=sharing
+link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBNFyLa6A/edit?usp=sharing>
 
 ## Lista de Requisitos Funcionais
 
+* Manter um cadastro de Centros
+  * Um centro tem: id de unidade, código, nome, sigla, endereço e site.
+* Manter um cadastro de Departamentos
+  * Um departamento tem: id de unidade, código, nome, sigla, endereço, site e centro.
+* Manter o cadastro de Docentes;
+  * Um docente tem: siape, nome, sexo, formação, tipo de jornada de trabalho, vínculo, categoria, classe funcional, id da unidade de lotação, lotação, departamento, admissão e usuário.
+Manter o cadastro de Cursos;
+  * um curso tem: código, nome, coordenador, nível, grau, modalidade, turno, centro;
 * Manter cadastro de Componentes Curriculares;
   * um componente curricular é de um tipo de componente;
   * um componente curricular tem:
-    * código, nome, ementa, departamento, carga horária e modalidade;
-    * equivalências e requisitos com outros componentes;
-    * data de criação.
+    * código, nível, nome, ementa, departamento, carga horária e modalidade, carga horária teorica, carga horária pratica, carga horária estagio, carga horária total, carga horária docente, carga horária ead e carga horária máxima ead.
+    * equivalências, requisitos com outros componentes, corequisito, modalidade, departamento;
 * Manter cadastro de Turmas;
-  * uma turma tem: código, professor, sala e horários (horário da turma);
+  * uma turma tem: id de turma, código, docente, sala e horários (horário da turma);
   * uma turma é de um componente curricular;
   * uma turma tem um ou mais professores;
   * uma turma tem uma ou mais salas;
@@ -24,16 +31,12 @@ link: https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBNF
 * Manter o cadastro de Sugestões de Horário de Turma;
   * uma sugestão de horário é de uma turma;
   * uma sugestão de horário tem um horário de turma;
-* Manter um cadastro de Centros
-  * Um centro tem código, nome, sigla, endereço e site.
-* Manter um cadastro de Departamentos
-  * Um departamento tem código, nome, sigla, endereço e site.
 * Manter o cadastro de Salas;
-  * uma sala tem um número, um nome, capacidade, tamanho, bloco;
-* Manter o cadastro de professores;
-  * um professor tem: matrícula, nome, e-mail, telefone, área?
+  * uma sala tem um número, um nome, sigla, capacidade, tamanho, bloco, centro, campus;
+* Manter o cadastro de Docentes;
+  * um docente tem: matrícula, nome, sexo, formação, jornada de trabalho, vínculo, categoria, classe funcional, unidade de lotação, lotação.
 * Manter o cadastro de alunos;
-  * um aluno tem: matrícula, nome, e-mail, telefone;
+  * um aluno tem: matrícula, nome, sexo, e-mail, telefone;
   * um aluno pode sugerir um horário de turma;
   * um aluno pode votar em uma sugestão de horário;
 * Manter o cadastro de cursos;
@@ -46,14 +49,17 @@ link: https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBNF
   * cada período contém um conjunto de componentes curriculares;
   * componentes curriculares podem ser obrigatórios, opcionais ou eletivos;
 * Manter Organização Curricular:
- * uma organização curricular tem id_curriculo_componente;
- * estrutura curricular;
- * componente curricular;
- * semestre
- * tipo_vinculo
- * nível
+* uma organização curricular tem id_curriculo_componente;
+* estrutura curricular;
+* componente curricular;
+* semestre
+* tipo_vinculo
+* nível
 
- ## Modelo Conceitual
+* Manter cadastro de Enquete:
+  * Uma enquete tem: nome, descrição, o número de votos, a data e a hora de inicio e fim, o curso
+
+## Modelo Conceitual
 
 Abaixo apresentamos o modelo ER inicial.
 
