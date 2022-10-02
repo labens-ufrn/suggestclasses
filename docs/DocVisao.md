@@ -55,7 +55,9 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
 * Manter o cadastro de cursos;
   * um curso tem: código, nome, habilitação, turnos, modalidade;
 * Manter cadastro de Enquete:
-  * Uma enquete tem: nome, descrição, o número de votos, a data e a hora de inicio e fim, o curso
+  * Uma enquete tem: nome, descrição, o número de votos, a data e a hora de inicio e fim, o curso, quantidade de discentes ativos, período, status, tipo, o usuário e a data em que foi criado.
+* VotoTurma
+* VinculoDocenteSugestao
 * Manter Histórico;
   * um histórico tem discentes;
   * um histórico tem componentes curriculares;
