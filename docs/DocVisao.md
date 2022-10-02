@@ -48,10 +48,11 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
   * uma sugestão de horário tem um horário de turma;
 * Manter o cadastro de Docentes;
   * um docente tem: matrícula, nome, sexo, formação, jornada de trabalho, vínculo, categoria, classe funcional, unidade de lotação, lotação.
-* Manter o cadastro de alunos;
-  * um aluno tem: matrícula, nome, sexo, e-mail, telefone;
+* Manter o cadastro de Discentes;
+  * um aluno tem: matrícula, nome, sexo, ano de ingresso, período de ingresso, tipo de discente, status, sigla, nível de ensino, id do curso, nome do curso, modalidade da educação, id da unidade, nome da unidade, id da unidade gestora;
   * um aluno pode sugerir um horário de turma;
   * um aluno pode votar em uma sugestão de horário;
+PeriodoLetivo
 * Manter o cadastro de cursos;
   * um curso tem: código, nome, habilitação, turnos, modalidade;
 * Manter cadastro de Enquete:
