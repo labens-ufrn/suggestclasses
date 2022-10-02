@@ -12,9 +12,11 @@ Este documento descreve os User Stories criados a partir da Lista de Requisitos 
 | Data       | Versão |                           Descrição                            | Autor                          |
 | :--------- | :----: | :------------------------------------------------------------: | :----------------------------- |
 | 01/10/2022 | 0.0.1  |               Template e descrição do documento                | Renata Karla Araújo dos Santos |
-| 01/10/2022 | 0.0.1  |                Detalhamento do User Story US01                 | Renata Karla Araújo dos Santos |
+| 01/10/2022 | 0.0.1  |                Detalhamento do User Story US00                 | Renata Karla Araújo dos Santos |
+| 01/10/2022 | 0.0.2  |                Correções do User Story US00                    | Renata Karla Araújo dos Santos |
+| 01/10/2022 | 0.0.2  |                Detalhamento do User Story US02                 | Renata Karla Araújo dos Santos |
 
-### User Story US01 - Manter Cadastro de turmas
+### User Story US00 - Manter Cadastro de turmas
 
 |               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | ------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -28,6 +30,28 @@ Este documento descreve os User Stories criados a partir da Lista de Requisitos 
 | RF03                      | Consultar turmas              |
 | RF04                      | Visualizar detalhes de turmas |
 | RF05                      | Excluir turmas                |
+
+|                         |           |
+| ----------------------- | :-------- |
+| **Prioridade**          | Essencial |
+| **Estimativa**          | 8 h       |
+| **Tempo Gasto (real):** |           |
+| **Tamanho Funcional**   | 7 PF      |
+
+
+### User Story US02 - Manter Cadastro de Enquetes
+
+|               |                                                                                                                                                                                                                                                    |
+| ------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Descrição** | O sistema deve manter um cadastro de enquetes. Uma enquete contém os seguintes atributos, nome, descrição, o número de votos, a data e a hora de início e fim, o curso, quantidade de discentes ativos, período, status, tipo, usuário e a data em que foi criado. O usuário administrador do sistema pode realizar as operações de adicionar, alterar, remover e listar as turmas cadastradas. |
+
+| **Requisitos envolvidos** |                                            |
+| ------------------------- | :----------------------------------------- |
+| RF11                      | Cadastrar Enquetes                         |
+| RF12                      | Alterar Enquetes                           |
+| RF13                      | Consulta Enquetes                          |
+| RF14                      | Visualizar Enquetes                        |
+| RF15                      | Excluir Enquetes                           |
 
 |                         |           |
 | ----------------------- | :-------- |
