@@ -49,14 +49,15 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
   * Uma sugestão de horário de turma tem: código, docente, componente curricular, campus da turma, local, ano, período, descrição do horário, horários, total de solicitações, capacidade de alunos, tipo, semestre, tipo vínculo, curso, criador, data em que foi criado;
 * Manter Função Gratificada;
   * uma função gratificada tem: siape, nome, situação do servidor, id de unidade, lotação, sigla, início, fim, id da unidade de designação, unidade designação, atividade, observações;
-* Manter o cadastro de Docentes;
-  * um docente tem: matrícula, nome, sexo, formação, jornada de trabalho, vínculo, categoria, classe funcional, unidade de lotação, lotação.
-* Manter o cadastro de Cursos;
-  * um curso tem: código, nome, coordenador, nível, grau, modalidades, turnos e centro;
 * Manter o cadastro de Discentes;
   * um aluno tem: matrícula, nome, sexo, ano de ingresso, período de ingresso, tipo de discente, status, sigla, nível de ensino, id do curso, nome do curso, modalidade da educação, id da unidade, nome da unidade, id da unidade gestora;
   * um aluno pode sugerir um horário de turma;
   * um aluno pode votar em uma sugestão de horário;
+Solicitação de Turma
+* Manter o cadastro de Docentes;
+  * um docente tem: matrícula, nome, sexo, formação, jornada de trabalho, vínculo, categoria, classe funcional, unidade de lotação, lotação.
+* Manter o cadastro de Cursos;
+  * um curso tem: código, nome, coordenador, nível, grau, modalidades, turnos e centro;
 PeriodoLetivo
 * Manter cadastro de Enquete:
   * Uma enquete tem: nome, descrição, o número de votos, a data e a hora de inicio e fim, o curso, quantidade de discentes ativos, período, status, tipo, o usuário e a data em que foi criado.
