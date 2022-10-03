@@ -8,13 +8,9 @@ horários para professores, alunos, por sala e por período.
 
 Iteração | Data início | Data Final | Apresentação | Gerente
 -------- | ----------- | ---------- | ------------ | -------
-It0      | 21/02/2020  | 29/02/2020 | -            | Gerente 1
-It1      | 02/03/2020  | 14/03/2020 | 19/03/2020   | Gerente 1
-It2      | 16/03/2020  | 04/04/2020 | 03/04/2020   | Gerente 2
-It3      | 06/04/2020  | 25/04/2020 | 24/04/2020   | Gerente 3
-It4      | 27/04/2020  | 16/05/2020 | 15/05/2020   | Gerente 4
-It5      | 18/05/2020  | 06/06/2020 | 05/06/2020   | Gerente 5
-It6      | 08/06/2020  | 27/06/2020 | 26/06/2020   | Gerente 6
+It10     | 29/09/2022  | 03/10/2022 | 04/10/2022   | Wanessa
+It11     | 04/10/2022  | 14/10/2022 | 19/10/2022   | Gabriel
+It12     | 16/10/2022  | 04/11/2022 | 03/11/2022   | Renata
 
 Os detalhes do Plano de Iteração pode ser encontrado na página [Plano de Iteração](PlanoIteracaoTestes.md).
 
@@ -24,7 +20,12 @@ O Documento de Visão completo pode ser encontrado na página [Documento de Vis�
 
 ## Lista de User Stories
 
-## Documento de Visão
+O Documento de Visão completo pode ser encontrado na página [Documento de User Stories](DocUserStories.md).
+
+## Plano de Testes
+
+ O Plano de Testes completo pode ser encontrado na página [Plano de Teste](PlanoTestes.md)
+
+## Deploy
 
 Tutorial de [Deploy de Aplicação Django](deploy.md) em servidor web linux.
-
