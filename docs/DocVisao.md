@@ -85,5 +85,5 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
 
 Abaixo apresentamos o modelo ER inicial.
 
- ![Modelo ER](https://github.com/labens-ufrn/suggestclasses/blob/master/docs/modelos/Modelo%20ER%20-%20SuggestClasses2.png)
+ ![Modelo ER](https://github.com/labens-ufrn/suggestclasses/blob/doc-visao/docs/modelos/Modelo%20ER%20-%20SuggestClasses2.png)
 
