@@ -6,15 +6,20 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
 ## Lista de Requisitos Funcionais
 
 * Manter o cadastro de Centros;
-  * um centro tem: id de unidade, código, nome, sigla, endereço e site.
+  * um centro tem: id de unidade, código, nome, sigla, endereço e site;
 * Manter o cadastro de Departamentos;
   * um departamento tem: id de unidade, código, nome, sigla, endereço, site e centro.
+  * um departameto pertence a um centro;
 * Manter o cadastro de Docentes;
-  * um docente tem: siape, nome, sexo, formação, tipo de jornada de trabalho, vínculo, categoria, classe funcional, id da unidade de lotação, lotação, departamento, admissão e usuário.
+  * um docente tem: siape, nome, sexo, formação, tipo de jornada de trabalho, vínculo, categoria, classe funcional, id da unidade de lotação, lotação, departamento, admissão e usuário;
+  * um docente pertence a um departamento;
 * Manter o cadastro de Cursos;
   * um curso tem: código, nome, coordenador, nível, grau, modalidade, turno, centro;
+  * um curso faz parte de um centro;
+  * um curso tem um coordenador que é docente;
 * Manter o cadastro de Salas;
-  * uma sala tem um número, nome, sigla, capacidade, tamanho, bloco, centro, campus;
+  * uma sala tem: número, nome, sigla, capacidade, tamanho, bloco, centro, campus;
+  * as salas fazem parte de um centro;
 * Manter o cadastro de Componentes Curriculares;
   * um componente curricular é de um tipo de componente;
   * um componente curricular tem:
@@ -28,8 +33,8 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
   * uma estrutura curricular é organizada em períodos;
   * cada período contém um conjunto de componentes curriculares;
   * componentes curriculares podem ser obrigatórios, opcionais ou eletivos;
-  * componentes curriculares tem período de entrada, ano de entrada, observações e o curso;
-* Manter o cadastro de Organização Curricular:
+  * componentes curriculares tem período de entrada, ano de entrada, observações e cursos;
+* Manter o cadastro de Organização Curricular;
   * uma organização curricular tem:
     * código, estrutura curricular, componente curricular, semestre, tipo de vínculo, nível.
 * Manter o cadastro de Horários de Aula;
@@ -42,7 +47,7 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
   * uma turma tem um ou mais professores;
   * uma turma tem uma ou mais salas;
   * uma turma tem vários horários de aulas;
-  * uma turma tem local, ano, périodo, data inicio, data fim, descrição do horário, total de solicitações, capacidade de alunos, tipo, distância, data de consolidação, agrupadora, id de turma agrupadora, quantidade de aulas lançadas, situação da turma, convênio e modalidade dos participantes.
+  * uma turma tem local, ano, périodo, data inicio, data fim, descrição do horário, total de solicitações, capacidade de alunos, tipo, distância, data de consolidação, agrupadora, id de turma agrupadora, quantidade de aulas lançadas, situação da turma, convênio e modalidade dos participantes;
 * Manter o cadastro de Sugestões de Horário de Turma;
   * uma sugestão de horário é de uma turma;
   * uma sugestão de horário tem um horário de turma;
@@ -60,16 +65,16 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
   * uma solicitação de turma tem a data em que foi criada;
 * Manter o cadastro de Vínculo do Docente;
   * O vínculo precisa ter: docente, turma, carga horária, horários e a data em que foi criada;
-* Manter Período Letivo;
+* Manter o cadastro de Período Letivo;
   * um período letivo tem nome, ano e período;
   * um período letivo tem data de início, fim e consolidação;
   * um período letivo tem status e observações;
-* Manter o cadastro de Enquete:
-  * Uma enquete tem: nome, descrição, o número de votos, a data e a hora de inicio e fim, o curso, quantidade de discentes ativos, período, status, tipo, o usuário e a data em que foi criado.
+* Manter o cadastro de Enquete;
+  * Uma enquete tem: nome, descrição, o número de votos, a data e a hora de inicio e fim, o curso, quantidade de discentes ativos, período, status, tipo, o usuário e a data em que foi criado;
 * Manter o cadastro de Voto de Turma;
   * uma votação de turma tem enquete, discente e componente curricular;
   * uma votação de turma tem horários, tipo e a data de criação;
-* Manter o cadastro de Vínculo de Docente a Sugestão
+* Manter o cadastro de Vínculo de Docente a Sugestão;
   * um vínculo de docente a sugestão tem: docente, sugestão, carga horária, descrição do horário, horários e a data de criação;
 * Manter o cadastro de Histórico;
   * um histórico tem discentes;
