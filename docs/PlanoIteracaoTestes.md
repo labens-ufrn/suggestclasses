@@ -25,6 +25,9 @@ A Iteração 10 começou dia 29/09/2022 e vai até 03/10/2022. As atividades des
 * Atualização do Documento de Modelos com o Modelo Conceitual (UML) ou Modelo de Dados (MER);
 * Criação de um Plano de Release e Iteração para o Projeto indicando as atividades de cada iteração e o gerente, incluindo as atividades de Testes;
 * Criação da Lista de User Stories para o Projeto, deve conter pelo menos 1 User Story por membro da equipe;
+  * [Modelo aqui!](https://docs.google.com/document/d/1Ns2J9KTpLgNOpCZjXJXw_RSCSijTJhUx4zgFhYecEJg/edit#);
+  * Um User Store pode ser formado de um ou mais requisitos funcionais;
+* Definir qual será o User Story (Caso de Uso) *base* para implementação, chame de US00;
 * Criação do Plano de Testes para o Projeto;
 * Coloque links para a documentação no README.md do repositório;
 
@@ -36,6 +39,8 @@ Gerentes:
 * Definir e descrever as tarefas (issues) da Iteração 10 (milestones) e alocar as issues para cada membro da equipe;
 * Definir que parte do documento de visão cada membro da equipe vai preparar;
 * Definir que parte do documento com modelo conceitual cada membro da equipe vai preparar;
+* Definir qual User Story cada membro da equipe vai especificar/detalhar;
+* Detalhar ou Especificar um US é cria a descrição (estória do usuário) e os testes de aceitação);
 * trabalhar usando GitFlow (trabalhar com branches);
 * Fechar tarefas se concluída;
 
@@ -45,6 +50,8 @@ Analistas:
 * trabalhar usando GitFlow (trabalhar com branches);
 * Enviar commits da parte do documento de divisão que preparou;
 * Enviar commits da parte do documento com Modelo Conceitual que preparou;
+* Enviar commits do User Story que detalhou;
+* Enviar commits da contagem do User Story que detalhou;
 * Avisar ao gerente quando concluir uma tarefa;
 
 O gerente deve enviar nesta tarefa o link do repositório e o link dos documentos.
@@ -54,19 +61,12 @@ O gerente deve enviar nesta tarefa o link do repositório e o link dos documento
 A Iteração 1 começou dia 04/10/2022  e vai até 14/10/2022 . As atividades dessa tarefa são:
 
 * Atualização do Documento de Visão (formato Markdown), adicionar requisitos funcionais, se necessário;
-* Criar documento com a lista de User Stories, coloque no diretório "docs" do repositório
-  * [Modelo aqui!](https://docs.google.com/document/d/1Ns2J9KTpLgNOpCZjXJXw_RSCSijTJhUx4zgFhYecEJg/edit#);
-  * Deve ser detalhado pelo menos três User Stories;
-  * Um User Store pode ser formado de um ou mais requisitos funcionais;
-* Definir qual será o User Story (Caso de Uso) *base* para implementação, chame de US00;
 
 Gerentes:
 
 * Criar Milestones da Iteração 11;
-* Definir e descrever as tarefas (issues) da Iteração 1 (milestones) e
+* Definir e descrever as tarefas (issues) da Iteração 11 (milestones) e
 alocar as issues para cada membro da equipe;
-* Definir qual User Story cada membro da equipe vai especificar/detalhar;
-  * Detalhar ou Especificar um US é cria a descrição (estória do usuário) e os testes de aceitação);
 * Definir quem vai construir a Arquitetura Geral do Sistema que faz parte do documento com modelo conceitual cada membro da equipe vai preparar;
 * O gerente deve fazer a contagem indicativa do tamanho funcional de Projeto;
 * Definir quem vai fazer a contagem detalhada do tamanho funcional de cada User Story;
@@ -75,8 +75,6 @@ alocar as issues para cada membro da equipe;
 Analistas:
 
 * Trabalhar nas tarefas e realizar pequenos commits marcando com a hashtag da issue;
-* Enviar commits do User Story que detalhou;
-* Enviar commits da contagem do User Story que detalhou;
 * Avisar ao gerente quando concluir uma tarefa;
 
 Desenvolvedor
