@@ -16,7 +16,7 @@ It4      | 27/04/2020  | 16/05/2020 | 15/05/2020   | Gerente 4
 It5      | 18/05/2020  | 06/06/2020 | 05/06/2020   | Gerente 5
 It6      | 08/06/2020  | 27/06/2020 | 26/06/2020   | Gerente 6
 
-Os detalhes do Plano de Iteração pode ser encontrado na página [Plano de Iteração](PlanoIteracao.md).
+Os detalhes do Plano de Iteração pode ser encontrado na página [Plano de Iteração](PlanoIteracaoTestes.md).
 
 ## Documento de Visão
 
