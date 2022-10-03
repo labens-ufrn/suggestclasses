@@ -58,6 +58,8 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
   * uma solicitação de turma tem um solicitador;
   * uma solicitação de turma tem uma sugestão de turma;
   * uma solicitação de turma tem a data em que foi criada;
+* Manter Vínculo do Docente
+  * O vínculo precisa ter: docente, turma, carga horária, horários e a data em que foi criada;
 * Manter o cadastro de Docentes;
   * um docente tem: matrícula, nome, sexo, formação, jornada de trabalho, vínculo, categoria, classe funcional, unidade de lotação, lotação.
 * Manter o cadastro de Cursos;
