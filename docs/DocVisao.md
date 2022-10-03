@@ -58,13 +58,17 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
   * uma solicitação de turma tem um solicitador;
   * uma solicitação de turma tem uma sugestão de turma;
   * uma solicitação de turma tem a data em que foi criada;
-* Manter Vínculo do Docente
+* Manter Vínculo do Docente;
   * O vínculo precisa ter: docente, turma, carga horária, horários e a data em que foi criada;
+* Manter Período Letivo;
+  * um período letivo tem nome, ano e período;
+  * um período letivo tem data de início, fim e consolidação;
+  * um período letivo tem status e observações;
 * Manter o cadastro de Docentes;
   * um docente tem: matrícula, nome, sexo, formação, jornada de trabalho, vínculo, categoria, classe funcional, unidade de lotação, lotação.
 * Manter o cadastro de Cursos;
   * um curso tem: código, nome, coordenador, nível, grau, modalidades, turnos e centro;
-PeriodoLetivo
+
 * Manter cadastro de Enquete:
   * Uma enquete tem: nome, descrição, o número de votos, a data e a hora de inicio e fim, o curso, quantidade de discentes ativos, período, status, tipo, o usuário e a data em que foi criado.
 * VotoTurma
