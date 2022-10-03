@@ -64,14 +64,18 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
   * um período letivo tem nome, ano e período;
   * um período letivo tem data de início, fim e consolidação;
   * um período letivo tem status e observações;
+* Manter cadastro de Enquete:
+  * Uma enquete tem: nome, descrição, o número de votos, a data e a hora de inicio e fim, o curso, quantidade de discentes ativos, período, status, tipo, o usuário e a data em que foi criado.
+* Manter Voto de Turma;
+  * uma votação de turma tem enquete, discente e componente curricular;
+  * uma votação de turma tem horários, tipo e a data de criação;
 * Manter o cadastro de Docentes;
   * um docente tem: matrícula, nome, sexo, formação, jornada de trabalho, vínculo, categoria, classe funcional, unidade de lotação, lotação.
 * Manter o cadastro de Cursos;
   * um curso tem: código, nome, coordenador, nível, grau, modalidades, turnos e centro;
 
-* Manter cadastro de Enquete:
-  * Uma enquete tem: nome, descrição, o número de votos, a data e a hora de inicio e fim, o curso, quantidade de discentes ativos, período, status, tipo, o usuário e a data em que foi criado.
-* VotoTurma
+
+
 * VinculoDocenteSugestao
 * Manter Histórico;
   * um histórico tem discentes;
