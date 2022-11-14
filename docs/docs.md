@@ -9,8 +9,8 @@ horários para professores, alunos, por sala e por período.
 Iteração | Data início | Data Final | Apresentação | Gerente
 -------- | ----------- | ---------- | ------------ | -------
 It10     | 29/09/2022  | 03/10/2022 | 04/10/2022   | Wanessa
-It11     | 04/10/2022  | 14/10/2022 | 19/10/2022   | Gabriel
-It12     | 16/10/2022  | 04/11/2022 | 03/11/2022   | Renata
+It11     | 04/10/2022  | 14/10/2022 | 19/10/2022   | Renata
+It12     | 16/10/2022  | 04/11/2022 | 03/11/2022   | Gabriel
 
 Os detalhes do Plano de Iteração pode ser encontrado na página [Plano de Iteração](PlanoIteracaoTestes.md).
 
