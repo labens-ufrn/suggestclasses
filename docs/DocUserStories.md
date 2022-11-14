@@ -14,34 +14,11 @@ Este documento descreve os User Stories criados a partir da Lista de Requisitos 
 | 01/10/2022 | 0.0.1  |               Template e descrição do documento                | Renata Karla Araújo dos Santos |
 | 01/10/2022 | 0.0.1  |                Detalhamento do User Story US00                 | Renata Karla Araújo dos Santos |
 | 02/10/2022 | 0.0.2  |                Correções do User Story US00                    | Renata Karla Araújo dos Santos |
-| 02/10/2022 | 0.0.2  |                Detalhamento do User Story US02                 | Renata Karla Araújo dos Santos |
+| 02/10/2022 | 0.0.2  |                Detalhamento do User Story US01                 | Renata Karla Araújo dos Santos |
 | 03/10/2022 | 0.1.0  |                Detalhamento do User Story US01                 | Renata Karla Araújo dos Santos |
 
 
-### User Story US00 - Manter Cadastro de turmas
-
-|               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| ------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Descrição** | O sistema deve manter um cadastro de turmas. Uma turma tem os atributos código, professor, sala e horários (horário da turma). O usuário administrador do sistema pode realizar as operações de adicionar, alterar, remover e listar as turmas cadastradas. |
-
-
-| **Requisitos envolvidos** |                               |
-| ------------------------- | :---------------------------- |
-| RF01                      | Cadastrar turmas              |
-| RF02                      | Alterar turmas                |
-| RF03                      | Consultar turmas              |
-| RF04                      | Visualizar detalhes de turmas |
-| RF05                      | Excluir turmas                |
-
-|                         |           |
-| ----------------------- | :-------- |
-| **Prioridade**          | Essencial |
-| **Estimativa**          | 8 h       |
-| **Tempo Gasto (real):** |           |
-| **Tamanho Funcional**   | 7 PF      |
-
-
-### User Story US01 - Manter o cadastro de Vínculo de Docente a Sugestão 
+### User Story US00 - Manter o cadastro de Vínculo de Docente a Sugestão 
 
 |               |                                                                                                                                                                                                                                    |
 | ------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -64,7 +41,7 @@ Este documento descreve os User Stories criados a partir da Lista de Requisitos 
 | **Tamanho Funcional**   | 7 PF      |
 
 
-### User Story US02 - Manter Cadastro de Enquetes
+### User Story US01 - Manter Cadastro de Enquetes
 
 |               |                                                                                                                                                                                                                                                    |
 | ------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
