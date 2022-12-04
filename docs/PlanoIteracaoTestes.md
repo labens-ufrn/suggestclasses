@@ -141,3 +141,5 @@ Testador
 Resultados dos Testes de Aceitação;
 * Cadastrar issues de bugs caso os Testes de Aceitação não passem;
 * Avisar ao gerente quando concluir uma tarefa;
+
+O gerente deve enviar nesta tarefa o link do repositório e o link dos documentos.
