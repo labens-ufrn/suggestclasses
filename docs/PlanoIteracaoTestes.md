@@ -94,7 +94,7 @@ Resultados dos Testes de Aceitação;
 
 O gerente deve enviar nesta tarefa o link do repositório e o link dos documentos.
 
-### T12 - Iteração 12 - 
+### T12 - Iteração 12 - Desenvolvimento e Ampliação da Cobertura
 
 A Iteração 12 começou dia 28/11/2022  e vai até 05/12/2022 . As atividades dessa tarefa são:
 
