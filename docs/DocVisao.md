@@ -3,6 +3,16 @@
 Documento construído a partido do **Modelo BSI - Doc 001 - Documento de Visão** que pode ser encontrado no
 link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBNFyLa6A/edit?usp=sharing>
 
+## Perfis de Usuários
+
+O sistema poderá ser utilizado por diversos usuários. Temos os seguintes perfis:
+
+* Perfil Aluno
+	Este usuário utiliza o sistema para verificar suas sugestões de horários para turmas de componentes curriculares de um curso em um certo período, horário aprovado     das turmas, etc.
+
+* Perfil Professor
+	Este usuário utiliza o SuggestClasses para o cadastro de sugestões de horários para turmas de componentes curriculares de um curso em um certo período, horário         aprovado das turmas, etc.
+
 ## Lista de Requisitos Funcionais
 
 * Manter o cadastro de Centros;
