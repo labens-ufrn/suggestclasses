@@ -81,6 +81,12 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
   * um histórico tem componentes curriculares;
   * um histórico semestre e a data de criação.
 
+## Lista de Requisitos não-Funcionais
+
+* RNF01 - Deve ser acessível via navegador
+* RNF02 - Deve rodar em Windows e Linux
+* RNF03 - Deve ser feito o log de ações dos usuários
+
 ## Modelo Conceitual
 
 Abaixo apresentamos o modelo ER inicial.
