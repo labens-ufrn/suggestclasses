@@ -6,10 +6,10 @@
 
 ## Histórico das alterações
 
-   Data    | Versão |    Descrição   | Autor(a)
------------|--------|----------------|-----------------
-01/10/2022 |  1.1   | Release inicial | Gabriel Azevedo 
-05/12/2022 |  1.2   | Adição do teste de aceitação | Wanessa Bezerra
+   Data    | Versão |    Descrição                   | Autor(a)
+-----------|--------|--------------------------------|-----------------
+01/10/2022 |  1.1   | Release inicial                | Gabriel Azevedo 
+05/12/2022 |  1.2   | Atualização do plano de testes | Wanessa Bezerra
  
 ## 1 - Introdução
 
@@ -25,14 +25,14 @@ Com esse documento, você deve:
 ## 2 - Requisitos a Testar
 
 Esta seção contém os casos de uso identificados como objetos dos testes ao longo do desenvolvimento do projeto de testes durante a disciplina de teste de software.
-O conjunto de requisitos a serem testados no projeto de testes são: testar segurança, controle de acesso, funcionalidades. Os módulos a serem testados durante o projeto de testes são os módulos de turmas, sugestão de turmas e enquetes. 
+O conjunto de requisitos a serem testados no projeto de testes são: testar segurança, controle de acesso, funcionalidades. Os módulos a serem testados durante o projeto de testes são os módulos de sugestão de turmas e enquetes. 
 
 ### Casos de uso:
 
 Identificador do caso de uso | Nome do caso de uso
 -----------------------------|---------------------
-US00                       |       Manter cadastro de sugestão de turma
-US01                       |       Manter cadastro de enquentes  
+US00                         | Manter cadastro de sugestão de turma
+US01                         | Manter cadastro de enquentes  
 
 ## US00
 Testar os métodos de manter cadastro de sugestão de turmas. Testar as turmas sugeridas pelos docentes, além de verificar se as turmas possuem choques de horário e ser exibido ao usuário aluno uma mensagem informando o choque de horário. Testar a segurança de cadastro de sugestão de turmas uma vez que apenas o usuário administrador e os docentes poderão realizar as operações de adicionar, alterar, remover e listar as sugestões de turmas cadastradas.
@@ -259,8 +259,8 @@ A ferramenta de teste utilizada é a ferramenta de testes nativa da linguagem Py
 
 Tipo de teste      | Duração | data de início | data de término
 -------------------|---------|----------------|-----------------
-planejar teste     |   10h   | 01/10/2022     | 03/10/2022
-projetar teste     |         | dd/mm/aaaa     | dd/mm/aaaa
-implementar teste  |         | dd/mm/aaaa     | dd/mm/aaaa
-executar teste     |         | dd/mm/aaaa     | dd/mm/aaaa
-avaliar teste      |         | dd/mm/aaaa     | dd/mm/aaaa
+planejar teste     |         | 01/10/2022     | 03/10/2022
+projetar teste     |         | 04/10/2022     | 27/11/2022
+implementar teste  |         | 28/11/2022     | 05/12/2022
+executar teste     |         | 06/12/2022     | 13/12/2022
+avaliar teste      |         | 14/12/2022     | 20/12/2022
