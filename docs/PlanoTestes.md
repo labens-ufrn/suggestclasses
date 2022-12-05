@@ -2,13 +2,14 @@
 
 ## **SuggestClasses**
 
-*versão 1.1*
+*versão 1.2*
 
 ## Histórico das alterações
 
    Data    | Versão |    Descrição   | Autor(a)
 -----------|--------|----------------|-----------------
 01/10/2022 |  1.1   | Release inicial | Gabriel Azevedo 
+05/12/2022 |  1.2   | Adição do teste de aceitação | Wanessa Bezerra
  
 ## 1 - Introdução
 
@@ -30,17 +31,13 @@ O conjunto de requisitos a serem testados no projeto de testes são: testar segu
 
 Identificador do caso de uso | Nome do caso de uso
 -----------------------------|---------------------
-US00                       |       Manter cadastro de turmas 
-US01                       |       Manter cadastro de sugestão de turma
-US02                       |       Manter cadastro de enquentes  
+US00                       |       Manter cadastro de sugestão de turma
+US01                       |       Manter cadastro de enquentes  
 
 ## US00
-Testar os métodos de manter cadastro de turmas. Para cadastrar uma nova turma, é necessário verificar se a turma possui os atributos: código, professor, sala e horário. Além de validar os campos de cadastro. Testar a segurança do cadastro de turma, uma vez que apenas o usuário administrador do sistema pode realizar as operações de adicionar, alterar, remover e listar as turmas cadastradas.
-
-## US01
 Testar os métodos de manter cadastro de sugestão de turmas. Testar as turmas sugeridas pelos docentes, além de verificar se as turmas possuem choques de horário e ser exibido ao usuário aluno uma mensagem informando o choque de horário. Testar a segurança de cadastro de sugestão de turmas uma vez que apenas o usuário administrador e os docentes poderão realizar as operações de adicionar, alterar, remover e listar as sugestões de turmas cadastradas.
 
-## US02
+## US01
 Testar os métodos de manter cadastro de enquentes no sistema. Para cadastrar uma enquete, deverá ter uma função de teste para verificar e validar se a enquete contém os atributos de: nome, descrição, número de votos, data de início e fim, hora de início e fim, curso, quantidade de discentes ativos, período, status, tipo, usuário e a data de criação. Apenas o usuário administrador do sistema e o usuário docente poderão realizar as operações de adicionar, alterar, remover e listar as enquetes cadastradas.
 
 
