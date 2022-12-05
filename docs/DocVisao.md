@@ -97,6 +97,14 @@ O sistema poderá ser utilizado por diversos usuários. Temos os seguintes perfi
 * RNF02 - Deve rodar em Windows e Linux
 * RNF03 - Deve ser feito o log de ações dos usuários
 
+## Tabela de Riscos
+
+| Data       | Risco                                                                  | Prioridade | Responsável | Status  | Providência/Solução                                            |
+| ---------- | ---------------------------------------------------------------------- | ---------- | ----------- | ------- | -------------------------------------------------------------- |
+| 05/10/2022 | Não aprendizado das ferramentas utilizadas pelos componentes da equipe | Alta       | Gerente     | Vigente | Reforçar estudos sobre as ferramentas.                         |
+| 05/11/2022 | Ausência por qualquer membro da equipe                                 | Média      | Gerente     | Vigente | Planejar o cronograma tendo em base a agenda dos membros.      |
+| 05/12/2022 | Divisão de tarefas mal sucedida                                        | Baixa      | Gerente     | Vigente | Acompanhar de perto o desenvolvimento de cada membro da equipe |
+
 ## Modelo Conceitual
 
 Abaixo apresentamos o modelo ER inicial.
