@@ -51,14 +51,16 @@ from .visoes.user_view import criar_usuario, autenticar_logar
 
 logger = logging.getLogger('suggestclasses.logger')
 config = get_config()
-ceres = get_ceres()
 
-def index(request):
+
+def index(request): 
     """
     View para o Home (Tela Inicial).
     :param request: Uma requisição http.
     :return: Um response com dados sobre o CERES/UFRN.
     """
+    ceres = get_ceres()
+    
     departamentos = get_deptos_by_centro(centro=ceres)
     cursos = get_cursos_by_centro(ceres)
     componentes = get_cc_by_centro(ceres)

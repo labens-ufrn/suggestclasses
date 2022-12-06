@@ -6,7 +6,7 @@ DEBUG=True
 
 DATABASE_NAME=scdb_dev
 DATABASE_USER=sc_user
-DATABASE_PASSWORD=sc_user
+DATABASE_PASSWORD=password
 DATABASE_ROOT_PASSWORD=sc_admin_pass
 
 DATABASE_TEST=scdb_test
