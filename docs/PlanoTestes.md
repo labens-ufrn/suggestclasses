@@ -58,66 +58,6 @@ Para teste de unidades do sistema, deve-se verificar se cada classe retorna o es
             Objetivo
         </th>
         <th colspan="4">
-            Testar manter cadastro de turmas
-        </th>
-    </tr>
-    <tr>
-        <th>
-            Técnica:
-        </th>
-        <th colspan="2">
-            ( ) manual
-        </th>
-        <th colspan="2">
-            (x) automática
-        </th>
-    </tr>
-    <tr>
-        <th>
-            Estágio do teste
-        </th>
-        <th>
-            Integração ( )
-        </th>
-        <th>
-            Sistema ( )
-        </th>
-        <th>
-            Unidade (x)
-        </th>
-        <th>
-            Aceitação ( )
-        </th>
-    </tr>
-    <tr>
-        <th>
-            Abordagem do teste
-        </th>
-        <th colspan="2">
-            Caixa branca (x)
-        </th>
-        <th colspan="2">
-            Caixa preta (x)
-        </th>
-    </tr>
-    <tr>
-        <th>
-            Responsável(is)
-        </th>
-        <th colspan="4">
-            Programador(es) ou equipe de testes
-        </th>
-    </tr>
-</table>
-<br/>
-
-<br/>
-<table>
-    <tr>
-        <th>
-            Objetivo
-        </th>
-        <th colspan="4">
             Testar o manter cadastro de sugestão de turmas
         </th>
     </tr>
