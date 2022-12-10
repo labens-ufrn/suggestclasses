@@ -62,7 +62,7 @@ X_FRAME_OPTIONS = 'DENY'
 
 # Application definition
 INSTALLED_APPS = [
-    'core.apps.CoreConfig',
+    'core',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
+    'django_mutpy',
 ]
 
 MIDDLEWARE = [
