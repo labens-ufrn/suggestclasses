@@ -208,7 +208,7 @@ export DJANGO_SETTINGS_MODULE=suggestclasses.settings
 python manage.py test
 ```
 
-### Executar os Testes de Unidade e Cobertura
+### Executar os Testes de Unidade, Testes de Mutação e Cobertura
 
 #### Utilizando o Cobetura
 
@@ -223,6 +223,31 @@ coverage xml
 ```
 
 Se usar `coverage html`, ele gera o relatório em html.
+
+#### Utilizando o MutPy
+
+Primeiro instale o **MutPy** e o **Django MutPy**.
+
+```shell script
+    pip install mutpy
+    pip install django-mutpy
+```
+
+Depois adicione o django_mutpy à lista de aplicativos instalados.
+
+```shell script
+INSTALLED_APPS = [
+  ...
+  'django_mutpy',
+  ...
+  ]
+```
+
+Rode o seguinte comando para gerar o relatório dos testes de mutação.
+
+```shell script
+python manage.py muttest <app1> <app2>
+```
 
 #### Utilizando Nose (desativado)
 
