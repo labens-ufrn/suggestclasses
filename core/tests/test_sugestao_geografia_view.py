@@ -32,12 +32,12 @@ class SugestaoGeografiaViewTests(TestCase):
 
         self.assertEqual(200, response.status_code)
 
-    def test_sugestao_editar(self):
+    def sugestao_geo_bac_manter(self):
         client = Client()
         sugestao = SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99999)
 
-        url = reverse('sugestao_mat_editar', args=(sugestao.pk,))
-        url2 = '/core/sugestao/mat/editar/' + sugestao.pk.__str__() + '/'
+        url = reverse('sugestao_geo_bac_incluir', args=(sugestao.pk,))
+        url2 = '/core/sugestao/geo-bac/incluir' + sugestao.pk.__str__() + '/'
         response = client.get(url2)
         self.assertEqual(302, response.status_code)
 
@@ -47,3 +47,10 @@ class SugestaoGeografiaViewTests(TestCase):
         response = client.post('/core/usuario/logar', {'username': user.username, 'password': 'johnpassword'})
         self.assertEqual(response.url, '/core/')
         self.assertEqual(302, response.status_code)
+
+    def test_get_turmas_(self):
+        client = Client()
+        url = '/core/turmas/his-lic'
+        response = client.get(url)
+
+        self.assertEqual(200, response.status_code)

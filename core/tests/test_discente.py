@@ -1,6 +1,6 @@
 import django
 django.setup()
-from core.bo.discentes import get_discentes, get_discente_by_matricula, get_discentes_ativos
+from core.bo.discentes import get_discentes, get_discente_by_matricula, get_discentes_ativos, get_qtd_discentes_ativos, get_discentes_by_centro
 from core.tests.povoar_testes import criar_dados, remover_dados
 
 from django.test import TestCase
@@ -34,8 +34,16 @@ class DiscenteTests(TestCase):
         self.assertIsNotNone(discentes, 'Discentes não é None?')
         self.assertTrue(len(discentes) > 0, 'Existe pelo menos um discente')
 
+    def test_get_discentes_by_centro(self):
+        pass
+
     def test_get_discentes_ativos(self):
         discentes = get_discentes_ativos()
 
         self.assertIsNotNone(discentes, 'Discentes não é None?')
         self.assertTrue(len(discentes) > 0, 'Existe pelo menos um discente')
+
+    def test_get_qtd_discentes_ativos(self):
+        discentes = get_qtd_discentes_ativos()
+
+        self.assertIsNotNone(discentes, 'Quantidade de Discentes ativos não é None?')
