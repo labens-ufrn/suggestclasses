@@ -24,3 +24,25 @@ class TurmaViewTests(TestCase):
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
+
+    def test_get_turmas_hist(self):
+        client = Client()
+        url = '/core/turmas/his-lic'
+        response = client.get(url)
+
+        self.assertEqual(200, response.status_code)
+
+    def test_get_turmas_dir(self):
+        client = Client()
+        url = '/core/turmas/dir'
+        response = client.get(url)
+
+        self.assertEqual(200, response.status_code)
+
+    def test_get_turmas_mat(self):
+        client = Client()
+        url = '/core/turmas/mat'
+        response = client.get(url)
+
+        self.assertEqual(200, response.status_code)
+
