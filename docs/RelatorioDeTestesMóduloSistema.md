@@ -41,8 +41,33 @@ Responsabilidade do Testador
 | Teste 02: get_cursos_by_centro | A1 - get Cursos	do centro A1.1. O sistema executa o fluxo de cursos A1.2. O sistema executa a função verifica e retorna A1.3. Fim do fluxo.| Especificação ok.| Ok. |
 | Teste 02: get_cursos_by_codigo | A1 - get Cursos	por código A1.1. O sistema executa o fluxo de cursos A1.2. O sistema executa a função verifica o código e retorna A1.3. Fim do fluxo | Especificação ok.| Ok. |
 
+### US006 – User view
 
+| Teste      |      Descrição      |        Especificação          | Resultado            |
+| :--------- | :-----------------: | :---------------------------: | :------------------- |
+| Teste 01: test_logar_usuario | A1 -Logar usuario A1.1. O sistema executa o login A1.2. O sistema verifica se foi realizado A1.3. Fim do fluxo.| Especificação ok.| Ok. |
 
+### US007 – Discente
+
+| Teste      |      Descrição      |        Especificação          | Resultado            |
+| :--------- | :-----------------: | :---------------------------: | :------------------- |
+| Teste 01: test_get_discentes_by_centro | A1 - get Discente do centro A1.1. O sistema executa o fluxo de discentes A1.2. O sistema executa a função verifica e retorna A1.3. Fim do fluxo. | Especificação ok.| Ok. |
+
+### US008 – Sugestão Geografia view
+
+| Teste      |      Descrição      |        Especificação          | Resultado            |
+| :--------- | :-----------------: | :---------------------------: | :------------------- |
+| Teste 01: test_sugestao_detalhar | A1 - Sugestão detalhar	A1.1. O sistema executa o fluxo sugestão turma A1.2. O sistema executa e função A1.3. Fim do fluxo.| Especificação ok.| Ok. |
+| Teste 02: test_sugestao_editar | A1 - Sugestão editar	A1.1. O sistema executa a função A1.2. O sistema realiza a edição A1.3. Fim do fluxo.| Especificação ok.| Ok. |
+| Teste 03: test_login_success | A1 -Login success A1.1. O sistema executa o login A1.2. O sistema verifica se foi realizado A1.3. Fim do fluxo.| Especificação ok.| Ok. |
+
+### US009 – Enquetes
+
+| Teste      |      Descrição      |        Especificação          | Resultado            |
+| :--------- | :-----------------: | :---------------------------: | :------------------- |
+| Teste 01: test_get_enquetes | A1 - get Enquetes A1.1. O sistema verifica o fluxo de enquetes A1.2. O sistema executa a função A1.3. Fim do fluxo.| Especificação ok.| Ok. |
+| Teste 02: test_get_enquetes_por_curso | A1 - get Enquetes A1.1. O sistema verifica o fluxo de enquetes A1.2. O sistema executa a função A1.3. Fim do fluxo.| Especificação ok.| Ok. |
+| Teste 03: get_componentes_enquete | A1 - get Enquetes A1.1. O sistema executa o fluxo enquetes A1.2. O sistema executa a função A1.3. Fim do fluxo.| Especificação ok.| Ok. |
 
 ## Relatório de Bugs e Providências
 Responsabilidade do Gerente
