@@ -33,7 +33,7 @@ Na página [Documentação](docs/docs.md) temos os detalhes do projeto e a lista
 
 ### Criação do Banco de Dados (dev e test) e Usuário
 
-Utilzamos o SGBD MariaDB/MySql.
+Utilizamos o SGBD MariaDB/MySql.
 
 ```sql
 CREATE DATABASE scdb_dev character set UTF8 collate utf8_bin;
@@ -129,6 +129,22 @@ export PYTHONPATH=${PYTHONPATH}:/home/<seu_diretorio>/suggestclasses
 
 Após editar os valores, execute o comando ```source path.env``` no Linux ou ```activate path.env``` no Windows para carregar as variáveis.
 
+## Criação manual do container docker
+Baixar imagem do MariaDB
+```shell script
+docker pull mariadb
+```
+
+Cria o container
+```shell script
+docker run -d --name mariadb-server -p 3306:3306 -e "MYSQL_ROOT_PASSWORD=sua_senha" -v /home/<seu_diretorio>/suggestclasses/docker/volumes/mariadb:/var/lib/mysql mariadb
+```
+
+Inicia o container
+```shell script
+docker start mariadb-server
+```
+
 ## Migrations
 
 Ao modificar os models (em models.py), execute:
@@ -186,6 +202,9 @@ python dados/povoar_organizacao_curricular.py
 
 Para atualizar a base, devem-ser deletados os csv's antigos e executar novamente os scripts.
 
+## OBS: Após o povoamento, é necessário adicionar manualmente alguns períodos
+Para isso, entre no seu usuário admin do Django alterando o endereço http://127.0.0.1:8000/core/ para http://127.0.0.1:8000/admin/
+Em seguida, insira o período anterior, o atual e o próximo para ser exibido e carregar as informações corretamente.
 ## Testes
 
 Rodar os testes mantendo o banco de testes:
