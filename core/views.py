@@ -53,14 +53,14 @@ logger = logging.getLogger('suggestclasses.logger')
 config = get_config()
 
 
-def index(request): 
+def index(request):
     """
     View para o Home (Tela Inicial).
     :param request: Uma requisição http.
     :return: Um response com dados sobre o CERES/UFRN.
     """
     ceres = get_ceres()
-    
+
     departamentos = get_deptos_by_centro(centro=ceres)
     cursos = get_cursos_by_centro(ceres)
     componentes = get_cc_by_centro(ceres)
@@ -158,7 +158,7 @@ def departamento_list(request):
     """
             Lista todos os componentes curriculares.
     """
-    departamentos = get_deptos_by_centro(centro=ceres)
+    departamentos = get_deptos_by_centro(centro=get_ceres())
 
     context = {
         'departamentos': departamentos
@@ -171,7 +171,7 @@ def curso_list(request):
     """
             Lista todos os componentes curriculares.
     """
-    cursos = get_cursos_by_centro(ceres)
+    cursos = get_cursos_by_centro(ceres = get_ceres())
 
     context = {
         'cursos': cursos
@@ -184,7 +184,7 @@ def componente_list(request):
     """
         Lista todos os componentes curriculares.
     """
-    componentes = get_cc_by_centro(ceres)
+    componentes = get_cc_by_centro(ceres = get_ceres())
 
     context = {
         'componentes': componentes
@@ -217,7 +217,7 @@ def docentes_list(request):
     """
             Lista todas os docentes do centro.
     """
-    docentes = get_docentes_by_centro(ceres)
+    docentes = get_docentes_by_centro(ceres = get_ceres())
     docente_filter = DocenteFilter(request.GET, queryset=docentes)
     context = {
         'filter': docente_filter
