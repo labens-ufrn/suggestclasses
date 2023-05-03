@@ -2,6 +2,7 @@ import django
 django.setup()
 import threading
 
+from datetime import date, timedelta
 from dateutil.parser import parse
 from django.contrib.auth.models import User, Group
 from core.bo.turma import converte_desc_horario
@@ -332,8 +333,8 @@ def remover_docentes():
 def criar_funcao_gratificada():
     departamento = Departamento.objects.get(id_unidade=9998)
     docente1 = Docente.objects.get(siape=9999998)
-    inicio = parse('2019/11/19')
-    fim = parse('2022/11/18')
+    inicio = date.today() + timedelta(days=-720) #  parse('2019/11/19')
+    fim = date.today() + timedelta(days=10) #  parse('2022/11/18')
     atividade = 'CHEFE DE DEPARTAMENTO'
 
     if not FuncaoGratificada.objects.filter(

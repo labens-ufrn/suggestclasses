@@ -1,5 +1,7 @@
 *.swp
 
+docker
+
 .scannerwork/
 
 #PyCharm config
