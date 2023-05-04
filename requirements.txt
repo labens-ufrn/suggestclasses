@@ -13,3 +13,5 @@ webdriver-manager==3.8.4
 # dj-database-url==0.5.0
 coverage==6.5.0
 python-decouple==3.6
+
+django-mutpy==0.1.2
