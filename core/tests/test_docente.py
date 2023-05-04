@@ -58,7 +58,7 @@ class DocenteTests(TestCase):
             if fg.atividade == 'CHEFE DE DEPARTAMENTO':
                 chefe = fg
 
-        self.assertIsNotNone(len(funcoes) > 0, 'Testando funções')
+        self.assertTrue(len(funcoes) > 0, 'Testando funções')
         self.assertIsNotNone(chefe, 'Testando função chefe')
         self.assertEqual(chefe.siape, docente.siape)
         self.assertIsNotNone(chefe.nome, docente.nome)
