@@ -53,7 +53,7 @@ class DocenteTests(TestCase):
     def test_get_chefes(self):
         docente = get_docente_by_siape(9999998)
         funcoes = get_funcao_by_siape(9999998)
-        chefe = get_docente_by_siape(9999998)
+        chefe = None
         for fg in funcoes:
             if fg.atividade == 'CHEFE DE DEPARTAMENTO':
                 chefe = fg
@@ -62,7 +62,7 @@ class DocenteTests(TestCase):
         self.assertIsNotNone(chefe, 'Testando função chefe')
         self.assertEqual(chefe.siape, docente.siape)
         self.assertIsNotNone(chefe.nome, docente.nome)
-        self.assertIsNotNone(chefe.id_unidade_lotacao, docente.id_unidade_lotacao)
+        self.assertIsNotNone(chefe.id_unidade, docente.id_unidade_lotacao)
         grupo_chefes = Group.objects.get(name='ChefesTeste')
         grupos = docente.usuario.groups.all()
         self.assertTrue(grupo_chefes in grupos, 'Docente é chefe!')
