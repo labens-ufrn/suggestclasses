@@ -28,9 +28,11 @@ jobs:
       postgres:
         image: postgres:latest
         ports:
-          - 3306:3306
+          - 5432:5432
         env:
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: scdb_dev
         options: >-
             --health-cmd pg_isready
             --health-interval 10s
@@ -60,6 +62,7 @@ jobs:
       - name: Copying configurations
         run: |
           cp contrib/env-sample .env
+          source .env
       - name: Test with manage.py test
         run: |
           python manage.py test --keepdb
