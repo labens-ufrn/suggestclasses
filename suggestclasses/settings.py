@@ -41,9 +41,9 @@ SESSION_COOKIE_AGE = 60 * 60 # 1 hora
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/core'
-LOGIN_URL = '/accounts/login'
-LOGOUT_REDIRECT_URL = '/accounts/login'
+LOGIN_REDIRECT_URL = '/suggestclasses'
+LOGIN_URL = '/suggestclasses/accounts/login'
+LOGOUT_REDIRECT_URL = '/suggestclasses'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
