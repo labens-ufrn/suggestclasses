@@ -15,7 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import sys
 from django.contrib.messages import constants as messages
-from decouple import config
+from decouple import config, Csv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -32,8 +32,8 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', 'dct.ceres.ufrn.br']
-CSRF_TRUSTED_ORIGINS = ['http://dct.ceres.ufrn.br']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+CSRF_TRUSTED_ORIGINS = ['http://labens.dct.ufrn.br']
 DOMAINS_WHITELIST = ALLOWED_HOSTS
 
 SESSION_COOKIE_AGE = 60 * 60 # 1 hora
