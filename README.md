@@ -48,6 +48,7 @@ CREATE DATABASE scdb_dev
 Defina as permissions e privilégios do Usuário:
 ```sql
 GRANT ALL PRIVILEGES ON DATABASE scdb_dev TO sc_user;
+GRANT ALL ON SCHEMA public TO sc_user;
 ```
 
 ## Ambiente Virtual
