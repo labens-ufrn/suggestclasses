@@ -28,15 +28,15 @@
             <div class="col-sm-3 col-md-6 col-lg-6">
               <ul class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                  <a href="/core/curso/list/">Cursos</a>
+                  <a href="{% url 'Lista de Cursos' %}">Cursos</a>
                   <span class="badge badge-primary badge-pill">{{ cursos.count }}</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                  <a href="/core/departamento/list/">Departamentos</a>
+                  <a href="{% url 'Lista de Departamentos' %}">Departamentos</a>
                   <span class="badge badge-primary badge-pill">{{ departamentos.count }}</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                  <a href="/core/componente/list/">Componentes Curriculares</a>
+                  <a href="{% url 'Lista de Componentes Curriculares' %}">Componentes Curriculares</a>
                   <span class="badge badge-primary badge-pill">{{ componentes.count }}</span>
                 </li>
               </ul>
@@ -44,15 +44,15 @@
             <div class="col-sm-6 col-md-6 col-lg-6">
               <ul class="list-group">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                  <a href="/core/discente/list/" class="disabled" tabindex="-1">Discentes</a>
+                  <a href="{% url 'discentes_list' %}" class="disabled" tabindex="-1">Discentes</a>
                   <span class="badge badge-primary badge-pill">{{ discentes.count }}</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                  <a href="/core/discente/list/" class="disabled" tabindex="-1">Discentes Ativos</a>
+                  <a href="{% url 'discentes_list' %}" class="disabled" tabindex="-1">Discentes Ativos</a>
                   <span class="badge badge-primary badge-pill">{{ discentes_ativos.count }}</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                  <a href="/core/docentes/list/">Docentes</a>
+                  <a href="{% url 'docentes_list' %}">Docentes</a>
                   <span class="badge badge-primary badge-pill">{{ docentes.count }}</span>
                 </li>
               </ul>
