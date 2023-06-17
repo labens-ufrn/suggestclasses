@@ -910,7 +910,7 @@ def enquete_votar(request, pk):
     return enquete_voto_view(request, pk)
 
 
-@login_required(login_url='/accounts/login')
+@login_required(login_url='/suggestclasses/accounts/login')
 def enquete_detalhar_voto(request, pk):
     return enquete_detalhar_voto_view(request, pk)
 
