@@ -66,6 +66,7 @@ def index(request):
     docentes = get_docentes_by_centro(ceres)
     discentes = get_discentes_by_centro(ceres)
     discentes_ativos = get_discentes_ativos(centro=ceres)
+    periodo_planejado = get_periodo_planejado()
 
     context = {
         'ceres': ceres,
@@ -75,6 +76,7 @@ def index(request):
         'componentes': componentes,
         'discentes': discentes,
         'discentes_ativos': discentes_ativos,
+        'periodo_planejado': periodo_planejado,
     }
 
     return render(request, 'core/home.html', context)

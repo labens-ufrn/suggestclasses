@@ -19,7 +19,8 @@
             <p>O Sistema <strong>SuggestClass</strong> permite o carregamento de <strong>Dados Abertos da UFRN</strong> e exibe informações
             tratadas que possam ser utilizadas por gestores, docentes e discentes. Exibimos a seguir informações do CERES, dados da FELCS serão divulgados posteriomente.</p>
             <span class="alert-info">
-              <strong>Atualização: </strong>Dados atualizados em 08/07/2022! As </strong>Enquetes para 2022.2 estão ativas, acesse <a href="/core/enquetes/list/">Enquetes</a> e vote.
+              <strong>Atualização: </strong>Dados atualizados em 17/06/2023! 
+              As Enquetes para o Período Letivo {{ periodo_planejado }} estão ativas, acesse <a href="{% url 'search_enquetes' %}">Enquetes</a> e vote nos componentes curriculares que pretende cursar.
             </span>
           </div>
           <hr>
@@ -60,11 +61,11 @@
           <hr>
           <div class="row">
             <div class="text-justify">
-              <span>A versão 1.6.0 permite visualizar <a href="/core/turmas/"><strong>Turmas do Período Atual e Anteriores</strong></a> e
-                <a href="/core/sugestao/"><strong>Sugestões de Turmas do Próximo Período</strong></a> em formato de
+              <span>A versão 2.0.0 permite visualizar <a href="{% url 'turmas_list' %}"><strong>Turmas do Período Atual e Anteriores</strong></a> e
+                <a href="{% url 'sugestao_list' %}"><strong>Sugestões de Turmas do Próximo Período</strong></a> em formato de
                 tabela de horários. Permite também visualizar os horários em <strong>Perfil</strong>, o discente pode
-                adicionar disciplinas ao histórico, e alguns bugs foram resolvidos.
-                Mais informações e novidades acesse o menu <a href="/core/sobre">Sobre</a>.</span>
+                adicionar disciplinas ao histórico, e alguns bugs foram resolvidos. Esta versão tem funcionalidades refatoradas e ainda pode conter funcionalidades em desenvolvimento! 
+                Mais informações e novidades acesse o menu <a href="{% url 'sobre_details' %}">Sobre</a>.</span>
             </div>
           </div>
           <br>
@@ -83,7 +84,7 @@
             <a href="mailto:#">taciano.silva@ufrn.br</a>
           </address>
           <p class="alert-danger">
-            <strong>Obs. 1: </strong>SuggestClasses v1.6.0: Versão GAMA pode conter funcionalidades em desenvolvimento!
+            <strong>Obs. 1: </strong>SuggestClasses v2.0.0: Esta versão tem funcionalidades refatoradas e ainda pode conter funcionalidades em desenvolvimento!
           </p>
           <p class="alert-info"><strong>Obs. 2:</strong> Sugestões de melhorias são bem-vindas por e-mail.</p>
         </div>
