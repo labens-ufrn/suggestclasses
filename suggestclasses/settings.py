@@ -161,14 +161,15 @@ MESSAGE_TAGS = {
 }
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
+# https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/suggest-files/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'suggestclasses/run/static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # User_Uploaded_Files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/suggest-files/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'suggestclasses/run/media')
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
