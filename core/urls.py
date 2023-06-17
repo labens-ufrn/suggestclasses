@@ -23,7 +23,7 @@ urlpatterns = [
     path('usuario/alterar_senha', views.alterar_senha, name='Alterar Senha de Usuário'),
 
     path('', views.index, name='index'),
-    path('sobre', views.sobre, name='sobre'),
+    path('sobre', views.sobre, name='sobre_details'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('horarios_list/', views.horarios_list, name='horarios_list'),
     path('<int:horario_id>/', views.detail, name='detail'),

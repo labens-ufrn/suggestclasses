@@ -128,3 +128,4 @@ data/*
 dados/csv/olds/*.csv
 dados/csv/olds/
 suggestclasses/run/
+dados/csv/anteriores/

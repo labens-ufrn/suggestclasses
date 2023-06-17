@@ -22,15 +22,15 @@
   <nav id="sidebar-wrapper" class="sidebar bg-light border-right">
     <div class="sidebar-heading center" align="center"><b>Menu</b></div>
     <div class="list-group list-group-flush">
-      <a href="/core/" class="list-group-item list-group-item-action bg-light">Home</a>
+      <a href="{% url 'index' %}" class="list-group-item list-group-item-action bg-light">Home</a>
       <a href="/core/dashboard" class="list-group-item list-group-item-action bg-light" hidden>Dashboard</a>
-      <a href="/core/flow/" class="list-group-item list-group-item-action bg-light">Estruturas Curriculares</a>
-      <a href="/core/turmas/" class="list-group-item list-group-item-action bg-light">Turmas</a>
-      <a href="/core/sugestao/" class="list-group-item list-group-item-action bg-light">Sugestão de Turmas</a>
+      <a href="{% url 'Lista de Fluxogramas' %}" class="list-group-item list-group-item-action bg-light">Estruturas Curriculares</a>
+      <a href="{% url 'turmas_list' %}" class="list-group-item list-group-item-action bg-light">Turmas</a>
+      <a href="{% url 'sugestao_list' %}" class="list-group-item list-group-item-action bg-light">Sugestão de Turmas</a>
       <a href="#" class="list-group-item list-group-item-action bg-light" hidden>Alunos</a>
-      <a href="/core/docentes/list/" class="list-group-item list-group-item-action bg-light">Docentes</a>
-      <a href="/core/salas/list/" class="list-group-item list-group-item-action bg-light">Salas</a>
-      <a href="/core/enquetes/list/" class="list-group-item list-group-item-action bg-light">Enquetes</a>
+      <a href="{% url 'docentes_list' %}" class="list-group-item list-group-item-action bg-light">Docentes</a>
+      <a href="{% url 'search_salas' %}" class="list-group-item list-group-item-action bg-light">Salas</a>
+      <a href="{% url 'search_enquetes' %}" class="list-group-item list-group-item-action bg-light">Enquetes</a>
       <a href="/core/horarios_list/" class="list-group-item list-group-item-action bg-light" hidden>Horários de Aula</a>
     </div>
   </nav>
@@ -109,8 +109,8 @@
 </div>
 <div class="py-5 bg-dark">
   <div class="container text-center">
-      <span class="m-0 text-center text-white">Copyright &copy; Suggest Classes 2019-2022 <br/>
-        LABENS - <a href="http://labens-ufrn.github.io/">http://labens-ufrn.github.io/</a>
+      <span class="m-0 text-center text-white">Copyright &copy; Suggest Classes 2019-2023 <br/>
+        LABENS - <a href="http://labens.dct.ufrn.br">http://labens.dct.ufrn.br</a>
       </span>
   </div>
 </div>

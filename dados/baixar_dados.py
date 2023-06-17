@@ -154,7 +154,7 @@ def download_turmas():
         urllib.request.urlretrieve(url, file_name)
         print('.................')
 
-        print("Download do CSV das Turmas 2021.2 do CERES/UFRN ...!")
+    print("Download do CSV das Turmas 2021.2 do CERES/UFRN ...!")
     file_name = "csv/turmas-2021.2.csv"
     if os.path.exists(file_name):
         print("Arquivo " + file_name + " já existe!")
@@ -164,13 +164,33 @@ def download_turmas():
         urllib.request.urlretrieve(url, file_name)
         print('.................')
 
-        print("Download do CSV das Turmas 2022.1 do CERES/UFRN ...!")
+    print("Download do CSV das Turmas 2022.1 do CERES/UFRN ...!")
     file_name = "csv/turmas-2022.1.csv"
     if os.path.exists(file_name):
         print("Arquivo " + file_name + " já existe!")
     else:
         url = 'https://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/222b1028-ca3c-4acc-bfb2' \
             '-fa4e45d7cd0d/download/turmas-2022.1.csv'
+        urllib.request.urlretrieve(url, file_name)
+        print('.................')
+
+    print("Download do CSV das Turmas 2022.2 do CERES/UFRN ...!")
+    file_name = "csv/turmas-2022.2.csv"
+    if os.path.exists(file_name):
+        print("Arquivo " + file_name + " já existe!")
+    else:
+        url = 'https://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/991cb0c0-ea9d-4507-8ff2' \
+            '-a24b288d90b5/download/turmas-2022.2.csv'
+        urllib.request.urlretrieve(url, file_name)
+        print('.................')
+
+    print("Download do CSV das Turmas 2023.1 do CERES/UFRN ...!")
+    file_name = "csv/turmas-2023.1.csv"
+    if os.path.exists(file_name):
+        print("Arquivo " + file_name + " já existe!")
+    else:
+        url = 'https://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/49c88bc9-4242-40e1-80f0' \
+            '-94d961e925cc/download/turmas-2023.1.csv'
         urllib.request.urlretrieve(url, file_name)
         print('.................')
 
