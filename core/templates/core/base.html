@@ -13,6 +13,19 @@
   <script src="https://kit.fontawesome.com/b34b6a3874.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
   <link rel="stylesheet" href="{% static 'css/jquery-ui-1.12.1.css' %}">
+
+  <!-- meta tags do Open Graph Protocol (OGP) -->
+  <meta property="og:site_name" content="SuggestClasses">
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+        var title = document.querySelector('title').innerText;
+        var ogTitleMetaTag = document.querySelector('meta[property="og:title"]');
+        ogTitleMetaTag.setAttribute('content', title);
+    });
+  </script>
+  <meta property="og:description" content="Sistema de Sugestão de Turmas">
+  <meta property="og:image" itemprop="image" content="{% static 'suggestclasses-logo.png' %}">
+  <meta property="og:type" content="website">
 </head>
 <body>
 
@@ -109,8 +122,11 @@
 </div>
 <div class="py-5 bg-dark">
   <div class="container text-center">
-      <span class="m-0 text-center text-white">Copyright &copy; Suggest Classes 2019-2023 <br/>
-        LABENS - <a href="http://labens.dct.ufrn.br">http://labens.dct.ufrn.br</a>
+      <span class="m-0 text-center text-white">Copyright &copy; SuggestClasses 2019-2023 by labens<br/>
+        <a href="http://labens.dct.ufrn.br" target="_blank"><img class="logo-ufrn" 
+          src="{% static 'logotipo-ufrn.svg' %}" 
+          title="Logo da UFRN junto ao do Laboratório LABENS" 
+          alt="Logo da UFRN junto ao do Laboratório LABENS"></a>
       </span>
   </div>
 </div>
