@@ -44,16 +44,17 @@ class SugestaoViewTests(TestCase):
         sugestao = SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99999)
 
         url = reverse('sugestao_mat_editar', args=(sugestao.pk,))
-        url2 = '/core/sugestao/mat/editar/' + sugestao.pk.__str__() + '/'
-        response = client.get(url2)
+        response = client.get(url)
         # self.assertEqual(403, response.status_code)
         self.assertEqual(302, response.status_code)
 
     def test_login_success(self):
         client = Client()
         user = User.objects.get(username='john')
-        response = client.post('/core/usuario/logar', {'username': user.username, 'password': 'johnpassword'})
-        self.assertEqual(response.url, '/core/')
+        url = reverse('Login de Usuário')
+        index = reverse('index')
+        response = client.post(url, {'username': user.username, 'password': 'johnpassword'})
+        self.assertEqual(response.url, index)
         self.assertEqual(302, response.status_code)
 
     def test_solicitacao_listar(self):

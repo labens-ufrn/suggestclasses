@@ -1,12 +1,3 @@
- ![GitHub](https://github.com/labens-ufrn/suggestclasses/workflows/Python%20application/badge.svg)
- ![GitHub](https://img.shields.io/github/license/labens-ufrn/suggestclasses)
- ![GitHub top language](https://img.shields.io/github/languages/top/labens-ufrn/suggestclasses)
- ![GitHub All Releases](https://img.shields.io/github/downloads/labens-ufrn/suggestclasses/total)
- [![GitHub forks](https://img.shields.io/github/forks/labens-ufrn/suggestclasses)](https://github.com/labens-ufrn/suggestclasses/network)
- [![GitHub stars](https://img.shields.io/github/stars/labens-ufrn/suggestclasses)](https://github.com/labens-ufrn/suggestclasses/stargazers)
- ![GitHub issues](https://img.shields.io/github/issues/labens-ufrn/suggestclasses)
- [![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Flabens-ufrn%2Fsuggestclasses)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Flabens-ufrn%2Fsuggestclasses)
-
 # SuggestClasses by LABENS/UFRN
 
 Sistema de Sugestão de Horários para o BSI/UFRN.
@@ -21,144 +12,113 @@ Na página [Documentação](docs/docs.md) temos os detalhes do projeto e a lista
 
 ## Pré-requisitos
 
-* Banco de Dados
-  * [MariaDB](https://mariadb.org)
-  * [MySQL](https://www.mysql.com)
+O sistema atualmente utiliza o SGBD [PostgreSQL](https://www.postgresql.org/) para armazenar os dados, e é desenvolvido com o [Django]() framework e [Python 3](https://www.python.org). Utilizamos o [Docker](https://www.docker.com) e [docker-compose](https://docs.docker.com/compose/) para deploy e execução no servidor. Inicialmente o SGBD era o [MariaDB](https://mariadb.org) e sua configuração está [aqui!](docs/mariadb.md).
 
-* Linguagem
-  * [Python](https://www.python.org)
+### Criação do Banco de Dados
 
-* Ferramenta
-  * [Docker](https://www.docker.com)
+Utilzamos o SGBD PostgreSQL para armazenar os dados. Você pode utilizar o **Docker** para executar o [PostgreSQL + pgAdmin](https://github.com/tacianosilva/bsi-tasks/tree/master/database/docker/postgres).
 
-### Criação do Banco de Dados (dev e test) e Usuário
-
-Utilzamos o SGBD MariaDB/MySql.
+Crie o usuário de acesso ao banco de dados:
 
 ```sql
-CREATE DATABASE scdb_dev character set UTF8 collate utf8_bin;
-CREATE DATABASE scdb_test character set UTF8 collate utf8_bin;
-
-CREATE USER 'sc_user'@'%' IDENTIFIED BY 'password';
-
-GRANT ALL ON scdb_dev.* TO 'sc_user'@'%';
-GRANT ALL ON scdb_test.* TO 'sc_user'@'%';
+CREATE ROLE sc_user WITH
+	LOGIN
+	NOSUPERUSER
+	NOCREATEDB
+	NOCREATEROLE
+	NOINHERIT
+	NOREPLICATION
+	CONNECTION LIMIT -1
+	PASSWORD 'xxxxxx';
 ```
 
-### Dependências para usar o MariaDB e MySQL
-
-Windows
-
-No site <https://www.lfd.uci.edu/~gohlke/pythonlibs/> busca o Mysqlclient compatível com a sua versão Python instalada.
-
-Instalação com o PIP:
-
-```shell script
-pip install nome_do_arquivo_baixado.whl
+Crie os bancos de dados:
+```sql
+CREATE DATABASE scdb_dev
+    WITH
+    OWNER = sc_user
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'pt_BR.utf8'
+    LC_CTYPE = 'pt_BR.utf8'
+    TABLESPACE = pg_default
+    TEMPLATE= template0
+    CONNECTION LIMIT = -1;
 ```
 
-Linux
-
-```shell script
-sudo apt install python3-dev default-libmysqlclient-dev
+Defina as permissions e privilégios do Usuário:
+```sql
+GRANT ALL PRIVILEGES ON DATABASE scdb_dev TO sc_user;
+GRANT ALL ON SCHEMA public TO sc_user;
 ```
 
-## Virtualenv e variáveis de ambiente
+## Ambiente Virtual
 
-Adicionar em ~/.profile as variáveis de ambiente:
+Criação do Ambiente Virtual com [python3-venv](https://docs.python.org/pt-br/3/library/venv.html):
 
-```shell script
-MARIA_HOME=/usr/bin/mysql
-PATH=$PATH:$MARIA_HOME/bin
-PYTHONHOME=/usr/bin
-```
-
-Windows
-
-Caso não tenha a Virtualenv instalada:
-
-```shell script
-pip install virtualenv
-```
-
-Criação do Ambiente Virtual com virtualenv:
-
-```shell script
-virtualenv nome_da_virtualenv
-```
-
-Para ativar: ```cd nome_da_virtualenv\Scripts\activate```.
-Para desativar: ```cd nome_da_virtualenv\Scripts\deactivate```.
-
-Linux
-
-Criação do Ambiente Virtual com virtualenv:
-
-```shell script
-virtualenv -p python3 venv
+```console
+python3 -m venv .venv
 ```
 
 Para ativar: ```source venv/bin/activate```.
 Para desativar: ```deactivate```.
 
-### Instalação das Dependência do Projeto
+Copie os exemplos destes arquivos no diretório raiz do projeto:
 
-```shell script
+```console
+cp .env.sample .env
+cp path.env.sample path.env
+```
+
+Edite o arquivo `path.env` para informar as variáveis:
+```console
+export DJANGO_SETTINGS_MODULE=suggestclasses.settings
+export PYTHONPATH=${PYTHONPATH}:/home/<seu_diretorio>/suggestclasses
+```
+
+Após editar os valores, execute os comandos:
+```console
+source .env
+source path.env
+```
+
+### Execução do Projeto
+
+Ative o ambiente virtual e instale as depedências.
+```console
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Ocultando a instância de configuração
+Atualize os arquivos estáticos.
+```console
+python manage.py collectstatic
+```
 
-* Crie um arquivo .env na raiz do projeto e insira as seguintes variáveis.
-* SECRET_KEY=Sua$eCretKeyAqui (Pegue a secret key no arquivo settings.py)
-* DEBUG=True
-* MARIADB_PORT=32768
-
-Copie os exemplos da pasta contrib:
-
-```cp contrib/env-sample .env```
-
-```cp contrib/path.env-sample path.env```
-
-Edite o arquivo path.env para informar as variáveis:
-
-```shell script
-export DJANGO_SETTINGS_MODULE=suggestclasses.settings
-export PYTHONPATH=${PYTHONPATH}:/home/<seu_diretorio>/suggestclasses
- ```
-
-Após editar os valores, execute o comando ```source path.env``` no Linux ou ```activate path.env``` no Windows para carregar as variáveis.
-
-## Migrations
-
-Ao modificar os models (em models.py), execute:
-Windows
-
+Se houver modificações nos models (em models.py), execute a criação das migrações. Depois execute as migrações.
 ```console
 python3 manage.py makemigrations core
 python3 manage.py migrate
 ```
 
-Linux
+Crie um super usuário de administração do Django.
 
-```shell script
-python manage.py makemigrations core
-python manage.py migrate
-```
-
-## Django Admin Super User
-
-```commandline
+```console
 python manage.py createsuperuser
 ```
+
+Execute o sistema.
+```console
+python manage.py runserver
+```
+
+Lembre-se: O SGBD deve estar em execução e configure o acesso no arquivo `.env`.
 
 ## Povoamento
 
 O sistema é baseado nos dados abertos da UFRN, desta forma é necessário povoar o banco de dados
 com informações de Horários, Centro, Salas, Departamentos, Componentes, etc.
 
-Lembre-se de deixar todas as variáveis de ambiente definidas.
-Execute o comando ```source path.env``` no Linux ou ```activate path.env``` no Windows para carregar as variáveis.
+Lembre-se de deixar todas as variáveis de ambiente definidas. Execute o comando `source path.env` no Linux ou `activate path.env` no Windows para carregar as variáveis.
 
 A ordem é importante e deve ser seguida conforme descrito abaixo.
 
@@ -346,3 +306,4 @@ M6 – 11h40 às 12h30 | T6 – 17h40 às 18h30 |
 * <https://simpleisbetterthancomplex.com/tutorial/2016/11/28/how-to-filter-querysets-dynamically.html>
 * <https://bootstrapious.com/p/bootstrap-sidebar>
 * <https://simpleisbetterthancomplex.com/tutorial/2016/11/15/how-to-implement-a-crud-using-ajax-and-json.html>
+* https://tableplus.com/blog/2018/04/postgresql-how-to-grant-access-to-users.html

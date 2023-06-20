@@ -1,23 +1,14 @@
 version: "3.8"
 
 services:
-  mariadb:
-    container_name: suggestclasses-mariadb
-    image: mariadb
-    volumes:
-      - ./data/db:/var/lib/mysql
-    environment:
-      - MYSQL_DATABASE=$DATABASE_NAME
-      - MYSQL_USER=$DATABASE_USER
-      - MYSQL_PASSWORD=$DATABASE_PASSWORD
-      - MYSQL_ROOT_PASSWORD=$DATABASE_ROOT_PASSWORD
-      - MYSQL_HOST=$DATABASE_HOST
-    restart: always
-    ports:
-        - "3310:3306"
   web:
-    container_name: suggestclasses-server
-    build: .
+    container_name: suggestclasses-web
+    image: suggestclasses:latest
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     command: >
       sh -c "python manage.py collectstatic --noinput
              python manage.py migrate --noinput
@@ -25,13 +16,15 @@ services:
              export DJANGO_SUPERUSER_USERNAME=admin
              export DJANGO_SUPERUSER_EMAIL=labensufrn@gmail.com
              python manage.py createsuperuser --noinput
-             export DJANGO_SETTINGS_MODULE=suggestclasses.settings
-             export PYTHONPATH=${PYTHONPATH}:/code
-             python dados/povoar.py
-             python manage.py runserver 0.0.0.0:8000"
+             python manage.py runserver 0.0.0.0:8003"
     volumes:
       - .:/code
     ports:
-      - "8000:8000"
-    depends_on:
-      - mariadb
+      - "8003:8003"
+    external_links:
+      - postgres-server:postgres-server
+
+networks:
+  default:
+    external: true
+    name: labens-network
