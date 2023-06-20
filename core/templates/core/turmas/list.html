@@ -38,7 +38,7 @@
             <b>{{ mat_flow.curso.nome }}</b> - {{ mat_flow.curso.grau }}</a>
           <a href="/core/turmas/ped" class="list-group-item list-group-item-action bg-light">
             <b>{{ ped_flow.curso.nome }}</b> - {{ ped_flow.curso.grau }}</a>
-          <a href="/core/turmas/bsi" class="list-group-item list-group-item-action bg-light">
+          <a href="{% url 'turmas_sistemas' %}" class="list-group-item list-group-item-action bg-light">
             <b>{{ bsi_flow.curso.nome }}</b> - {{ bsi_flow.curso.grau }}</a>
           <a href="/core/turmas/tur" class="list-group-item list-group-item-action bg-light">
             <b>{{ tur_flow.curso.nome }}</b> - {{ tur_flow.curso.grau }}</a>
