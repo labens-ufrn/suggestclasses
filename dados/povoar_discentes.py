@@ -34,6 +34,7 @@ def carregar_discentes():
     carregar_discentes_anual('csv/discentes-2020.csv')
     carregar_discentes_anual('csv/discentes-2021.csv')
     carregar_discentes_anual('csv/discentes-2022.csv')
+    carregar_discentes_anual('csv/discentes-2023.csv')
 
 ## Utilizamos a leitura do csv usando os headers
 ## Página: https://docs.python.org/pt-br/3/library/csv.html

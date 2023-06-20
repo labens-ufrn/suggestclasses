@@ -15,7 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import sys
 from django.contrib.messages import constants as messages
-from decouple import config
+from decouple import config, Csv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -32,8 +32,8 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', 'dct.ceres.ufrn.br']
-CSRF_TRUSTED_ORIGINS = ['http://dct.ceres.ufrn.br']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+CSRF_TRUSTED_ORIGINS = ['http://labens.dct.ufrn.br']
 DOMAINS_WHITELIST = ALLOWED_HOSTS
 
 SESSION_COOKIE_AGE = 60 * 60 # 1 hora
@@ -41,9 +41,9 @@ SESSION_COOKIE_AGE = 60 * 60 # 1 hora
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/core'
-LOGIN_URL = '/accounts/login'
-LOGOUT_REDIRECT_URL = '/accounts/login'
+LOGIN_REDIRECT_URL = '/suggestclasses'
+LOGIN_URL = '/suggestclasses/accounts/login'
+LOGOUT_REDIRECT_URL = '/suggestclasses'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -112,27 +112,12 @@ WSGI_APPLICATION = 'suggestclasses.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': config('DATABASE_NAME'),
         'USER': config('DATABASE_USER'),
         'PASSWORD': config('DATABASE_PASSWORD'),
         'HOST': config('DATABASE_HOST'),
-        'PORT': config('DATABASE_PORT'),
-        # optional:
-        'OPTIONS': {
-            'charset': 'utf8',
-            'use_unicode': True,
-            'init_command': 'SET '
-                            'storage_engine=INNODB,'
-                            'character_set_connection=utf8,'
-                            'collation_connection=utf8_bin,'
-                            'sql_mode=STRICT_TRANS_TABLES'  # see note below
-            # 'SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
-
-        },
-        'TEST': {
-            'NAME': config('DATABASE_TEST'),
-        }
+        'PORT': config('DATABASE_PORT')
     }
 }
 
@@ -176,14 +161,15 @@ MESSAGE_TAGS = {
 }
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
+# https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/suggest-files/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'suggestclasses/run/static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # User_Uploaded_Files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/suggest-files/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'suggestclasses/run/media')
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

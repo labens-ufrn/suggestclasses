@@ -38,7 +38,7 @@
           <strong>{{ mat_flow.curso.nome }}</strong> - {{ mat_flow.curso.grau }}</a>
         <a href="/core/sugestao/ped/list" class="list-group-item list-group-item-action bg-light">
           <strong>{{ ped_flow.curso.nome }}</strong> - {{ ped_flow.curso.grau }}</a>
-        <a href="/core/sugestao/bsi/list" class="list-group-item list-group-item-action bg-light">
+        <a href="{% url 'sugestao_bsi_list' %}" class="list-group-item list-group-item-action bg-light">
           <strong>{{ bsi_flow.curso.nome }}</strong> - {{ bsi_flow.curso.grau }}</a>
         <a href="/core/sugestao/tur/list" class="list-group-item list-group-item-action bg-light">
           <strong>{{ tur_flow.curso.nome }}</strong> - {{ tur_flow.curso.grau }}</a>

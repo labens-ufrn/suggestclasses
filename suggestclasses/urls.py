@@ -19,9 +19,9 @@ from django.urls import include, path
 from suggestclasses import settings
 
 urlpatterns = [
-    path('core/', include('core.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('admin/', admin.site.urls),
+    path('suggestclasses/', include('core.urls')),
+    path('suggestclasses/accounts/', include('django.contrib.auth.urls')),
+    path('suggestclasses/admin/', admin.site.urls),
 ]
 
 handler403 = 'core.views.error_403'

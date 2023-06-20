@@ -6,6 +6,7 @@ from unittest.case import TestCase
 
 from django.contrib.auth.models import User
 from django.test import Client, SimpleTestCase
+from django.urls import reverse
 
 from core.tests.povoar_testes import criar_dados, remover_dados
 
@@ -25,7 +26,7 @@ class UserViewTests(TestCase):
 
     def test_usuario_cadastrar(self):
         client = Client()
-        url = '/core/usuario/cadastrar'
+        url = reverse('Cadastro de Usuário')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
@@ -52,7 +53,8 @@ class UserViewTests(TestCase):
         client = Client()
         user_login = client.login(username="john", password="johnpassword")
         self.assertTrue(user_login)
-        response = client.get("/core/")
+        index = reverse('index')
+        response = client.get(index)
         self.assertEqual(response.status_code, 200)
 
     def test_add_user_view_post(self):
@@ -62,7 +64,7 @@ class UserViewTests(TestCase):
         user_count = User.objects.count()
         client = Client()
         # https://micropyramid.com/blog/django-unit-test-cases-with-forms-and-views/
-        url = '/core/usuario/cadastrar'
+        url = reverse('Cadastro de Usuário')
         # include url for add user view
         response = client.post(url, {'email': "teste@thebeatles.com",
                                      'password1': "johnpassword",
@@ -80,7 +82,7 @@ class UserViewSimpleTests(SimpleTestCase):
     def test_add_user_view(self):
         client = Client()
         # https://micropyramid.com/blog/django-unit-test-cases-with-forms-and-views/
-        url = '/core/usuario/cadastrar'
+        url = reverse('Cadastro de Usuário')
         # include url for add user view
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
