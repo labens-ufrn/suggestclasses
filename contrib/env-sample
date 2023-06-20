@@ -1,20 +1,21 @@
 DJANGO_SETTINGS_MODULE=suggestclasses.settings
-ALLOWED_HOSTS='localhost, 127.0.0.1'
+ALLOWED_HOSTS='localhost, 127.0.0.1, testserver'
 
 SECRET_KEY='cg#p$g+j9tax!#a3cup@1$8obt2_+&k3q+pmu)5%asj6yjpkag'
 DEBUG=True
 
 DATABASE_NAME=scdb_dev
-DATABASE_USER=sc_user
-DATABASE_PASSWORD=sc_user
-DATABASE_ROOT_PASSWORD=sc_admin_pass
+DATABASE_USER=postgres
+DATABASE_PASSWORD=postgres
 
-DATABASE_TEST=scdb_test
-
-DATABASE_HOST='127.0.0.1'
-DATABASE_PORT=3306
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
 
 EMAIL_USER=
 EMAIL_PASS=
 
+# Project ROOT DIR
 PYTHONPATH=${PYTHONPATH}:.
+
+# Docker WORKDIR
+PYTHONPATH=${PYTHONPATH}:/code

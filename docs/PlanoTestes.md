@@ -2,13 +2,14 @@
 
 ## **SuggestClasses**
 
-*versão 1.1*
+*versão 1.2*
 
 ## Histórico das alterações
 
-   Data    | Versão |    Descrição   | Autor(a)
------------|--------|----------------|-----------------
-01/10/2022 |  1.1   | Release inicial | Gabriel Azevedo 
+   Data    | Versão |    Descrição                   | Autor(a)
+-----------|--------|--------------------------------|-----------------
+01/10/2022 |  1.1   | Release inicial                | Gabriel Azevedo 
+05/12/2022 |  1.2   | Atualização do plano de testes | Wanessa Bezerra
  
 ## 1 - Introdução
 
@@ -24,23 +25,19 @@ Com esse documento, você deve:
 ## 2 - Requisitos a Testar
 
 Esta seção contém os casos de uso identificados como objetos dos testes ao longo do desenvolvimento do projeto de testes durante a disciplina de teste de software.
-O conjunto de requisitos a serem testados no projeto de testes são: testar segurança, controle de acesso, funcionalidades. Os módulos a serem testados durante o projeto de testes são os módulos de turmas, sugestão de turmas e enquetes. 
+O conjunto de requisitos a serem testados no projeto de testes são: testar segurança, controle de acesso, funcionalidades. Os módulos a serem testados durante o projeto de testes são os módulos de sugestão de turmas e enquetes. 
 
 ### Casos de uso:
 
 Identificador do caso de uso | Nome do caso de uso
 -----------------------------|---------------------
-US00                       |       Manter cadastro de turmas 
-US01                       |       Manter cadastro de sugestão de turma
-US02                       |       Manter cadastro de enquentes  
+US00                         | Manter cadastro de sugestão de turma
+US01                         | Manter cadastro de enquentes  
 
 ## US00
-Testar os métodos de manter cadastro de turmas. Para cadastrar uma nova turma, é necessário verificar se a turma possui os atributos: código, professor, sala e horário. Além de validar os campos de cadastro. Testar a segurança do cadastro de turma, uma vez que apenas o usuário administrador do sistema pode realizar as operações de adicionar, alterar, remover e listar as turmas cadastradas.
-
-## US01
 Testar os métodos de manter cadastro de sugestão de turmas. Testar as turmas sugeridas pelos docentes, além de verificar se as turmas possuem choques de horário e ser exibido ao usuário aluno uma mensagem informando o choque de horário. Testar a segurança de cadastro de sugestão de turmas uma vez que apenas o usuário administrador e os docentes poderão realizar as operações de adicionar, alterar, remover e listar as sugestões de turmas cadastradas.
 
-## US02
+## US01
 Testar os métodos de manter cadastro de enquentes no sistema. Para cadastrar uma enquete, deverá ter uma função de teste para verificar e validar se a enquete contém os atributos de: nome, descrição, número de votos, data de início e fim, hora de início e fim, curso, quantidade de discentes ativos, período, status, tipo, usuário e a data de criação. Apenas o usuário administrador do sistema e o usuário docente poderão realizar as operações de adicionar, alterar, remover e listar as enquetes cadastradas.
 
 
@@ -53,66 +50,6 @@ Para testar os requisitos de testes de projeto, os testes de unidade se mostram 
 ### Métodos da Classe 
 
 Para teste de unidades do sistema, deve-se verificar se cada classe retorna o esperado.
-
-<br/>
-<table>
-    <tr>
-        <th>
-            Objetivo
-        </th>
-        <th colspan="4">
-            Testar manter cadastro de turmas
-        </th>
-    </tr>
-    <tr>
-        <th>
-            Técnica:
-        </th>
-        <th colspan="2">
-            ( ) manual
-        </th>
-        <th colspan="2">
-            (x) automática
-        </th>
-    </tr>
-    <tr>
-        <th>
-            Estágio do teste
-        </th>
-        <th>
-            Integração ( )
-        </th>
-        <th>
-            Sistema ( )
-        </th>
-        <th>
-            Unidade (x)
-        </th>
-        <th>
-            Aceitação ( )
-        </th>
-    </tr>
-    <tr>
-        <th>
-            Abordagem do teste
-        </th>
-        <th colspan="2">
-            Caixa branca (x)
-        </th>
-        <th colspan="2">
-            Caixa preta (x)
-        </th>
-    </tr>
-    <tr>
-        <th>
-            Responsável(is)
-        </th>
-        <th colspan="4">
-            Programador(es) ou equipe de testes
-        </th>
-    </tr>
-</table>
-<br/>
 
 <br/>
 <table>
@@ -262,8 +199,8 @@ A ferramenta de teste utilizada é a ferramenta de testes nativa da linguagem Py
 
 Tipo de teste      | Duração | data de início | data de término
 -------------------|---------|----------------|-----------------
-planejar teste     |   10h   | 01/10/2022     | 03/10/2022
-projetar teste     |         | dd/mm/aaaa     | dd/mm/aaaa
-implementar teste  |         | dd/mm/aaaa     | dd/mm/aaaa
-executar teste     |         | dd/mm/aaaa     | dd/mm/aaaa
-avaliar teste      |         | dd/mm/aaaa     | dd/mm/aaaa
+planejar teste     |         | 01/10/2022     | 03/10/2022
+projetar teste     |         | 04/10/2022     | 27/11/2022
+implementar teste  |         | 28/11/2022     | 05/12/2022
+executar teste     |         | 06/12/2022     | 13/12/2022
+avaliar teste      |         | 14/12/2022     | 20/12/2022

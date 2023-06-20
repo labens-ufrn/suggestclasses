@@ -4,6 +4,7 @@ import pytz
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 
 from core.forms import VotoTurmaForm
 from core.models import Enquete, VotoTurma, ComponenteCurricular
@@ -27,7 +28,8 @@ def enquete_voto_view(request, pk, abstencao=None):
     mesmo_curso = check_curso(enquete, discente)
     if not mesmo_curso:
         messages.error(request, 'Você não pode votar na enquete "' + enquete.nome + '".')
-        return redirect('/core/enquetes/list')
+        url = reverse('search_enquetes')
+        return redirect(url)
 
     if request.method == "POST":
         form_voto = VotoTurmaForm(request.POST, enquete=enquete)
@@ -40,7 +42,8 @@ def enquete_voto_view(request, pk, abstencao=None):
                 enquete_deletar_votos_discente(request, enquete, discente, abstencao=True)
                 voto_turma.save()
                 messages.success(request, 'Voto cadastrado com sucesso.')
-                return redirect('/core/enquetes/' + str(enquete.pk) + '/votar')
+                url = reverse('enquete_votar', args=(enquete.pk,))
+                return redirect(url) 
         messages.error(request, form_voto.errors)
     elif abstencao and voto_permitido(request, enquete, discente):
         voto_turma = VotoTurma()
@@ -48,7 +51,8 @@ def enquete_voto_view(request, pk, abstencao=None):
         enquete_deletar_votos_discente(request, enquete, discente)
         voto_turma.save()
         messages.success(request, 'Abstenção cadastrada com sucesso.')
-        return redirect('/core/enquetes/' + str(enquete.pk) + '/votar')
+        url = reverse('enquete_votar', args=(enquete.pk,))
+        return redirect(url)
     else:
         form_voto = VotoTurmaForm(enquete=enquete)
 
@@ -148,7 +152,7 @@ def get_votos(enquete, discente):
     return votos
 
 
-@permission_required("core.delete_vototurma", login_url='/core/usuario/logar', raise_exception=True)
+@permission_required("core.delete_vototurma", login_url='/suggestclasses/core/usuario/logar', raise_exception=True)
 def enquete_deletar_voto_discente(request, pk, template_name='core/enquetes/voto_confirm_delete.html'):
     voto_turma = get_object_or_404(VotoTurma, pk=pk)
     if not tem_permissao(request, voto_turma.discente):
@@ -164,7 +168,7 @@ def enquete_deletar_voto_discente(request, pk, template_name='core/enquetes/voto
     return render(request, template_name, {'object': voto_turma})
 
 
-@permission_required("core.delete_vototurma", login_url='/core/usuario/logar', raise_exception=True)
+@permission_required("core.delete_vototurma", login_url='/suggestclasses/core/usuario/logar', raise_exception=True)
 def enquete_deletar_votos_discente(request, enquete, discente, abstencao=None):
     if not tem_permissao(request, discente):
         messages.error(request, 'Você não tem permissão de Excluir votos.')
@@ -219,5 +223,6 @@ def check_periodo_enquete(request, enquete):
     if enquete.data_hora_inicio.replace(tzinfo=utc) > agora \
        or agora > enquete.data_hora_fim.replace(tzinfo=utc):
         messages.error(request, 'Voto fora do período da Enquete "' + enquete.nome + '".')
-        return redirect('/core/enquetes/list')
+        url = reverse('search_enquetes')
+        return redirect(url)
     return None

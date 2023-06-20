@@ -3,6 +3,16 @@
 Documento construído a partido do **Modelo BSI - Doc 001 - Documento de Visão** que pode ser encontrado no
 link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBNFyLa6A/edit?usp=sharing>
 
+## Perfis de Usuários
+
+O sistema poderá ser utilizado por diversos usuários. Temos os seguintes perfis:
+
+* Perfil Aluno
+	Este usuário utiliza o sistema para verificar suas sugestões de horários para turmas de componentes curriculares de um curso em um certo período, horário aprovado     das turmas, etc.
+
+* Perfil Professor
+	Este usuário utiliza o SuggestClasses para o cadastro de sugestões de horários para turmas de componentes curriculares de um curso em um certo período, horário         aprovado das turmas, etc.
+
 ## Lista de Requisitos Funcionais
 
 * Manter o cadastro de Centros;
@@ -80,6 +90,20 @@ link: <https://docs.google.com/document/d/1DPBcyGHgflmz5RDsZQ2X8KVBPoEF5PdAz9BBN
   * um histórico tem discentes;
   * um histórico tem componentes curriculares;
   * um histórico semestre e a data de criação.
+
+## Lista de Requisitos não-Funcionais
+
+* RNF01 - Deve ser acessível via navegador
+* RNF02 - Deve rodar em Windows e Linux
+* RNF03 - Deve ser feito o log de ações dos usuários
+
+## Tabela de Riscos
+
+| Data       | Risco                                                                  | Prioridade | Responsável | Status  | Providência/Solução                                            |
+| ---------- | ---------------------------------------------------------------------- | ---------- | ----------- | ------- | -------------------------------------------------------------- |
+| 05/10/2022 | Não aprendizado das ferramentas utilizadas pelos componentes da equipe | Alta       | Gerente     | Vigente | Reforçar estudos sobre as ferramentas.                         |
+| 05/11/2022 | Ausência por qualquer membro da equipe                                 | Média      | Gerente     | Vigente | Planejar o cronograma tendo em base a agenda dos membros.      |
+| 05/12/2022 | Divisão de tarefas mal sucedida                                        | Baixa      | Gerente     | Vigente | Acompanhar de perto o desenvolvimento de cada membro da equipe |
 
 ## Modelo Conceitual
 

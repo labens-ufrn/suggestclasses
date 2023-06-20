@@ -11,6 +11,8 @@ Iteração | Data início | Data Final | Apresentação | Gerente
 It10     | 29/09/2022  | 03/10/2022 | 04/10/2022   | Wanessa
 It11     | 04/10/2022  | 14/10/2022 | 19/10/2022   | Renata
 It12     | 16/10/2022  | 04/11/2022 | 03/11/2022   | Gabriel
+It13     | 05/12/2022  | 20/12/2022 | 20/12/2022   | Wanessa
+
 
 Os detalhes do Plano de Iteração pode ser encontrado na página [Plano de Iteração](PlanoIteracaoTestes.md).
 
@@ -24,7 +26,11 @@ O Documento de Visão completo pode ser encontrado na página [Documento de User
 
 ## Plano de Testes
 
- O Plano de Testes completo pode ser encontrado na página [Plano de Teste](PlanoTestes.md)
+ O Plano de Testes completo pode ser encontrado na página [Plano de Testes](PlanoTestes.md).
+ 
+## Relatório de Testes
+
+O Relatório de Testes completo pode ser encontrado na página [Relatório de Testes](RelatorioDeTestesMóduloSistema.md).
 
 ## Deploy
 

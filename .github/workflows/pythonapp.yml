@@ -9,62 +9,43 @@ on:
   pull_request:
     branches:
       - main
-  # Also trigger on page_build, as well as release created events
-  page_build:
-  release:
-    types: # This configuration does not affect the page_build event above
-      - created
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.8]
 
     services:
-      mariadb:
-        image: mariadb:latest
+      postgres:
+        image: postgres:latest
         ports:
-          - 3306:3306
+          - 5432:5432
         env:
-          MYSQL_USER: sc_user
-          MYSQL_PASSWORD: sc_user
-          MYSQL_DATABASE: scdb_dev
-          MYSQL_ROOT_PASSWORD: sc_admin_pass
-        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: scdb_dev
+        options: >-
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Verify MariaDB connection
-        env:
-          PORT: ${{ job.services.mariadb.ports[3306] }}
-        run: |
-          while ! mysqladmin ping -h"127.0.0.1" -P"$PORT" --silent; do
-            sleep 1
-          done
+      # Downloads a copy of the code in your repository before running CI tests
+      - name: Check out repository code
+        uses: actions/checkout@v3
 
-      - name: Verify MySQL connection from host
-        run: |
-          mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "CREATE DATABASE IF NOT EXISTS scdb_dev character set UTF8 collate utf8_bin"
-          mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "CREATE DATABASE IF NOT EXISTS scdb_test character set UTF8 collate utf8_bin"
-          mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "CREATE USER IF NOT EXISTS 'sc_user'@'localhost' IDENTIFIED BY 'sc_user'"
-          mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "GRANT ALL ON scdb_test.* TO 'sc_user'@'localhost'"
-          mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "GRANT ALL ON scdb_dev.* TO 'sc_user'@'localhost'"
-          mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "GRANT ALL ON scdb_test.* TO 'sc_user'@'%'"
-          mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "GRANT ALL ON scdb_dev.* TO 'sc_user'@'%'"
-          mysql --host 127.0.0.1 --port 3306 -uroot -psc_admin_pass -e "flush privileges"
-          mysql --host 127.0.0.1 --port 3306 -usc_user -psc_user -e "SHOW DATABASES"
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v1
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
         with:
-          python-version: 3.8
-      - name: System Update
-        run: |
-          sudo apt-get install python3-dev
-          sudo apt-get install default-libmysqlclient-dev
+          python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -U setuptools
           pip install -r requirements.txt
       - name: Lint with flake8
         run: |
@@ -76,6 +57,22 @@ jobs:
       - name: Copying configurations
         run: |
           cp contrib/env-sample .env
+          source .env
       - name: Test with manage.py test
         run: |
           python manage.py test --keepdb
+      - name: Run Coverage
+        run: |
+          coverage run manage.py test --keepdb
+          coverage xml
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      - name: SonarQube Quality Gate check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+          # Force to fail step after specific time
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

@@ -37,7 +37,7 @@ def carregar_sala(row):
     # campus = Sala.CAMPUS_CHOICES[campus_id-1]
     ss = Sala.objects.filter(nome=nome, sigla=sigla, bloco=bloco,
                              centro=ceres, campus=campus_id)
-    if not Sala.objects.filter(nome=nome, sigla=sigla, capacidade=capacidade,
+    if not Sala.objects.filter(nome=nome, sigla=sigla,
                                tamanho=tamanho, bloco=bloco,
                                centro=ceres, campus=campus_id).exists():
         Sala.objects.create(nome=nome, sigla=sigla, capacidade=capacidade,
