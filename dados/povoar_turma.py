@@ -35,6 +35,8 @@ def carregar_turmas():
     carregar_turmas_semestre('csv/turmas-2021.1.csv')
     carregar_turmas_semestre('csv/turmas-2021.2.csv')
     carregar_turmas_semestre('csv/turmas-2022.1.csv')
+    carregar_turmas_semestre('csv/turmas-2023.1.csv')
+    carregar_turmas_semestre('csv/turmas-2023.2.csv')
 
 
 def carregar_turmas_semestre(turmas_csv):

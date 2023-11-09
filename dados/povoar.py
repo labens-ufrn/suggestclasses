@@ -156,7 +156,7 @@ def organizacao():
 
 
 def criar_turmas():
-    print("\nCriando Turmas 2019.1, 2019.2 e 2020.1 para os Cursos do CERES ...!")
+    print("\nCriando Turmas para os Cursos do CERES ...!")
     carregar_turmas()
 
 
