@@ -25,3 +25,31 @@ class FlowViewTests(TestCase):
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
+
+    def test_get_flow_contabeis(self):
+        client = Client()
+        url = '/core/flow/cont/opcionais'
+        response = client.get(url)
+
+        self.assertEqual(200, response.status_code)
+
+    def test_get_flow_direito(self):
+        client = Client()
+        url = '/core/flow/dir/opcionais'
+        response = client.get(url)
+
+        self.assertEqual(200, response.status_code)
+
+    def test_get_flow_geo(self):
+        client = Client()
+        url = '/core/flow/geo-lic/opcionais'
+        response = client.get(url)
+
+        self.assertEqual(200, response.status_code)
+
+    def test_get_flow_mat(self):
+        client = Client()
+        url = '/core/flow/mat/opcionais'
+        response = client.get(url)
+
+        self.assertEqual(200, response.status_code)

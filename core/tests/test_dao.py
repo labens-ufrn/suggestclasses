@@ -1,13 +1,12 @@
 import django
 django.setup()
-from core.bo.curso import get_cursos
+from core.bo.curso import get_cursos, get_cursos_by_centro, get_curso_by_codigo
 from core.bo.sala import get_salas
 from django.test import TestCase
 from core.tests.povoar_testes import criar_dados, remover_dados
 from core.dao.centro_dao import get_centro_by_id, get_centros
 from core.dao.componente_dao import get_componentes_by_depto
 from core.dao.departamento_dao import get_depto_by_id, get_departamentos
-
 
 class DAOTests(TestCase):
 
@@ -87,4 +86,22 @@ class DAOTests(TestCase):
         cursos = get_cursos()
 
         self.assertIsNotNone(cursos, 'Testando cursos')
+        self.assertTrue(len(cursos) > 0, 'Testando cursos')
+
+    def test_get_curso(self):
+        cursos = get_cursos_by_centro()
+
+        self.assertIsNotNone(cursos, 'Discentes não é None?')
+        self.assertTrue(len(cursos) > 0, 'Testando cursos')
+
+    def test_get_curso(self):
+        cursos = get_curso_by_codigo(9999)
+
+        self.assertIsNotNone(cursos, 'Discentes não é None?')
+        self.assertTrue(len(cursos) > 0, 'Testando cursos')
+
+    def test_get_curso(self):
+        cursos = get_cursos()
+
+        self.assertIsNotNone(cursos, 'Discentes não é None?')
         self.assertTrue(len(cursos) > 0, 'Testando cursos')
