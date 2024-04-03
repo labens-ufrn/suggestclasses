@@ -7,14 +7,9 @@ LABEL maintainer="labens.dct.ufrn.br"
 # Define o diretório de trabalho no contêiner
 WORKDIR /code
 
-# Cria um usuário não-root e adiciona permissões para acessar a pasta /code
-RUN adduser --disabled-password appuser && chown -R appuser /code
-
-# Altera para o usuário não-root
-USER appuser
-
 # Define a variável de ambiente PYTHONPATH
-ENV PYTHONPATH=/code
+ENV PYTHONPATH="${PYTHONPATH}:/code"
+ENV PATH="$PATH:/code"
 
 # Copia os arquivos de requisitos para o diretório de trabalho
 COPY requirements.txt .
@@ -26,5 +21,4 @@ COPY . .
 
 # Expõe a porta que será usada para acessar a aplicação (altere conforme necessário)
 EXPOSE 8003
-
 
