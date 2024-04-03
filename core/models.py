@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
@@ -32,6 +33,17 @@ class Departamento(models.Model):
 
     def __str__(self):
         return self.nome + ' - ' + self.sigla + '/' + self.centro.sigla
+
+    def get_chefe(self):
+        atividade = 'CHEFE DE DEPARTAMENTO'
+        agora = datetime.now()
+        chefes = FuncaoGratificada.objects.filter(
+            lotacao=self.nome,
+            atividade=atividade,
+            fim__gt=agora
+        )
+
+        return chefes
 
 
 class Docente(models.Model):
