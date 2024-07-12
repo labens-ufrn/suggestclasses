@@ -18,6 +18,10 @@ def atualizar_discente(
             discente.nome_discente = nome_discente
 
         if not discente.sexo == sexo:
+            if sexo == 'false':
+                sexo = 'F'
+            if sexo != 'M' and sexo != 'F':
+                sexo = ''
             atualizacoes += 'sexo = ' + discente.sexo + ' --> ' + sexo + ','
             discente.sexo = sexo
 
