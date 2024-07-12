@@ -32,7 +32,7 @@ CREATE ROLE sc_user WITH
 	PASSWORD 'xxxxxx';
 ```
 
-Crie os bancos de dados:
+Crie o banco de dados com *Collate* `pt_BR` ([Configuração do Locale `pt_BR` no seu container](docs/dev.md)):
 ```sql
 CREATE DATABASE scdb_dev
     WITH
