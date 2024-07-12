@@ -23,3 +23,28 @@ and non-accented characters as equal. If you're using MySQL, a good collation wo
 ## Django Secret Key Generator
 
 * https://djecrety.ir/
+
+## Configuração do Locale no seu container
+
+0) Entre na linha de comando do container Postgres:
+```console
+docker exec -it postgres-server bash
+```
+1) Identificando Locales instalados
+```console
+locale -a
+```
+2) Instalando novo Locale
+```console
+ls /usr/share/i18n/locales
+localedef -i pt_BR -f UTF-8 pt_BR.UTF-8
+```
+3) Configurando Locale padrão
+```console
+sudo localectl set-locale LANG=pt_BR.UTF-8
+```
+Uma alternativa ao comando anterior é inserir manualmente o Locale no arquivo /etc/locale.conf adicionando a seguinte diretiva ao arquivo:
+```console
+    LANG=pt_BR.UTF-8
+```
+
