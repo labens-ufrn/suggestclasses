@@ -76,17 +76,17 @@
       <div class="collapse navbar-collapse w-100 order-3 dual-collapse2" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="/suggestclasses/">Home
+            <a class="nav-link" href="{% url 'index' %}">Home
               <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item">
             {% if user.is_authenticated %}
-              <a class="nav-link" href="/suggestclasses/profile/{{ user.username }}?next={{ request.path|urlencode }}">Perfil</a>
+              <a class="nav-link" href="{% url 'profile' user.username %}?next={{ request.path|urlencode }}">Perfil</a>
             {% endif %}
           </li>
           <li class="nav-item">
-            <a class="nav-link" <a href="{% url 'sobre_details' %}">Sobre</a>
+            <a class="nav-link" href="{% url 'sobre_details' %}">Sobre</a>
           </li>
           {% if user.is_authenticated %}
             <li class="nav-item">
