@@ -299,7 +299,7 @@ def download_discentes():
 
     url = 'https://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/d271d842-929e-4d85-a1a8' \
         '-c89cbdadb95d/download/discentes-2024.csv'
-    download_discentes_semestre(url, 'csv/discentes-2024.csv'):
+    download_discentes_semestre(url, 'csv/discentes-2024.csv')
 
 def download_discentes_semestre(url, discentes_csv):
     file_name = discentes_csv
