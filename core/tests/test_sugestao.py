@@ -167,3 +167,9 @@ class SugestaoTests(TestCase):
         self.assertFalse(houve_choques)
 
         solicitacao.delete()
+
+    def test_eh_mesma_turma(self):
+        sugestao1 = SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99999)
+        sugestao2 = SugestaoTurma.objects.get(codigo_turma='01', componente__id_componente=99999)
+
+        self.assertTrue(sugestao1 == sugestao2, 'Sugestão 1 é igual a sugestão 2 ')
