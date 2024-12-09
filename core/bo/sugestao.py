@@ -37,12 +37,11 @@ def solicitacao_verificar_choques(discente, sugestao_turma):
     :return: Um conjunto de componentes em Choque, Um conjunto de horários em Choque e
      True se existir algum choque de horários com a Sugestão de Turma.
     """
-    periodo_letivo = get_periodo_planejado()
     choques_horarios = []
     choques_componentes = set()
     horarios_list = sugestao_turma.horarios.all()
     solicitacoes = SolicitacaoTurma.objects.filter(
-        solicitador=discente, turma__ano=periodo_letivo.ano, turma__periodo=periodo_letivo.periodo)
+        solicitador=discente, turma__ano=sugestao_turma.ano, turma__periodo=sugestao_turma.periodo)
     for horario in horarios_list:
         for s in solicitacoes:
             st = s.turma
