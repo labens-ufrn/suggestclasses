@@ -1,14 +1,11 @@
 import django
 django.setup()
 
-from datetime import date, timedelta
 from core.bo.enquetes import get_enquetes, get_enquetes_por_curso, get_componentes_enquete
-from core.tests.povoar_testes import criar_dados, remover_dados
-from core.models import Curso, Enquete
+from core.tests.povoar_testes import criar_dados, remover_dados, criar_enquetes
+from core.models import Enquete
 
-from django.contrib.auth.models import User
 from django.test import TestCase
-from django.utils import timezone
 
 class EnqueteTests(TestCase):
     @classmethod
@@ -45,18 +42,4 @@ class EnqueteTests(TestCase):
         print(enquete)
         pass
 
-def criar_enquetes():
-    curso = Curso.objects.get(codigo=9999)
-    usuario1 = User.objects.get(username='docente1')
-    enquete = Enquete.objects.create(
-        nome = 'Enquete 0001',
-        numero_votos = 6,
-        data_hora_inicio = timezone.now() + timedelta(days=-10),
-        data_hora_fim = timezone.now() + timedelta(days=10),
-        curso = curso,
-        status = Enquete.ATIVA,
-        tipo = Enquete.COMPLETA,
-        usuario = usuario1,
-        criada_em = date.today() + timedelta(days=-11)
-    )
-    return enquete
+
