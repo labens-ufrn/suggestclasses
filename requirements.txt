@@ -1,13 +1,14 @@
 # Dependências
 Django==4.2.17
 
+django-cors-headers==4.2.0
 python-dateutil>=2.8.1
 
 # PostgreSQL Driver
 psycopg2-binary==2.9.5
 
 requests==2.32.0
-matplotlib==3.7.1
+matplotlib==3.9.1
 pytz~=2022.7
 
 django-filter==22.1
