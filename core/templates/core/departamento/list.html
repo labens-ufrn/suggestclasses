@@ -13,6 +13,7 @@
           <th>Código</th>
           <th>Sigla</th>
           <th>Nome</th>
+          <th>Chefia</th>
           <th>Centro</th>
         </tr>
           {% for depto in departamentos %}
@@ -21,6 +22,11 @@
               <td align="center">{{ depto.codigo }}</td>
               <td align="center">{{ depto.sigla }}</td>
               <td align="center">{{ depto.nome }}</td>
+              <td align="center">
+                {% for chefe in depto.get_chefe %}
+                {{ chefe.nome }}<br>
+                {% endfor %}
+              </td>
               <td align="center">{{ depto.centro.nome }}</td>
             </tr>
           {% endfor %}

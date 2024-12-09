@@ -194,6 +194,28 @@ def download_turmas():
         urllib.request.urlretrieve(url, file_name)
         print('.................')
 
+    print("Download do CSV das Turmas 2023.2 do CERES/UFRN ...!")
+    file_name = "csv/turmas-2023.2.csv"
+    if os.path.exists(file_name):
+        print("Arquivo " + file_name + " já existe!")
+    else:
+        url = 'https://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/d7bf085a-40f2-4733-8780' \
+            '-7fcad14f75d6/download/turmas-2023.2.csv'
+        urllib.request.urlretrieve(url, file_name)
+        print('.................')
+
+
+    print("Download do CSV das Turmas 2024.1 do CERES/UFRN ...!")
+    file_name = "csv/turmas-2024.1.csv"
+    if os.path.exists(file_name):
+        print("Arquivo " + file_name + " já existe!")
+    else:
+        url = 'https://dados.ufrn.br/dataset/1938623d-fb07-41a4-a55a-1691f7c3b8b5/resource/8e69d071-c93b-40fd-8ae0' \
+            '-5a6ff5052a44/download/turmas-2024-1.csv'
+        urllib.request.urlretrieve(url, file_name)
+        print('.................')
+
+
 def download_docentes():
     print("Download do CSV dos Docentes do CERES/UFRN ...!")
     file_name = "csv/docentes.csv"
@@ -270,6 +292,14 @@ def download_discentes():
     url = 'https://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/14afbb6c-395e-411c-b24d' \
         '-0e494cb95866/download/discentes-2022.csv'
     download_discentes_semestre(url, 'csv/discentes-2022.csv')
+
+    url = 'https://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/7c88d1ec-3e83-41b3-9487' \
+        '-c5402fb82c6e/download/discentes-2023.csv'
+    download_discentes_semestre(url, 'csv/discentes-2023.csv')
+
+    url = 'https://dados.ufrn.br/dataset/554c2d41-cfce-4278-93c6-eb9aa49c5d16/resource/d271d842-929e-4d85-a1a8' \
+        '-c89cbdadb95d/download/discentes-2024.csv'
+    download_discentes_semestre(url, 'csv/discentes-2024.csv')
 
 def download_discentes_semestre(url, discentes_csv):
     file_name = discentes_csv

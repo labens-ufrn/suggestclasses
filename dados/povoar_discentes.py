@@ -35,6 +35,7 @@ def carregar_discentes():
     carregar_discentes_anual('csv/discentes-2021.csv')
     carregar_discentes_anual('csv/discentes-2022.csv')
     carregar_discentes_anual('csv/discentes-2023.csv')
+    carregar_discentes_anual('csv/discentes-2024.csv')
 
 ## Utilizamos a leitura do csv usando os headers
 ## Página: https://docs.python.org/pt-br/3/library/csv.html
@@ -75,8 +76,10 @@ def carregar_discente(row):
 
         if not Discente.objects.filter(matricula=matricula).exists():
             print("Adicionando Discente " + matricula + " - " + nome_discente + "- " + nome_curso)
-            if sexo != "M" or sexo != "F":
-                sexo = ""
+            if sexo == 'false':
+                sexo = 'F'
+            if sexo != 'M' and sexo != 'F':
+                sexo = ''
             discente = Discente(matricula=matricula, nome_discente=nome_discente, sexo=sexo,
                                 ano_ingresso=ano_ingresso, periodo_ingresso=periodo_ingresso,
                                 forma_ingresso=forma_ingresso, tipo_discente=tipo_discente, status=status,

@@ -33,12 +33,21 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
-CSRF_TRUSTED_ORIGINS = ['http://labens.dct.ufrn.br']
+CSRF_TRUSTED_ORIGINS = ['http://labens.dct.ufrn.br','https://labens.dct.ufrn.br']
 DOMAINS_WHITELIST = ALLOWED_HOSTS
 
-SESSION_COOKIE_AGE = 60 * 60 # 1 hora
-# SESSION_COOKIE_SECURE = True
-# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+CSRF_COOKIE_SECURE=config('CSRF_COOKIE_SECURE', default=False, cast=bool)
+SESSION_COOKIE_AGE=60 * 30 # meia hora
+SESSION_COOKIE_SECURE=config('SESSION_COOKIE_SECURE', default=False, cast=bool)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = config('SESSION_EXPIRE_AT_BROWSER_CLOSE', default=True, cast=bool)
+
+SECURE_SSL_REDIRECT=config('SECURE_SSL_REDIRECT', default=False, cast=bool)
+SECURE_HSTS_SECONDS=60 * 60 # 1 hora
+SECURE_HSTS_INCLUDE_SUBDOMAINS=config('SECURE_HSTS_INCLUDE_SUBDOMAINS', default=False, cast=bool)
+SECURE_HSTS_PRELOAD=config('SECURE_HSTS_PRELOAD', default=False, cast=bool)
+
+SECURE_CONTENT_TYPE_NOSNIFF = config('SECURE_CONTENT_TYPE_NOSNIFF', default=True, cast=bool)
+SECURE_BROWSER_XSS_FILTER = config('SECURE_BROWSER_XSS_FILTER', default=False, cast=bool)
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/suggestclasses'

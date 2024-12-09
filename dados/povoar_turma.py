@@ -35,6 +35,9 @@ def carregar_turmas():
     carregar_turmas_semestre('csv/turmas-2021.1.csv')
     carregar_turmas_semestre('csv/turmas-2021.2.csv')
     carregar_turmas_semestre('csv/turmas-2022.1.csv')
+    carregar_turmas_semestre('csv/turmas-2023.1.csv')
+    carregar_turmas_semestre('csv/turmas-2023.2.csv')
+    carregar_turmas_semestre('csv/turmas-2024.1.csv')
 
 
 def carregar_turmas_semestre(turmas_csv):
@@ -101,7 +104,7 @@ def carregar_turma(row):
         if Turma.objects.filter(id_turma=id_turma).exists():
             turma = Turma.objects.get(id_turma=id_turma)
             adicionar_vinculo_docente(turma, docente, ch_dedicada_periodo, horarios_list)
-            print('+', end="")
+            print('.', end="")
         else:
             print("Adicionando Turma " + id_turma + " - " + codigo_turma + "- " + cc.codigo + " - " +
                   cc.nome + " - " + descricao_horario)
@@ -119,7 +122,7 @@ def carregar_turma(row):
             turma.save()
             turma.horarios.set(horarios_list)
             adicionar_vinculo_docente(turma, docente, ch_dedicada_periodo, horarios_list)
-            print('.', end="")
+            print('+', end="")
 
 
 def carregar_docente(siape, matricula_docente_externo, componente):
