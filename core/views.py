@@ -16,6 +16,7 @@ from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template import loader
+from django.views.decorators.http import require_http_methods
 from django.views.generic import DetailView
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 
@@ -52,7 +53,7 @@ from .visoes.user_view import criar_usuario, autenticar_logar
 logger = logging.getLogger('suggestclasses.logger')
 config = get_config()
 
-
+@require_http_methods(["GET"])
 def index(request):
     """
     View para o Home (Tela Inicial).
@@ -81,7 +82,7 @@ def index(request):
 
     return render(request, 'core/home.html', context)
 
-
+@require_http_methods(["GET"])
 def sobre(request):
     ceres = get_ceres()
     context = {
@@ -89,7 +90,7 @@ def sobre(request):
     }
     return render(request, 'core/sobre.html', context)
 
-
+@require_http_methods(["GET"])
 @login_required(login_url='/suggestclasses/accounts/login')
 def dashboard(request):
     """
@@ -125,15 +126,18 @@ def dashboard(request):
     return HttpResponse(template.render(context, request))
 
 
+@require_http_methods(["GET"])
 def detail(request, horario_id):
     return HttpResponse("You're looking at Horario %s." % horario_id)
 
 
+@require_http_methods(["GET"])
 def curso_detail(request, curso_id):
     curso = Curso.objects.get(pk=curso_id)
     return HttpResponse("You're looking at Curso %s." % curso)
 
 
+@require_http_methods(["GET"])
 def horarios_list(request):
     horario_list = Horario.objects.all()
     horarios = []
@@ -155,6 +159,7 @@ def horarios_list(request):
     return render(request, 'core/list.html', context)
 
 
+@require_http_methods(["GET"])
 def departamento_list(request):
     """
             Lista todos os componentes curriculares.
@@ -169,6 +174,7 @@ def departamento_list(request):
     return render(request, 'core/departamento/list.html', context)
 
 
+@require_http_methods(["GET"])
 def curso_list(request):
     """
             Lista todos os componentes curriculares.
@@ -183,6 +189,7 @@ def curso_list(request):
     return render(request, 'core/curso/list.html', context)
 
 
+@require_http_methods(["GET"])
 def componente_list(request):
     """
         Lista todos os componentes curriculares.
@@ -207,6 +214,7 @@ class DocenteDetailView(DetailView):
     template_name = 'core/docente/detalhar.html'
 
 
+@require_http_methods(["GET"])
 def curriculo_list(request):
     estruturas = EstruturaCurricular.objects.all()
 
@@ -217,6 +225,7 @@ def curriculo_list(request):
     return render(request, 'core/curriculo/list.html', context)
 
 
+@require_http_methods(["GET"])
 def docentes_list(request):
     """
             Lista todas os docentes do centro.
@@ -231,6 +240,7 @@ def docentes_list(request):
     return render(request, 'core/docente/list.html', context)
 
 
+@require_http_methods(["GET"])
 def sala_list(request):
     """
             Lista todas as salas do centro.
@@ -244,6 +254,7 @@ def sala_list(request):
     return render(request, 'core/sala/list.html', context)
 
 
+@require_http_methods(["GET"])
 def flow_list(request):
     """
     Lista todas as Estruturas Curriculares do centro CERES.
@@ -253,160 +264,189 @@ def flow_list(request):
     return render(request, 'core/flow/list.html', context)
 
 
+@require_http_methods(["GET"])
 def flow_bsi_1b_h(request):
     bsi_ec = get_estrutura_sistemas_dct()
     link_opcionais = '/suggestclasses/flow/bsi/opcionais'
     return flow_horizontal(request, bsi_ec, link_opcionais)
 
 
+@require_http_methods(["GET"])
 def flow_bsi_op(request):
     bsi_ec = get_estrutura_sistemas_dct()
     return flow_opcionais(request, bsi_ec)
 
 
+@require_http_methods(["GET"])
 def flow_cont(request):
     contaveis_ec = get_estrutura_contabeis()
     link_opcionais = '/suggestclasses/flow/cont/opcionais'
     return flow_horizontal(request, contaveis_ec, link_opcionais)
 
 
+@require_http_methods(["GET"])
 def flow_cont_op(request):
     contaveis_ec = get_estrutura_contabeis()
     return flow_opcionais(request, contaveis_ec)
 
 
+@require_http_methods(["GET"])
 def flow_dir(request):
     dir_ec = get_estrutura_direito()
     link_opcionais = '/suggestclasses/flow/dir/opcionais'
     return flow_horizontal(request, dir_ec, link_opcionais)
 
 
+@require_http_methods(["GET"])
 def flow_dir_op(request):
     dir_ec = get_estrutura_direito()
     return flow_opcionais(request, dir_ec)
 
 
+@require_http_methods(["GET"])
 def flow_his_lic(request):
     his_lic_ec = get_estrutura_historia_licenciatura()
     link_opcionais = '/suggestclasses/flow/his-lic/opcionais'
     return flow_horizontal(request, his_lic_ec, link_opcionais)
 
 
+@require_http_methods(["GET"])
 def flow_his_lic_op(request):
     his_lic_ec = get_estrutura_historia_licenciatura()
     return flow_opcionais(request, his_lic_ec)
 
 
+@require_http_methods(["GET"])
 def flow_his_bac(request):
     his_bac_ec = get_estrutura_historia_bacharelado()
     link_opcionais = '/suggestclasses/flow/his-bac/opcionais'
     return flow_horizontal(request, his_bac_ec, link_opcionais)
 
 
+@require_http_methods(["GET"])
 def flow_his_bac_op(request):
     his_bac_ec = get_estrutura_historia_bacharelado()
     return flow_opcionais(request, his_bac_ec)
 
 
+@require_http_methods(["GET"])
 def flow_geo_lic(request):
     geo_lic_ec = get_estrutura_geografia_licenciatura()
     link_opcionais = '/suggestclasses/flow/geo-lic/opcionais'
     return flow_horizontal(request, geo_lic_ec, link_opcionais)
 
 
+@require_http_methods(["GET"])
 def flow_geo_lic_op(request):
     geo_lic_ec = get_estrutura_geografia_licenciatura()
     return flow_opcionais(request, geo_lic_ec)
 
 
+@require_http_methods(["GET"])
 def flow_geo_bac(request):
     geo_bac_ec = get_estrutura_geografia_bacharelado()
     link_opcionais = '/suggestclasses/flow/geo-bac/opcionais'
     return flow_horizontal(request, geo_bac_ec, link_opcionais)
 
 
+@require_http_methods(["GET"])
 def flow_geo_bac_op(request):
     geo_bac_ec = get_estrutura_geografia_bacharelado()
     return flow_opcionais(request, geo_bac_ec)
 
 
+@require_http_methods(["GET"])
 def flow_let_por(request):
     let_por_ec = get_estrutura_letras_portugues()
     link_opcionais = '/suggestclasses/flow/let-por/opcionais'
     return flow_horizontal(request, let_por_ec, link_opcionais)
 
 
+@require_http_methods(["GET"])
 def flow_let_por_op(request):
     let_por_ec = get_estrutura_letras_portugues()
     return flow_opcionais(request, let_por_ec)
 
 
+@require_http_methods(["GET"])
 def flow_let_esp(request):
     let_esp_ec = get_estrutura_letras_espanhol()
     link_opcionais = '/suggestclasses/flow/let-esp/opcionais'
     return flow_horizontal(request, let_esp_ec, link_opcionais)
 
 
+@require_http_methods(["GET"])
 def flow_let_esp_op(request):
     let_esp_ec = get_estrutura_letras_espanhol()
     return flow_opcionais(request, let_esp_ec)
 
 
+@require_http_methods(["GET"])
 def flow_let_ing(request):
     let_ing_ec = get_estrutura_letras_ingles()
     link_opcionais = '/suggestclasses/flow/let-ing/opcionais'
     return flow_horizontal(request, let_ing_ec, link_opcionais)
 
 
+@require_http_methods(["GET"])
 def flow_let_ing_op(request):
     let_ing_ec = get_estrutura_letras_ingles()
     return flow_opcionais(request, let_ing_ec)
 
 
+@require_http_methods(["GET"])
 def flow_mat_h(request):
     mat_ec = get_estrutura_matematica()
     link_opcionais = '/suggestclasses/flow/mat/opcionais'
     return flow_horizontal(request, mat_ec, link_opcionais)
 
 
+@require_http_methods(["GET"])
 def flow_mat_op(request):
     mat_ec = get_estrutura_matematica()
     return flow_opcionais(request, mat_ec)
 
 
+@require_http_methods(["GET"])
 def flow_ped_h(request):
     ped_ec = get_estrutura_pedagogia()
     link_opcionais = '/suggestclasses/flow/ped/opcionais'
     return flow_horizontal(request, ped_ec, link_opcionais)
 
 
+@require_http_methods(["GET"])
 def flow_ped_op(request):
     ped_ec = get_estrutura_pedagogia()
     return flow_opcionais(request, ped_ec)
 
 
+@require_http_methods(["GET"])
 def flow_adm(request):
     adm_ec = get_estrutura_administracao()
     link_opcionais = '/suggestclasses/flow/adm/opcionais'
     return flow_horizontal(request, adm_ec, link_opcionais)
 
 
+@require_http_methods(["GET"])
 def flow_adm_op(request):
     adm_ec = get_estrutura_administracao()
     return flow_opcionais(request, adm_ec)
 
 
+@require_http_methods(["GET"])
 def flow_tur(request):
     tur_ec = get_estrutura_turismo()
     link_opcionais = '/suggestclasses/flow/tur/opcionais'
     return flow_horizontal(request, tur_ec, link_opcionais)
 
 
+@require_http_methods(["GET"])
 def flow_tur_op(request):
     tur_ec = get_estrutura_turismo()
     return flow_opcionais(request, tur_ec)
 
 
+@require_http_methods(["GET", "POST"])
 def cadastrar_usuario(request):
     if request.method == "POST":
         form_usuario = CadastroUsuarioForm(request.POST)
