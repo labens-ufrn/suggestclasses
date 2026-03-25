@@ -212,7 +212,7 @@ urlpatterns = [
     path('sugestao/tur/editar/<int:pk>/', views.sugestao_tur_editar, name='sugestao_tur_editar'),
     path('sugestao/tur/deletar/<int:pk>/', views.sugestao_tur_deletar, name='sugestao_tur_deletar'),
 
-    path('plot/', views.plot, name='Plot de Gráfico')
+#    path('plot/', views.plot, name='Plot de Gráfico')
 ]
 
 if DEBUG:
