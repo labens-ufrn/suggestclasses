@@ -37,6 +37,10 @@ CSRF_TRUSTED_ORIGINS = ['http://labens.dct.ufrn.br','https://labens.dct.ufrn.br'
 DOMAINS_WHITELIST = ALLOWED_HOSTS
 
 CSRF_COOKIE_SECURE=config('CSRF_COOKIE_SECURE', default=False, cast=bool)
+CORS_ALLOW_ALL_ORIGINS=True
+CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', cast=Csv())
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', cast=Csv())
+
 SESSION_COOKIE_AGE=60 * 30 # meia hora
 SESSION_COOKIE_SECURE=config('SESSION_COOKIE_SECURE', default=False, cast=bool)
 SESSION_EXPIRE_AT_BROWSER_CLOSE = config('SESSION_EXPIRE_AT_BROWSER_CLOSE', default=True, cast=bool)
@@ -45,6 +49,8 @@ SECURE_SSL_REDIRECT=config('SECURE_SSL_REDIRECT', default=False, cast=bool)
 SECURE_HSTS_SECONDS=60 * 60 # 1 hora
 SECURE_HSTS_INCLUDE_SUBDOMAINS=config('SECURE_HSTS_INCLUDE_SUBDOMAINS', default=False, cast=bool)
 SECURE_HSTS_PRELOAD=config('SECURE_HSTS_PRELOAD', default=False, cast=bool)
+
+SECURE_HSTS_INCLUDE_SUBDOMAINS=True
 
 SECURE_CONTENT_TYPE_NOSNIFF = config('SECURE_CONTENT_TYPE_NOSNIFF', default=True, cast=bool)
 SECURE_BROWSER_XSS_FILTER = config('SECURE_BROWSER_XSS_FILTER', default=False, cast=bool)
@@ -79,11 +85,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

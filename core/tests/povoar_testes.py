@@ -5,10 +5,12 @@ import threading
 from datetime import date, timedelta
 from dateutil.parser import parse
 from django.contrib.auth.models import User, Group
+from django.utils import timezone
+from core.bo.discentes import get_qtd_discentes_ativos
 from core.bo.turma import converte_desc_horario
 from core.models import Centro, Departamento, ComponenteCurricular, Docente, EstruturaCurricular, Curso, \
     OrganizacaoCurricular, Turma, Sala, SugestaoTurma, Discente, FuncaoGratificada, Horario, VinculoDocente, \
-    PeriodoLetivo
+    PeriodoLetivo, Enquete
 from dados.povoar_horarios import povoar_horarios
 from dados.povoar_turma import adicionar_vinculo_docente
 
@@ -115,6 +117,8 @@ def criar_usuario():
         User.objects.create_user('docente3', 'docente3@thebeatles.com', 'johnpassword')
     if not User.objects.filter(username='discente1'):
         User.objects.create_user('discente1', 'discente1@thebeatles.com', 'johnpassword')
+    if not User.objects.filter(username='discente2'):
+        User.objects.create_user('discente2', 'discente2@thebeatles.com', 'johnpassword')
 
 
 def criar_periodos():
@@ -181,6 +185,10 @@ def criar_discentes():
     usuario_discente.groups.add(grupo_discentes)
     usuario_discente.save()
 
+    usuario_discente2 = User.objects.get(username='discente2')
+    usuario_discente2.groups.add(grupo_discentes)
+    usuario_discente2.save()
+
     if not Discente.objects.filter(matricula='20209876543').exists():
         Discente.objects.create(matricula='20209876543', nome_discente='Zé Silva', sexo='M',
                                 ano_ingresso=2020, periodo_ingresso=1,
@@ -191,6 +199,16 @@ def criar_discentes():
                                 id_unidade=1482, nome_unidade='CENTRO DE  ENSINO SUPERIOR DO SERIDÓ',
                                 id_unidade_gestora=1482, nome_unidade_gestora='CENTRO DE  ENSINO SUPERIOR DO SERIDÓ',
                                 usuario=usuario_discente)
+    if not Discente.objects.filter(matricula='20209876588').exists():
+        Discente.objects.create(matricula='20209876588', nome_discente='Maria Silva', sexo='F',
+                                ano_ingresso=2024, periodo_ingresso=1,
+                                forma_ingresso='SiSU', tipo_discente='REGULAR', status='ATIVO',
+                                sigla_nivel_ensino='G', nivel_ensino='GRADUAÇÃO',
+                                id_curso='9999', nome_curso='Curso Teste 1',
+                                modalidade_educacao='PRESENCIAL',
+                                id_unidade=1482, nome_unidade='CENTRO DE  ENSINO SUPERIOR DO SERIDÓ',
+                                id_unidade_gestora=1482, nome_unidade_gestora='CENTRO DE  ENSINO SUPERIOR DO SERIDÓ',
+                                usuario=usuario_discente2)
 
 
 def criar_centro():
@@ -221,6 +239,7 @@ def remover_usuario():
         User.objects.get(username='docente2').delete()
         User.objects.get(username='docente3').delete()
         User.objects.get(username='discente1').delete()
+        User.objects.get(username='discente2').delete()
     except User.DoesNotExist:
         print('.', end="")
 
@@ -228,6 +247,7 @@ def remover_usuario():
 def remover_discentes():
     try:
         Discente.objects.get(matricula=20209876543).delete()
+        Discente.objects.get(matricula=20209876588).delete()
     except Discente.DoesNotExist:
         print('.', end="")
 
@@ -651,3 +671,22 @@ def remover_sugestoes_turmas():
         SugestaoTurma.objects.get(codigo_turma='02', componente__id_componente=99997).delete()
     except SugestaoTurma.DoesNotExist:
         print('.', end="")
+
+
+def criar_enquetes():
+    curso = Curso.objects.get(codigo=9999)
+    usuario1 = User.objects.get(username='docente1')
+    discentes_ativos = get_qtd_discentes_ativos(curso)
+    enquete = Enquete.objects.create(
+        nome = 'Enquete 0001',
+        numero_votos = 6,
+        data_hora_inicio = timezone.now() + timedelta(days=-10),
+        data_hora_fim = timezone.now() + timedelta(days=10),
+        curso = curso,
+        qtd_discentes_ativos = discentes_ativos,
+        status = Enquete.ATIVA,
+        tipo = Enquete.COMPLETA,
+        usuario = usuario1,
+        criada_em = date.today() + timedelta(days=-11)
+    )
+    return enquete

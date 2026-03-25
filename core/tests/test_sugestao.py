@@ -146,12 +146,21 @@ class SugestaoTests(TestCase):
         discente = usuario.discente
 
         choque_comp, choque_horarios, houve_choques = \
+            solicitacao_verificar_choques(discente, sugestao1)
+        self.assertIsNone(choque_comp)
+        self.assertIsNone(choque_horarios)
+        self.assertFalse(houve_choques)
+
+        solicitacao1, created = solicitacao_incluir(discente, sugestao1)
+
+        # Não há choque, duas solicitações do mesmo componente em horários diferentes.
+        choque_comp, choque_horarios, houve_choques = \
             solicitacao_verificar_choques(discente, sugestao2)
         self.assertIsNone(choque_comp)
         self.assertIsNone(choque_horarios)
         self.assertFalse(houve_choques)
 
-        solicitacao, created = solicitacao_incluir(discente, sugestao2)
+        solicitacao2, created = solicitacao_incluir(discente, sugestao2)
 
         # Choque de Horários com outra solicitação de interesse.
         choque_comp, choque_horarios, houve_choques = \
@@ -160,10 +169,5 @@ class SugestaoTests(TestCase):
         self.assertIsNotNone(choque_horarios)
         self.assertTrue(houve_choques)
 
-        choque_comp, choque_horarios, houve_choques = \
-            solicitacao_verificar_choques(discente, sugestao2)
-        self.assertIsNone(choque_comp)
-        self.assertIsNone(choque_horarios)
-        self.assertFalse(houve_choques)
-
-        solicitacao.delete()
+        solicitacao1.delete()
+        solicitacao2.delete()
