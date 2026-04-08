@@ -16,8 +16,8 @@ EMAIL_PASS=
 
 # CORS
 CORS_ALLOW_ALL_ORIGINS=True
-CORS_ALLOWED_ORIGINS=http://labens.dct.ufrn.br, https://labens.dct.ufrn.br, http://localhost:8000
-CSRF_TRUSTED_ORIGINS=http://labens.dct.ufrn.br, https://labens.dct.ufrn.br, http://localhost:8000
+CORS_ALLOWED_ORIGINS=http://labens.dct.ufrn.br,https://labens.dct.ufrn.br,http://localhost:8000
+CSRF_TRUSTED_ORIGINS=http://labens.dct.ufrn.br,https://labens.dct.ufrn.br,http://localhost:8000
 
 # Project ROOT DIR
 PYTHONPATH=${PYTHONPATH}:.
