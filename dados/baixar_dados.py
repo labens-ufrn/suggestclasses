@@ -204,7 +204,6 @@ def download_turmas():
         urllib.request.urlretrieve(url, file_name)
         print('.................')
 
-
     print("Download do CSV das Turmas 2024.1 do CERES/UFRN ...!")
     file_name = "csv/turmas-2024.1.csv"
     if os.path.exists(file_name):
@@ -214,7 +213,6 @@ def download_turmas():
             '-5a6ff5052a44/download/turmas-2024-1.csv'
         urllib.request.urlretrieve(url, file_name)
         print('.................')
-
 
 def download_docentes():
     print("Download do CSV dos Docentes do CERES/UFRN ...!")
