@@ -12,7 +12,7 @@ Na página [Documentação](docs/docs.md) temos os detalhes do projeto e a lista
 
 ## Pré-requisitos
 
-O sistema atualmente utiliza o SGBD [PostgreSQL](https://www.postgresql.org/) para armazenar os dados, e é desenvolvido com o [Django]() framework e [Python 3](https://www.python.org). Utilizamos o [Docker](https://www.docker.com) e [docker-compose](https://docs.docker.com/compose/) para deploy e execução no servidor. Inicialmente o SGBD era o [MariaDB](https://mariadb.org) e sua configuração está [aqui!](docs/mariadb.md).
+O sistema atualmente utiliza o SGBD [PostgreSQL](https://www.postgresql.org/) para armazenar os dados, e é desenvolvido com o [Django](https://www.djangoproject.com/) framework e [Python 3](https://www.python.org). Utilizamos o [Docker](https://www.docker.com) e [docker-compose](https://docs.docker.com/compose/) para deploy e execução no servidor. Inicialmente o SGBD era o [MariaDB](https://mariadb.org) e sua configuração está [aqui!](docs/mariadb.md).
 
 ### Criação do Banco de Dados
 
@@ -22,17 +22,18 @@ Crie o usuário de acesso ao banco de dados:
 
 ```sql
 CREATE ROLE sc_user WITH
-	LOGIN
-	NOSUPERUSER
-	NOCREATEDB
-	NOCREATEROLE
-	NOINHERIT
-	NOREPLICATION
-	CONNECTION LIMIT -1
-	PASSWORD 'xxxxxx';
+    LOGIN
+    NOSUPERUSER
+    CREATEDB
+    NOCREATEROLE
+    INHERIT
+    NOREPLICATION
+    CONNECTION LIMIT -1
+    PASSWORD 'xxxxxx';
 ```
 
 Crie o banco de dados com *Collate* `pt_BR` ([Configuração do Locale `pt_BR` no seu container](docs/dev.md)):
+
 ```sql
 CREATE DATABASE scdb_dev
     WITH
@@ -46,6 +47,7 @@ CREATE DATABASE scdb_dev
 ```
 
 Defina as permissions e privilégios do Usuário:
+
 ```sql
 GRANT ALL PRIVILEGES ON DATABASE scdb_dev TO sc_user;
 GRANT ALL ON SCHEMA public TO sc_user;
@@ -66,35 +68,31 @@ Copie os exemplos destes arquivos no diretório raiz do projeto:
 
 ```console
 cp .env.sample .env
-cp path.env.sample path.env
-```
-
-Edite o arquivo `path.env` para informar as variáveis:
-```console
-export DJANGO_SETTINGS_MODULE=suggestclasses.settings
-export PYTHONPATH=${PYTHONPATH}:/home/<seu_diretorio>/suggestclasses
 ```
 
 Após editar os valores, execute os comandos:
+
 ```console
 source .env
-source path.env
 ```
 
 ### Execução do Projeto
 
 Ative o ambiente virtual e instale as depedências.
+
 ```console
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
 Atualize os arquivos estáticos.
+
 ```console
 python manage.py collectstatic
 ```
 
 Se houver modificações nos models (em models.py), execute a criação das migrações. Depois execute as migrações.
+
 ```console
 python3 manage.py makemigrations core
 python3 manage.py migrate
@@ -107,6 +105,7 @@ python manage.py createsuperuser
 ```
 
 Execute o sistema.
+
 ```console
 python manage.py runserver
 ```
@@ -117,8 +116,6 @@ Lembre-se: O SGBD deve estar em execução e configure o acesso no arquivo `.env
 
 O sistema é baseado nos dados abertos da UFRN, desta forma é necessário povoar o banco de dados
 com informações de Horários, Centro, Salas, Departamentos, Componentes, etc.
-
-Lembre-se de deixar todas as variáveis de ambiente definidas. Execute o comando `source path.env` no Linux ou `activate path.env` no Windows para carregar as variáveis.
 
 A ordem é importante e deve ser seguida conforme descrito abaixo.
 
@@ -239,7 +236,7 @@ docker-compose down
 
 ## Outras Configurações
 
-* Arquivo _.editorconfig_ de estilo de codificação adicionado.
+* Arquivo *.editorconfig* de estilo de codificação adicionado.
 
 ## Tabela com horários de aula
 
@@ -252,7 +249,7 @@ M4 – 09h45 às 10h35 | T4 – 15h45 às 16h35 | N4 – 21h25 às 22h15
 M5 – 10h50 às 11h40 | T5 – 16h50 às 17h40 |
 M6 – 11h40 às 12h30 | T6 – 17h40 às 18h30 |
 
-# Links
+## Links
 
 * <https://www.techiediaries.com/django/django-3-tutorial-and-crud-example-with-mysql-and-bootstrap/>
 * <https://learndjango.com/tutorials/django-favicon-tutorial>
@@ -281,4 +278,4 @@ M6 – 11h40 às 12h30 | T6 – 17h40 às 18h30 |
 * <https://simpleisbetterthancomplex.com/tutorial/2016/11/28/how-to-filter-querysets-dynamically.html>
 * <https://bootstrapious.com/p/bootstrap-sidebar>
 * <https://simpleisbetterthancomplex.com/tutorial/2016/11/15/how-to-implement-a-crud-using-ajax-and-json.html>
-* https://tableplus.com/blog/2018/04/postgresql-how-to-grant-access-to-users.html
+* <https://tableplus.com/blog/2018/04/postgresql-how-to-grant-access-to-users.html>
