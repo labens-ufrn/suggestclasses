@@ -61,17 +61,16 @@ Criação do Ambiente Virtual com [python3-venv](https://docs.python.org/pt-br/3
 python3 -m venv .venv
 ```
 
-Para ativar: ```source venv/bin/activate```.
+Para ativar: ```source .venv/bin/activate```.
 Para desativar: ```deactivate```.
 
-Copie os exemplos destes arquivos no diretório raiz do projeto:
+Copie o arquivo de exemplo para o diretório raiz do projeto:
 
 ```console
-cp .env.sample .env
+cp .env.example .env
 ```
 
-Após editar os valores, execute os comandos:
-
+Edite o arquivo `.env` para informar as variáveis e carregue-o:
 ```console
 source .env
 ```
@@ -117,6 +116,8 @@ Lembre-se: O SGBD deve estar em execução e configure o acesso no arquivo `.env
 O sistema é baseado nos dados abertos da UFRN, desta forma é necessário povoar o banco de dados
 com informações de Horários, Centro, Salas, Departamentos, Componentes, etc.
 
+Lembre-se de configurar e carregar todas as variáveis de ambiente com `source .env`.
+
 A ordem é importante e deve ser seguida conforme descrito abaixo.
 
 ### Criar Grupos e Permissões
@@ -161,37 +162,15 @@ django.setup()
 Configurações executar os testes:
 
 ```shell script
-export DJANGO_SETTINGS_MODULE=suggestclasses.settings
-python manage.py test
+source .env
+python manage.py test --keepdb
 ```
 
 ### Executar os Testes de Unidade e Cobertura
 
-#### Utilizando o Cobetura
-
-Primeiro defina a varíavel de ambiente: ```export DJANGO_SETTINGS_MODULE=projectname.settings```.
-
-Depois instale o **coverage** e rode para ele gerar o arquivo `coverage.xml`.
-
-```pythonstub
-pip install coverage
-coverage run -m unittest discover
-coverage xml
-```
-
-Se usar `coverage html`, ele gera o relatório em html.
-
-#### Utilizando Nose (desativado)
-
 ```shell script
-pip install nose
-pip install coverage
-export DJANGO_SETTINGS_MODULE=suggestclasses.settings
-```
-
-```shell script
-nosetests --with-xunit
-nosetests --with-coverage --cover-package=core --cover-branches --cover-xml
+source .env
+coverage run manage.py test
 ```
 
 ## Executar o Sonar
