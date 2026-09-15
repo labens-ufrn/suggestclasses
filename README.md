@@ -59,26 +59,18 @@ Criação do Ambiente Virtual com [python3-venv](https://docs.python.org/pt-br/3
 python3 -m venv .venv
 ```
 
-Para ativar: ```source venv/bin/activate```.
+Para ativar: ```source .venv/bin/activate```.
 Para desativar: ```deactivate```.
 
-Copie os exemplos destes arquivos no diretório raiz do projeto:
+Copie o arquivo de exemplo para o diretório raiz do projeto:
 
 ```console
-cp .env.sample .env
-cp path.env.sample path.env
+cp .env.example .env
 ```
 
-Edite o arquivo `path.env` para informar as variáveis:
-```console
-export DJANGO_SETTINGS_MODULE=suggestclasses.settings
-export PYTHONPATH=${PYTHONPATH}:/home/<seu_diretorio>/suggestclasses
-```
-
-Após editar os valores, execute os comandos:
+Edite o arquivo `.env` para informar as variáveis e carregue-o:
 ```console
 source .env
-source path.env
 ```
 
 ### Execução do Projeto
@@ -118,7 +110,7 @@ Lembre-se: O SGBD deve estar em execução e configure o acesso no arquivo `.env
 O sistema é baseado nos dados abertos da UFRN, desta forma é necessário povoar o banco de dados
 com informações de Horários, Centro, Salas, Departamentos, Componentes, etc.
 
-Lembre-se de deixar todas as variáveis de ambiente definidas. Execute o comando `source path.env` no Linux ou `activate path.env` no Windows para carregar as variáveis.
+Lembre-se de configurar e carregar todas as variáveis de ambiente com `source .env`.
 
 A ordem é importante e deve ser seguida conforme descrito abaixo.
 
@@ -164,7 +156,7 @@ django.setup()
 Configurações executar os testes:
 
 ```shell script
-export DJANGO_SETTINGS_MODULE=suggestclasses.settings
+source .env
 python manage.py test
 ```
 
@@ -172,7 +164,7 @@ python manage.py test
 
 #### Utilizando o Cobetura
 
-Primeiro defina a varíavel de ambiente: ```export DJANGO_SETTINGS_MODULE=projectname.settings```.
+Primeiro carregue as variáveis de ambiente: `source .env`.
 
 Depois instale o **coverage** e rode para ele gerar o arquivo `coverage.xml`.
 
@@ -189,7 +181,7 @@ Se usar `coverage html`, ele gera o relatório em html.
 ```shell script
 pip install nose
 pip install coverage
-export DJANGO_SETTINGS_MODULE=suggestclasses.settings
+source .env
 ```
 
 ```shell script
