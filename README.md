@@ -157,36 +157,14 @@ Configurações executar os testes:
 
 ```shell script
 source .env
-python manage.py test
+python manage.py test --keepdb
 ```
 
 ### Executar os Testes de Unidade e Cobertura
 
-#### Utilizando o Cobetura
-
-Primeiro carregue as variáveis de ambiente: `source .env`.
-
-Depois instale o **coverage** e rode para ele gerar o arquivo `coverage.xml`.
-
-```pythonstub
-pip install coverage
-coverage run -m unittest discover
-coverage xml
-```
-
-Se usar `coverage html`, ele gera o relatório em html.
-
-#### Utilizando Nose (desativado)
-
 ```shell script
-pip install nose
-pip install coverage
 source .env
-```
-
-```shell script
-nosetests --with-xunit
-nosetests --with-coverage --cover-package=core --cover-branches --cover-xml
+coverage run manage.py test
 ```
 
 ## Executar o Sonar
