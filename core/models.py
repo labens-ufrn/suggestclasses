@@ -272,7 +272,7 @@ class Turma(models.Model):
     ch_dedicada_periodo = models.IntegerField()
     nivel_ensino = models.CharField(max_length=50)
     campus_turma = models.CharField(max_length=50)
-    local = models.CharField(max_length=50)
+    local = models.CharField(max_length=100)
     ano = models.IntegerField()
     periodo = models.IntegerField()
     data_inicio = models.DateField()

@@ -17,7 +17,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.8]
+        python-version: ['3.10']
 
     services:
       postgres:
@@ -56,7 +56,9 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Copying configurations
         run: |
-          cp contrib/env-sample .env
+          cp .env.example .env
+          sed -i "s/^DATABASE_USER=.*/DATABASE_USER=postgres/" .env
+          sed -i "s/^DATABASE_PASSWORD=.*/DATABASE_PASSWORD=postgres/" .env
           source .env
       - name: Test with manage.py test
         run: |

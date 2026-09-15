@@ -31,7 +31,6 @@ Nosso documentação se concentra na pasta `docs/` deste repositório, aqui uma 
 
 | Arquivo/Pasta  	|   Descrição	|
 |---	|---	|
-|  `contrib/`	| Contém arquivos de configuração do ambiente de desenvolvimento.|
 |  `core/`	    | Aplicativo Django, código base de todo o sistema. 	|
 |  `dados/` 	| Contém scripts para downloads dos dados e povoamento da base de dados.	|
 |  `docs/` 	    | Contém arquivos de documentação e imagens da modelagem do Sistema. |
