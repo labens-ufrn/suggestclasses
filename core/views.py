@@ -1,11 +1,8 @@
 from core.bo.historico import listar_historicos_by_discente
-import io
 import logging
-from random import sample
 from typing import List
 from django.db.models.expressions import OuterRef, Subquery
 
-# import matplotlib.pyplot as plt
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
@@ -18,7 +15,6 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.views.decorators.http import require_http_methods
 from django.views.generic import DetailView
-# from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 from core.config.config import get_config
 from core.models import Curso, ComponenteCurricular, EstruturaCurricular, SugestaoTurma, Sala, Docente, Turma, \
@@ -980,38 +976,3 @@ def enquete_votos_listar(request, pk, cc_pk):
     }
 
     return render(request, 'core/enquetes/votos_listar.html', context)
-
-
-
-
-# def plot(request):
-#     # Creamos los datos para representar en el gráfico
-#     x = range(1, 11)
-#     y = sample(range(20), len(x))
-#
-#     # Creamos una figura y le dibujamos el gráfico
-#     f = plt.figure()
-#
-#     # Creamos los ejes
-#     axes = f.add_axes([0.15, 0.15, 0.75, 0.75])  # [left, bottom, width, height]
-#     axes.plot(x, y)
-#     axes.set_xlabel("Eje X")
-#     axes.set_ylabel("Eje Y")
-#     axes.set_title("Mi gráfico dinámico")
-
-#     # Como enviaremos la imagen en bytes la guardaremos en un buffer
-#     buf = io.BytesIO()
-#     canvas = FigureCanvasAgg(f)
-#     canvas.print_png(buf)
-
-#     # Creamos la respuesta enviando los bytes en tipo imagen png
-#     response = HttpResponse(buf.getvalue(), content_type='image/png')
-
-#     # Limpiamos la figura para liberar memoria
-#     f.clear()
-
-#     # Añadimos la cabecera de longitud de fichero para más estabilidad
-#     response['Content-Length'] = str(len(response.content))
-
-#     # Devolvemos la response
-#     return response
