@@ -28,28 +28,28 @@ class FlowViewTests(TestCase):
 
     def test_get_flow_contabeis(self):
         client = Client()
-        url = '/core/flow/cont/opcionais'
+        url = reverse('flow_cont_op')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
 
     def test_get_flow_direito(self):
         client = Client()
-        url = '/core/flow/dir/opcionais'
+        url = reverse('flow_dir_op')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
 
     def test_get_flow_geo(self):
         client = Client()
-        url = '/core/flow/geo-lic/opcionais'
+        url = reverse('flow_geo_lic_op')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
 
     def test_get_flow_mat(self):
         client = Client()
-        url = '/core/flow/mat/opcionais'
+        url = reverse('flow_mat_op')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)

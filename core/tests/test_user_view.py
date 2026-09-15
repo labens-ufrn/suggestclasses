@@ -33,7 +33,7 @@ class UserViewTests(TestCase):
 
     def test_logar_usuario(self):
         client = Client()
-        url = '/core/usuario/logar'
+        url = reverse('Login de Usuário')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)

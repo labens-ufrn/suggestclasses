@@ -44,13 +44,13 @@ class SugestaoGeografiaViewTests(TestCase):
     def test_login_success(self):
         client = Client()
         user = User.objects.get(username='john')
-        response = client.post('/core/usuario/logar', {'username': user.username, 'password': 'johnpassword'})
-        self.assertEqual(response.url, '/core/')
+        response = client.post(reverse('Login de Usuário'), {'username': user.username, 'password': 'johnpassword'})
+        self.assertEqual(response.url, reverse('index'))
         self.assertEqual(302, response.status_code)
 
     def test_get_turmas_(self):
         client = Client()
-        url = '/core/turmas/his-lic'
+        url = reverse('turmas_historia_lic')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)

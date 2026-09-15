@@ -28,77 +28,77 @@ class TurmaViewTests(TestCase):
 
     def test_get_turmas_hist(self):
         client = Client()
-        url = '/core/turmas/his-lic'
+        url = reverse('turmas_historia_lic')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
 
     def test_get_turmas_dir(self):
         client = Client()
-        url = '/core/turmas/dir'
+        url = reverse('turmas_direito')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
 
     def test_get_turmas_mat(self):
         client = Client()
-        url = '/core/turmas/mat'
+        url = reverse('turmas_matemática')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
 
     def test_get_turmas_his_bac(self):
         client = Client()
-        url = '/core/turmas/his-bac'
+        url = reverse('turmas_historia_bac')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
 
     def test_get_turmas_geo_bac(self):
         client = Client()
-        url = '/core/turmas/geo-bac'
+        url = reverse('turmas_geografia_bac')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
 
     def test_get_turmas_geo_lic(self):
         client = Client()
-        url = '/core/turmas/geo-lic'
+        url = reverse('turmas_geografia_lic')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
 
     def test_get_turmas_ped(self):
         client = Client()
-        url = '/core/turmas/ped'
+        url = reverse('turmas_pedagogia')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
 
     def test_get_turmas_adm(self):
         client = Client()
-        url = '/core/turmas/adm'
+        url = reverse('turmas_administracao')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
 
     def test_get_turmas_let_esp(self):
         client = Client()
-        url = '/core/turmas/let-esp'
+        url = reverse('turmas_letras_esp')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
 
     def test_get_turmas_let_pt(self):
         client = Client()
-        url = '/core/turmas/let-por'
+        url = reverse('turmas_letras_por')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
 
     def test_get_turmas_let_ing(self):
         client = Client()
-        url = '/core/turmas/let-ing'
+        url = reverse('turmas_letras_ing')
         response = client.get(url)
 
         self.assertEqual(200, response.status_code)
