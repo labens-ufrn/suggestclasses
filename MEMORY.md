@@ -35,7 +35,10 @@ aprendizados, pull requests em andamento e pendências. Leia também o
 ## 🔀 Pull Requests em Andamento
 
 Divisão do PR #253 (`testes3` → `main`, "Testes e bug", aberto em 2022-12-10
-por Wanessa Bezerra) em PRs menores para a `dev`:
+por Wanessa Bezerra) em PRs menores para a `dev`, todos na milestone **Iteração 14: Modernização e
+Integração na dev** (#15, criada em 2026-11-05, sem prazo). O #308 tem os labels
+`Tipo: Bug :bug:`, `Tipo: CI`, `dependencies`, `python`, `Prioridade: Alta` e
+`Status: Precisa Ser Revisado`.
 
 | Ordem | PR | Branch | Conteúdo | Status |
 |---|---|---|---|---|
