@@ -7,6 +7,8 @@ from core.tests.povoar_testes import criar_dados, remover_dados
 from core.dao.centro_dao import get_centro_by_id, get_centros
 from core.dao.componente_dao import get_componentes_by_depto
 from core.dao.departamento_dao import get_depto_by_id, get_departamentos
+from core.models import Curso
+
 
 class DAOTests(TestCase):
 
@@ -82,26 +84,33 @@ class DAOTests(TestCase):
         self.assertIsNotNone(salas, 'Testando salas')
         self.assertTrue(len(salas) > 0, 'Testando salas')
 
-    def test_get_salas(self):
+    def test_get_cursos(self):
         cursos = get_cursos()
 
         self.assertIsNotNone(cursos, 'Testando cursos')
         self.assertTrue(len(cursos) > 0, 'Testando cursos')
 
-    def test_get_curso(self):
-        cursos = get_cursos_by_centro()
+    def test_get_cursos_by_centro(self):
+        centro = get_centro_by_id(9999)
 
-        self.assertIsNotNone(cursos, 'Discentes não é None?')
-        self.assertTrue(len(cursos) > 0, 'Testando cursos')
+        cursos = get_cursos_by_centro(centro)
 
-    def test_get_curso(self):
-        cursos = get_curso_by_codigo(9999)
+        self.assertEqual({9999, 9998}, set(cursos.values_list('codigo', flat=True)),
+                         'Cursos do centro de teste')
 
-        self.assertIsNotNone(cursos, 'Discentes não é None?')
-        self.assertTrue(len(cursos) > 0, 'Testando cursos')
+    def test_get_cursos_by_centro_sem_cursos(self):
+        centro = get_centro_by_id(1482)
 
-    def test_get_curso(self):
-        cursos = get_cursos()
+        cursos = get_cursos_by_centro(centro)
 
-        self.assertIsNotNone(cursos, 'Discentes não é None?')
-        self.assertTrue(len(cursos) > 0, 'Testando cursos')
+        self.assertEqual(0, len(cursos), 'Centro sem cursos cadastrados')
+
+    def test_get_curso_by_codigo(self):
+        curso = get_curso_by_codigo(9999)
+
+        self.assertEqual(9999, curso.codigo, 'Testando código do curso')
+        self.assertEqual('Curso Teste 1', curso.nome, 'Testando nome do curso')
+
+    def test_get_curso_by_codigo_inexistente(self):
+        with self.assertRaises(Curso.DoesNotExist):
+            get_curso_by_codigo(-1)
