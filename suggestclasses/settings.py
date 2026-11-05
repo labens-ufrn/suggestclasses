@@ -56,9 +56,9 @@ SECURE_CONTENT_TYPE_NOSNIFF = config('SECURE_CONTENT_TYPE_NOSNIFF', default=True
 SECURE_BROWSER_XSS_FILTER = config('SECURE_BROWSER_XSS_FILTER', default=False, cast=bool)
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/suggestclasses'
+LOGIN_REDIRECT_URL = '/suggestclasses/'
 LOGIN_URL = '/suggestclasses/accounts/login'
-LOGOUT_REDIRECT_URL = '/suggestclasses'
+LOGOUT_REDIRECT_URL = '/suggestclasses/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
