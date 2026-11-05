@@ -1,0 +1,7 @@
+# DESCONTINUADO: o MutPy não funciona mais com este projeto e será removido.
+# mutpy 0.6.1 (2019) suporta até Python 3.7 e django-mutpy 0.1.2 (2017) até
+# Python 3.6; Django 5.2 exige Python >= 3.10. Ver README.
+
+-r requirements-dev.txt
+
+django-mutpy==0.1.2
