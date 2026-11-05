@@ -31,15 +31,15 @@ class EnqueteTests(TestCase):
         enquete = get_enquetes()
 
         self.assertIsNotNone(enquete, 'Enquete não é None?')
+        self.assertTrue(len(enquete) > 0, 'Existe pelo menos uma enquete')
 
     def test_get_enquetes_por_curso(self):
-        enquete = get_enquetes_por_curso(7191770)
+        enquete = get_enquetes_por_curso(9999)
+
         self.assertIsNotNone(enquete, 'Enquete não é None?')
-        # self.assertEqual()
+        self.assertTrue(len(enquete) > 0, 'Existe pelo menos uma enquete')
 
     def test_get_componentes_enquete(self):
         enquete = get_enquetes_por_curso(7191770)
         print(enquete)
         pass
-
-
