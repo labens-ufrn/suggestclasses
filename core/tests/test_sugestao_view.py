@@ -56,3 +56,10 @@ class SugestaoViewTests(TestCase):
         response = client.post(url, {'username': user.username, 'password': 'johnpassword'})
         self.assertEqual(response.url, index)
         self.assertEqual(302, response.status_code)
+
+    def test_solicitacao_listar(self):
+        client = Client()
+        response = client.get('core/sugestao/solicitacao_listar')
+
+        self.assertEqual(response.status_code, 404)
+
