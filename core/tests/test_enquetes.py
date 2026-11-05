@@ -1,7 +1,7 @@
 import django
 django.setup()
 
-from core.bo.enquetes import get_enquetes, get_enquetes_por_curso, get_componentes_enquete, get_estrutura_by_curso
+from core.bo.enquetes import get_enquetes, get_enquetes_por_curso, get_componentes_enquete
 from core.tests.povoar_testes import criar_dados, remover_dados, criar_enquetes
 from core.models import Enquete
 
