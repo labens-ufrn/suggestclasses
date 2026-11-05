@@ -84,6 +84,22 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+O arquivo `requirements.txt` contém somente as dependências necessárias para
+executar a aplicação. Para desenvolvimento e testes, instale também:
+
+```console
+pip install -r requirements-dev.txt
+```
+
+As dependências específicas dos testes de mutação ficam em
+`requirements-mutation.txt`. Elas incluem as dependências de desenvolvimento e
+o `django-mutpy`, que **não funciona mais** com a versão atual do projeto
+(veja a seção de testes de mutação abaixo):
+
+```console
+pip install -r requirements-mutation.txt
+```
+
 Atualize os arquivos estáticos.
 
 ```console
@@ -166,12 +182,35 @@ source .env
 python manage.py test --keepdb
 ```
 
-### Executar os Testes de Unidade e Cobertura
+### Executar os Testes de Unidade, Testes de Mutação e Cobertura
 
 ```shell script
 source .env
 coverage run manage.py test
 ```
+
+> **⚠️ Testes de mutação descontinuados:** o MutPy **não funciona mais** com a
+> versão atual do projeto e será removido futuramente. A última versão do
+> MutPy (0.6.1, de 2019) declara suporte até o Python 3.7, e a do
+> `django-mutpy` (0.1.2, de 2017) até o Python 3.6, enquanto o Django 5.2
+> exige Python 3.10 ou superior. Não há job de mutação no CI. Os arquivos
+> `requirements-mutation.txt` e `suggestclasses/mutation_settings.py` e as
+> instruções abaixo são mantidos apenas como registro histórico.
+
+Instruções históricas: os testes de mutação usavam um settings específico que
+adicionava o `django_mutpy` somente nesse contexto.
+
+```shell script
+python3.11 -m venv .venv311
+source .venv311/bin/activate
+pip install -r requirements-mutation.txt
+source .env
+export DJANGO_SETTINGS_MODULE=suggestclasses.mutation_settings
+python manage.py muttest core
+```
+
+O settings padrão não registra o `django_mutpy`, portanto a ferramenta não é
+carregada no ambiente normal da aplicação.
 
 ## Executar o Sonar
 
