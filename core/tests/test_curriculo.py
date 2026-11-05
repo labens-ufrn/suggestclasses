@@ -1,8 +1,9 @@
 import django
 django.setup()
 
-from core.bo.curriculo import get_curriculo_by_cc, get_semestres_by_curso, get_componentes_by_curso,get_componentes_by_curso_semestre
-from core.models import ComponenteCurricular
+from core.bo.curriculo import get_curriculo_by_cc, get_semestres_by_curso, get_componentes_by_curso, \
+    get_componentes_by_curso_semestre
+from core.models import ComponenteCurricular, Curso, EstruturaCurricular
 from core.tests.povoar_testes import criar_dados, remover_dados
 from django.test import TestCase
 
@@ -33,17 +34,61 @@ class CurriculoTests(TestCase):
         self.assertIsNotNone(curriculos, 'Curriculos 2 não é None?')
         self.assertEqual(2, len(curriculos), 'Testando quantidade de currículos 2.')
 
-    def test_get_semestres_by_curso(self):
-        semestre = get_semestres_by_curso(9999)
+    @staticmethod
+    def _ativar_estrutura(id_curriculo):
+        """As estruturas do povoamento são criadas sem status; ativa uma delas
+        apenas no escopo da transação do teste."""
+        estrutura = EstruturaCurricular.objects.get(id_curriculo=id_curriculo)
+        estrutura.status = EstruturaCurricular.ATIVA
+        estrutura.save()
+        return estrutura
 
-        self.assertIsNotNone(semestre, 'Semestre 1 não é None?')
-        self.assertEqual(0, len(semestre), 'Testando quantidade de currículos 1.')
+    def test_get_semestres_by_curso(self):
+        curso = Curso.objects.get(codigo=9999)
+
+        semestres = get_semestres_by_curso(curso)
+
+        self.assertEqual([1, 2], list(semestres), 'Semestres do Curso Teste 1')
+
+    def test_get_semestres_by_curso_sem_estrutura(self):
+        curso_base = Curso.objects.get(codigo=9999)
+        curso = Curso.objects.create(codigo=9990, nome='Curso Sem Estrutura', coordenador=curso_base.coordenador,
+                                     nivel='Graduação', grau='Bacharelado', modalidade='Presencial',
+                                     turno='Matutino', centro=curso_base.centro)
+
+        semestres = get_semestres_by_curso(curso)
+
+        self.assertEqual(0, len(semestres), 'Curso sem estrutura não tem semestres')
 
     def test_get_componentes_by_curso(self):
-        oc = get_componentes_by_curso(9999)
+        curso = Curso.objects.get(codigo=9999)
+        self._ativar_estrutura(999999999)
 
-        self.assertIsNotNone(oc, 'Componentes por curso não é None?')
-        self.assertEqual(0, len(oc), 'Testando quantidade de componentes.')
+        componentes = get_componentes_by_curso(curso)
+
+        self.assertEqual(['DCT9999', 'DCT9998', 'DCT9997'], [c.codigo for c in componentes],
+                         'Componentes da estrutura ativa, ordenados por nome')
+
+    def test_get_componentes_by_curso_sem_estrutura_ativa(self):
+        curso = Curso.objects.get(codigo=9999)
+
+        componentes = get_componentes_by_curso(curso)
+
+        self.assertEqual(0, len(componentes), 'Estrutura inativa não deve retornar componentes')
 
     def test_get_componentes_by_curso_semestre(self):
-        pass
+        curso = Curso.objects.get(codigo=9999)
+        self._ativar_estrutura(999999999)
+
+        componentes = get_componentes_by_curso_semestre(curso, 1)
+
+        self.assertEqual(['DCT9999', 'DCT9998'], [c.codigo for c in componentes],
+                         'Componentes do semestre 1, ordenados por nome')
+
+    def test_get_componentes_by_curso_semestre_sem_componentes(self):
+        curso = Curso.objects.get(codigo=9999)
+        self._ativar_estrutura(999999999)
+
+        componentes = get_componentes_by_curso_semestre(curso, 3)
+
+        self.assertEqual(0, len(componentes), 'Semestre 3 não tem componentes')
