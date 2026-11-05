@@ -84,6 +84,21 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+O arquivo `requirements.txt` contém somente as dependências necessárias para
+executar a aplicação. Para desenvolvimento e testes, instale também:
+
+```console
+pip install -r requirements-dev.txt
+```
+
+As dependências específicas dos testes de mutação ficam em
+`requirements-mutation.txt`. Elas incluem as dependências de desenvolvimento e
+o `django-mutpy`:
+
+```console
+pip install -r requirements-mutation.txt
+```
+
 Atualize os arquivos estáticos.
 
 ```console
@@ -166,12 +181,29 @@ source .env
 python manage.py test --keepdb
 ```
 
-### Executar os Testes de Unidade e Cobertura
+### Executar os Testes de Unidade, Testes de Mutação e Cobertura
 
 ```shell script
 source .env
 coverage run manage.py test
 ```
+
+Para executar os testes de mutação, use o settings específico de mutação, que
+adiciona o `django_mutpy` somente nesse contexto. O MutPy 0.6.1 e o
+`django-mutpy` 0.1.2 exigem Python 3.11 ou anterior; os testes normais do
+projeto usam Python 3.12 no CI.
+
+```shell script
+python3.11 -m venv .venv311
+source .venv311/bin/activate
+pip install -r requirements-mutation.txt
+source .env
+export DJANGO_SETTINGS_MODULE=suggestclasses.mutation_settings
+python manage.py muttest core
+```
+
+O settings padrão não registra o `django_mutpy`, portanto a ferramenta não é
+carregada no ambiente normal da aplicação.
 
 ## Executar o Sonar
 
