@@ -37,19 +37,19 @@ class HistoricoTests(TestCase):
 
         self.assertIsNotNone(historico, 'Histórico não é None?')
         self.assertIsNotNone(historico.pk, 'Histórico pk não é None?')
-        self.assertEquals('20209876543', historico.discente.matricula, 'Recuperar matrícula do histórico')
-        self.assertEquals('Zé Silva', historico.discente.nome_discente, 'Recuperar nome discente do histórico')
-        self.assertEquals('DCT9999', historico.componente.codigo, 'Recuperar código componente do histórico')
-        self.assertEquals('BANCO DE DADOS', historico.componente.nome, 'Recuperar nome componente do histórico')
+        self.assertEqual('20209876543', historico.discente.matricula, 'Recuperar matrícula do histórico')
+        self.assertEqual('Zé Silva', historico.discente.nome_discente, 'Recuperar nome discente do histórico')
+        self.assertEqual('DCT9999', historico.componente.codigo, 'Recuperar código componente do histórico')
+        self.assertEqual('BANCO DE DADOS', historico.componente.nome, 'Recuperar nome componente do histórico')
 
         historicos = listar_historicos()
         print(historicos)
-        self.assertEquals(1, len(historicos))
+        self.assertEqual(1, len(historicos))
         
         historicos = listar_historicos_by_discente(discente=discente)
         print(historicos)
-        self.assertEquals(1, len(historicos))
+        self.assertEqual(1, len(historicos))
 
 
         excluir_historico(discente=discente, componente=componente)
-        self.assertEquals(1, len(historicos))
+        self.assertEqual(1, len(historicos))
