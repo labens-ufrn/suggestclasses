@@ -15,11 +15,23 @@ open pull requests, decisions, and pending work.
 
 ## Local environment
 
-- Use the project virtual environment:
+- Use the project virtual environment, created with `uv` on **Python 3.12**
+  (same version as CI; the system Python is 3.14):
 
   ```bash
+  uv venv .venv --python 3.12
+  uv pip install --python .venv/bin/python -r requirements-dev.txt
   source .venv/bin/activate
   ```
+
+- PostgreSQL on the WSL2 workstation (no `sudo`/Docker): PostgreSQL 16.2 from
+  the `pgserver==0.1.4` wheel, installed in `~/.local/share/pgserver/venv`,
+  data in `~/.local/share/pgserver/data/suggestclasses`, managed by
+  `systemd --user` (`postgresql-local.service`), listening only on
+  `127.0.0.1:5432` (socket in `~/.local/run/postgresql`). The role `sc_user`
+  has `CREATEDB`; the database is `scdb_dev`. Superuser access:
+  `psql -h ~/.local/run/postgresql -U postgres` using the binaries in
+  `~/.local/share/pgserver/venv/lib/python3.12/site-packages/pgserver/pginstall/bin`.
 
 - Create local configuration from the tracked template and load it before
   running Django commands or data scripts:

@@ -18,9 +18,12 @@ aprendizados, pull requests em andamento e pendências. Leia também o
   `test_enquete_view`). Já corrigido na `dev` pelo PR #308; chega à `main` no
   próximo merge `dev` → `main`.
 - **Estado do CI da `dev`:** 🟢 verde após o merge do #308 (run `42035803062`).
-- **Ambiente local:** não há `.venv` nem `.env` criados neste clone
-  (verificado em 2026-11-05); os testes deste ciclo foram validados apenas
-  pelo CI.
+- **Ambiente local (desde 2026-11-05):** `.venv` com Python 3.12.15 (`uv`),
+  `.env` local (`chmod 600`, senha aleatória do `sc_user`) e PostgreSQL 16.2
+  em espaço de usuário (`pgserver` 0.1.4, `systemd --user`
+  `postgresql-local.service`, `127.0.0.1:5432`). Detalhes no `AGENTS.md`.
+  Suíte local na branch `test/bo-dao`: 61 testes OK, estável em duas
+  execuções seguidas com `--keepdb`.
 
 ---
 
@@ -46,7 +49,7 @@ Integração na dev** (#15, criada em 2026-11-05, sem prazo). O #308 tem os labe
 |---|---|---|---|---|
 | 1 | #308 | `fix/ci-django52-compat` | CI na `dev` + Python 3.12, `django-filter` 25.1, `assertEqual`, redirects com barra final | 🟢 MERGED em dev (2026-11-05, `ea9fc74`) |
 | 2 | #309 | `chore/separar-dependencias` | `requirements-dev`/`requirements-mutation`, `mutation_settings.py`, README | 🟢 Revisado e aprovado (2026-11-05) |
-| 3 | #310 | `test/bo-dao` | Testes de BO/DAO | 🟡 Aberto, **com problemas conhecidos** |
+| 3 | #310 | `test/bo-dao` | Testes de BO/DAO | 🟡 Ajustado conforme os 6 comentários do Copilot, aguardando revisão |
 | 4 | #311 | `test/views` | Testes de views | 🟡 Aberto, **com problemas conhecidos** |
 | 5 | — | `docs/agents-memory` | `AGENTS.md` (fluxo de branches) + este `MEMORY.md` | 🟡 Aberto, aguardando revisão |
 
@@ -100,7 +103,8 @@ Integração na dev** (#15, criada em 2026-11-05, sem prazo). O #308 tem os labe
 
 - [x] Revisar e mergear #308 (2026-11-05).
 - [ ] Revisar e mergear #309 → #310 → #311 → docs na `dev`.
-- [ ] Corrigir os problemas conhecidos de #310 e #311 antes do merge.
+- [x] Corrigir os problemas de #310 (comentários do Copilot, 2026-11-05).
+- [ ] Corrigir os problemas conhecidos de #311 antes do merge.
 - [ ] Remover o MutPy (`requirements-mutation.txt`, `mutation_settings.py`,
       seção do README) e avaliar uma alternativa.
 - [ ] Fechar o PR #253.
