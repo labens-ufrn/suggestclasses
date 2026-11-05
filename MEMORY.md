@@ -45,7 +45,7 @@ Integração na dev** (#15, criada em 2026-11-05, sem prazo). O #308 tem os labe
 | Ordem | PR | Branch | Conteúdo | Status |
 |---|---|---|---|---|
 | 1 | #308 | `fix/ci-django52-compat` | CI na `dev` + Python 3.12, `django-filter` 25.1, `assertEqual`, redirects com barra final | 🟢 MERGED em dev (2026-11-05, `ea9fc74`) |
-| 2 | #309 | `chore/separar-dependencias` | `requirements-dev`/`requirements-mutation`, `mutation_settings.py`, README | 🟡 Aberto, aguardando revisão |
+| 2 | #309 | `chore/separar-dependencias` | `requirements-dev`/`requirements-mutation`, `mutation_settings.py`, README | 🟢 Revisado e aprovado (2026-11-05) |
 | 3 | #310 | `test/bo-dao` | Testes de BO/DAO | 🟡 Aberto, **com problemas conhecidos** |
 | 4 | #311 | `test/views` | Testes de views | 🟡 Aberto, **com problemas conhecidos** |
 | 5 | — | `docs/agents-memory` | `AGENTS.md` (fluxo de branches) + este `MEMORY.md` | 🟡 Aberto, aguardando revisão |
@@ -60,9 +60,8 @@ Integração na dev** (#15, criada em 2026-11-05, sem prazo). O #308 tem os labe
   sempre).
 - O PR #253 continua aberto; fechá-lo depois dos merges, com referência aos
   novos PRs.
-- A branch remota `fix/ci-django52` é a primeira tentativa do PR #308, com um
-  commit misturado. Ela foi substituída por `fix/ci-django52-compat` e pode ser
-  apagada.
+- As branches `fix/ci-django52` (primeira tentativa do #308) e
+  `fix/ci-django52-compat` foram apagadas em 2026-11-05.
 
 ---
 
@@ -81,9 +80,16 @@ Integração na dev** (#15, criada em 2026-11-05, sem prazo). O #308 tem os labe
   `/suggestclasses/`.
 - **Banco de testes:** o papel do PostgreSQL precisa de `CREATEDB` e `INHERIT`
   (ver `AGENTS.md`).
-- **Testes de mutação:** `django-mutpy` 0.1.2 / MutPy 0.6.1 só funcionam até
-  o Python 3.11 e não são mais mantidos. Não há job de mutação no CI.
-  Hipótese a avaliar: migrar para `mutmut` ou `cosmic-ray`.
+- **Testes de mutação (decisão de 2026-11-05):** o MutPy **não funciona mais**
+  e será removido em outro momento. Fato (PyPI): `mutpy` 0.6.1 (2019-11-17)
+  declara suporte até Python 3.7 e `django-mutpy` 0.1.2 (2017-08-18) até
+  Python 3.6; o Django 5.2 exige Python >= 3.10. A depreciação está documentada
+  no README e no `requirements-mutation.txt` (#309). Não há job de mutação no
+  CI. Hipótese a avaliar: migrar para `mutmut` ou `cosmic-ray`.
+- **`selenium`/`webdriver-manager`:** mantidos em `requirements-dev.txt` por
+  decisão da revisão do #309, embora ainda não sejam usados no código.
+- **`INSTALLED_APPS`:** manter `'core.apps.CoreConfig'` (revertida a troca por
+  `'core'` na revisão do #309).
 - **Identidade git:** este clone não tem `user.name`/`user.email`
   configurados; os commits do agente usam variáveis `GIT_AUTHOR_*` e
   `GIT_COMMITTER_*`.
@@ -95,9 +101,13 @@ Integração na dev** (#15, criada em 2026-11-05, sem prazo). O #308 tem os labe
 - [x] Revisar e mergear #308 (2026-11-05).
 - [ ] Revisar e mergear #309 → #310 → #311 → docs na `dev`.
 - [ ] Corrigir os problemas conhecidos de #310 e #311 antes do merge.
-- [ ] Decidir sobre `selenium`/`webdriver-manager` (não usados) e sobre
-      reverter `'core'` → `'core.apps.CoreConfig'` (#309).
-- [ ] Fechar o PR #253 e apagar a branch `fix/ci-django52`.
+- [ ] Remover o MutPy (`requirements-mutation.txt`, `mutation_settings.py`,
+      seção do README) e avaliar uma alternativa.
+- [ ] Fechar o PR #253.
+- [ ] Apagar as 24 branches remotas antigas já mergeadas na `main` (a remoção
+      em lote exige ação manual) e avaliar as não mergeadas
+      (`feat/issue172`, `refactor/issue213-postgres`, `update-readme`,
+      `tacianosilva-patch-2`).
 - [ ] Avaliar a remoção de `matplotlib` de `requirements.txt` (o código de
       plotagem foi removido em `8422ada`).
 - [ ] Abrir PR `dev` → `main` quando a `dev` estiver estável.

@@ -39,8 +39,8 @@ open pull requests, decisions, and pending work.
 
 - `requirements.txt`: Runtime dependencies only.
 - `requirements-dev.txt`: Development and testing dependencies (includes `-r requirements.txt`, coverage, selenium, etc.). Used by CI and local test runs.
-- `requirements-mutation.txt`: Mutation testing dependencies (includes `-r requirements-dev.txt` and `django-mutpy`). Note: `django-mutpy` / `mutpy` requires Python 3.11 (incompatible with Python 3.12 due to `distutils` / `importlib` removals).
-- `suggestclasses/mutation_settings.py`: Settings module that extends base settings and adds `django_mutpy` to `INSTALLED_APPS` for mutation runs (`python manage.py muttest <app> --settings=suggestclasses.mutation_settings`).
+- `requirements-mutation.txt`: Mutation testing dependencies (includes `-r requirements-dev.txt` and `django-mutpy`). **Deprecated: MutPy no longer works with this project and will be removed in a future PR.** `mutpy` 0.6.1 (2019) supports up to Python 3.7 and `django-mutpy` 0.1.2 (2017) up to Python 3.6, while Django 5.2 requires Python >= 3.10. There is no mutation job in CI; do not rely on it.
+- `suggestclasses/mutation_settings.py`: Settings module that extends base settings and adds `django_mutpy` to `INSTALLED_APPS` for mutation runs (historical; see the deprecation note above).
 
 ## Database and tests
 
