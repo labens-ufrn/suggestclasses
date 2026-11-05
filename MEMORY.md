@@ -15,7 +15,9 @@ aprendizados, pull requests em andamento e pendências. Leia também o
 - **Estado do CI da `main` (2026-11-05):** 🔴 **falhando** (run `42028905271`):
   `django-filter==22.1` é incompatível com Django 5.2
   (`AttributeError: 'super' object has no attribute '_set_choices'` em
-  `test_enquete_view`). A correção está no PR #308.
+  `test_enquete_view`). Já corrigido na `dev` pelo PR #308; chega à `main` no
+  próximo merge `dev` → `main`.
+- **Estado do CI da `dev`:** 🟢 verde após o merge do #308 (run `42035803062`).
 - **Ambiente local:** não há `.venv` nem `.env` criados neste clone
   (verificado em 2026-11-05); os testes deste ciclo foram validados apenas
   pelo CI.
@@ -42,7 +44,7 @@ Integração na dev** (#15, criada em 2026-11-05, sem prazo). O #308 tem os labe
 
 | Ordem | PR | Branch | Conteúdo | Status |
 |---|---|---|---|---|
-| 1 | #308 | `fix/ci-django52-compat` | CI na `dev` + Python 3.12, `django-filter` 25.1, `assertEqual`, redirects com barra final | 🟡 Aberto, aguardando revisão |
+| 1 | #308 | `fix/ci-django52-compat` | CI na `dev` + Python 3.12, `django-filter` 25.1, `assertEqual`, redirects com barra final | 🟢 MERGED em dev (2026-11-05, `ea9fc74`) |
 | 2 | #309 | `chore/separar-dependencias` | `requirements-dev`/`requirements-mutation`, `mutation_settings.py`, README | 🟡 Aberto, aguardando revisão |
 | 3 | #310 | `test/bo-dao` | Testes de BO/DAO | 🟡 Aberto, **com problemas conhecidos** |
 | 4 | #311 | `test/views` | Testes de views | 🟡 Aberto, **com problemas conhecidos** |
@@ -66,6 +68,14 @@ Integração na dev** (#15, criada em 2026-11-05, sem prazo). O #308 tem os labe
 
 ## 🧠 Aprendizados & Decisões
 
+- **Revisão:** o GitHub não permite que o autor aprove o próprio PR. Como os
+  PRs são abertos com a conta `tacianosilva`, a aprovação formal precisa vir de
+  outro membro; senão, o merge é feito após revisão por comentário. A `dev` não
+  tem proteção de branch.
+- **Token do `gh`:** sem o escopo `workflow`; `gh pr update-branch` falha em PRs
+  que alteram `.github/workflows/`. Nesses casos, mesclar a `dev` localmente e
+  fazer `git push`, ou rodar `gh auth refresh -s workflow`.
+
 - **Testes de views:** usar sempre `reverse('<nome>')` de `core/urls.py`;
   caminhos fixos com `/core/...` dão 404, porque o app fica em
   `/suggestclasses/`.
@@ -82,7 +92,8 @@ Integração na dev** (#15, criada em 2026-11-05, sem prazo). O #308 tem os labe
 
 ## 📋 Pendências
 
-- [ ] Revisar e mergear #308 → #309 → #310 → #311 → docs na `dev`.
+- [x] Revisar e mergear #308 (2026-11-05).
+- [ ] Revisar e mergear #309 → #310 → #311 → docs na `dev`.
 - [ ] Corrigir os problemas conhecidos de #310 e #311 antes do merge.
 - [ ] Decidir sobre `selenium`/`webdriver-manager` (não usados) e sobre
       reverter `'core'` → `'core.apps.CoreConfig'` (#309).
