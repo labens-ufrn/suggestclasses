@@ -93,7 +93,8 @@ pip install -r requirements-dev.txt
 
 As dependências específicas dos testes de mutação ficam em
 `requirements-mutation.txt`. Elas incluem as dependências de desenvolvimento e
-o `django-mutpy`:
+o `django-mutpy`, que **não funciona mais** com a versão atual do projeto
+(veja a seção de testes de mutação abaixo):
 
 ```console
 pip install -r requirements-mutation.txt
@@ -188,10 +189,16 @@ source .env
 coverage run manage.py test
 ```
 
-Para executar os testes de mutação, use o settings específico de mutação, que
-adiciona o `django_mutpy` somente nesse contexto. O MutPy 0.6.1 e o
-`django-mutpy` 0.1.2 exigem Python 3.11 ou anterior; os testes normais do
-projeto usam Python 3.12 no CI.
+> **⚠️ Testes de mutação descontinuados:** o MutPy **não funciona mais** com a
+> versão atual do projeto e será removido futuramente. A última versão do
+> MutPy (0.6.1, de 2019) declara suporte até o Python 3.7, e a do
+> `django-mutpy` (0.1.2, de 2017) até o Python 3.6, enquanto o Django 5.2
+> exige Python 3.10 ou superior. Não há job de mutação no CI. Os arquivos
+> `requirements-mutation.txt` e `suggestclasses/mutation_settings.py` e as
+> instruções abaixo são mantidos apenas como registro histórico.
+
+Instruções históricas: os testes de mutação usavam um settings específico que
+adicionava o `django_mutpy` somente nesse contexto.
 
 ```shell script
 python3.11 -m venv .venv311
