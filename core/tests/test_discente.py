@@ -1,6 +1,8 @@
 import django
 django.setup()
-from core.bo.discentes import get_discentes, get_discente_by_matricula, get_discentes_ativos
+from core.bo.discentes import get_discentes, get_discente_by_matricula, get_discentes_ativos, get_qtd_discentes_ativos, get_discentes_by_centro
+from core.dao.centro_dao import get_centro_by_id
+from core.models import Curso
 from core.tests.povoar_testes import criar_dados, remover_dados
 
 from django.test import TestCase
@@ -34,8 +36,35 @@ class DiscenteTests(TestCase):
         self.assertIsNotNone(discentes, 'Discentes não é None?')
         self.assertTrue(len(discentes) > 0, 'Existe pelo menos um discente')
 
+    def test_get_discentes_by_centro(self):
+        centro = get_centro_by_id(1482)
+
+        discentes = get_discentes_by_centro(centro)
+
+        self.assertEqual({'20209876543', '20209876588'}, set(discentes.values_list('matricula', flat=True)),
+                         'Discentes do centro 1482')
+
+    def test_get_discentes_by_centro_sem_discentes(self):
+        centro = get_centro_by_id(9999)
+
+        discentes = get_discentes_by_centro(centro)
+
+        self.assertEqual(0, len(discentes), 'Centro 9999 não tem discentes')
+
     def test_get_discentes_ativos(self):
         discentes = get_discentes_ativos()
 
         self.assertIsNotNone(discentes, 'Discentes não é None?')
         self.assertTrue(len(discentes) > 0, 'Existe pelo menos um discente')
+
+    def test_get_qtd_discentes_ativos(self):
+        quantidade = get_qtd_discentes_ativos()
+
+        self.assertEqual(2, quantidade, 'Quantidade de discentes ativos')
+
+    def test_get_qtd_discentes_ativos_por_curso(self):
+        curso = Curso.objects.get(codigo=9999)
+
+        quantidade = get_qtd_discentes_ativos(curso)
+
+        self.assertEqual(1, quantidade, 'Quantidade de discentes ativos do Curso Teste 1')
