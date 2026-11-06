@@ -17,13 +17,13 @@ aprendizados, pull requests em andamento e pendências. Leia também o
   (`AttributeError: 'super' object has no attribute '_set_choices'` em
   `test_enquete_view`). Já corrigido na `dev` pelo PR #308; chega à `main` no
   próximo merge `dev` → `main`.
-- **Estado do CI da `dev`:** 🟢 verde após o merge do #308 (run `42035803062`).
+- **Estado do CI da `dev`:** 🟢 verde após os merges de #308, #309 e #310.
 - **Ambiente local (desde 2026-11-05):** `.venv` com Python 3.12.15 (`uv`),
   `.env` local (`chmod 600`, senha aleatória do `sc_user`) e PostgreSQL 16.2
   em espaço de usuário (`pgserver` 0.1.4, `systemd --user`
   `postgresql-local.service`, `127.0.0.1:5432`). Detalhes no `AGENTS.md`.
-  Suíte local na branch `test/bo-dao`: 61 testes OK, estável em duas
-  execuções seguidas com `--keepdb`.
+  Suíte local na branch `test/views` (2026-11-06): **90 testes OK** em ~16 s
+  com `--keepdb`; na `test/bo-dao` eram 61 testes.
 
 ---
 
@@ -48,21 +48,22 @@ Integração na dev** (#15, criada em 2026-11-05, sem prazo). O #308 tem os labe
 | Ordem | PR | Branch | Conteúdo | Status |
 |---|---|---|---|---|
 | 1 | #308 | `fix/ci-django52-compat` | CI na `dev` + Python 3.12, `django-filter` 25.1, `assertEqual`, redirects com barra final | 🟢 MERGED em dev (2026-11-05, `ea9fc74`) |
-| 2 | #309 | `chore/separar-dependencias` | `requirements-dev`/`requirements-mutation`, `mutation_settings.py`, README | 🟢 Revisado e aprovado (2026-11-05) |
-| 3 | #310 | `test/bo-dao` | Testes de BO/DAO | 🟡 Ajustado conforme os 6 comentários do Copilot, aguardando revisão |
-| 4 | #311 | `test/views` | Testes de views | 🟡 Aberto, **com problemas conhecidos** |
-| 5 | — | `docs/agents-memory` | `AGENTS.md` (fluxo de branches) + este `MEMORY.md` | 🟡 Aberto, aguardando revisão |
+| 2 | #309 | `chore/separar-dependencias` | `requirements-dev`/`requirements-mutation`, `mutation_settings.py`, README | 🟢 MERGED em dev (2026-11-05) |
+| 3 | #310 | `test/bo-dao` | Testes de BO/DAO | 🟢 MERGED em dev (2026-11-05, `ca16e78`) |
+| 4 | #311 | `test/views` | Testes de views | 🟢 Problemas conhecidos corrigidos em 2026-11-06 (90 testes OK); aguardando revisão/merge |
+| 5 | #312 | `docs/agents-memory` | `AGENTS.md` (fluxo de branches) + este `MEMORY.md` | 🟡 Aberto, aguardando revisão/merge |
 
-- **Ordem de merge obrigatória:** #308 primeiro, porque ele inclui `dev` nos
-  gatilhos do workflow. Antes disso, os outros PRs não rodam CI; depois do
-  merge do #308, atualizar as branches (`gh pr update-branch <n>`) para
-  disparar o CI.
-- Os problemas de cada PR estão descritos no corpo dele (testes duplicados
-  com o mesmo nome, testes só com `pass`, teste sem prefixo `test_`,
-  `unittest.TestCase` em vez de `django.test.TestCase`, asserção que passa
-  sempre).
-- O PR #253 continua aberto; fechá-lo depois dos merges, com referência aos
-  novos PRs.
+- **Ordem de merge:** #308 → #309 → #310 já estão na `dev`. Faltam #311 e
+  #312, que são independentes entre si.
+- Os problemas originais dos PRs (testes duplicados com o mesmo nome, testes
+  só com `pass`, teste sem prefixo `test_`, `unittest.TestCase` em vez de
+  `django.test.TestCase`, asserção que passa sempre) foram corrigidos na
+  revisão de cada um.
+- O PR #253 está **superado**: `git diff origin/dev origin/testes3` mostra que
+  um merge dele **regrediria** `test_curriculo.py`, `test_dao.py`,
+  `test_discente.py`, `requirements.txt` e `requirements-mutation.txt` (o #310
+  e o #309 já estão melhores na `dev`); os testes de view do #253 são
+  idênticos aos do #311. Fechar com referência a #308–#312.
 - As branches `fix/ci-django52` (primeira tentativa do #308) e
   `fix/ci-django52-compat` foram apagadas em 2026-11-05.
 
@@ -81,6 +82,20 @@ Integração na dev** (#15, criada em 2026-11-05, sem prazo). O #308 tem os labe
 - **Testes de views:** usar sempre `reverse('<nome>')` de `core/urls.py`;
   caminhos fixos com `/core/...` dão 404, porque o app fica em
   `/suggestclasses/`.
+- **`handler403` do projeto:** `core/views.py:error_403` (registrado em
+  `suggestclasses/urls.py:27`) **não devolve 403**: chama `redirecionar()`, que
+  faz `HttpResponseRedirect(request.GET.get('next', '/'))`. Portanto testes de
+  negação de permissão devem esperar **302 com `response.url == '/'`**, não 403.
+- **Isolamento de testes:** usar `django.test.TestCase` com `setUpTestData`
+  (nunca `unittest.case.TestCase`, que não isola o banco). Ainda restam
+  `unittest.case.TestCase` em `test_enquete_view.py` e `test_user_view.py`.
+- **Cobertura de rotas (2026-11-06):** `core/urls.py` tem 154 rotas nomeadas e
+  apenas 32 são exercitadas por `reverse()` nos testes (~21%); 122 sem
+  cobertura, sobretudo `flow_*`, `turmas_*` e os 5 CRUDs `sugestao_*` por curso.
+- **`solicitacao_turma_listar`:** é protegida por
+  `@login_required(login_url='/suggestclasses/accounts/login')` (o login
+  genérico do Django, não o `usuario/logar` do projeto). Anônimo recebe 302
+  para `/suggestclasses/accounts/login?next=...`.
 - **Banco de testes:** o papel do PostgreSQL precisa de `CREATEDB` e `INHERIT`
   (ver `AGENTS.md`).
 - **Testes de mutação (decisão de 2026-11-05):** o MutPy **não funciona mais**
@@ -101,13 +116,16 @@ Integração na dev** (#15, criada em 2026-11-05, sem prazo). O #308 tem os labe
 
 ## 📋 Pendências
 
-- [x] Revisar e mergear #308 (2026-11-05).
-- [ ] Revisar e mergear #309 → #310 → #311 → docs na `dev`.
-- [x] Corrigir os problemas de #310 (comentários do Copilot, 2026-11-05).
-- [ ] Corrigir os problemas conhecidos de #311 antes do merge.
+- [x] Revisar e mergear #308, #309 e #310 (2026-11-05).
+- [x] Corrigir os problemas conhecidos do #311 (2026-11-06: 90 testes OK).
+- [ ] Revisar e mergear #311 e #312 na `dev` (merge feito manualmente no GitHub).
 - [ ] Remover o MutPy (`requirements-mutation.txt`, `mutation_settings.py`,
       seção do README) e avaliar uma alternativa.
-- [ ] Fechar o PR #253.
+- [ ] Fechar o PR #253 (superado por #308–#312; merge regrediria a `dev`).
+- [ ] Avaliar as melhorias de teste apontadas em 2026-11-06: matriz
+      parametrizada de smoke tests para as 122 rotas sem cobertura, migração
+      dos 2 arquivos restantes de `unittest.case.TestCase` e remoção dos IDs de
+      estrutura curricular fixos em `core/bo/sevices.py`.
 - [ ] Apagar as 24 branches remotas antigas já mergeadas na `main` (a remoção
       em lote exige ação manual) e avaliar as não mergeadas
       (`feat/issue172`, `refactor/issue213-postgres`, `update-readme`,

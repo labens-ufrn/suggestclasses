@@ -85,6 +85,12 @@ open pull requests, decisions, and pending work.
   `--keepdb` preserves the test database between executions.
 
 - When writing view tests, always use `reverse('url_name')` from `core/urls.py`. Never hardcode literal paths like `/core/...` because `core.urls` is included under `/suggestclasses/` in `suggestclasses/urls.py`.
+- Use `django.test.TestCase` with `setUpTestData` for tests that touch the
+  database. Do not use `unittest.case.TestCase`: it does not isolate the
+  database and leaks rows between test classes.
+- Permission-denied assertions: `core/views.py:error_403` is registered as
+  `handler403` and redirects to `/`, so an unauthorized request returns
+  **302 with `response.url == '/'`**, not 403. Assert that, not a 403.
 
 ## CI
 
