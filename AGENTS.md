@@ -1,12 +1,37 @@
 # Guide for Coding Agents
 
+Read `MEMORY.md` before starting any task; it records the current state,
+open pull requests, decisions, and pending work.
+
+## Branching and pull requests
+
+- `main` is the release branch; `dev` is the integration branch for
+  development (created on 2026-11-05).
+- Create feature branches from `dev` (`feat/...`, `fix/...`, `test/...`,
+  `chore/...`, `docs/...`) and open pull requests targeting `dev`.
+- Each pull request must be reviewed before it is merged into `dev`; `dev` is
+  merged into `main` for releases.
+- Use Conventional Commits and keep commits atomic.
+
 ## Local environment
 
-- Use the project virtual environment:
+- Use the project virtual environment, created with `uv` on **Python 3.12**
+  (same version as CI; the system Python is 3.14):
 
   ```bash
+  uv venv .venv --python 3.12
+  uv pip install --python .venv/bin/python -r requirements-dev.txt
   source .venv/bin/activate
   ```
+
+- PostgreSQL on the WSL2 workstation (no `sudo`/Docker): PostgreSQL 16.2 from
+  the `pgserver==0.1.4` wheel, installed in `~/.local/share/pgserver/venv`,
+  data in `~/.local/share/pgserver/data/suggestclasses`, managed by
+  `systemd --user` (`postgresql-local.service`), listening only on
+  `127.0.0.1:5432` (socket in `~/.local/run/postgresql`). The role `sc_user`
+  has `CREATEDB`; the database is `scdb_dev`. Superuser access:
+  `psql -h ~/.local/run/postgresql -U postgres` using the binaries in
+  `~/.local/share/pgserver/venv/lib/python3.12/site-packages/pgserver/pginstall/bin`.
 
 - Create local configuration from the tracked template and load it before
   running Django commands or data scripts:
@@ -21,6 +46,13 @@
   local environment files or in CI secrets.
 - `DJANGO_SETTINGS_MODULE=suggestclasses.settings` and `PYTHONPATH` are set by
   `.env`; there is no separate `path.env`.
+
+## Requirements and Settings
+
+- `requirements.txt`: Runtime dependencies only.
+- `requirements-dev.txt`: Development and testing dependencies (includes `-r requirements.txt`, coverage, selenium, etc.). Used by CI and local test runs.
+- `requirements-mutation.txt`: Mutation testing dependencies (includes `-r requirements-dev.txt` and `django-mutpy`). **Deprecated: MutPy no longer works with this project and will be removed in a future PR.** `mutpy` 0.6.1 (2019) supports up to Python 3.7 and `django-mutpy` 0.1.2 (2017) up to Python 3.6, while Django 5.2 requires Python >= 3.10. There is no mutation job in CI; do not rely on it.
+- `suggestclasses/mutation_settings.py`: Settings module that extends base settings and adds `django_mutpy` to `INSTALLED_APPS` for mutation runs (historical; see the deprecation note above).
 
 ## Database and tests
 
@@ -52,11 +84,18 @@
 
   `--keepdb` preserves the test database between executions.
 
+- When writing view tests, always use `reverse('url_name')` from `core/urls.py`. Never hardcode literal paths like `/core/...` because `core.urls` is included under `/suggestclasses/` in `suggestclasses/urls.py`.
+- Use `django.test.TestCase` with `setUpTestData` for tests that touch the
+  database. Do not use `unittest.case.TestCase`: it does not isolate the
+  database and leaks rows between test classes.
+- Permission-denied assertions: `core/views.py:error_403` is registered as
+  `handler403` and redirects to `/`, so an unauthorized request returns
+  **302 with `response.url == '/'`**, not 403. Assert that, not a 403.
+
 ## CI
 
-- The GitHub Actions workflow copies `.env.example` to `.env` and then replaces
-  the database credentials with those of its PostgreSQL service
-  (`postgres`/`postgres`).
+- The GitHub Actions workflow runs on pushes and pull requests to `main` and
+  `dev`, uses Python 3.12, installs `requirements-dev.txt`, copies `.env.example` to `.env`, and replaces the database credentials with those of its PostgreSQL service (`postgres`/`postgres`).
 - Keep `.env.example` free of real credentials and compatible with the
   variables read by `suggestclasses/settings.py`.
 
@@ -72,6 +111,12 @@
   `path.env` rule from `.gitignore`.
 - The test database permission issue was reproduced and resolved locally after
   granting `CREATEDB` and `INHERIT` to the database role.
-- The test suite still has one unrelated pre-existing failure:
-  `core/tests/test_historico.py` uses removed `assertEquals`; use
-  `assertEqual` when addressing that test separately.
+- Separated dependencies into `requirements.txt`, `requirements-dev.txt`, and `requirements-mutation.txt`.
+- Created `suggestclasses/mutation_settings.py` for mutation testing, removing `django_mutpy` from base `INSTALLED_APPS`.
+- Removed the generated `test.txt` artifact and added it to `.gitignore`.
+- Updated CI matrix to Python 3.12 and switched to installing `requirements-dev.txt`.
+- Fixed pre-existing deprecated `assertEquals` calls to `assertEqual` in `core/tests/test_historico.py`.
+- Fixed view tests to use `reverse()` instead of invalid hardcoded `/core/...` paths.
+- Standardized `LOGIN_REDIRECT_URL` and `LOGOUT_REDIRECT_URL` with a trailing slash (`/suggestclasses/`).
+- Upgraded `django-filter` to `25.1` for Django 5.2 compatibility.
+
