@@ -31,6 +31,13 @@ class UserViewTests(TestCase):
 
         self.assertEqual(200, response.status_code)
 
+    def test_logar_usuario(self):
+        client = Client()
+        url = reverse('Login de Usuário')
+        response = client.get(url)
+
+        self.assertEqual(200, response.status_code)
+
     # Valid Form Data
     def test_UserForm_valid(self):
         form = CadastroUsuarioForm(data={'email': "teste@thebeatles.com",
