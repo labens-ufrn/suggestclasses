@@ -1,104 +1,45 @@
 import django
 django.setup()
-from core.tests.povoar_testes import criar_dados, remover_dados
 
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 from django.urls import reverse
+
+from core.tests.povoar_testes import criar_dados
+
+# (nome da rota, status esperado)
+ROTAS_TURMAS = [
+    ('turmas_list', 200),
+    ('turmas_contabeis', 200),
+    ('turmas_direito', 200),
+    ('turmas_geografia_bac', 200),
+    ('turmas_geografia_lic', 200),
+    ('turmas_historia_bac', 200),
+    ('turmas_historia_lic', 200),
+    ('turmas_matemática', 200),
+    ('turmas_sistemas', 200),
+    ('turmas_pedagogia', 200),
+    ('turmas_administracao', 200),
+    ('turmas_turismo', 200),
+    ('turmas_letras_esp', 200),
+    ('turmas_letras_por', 200),
+    ('turmas_letras_ing', 200),
+]
 
 
 class TurmaViewTests(TestCase):
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    def setUpTestData(cls):
         print('\nTurmaViewTests')
         criar_dados()
 
-    @classmethod
-    def tearDownClass(cls):
-        super().tearDownClass()
-        remover_dados()
-
-    def test_get_flow(self):
+    def test_rotas_de_turmas(self):
         client = Client()
-        url = reverse('turmas_sistemas')
-        response = client.get(url)
 
-        self.assertEqual(200, response.status_code)
+        for nome, status in ROTAS_TURMAS:
+            with self.subTest(rota=nome):
+                response = client.get(reverse(nome))
 
-    def test_get_turmas_hist(self):
-        client = Client()
-        url = reverse('turmas_historia_lic')
-        response = client.get(url)
-
-        self.assertEqual(200, response.status_code)
-
-    def test_get_turmas_dir(self):
-        client = Client()
-        url = reverse('turmas_direito')
-        response = client.get(url)
-
-        self.assertEqual(200, response.status_code)
-
-    def test_get_turmas_mat(self):
-        client = Client()
-        url = reverse('turmas_matemática')
-        response = client.get(url)
-
-        self.assertEqual(200, response.status_code)
-
-    def test_get_turmas_his_bac(self):
-        client = Client()
-        url = reverse('turmas_historia_bac')
-        response = client.get(url)
-
-        self.assertEqual(200, response.status_code)
-
-    def test_get_turmas_geo_bac(self):
-        client = Client()
-        url = reverse('turmas_geografia_bac')
-        response = client.get(url)
-
-        self.assertEqual(200, response.status_code)
-
-    def test_get_turmas_geo_lic(self):
-        client = Client()
-        url = reverse('turmas_geografia_lic')
-        response = client.get(url)
-
-        self.assertEqual(200, response.status_code)
-
-    def test_get_turmas_ped(self):
-        client = Client()
-        url = reverse('turmas_pedagogia')
-        response = client.get(url)
-
-        self.assertEqual(200, response.status_code)
-
-    def test_get_turmas_adm(self):
-        client = Client()
-        url = reverse('turmas_administracao')
-        response = client.get(url)
-
-        self.assertEqual(200, response.status_code)
-
-    def test_get_turmas_let_esp(self):
-        client = Client()
-        url = reverse('turmas_letras_esp')
-        response = client.get(url)
-
-        self.assertEqual(200, response.status_code)
-
-    def test_get_turmas_let_pt(self):
-        client = Client()
-        url = reverse('turmas_letras_por')
-        response = client.get(url)
-
-        self.assertEqual(200, response.status_code)
-
-    def test_get_turmas_let_ing(self):
-        client = Client()
-        url = reverse('turmas_letras_ing')
-        response = client.get(url)
-
-        self.assertEqual(200, response.status_code)
+                self.assertEqual(status, response.status_code)
+                if status == 200:
+                    self.assertTrue(response.templates, 'a view não renderizou template')
